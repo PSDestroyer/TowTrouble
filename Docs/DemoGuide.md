@@ -8,6 +8,7 @@ Sursa de cerințe este `Docs/Design/TOW_TROUBLE-source.md`, copia documentului u
 - **Low Poly Road Pack — Broken Vector**: accesul rutier spre atelier, cu material armonizat.
 - **Hot Rod Constructor: Modular Battle Cars — Slava Z.**, produs 303248: Scout, Hauler, Buddy și ținta de recuperat, construite din prefabricatele Historic_Taxi, Historic_Villager și Historic_Bulldog. Fără arme.
 - **Hot Rod Constructor: Modular Off-Road Cars — Slava Z.**, produs 346948: Ranger, din Goblin_Offroad. Ambele pachete au fost descărcate prin Package Manager din achizițiile contului Unity conectat.
+- **Living Mud URP 1.0 — Dinopunch**: materialul reactiv și textura de urme pentru zona contractului 03.
 - **FishNet 4.7.2**, Tugboat UDP 7777: autoritate fizică pe gazdă, două mașini și două cabluri pe aceeași țintă.
 
 ## Pornire și flux
@@ -63,3 +64,23 @@ Conform instrucțiunii explicite a utilizatorului, nu se mai creează builduri. 
 Verificarea în Editor: 10 teste EditMode trecute; navigare cu controller, setări și toate cele trei contracte finalizate în același Play Mode, fără cabluri rupte; pauză solo verificată. Două instanțe Editor au verificat autoritatea FishNet, finalizarea cooperativă, deconectarea și revenirea în lobby. Scena are zero scripturi lipsă, zero referințe la pachetul eliminat și zero materiale cu shader incompatibil. Rapoarte: `EditorSmoke.json`, `EditorCoopSmoke.json`, `EditorChecks.json`.
 
 Aspectul este încă de demo: marginile drumului/pârâului, așezarea atelierului și compoziția decorului necesită finisare pentru apropierea de concepte. Există avertismente Unity pentru coliziunea arborilor nativi pe teren, serviciul AI al Editorului și suprafețele de adâncime Metal; testele curente nu au înregistrat erori Console.
+
+## Living Mud — integrarea nouă
+
+În contractul **03 — Roți în noroi**, noroiul simplu este înlocuit de o suprafață Living Mud cu material umed, margine mai uscată și făgașe discrete. Urmele celor 12 roți se compun pe GPU din pozițiile mașinilor existente, inclusiv pe client. Fiecare sesiune are material și texturi proprii; revenirea în lobby/reînceperea contractului curăță urmele. Escape nu mai este preluat de componenta demonstrativă Living Mud.
+
+Noroiul rămâne dezactivat în scena inițială și se activează prin sistemul existent numai pentru contractul 03. Deschide `Assets/TowTrouble/Scenes/CanyonRecovery.unity`, pornește tu Play Mode și alege contractul 03 pentru test. Fizica remorcării și rezistența de 1700 rămân în sistemul existent; urmele nu modifică geometria de coliziune în timpul rulării.
+
+Componentele necesare și dependențele lor ocupă aproximativ 83 MB. Scenele demo, pachetul VFX Graph și manifestul original al arhivei nu au fost importate. Instrumentul `Tow Trouble/Integrate Living Mud in Tutorial` reaplică doar zona de noroi; regenerarea demo-ului include aceeași integrare.
+
+Verificarea acestei integrări: compilare fără erori, shader DMS și shader pentru urme suportate, zero legături sau scripturi lipsă, coliziune pe layer 8, previzualizare statică și citire GPU cu 13.698 pixeli marcați. **Nu s-a pornit Play Mode și nu s-au creat builduri.** Condusul, remorcarea și sincronizarea vizuală a urmelor rămân pentru testul utilizatorului. Captura din `Docs/Validation/LivingMud/Editor-StaticPreview.png` este o previzualizare statică cu urme de exemplu, eliminate înainte de salvarea scenei.
+
+### Corecție urme și murdărire anvelope — 2026-10-31
+
+Shaderul DMS rotește coordonatele cu 180° când `_Flip_UV` este 0. Suprafața tutorialului folosește acum `_Flip_UV = 1`, iar urmele sunt plasate cu `RaycastHit.textureCoord` de la același tip de contact folosit de suspensie. Nu se mai estimează UV-urile din bounding box.
+
+`RecoveryWheelMud` aplică shaderul original Living Mud `Texture with Mud` pe roțile tuturor celor patru modele, pentru fiecare variantă de vopsea. Caroseria folosește în continuare materialele existente. Murdărirea crește pe fiecare roată aflată în noroi, rămâne vizibilă după ieșire și se reduce lent; lobby-ul și reînceperea curăță starea. Materialele comune nu sunt modificate în timpul rulării; nivelul de noroi se transmite cu MaterialPropertyBlock.
+
+Verificare statică: toate cele patru contacte ale țintei produc pixeli marcați în dreptul UV-ului corect; materialul pentru anvelope și shaderul de urme sunt suportate. `Editor-WheelContact-Fixed.png` arată o previzualizare cu murdărire de exemplu, restaurată apoi la starea inițială. Rularea efectivă și testul cu doi jucători rămân la utilizator.
+
+Pentru retest: pornește contractul 03, intră cu o mașină în noroi și verifică urmele direct la contactul roților și acumularea de noroi pe anvelope. Ieși pe pietriș: roțile trebuie să rămână murdare. Verifică și schimbarea vehiculului/culorii în lobby.

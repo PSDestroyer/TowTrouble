@@ -49,6 +49,10 @@ namespace TowTrouble
 
         public static float EffectsGain=.8f;
         public Rigidbody Body => body;
+        public Vector3 WheelAnchor(int index)=>wheels[index].transform.position;
+        public Transform WheelVisual(int index)=>wheelVisuals[index];
+        public bool TryGetWheelContact(int index,out RaycastHit hit)
+        {var w=wheels[index];var up=transform.up;return Physics.Raycast(w.transform.position+up*.3f,-up,out hit,w.radius+w.suspensionDistance+.3f,1<<8,QueryTriggerInteraction.Ignore);}
         public Vector3 FrontHitch => frontHitch.position;
         public Vector3 RearHitch => rearHitch.position;
         public float Speed => simulate ? body.linearVelocity.magnitude : remoteSpeed;

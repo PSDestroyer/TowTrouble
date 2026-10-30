@@ -1,9 +1,9 @@
 # Tow Trouble — Unity project context
 
-Analyzed 2026-10-30. No Git repository was initialized in this folder at inspection.
+Analyzed 2026-10-30. Initially there was no Git repository. The user moved the project to `/Users/gheorghe/GitHub/TowTrouble`; current branch is main and baseline commit before Living Mud integration is 7063f1a.
 
 ## Confirmed baseline
-- Root: `/Users/gheorghe/GitHub/TowTruble`.
+- Root: `/Users/gheorghe/GitHub/TowTrouble` (renamed/moved by the user).
 - Unity 6000.3.19f1, URP 17.3.0; active asset `PC_RPAsset`.
 - Input System 1.19.0, activeInputHandler 1; uGUI 2.0.0; Test Framework 1.6.0.
 - Pipeline 0.9.1-exp.1 connects to the running Editor. Use `unity command script eval` through the CLI; the MCP approval policy currently rejects direct calls.
@@ -42,3 +42,11 @@ Sources: ProjectVersion.txt, manifest.json, packages-lock.json, EditorBuildSetti
 
 ## User constraint (latest)
 The user explicitly said not to create builds. Do not invoke BuildPipeline or build run, do not launch native build validation. Validate through the connected Unity Editor and Play Mode. Any running build must be canceled through a supported cancellation path.
+
+## Living Mud integration — 2026-10-31
+- Living Mud URP 1.0 core surface, Mud03 textures, tire stamp and dependencies imported under Assets/Living Mud, preserving GUIDs. Demo scenes, original package manifest and optional VFX Graph content excluded.
+- Tutorial contract 03 now uses Contract mud - Living Mud, a separate irregular surface/collider with native DMS material and batched wheel marks for both drivers and the casualty. Physics remains host-owned and existing mud drag remains 1700.
+- Integration assembly Assets/TowTrouble/Integrations/LivingMud; isolated session material/render targets; runtime cleanup; legacy vendor keyboard Update disabled on the surface component. DynamicMudSurface has one public RefreshReferences hook for rebinding session resources.
+- The user tests the game. Do not enter Play Mode, run runtime tests or make player builds. Compilation and static Edit Mode inspection only. See Docs/Validation/LivingMud and Docs/DemoGuide.md.
+
+- Wheel mud correction: native DMS Flip UV must be 1 for this mesh; stamp positions use physics hit UVs. RecoveryWheelMud uses the original Texture with Mud Shader Graph only on wheel renderer paint slots, with per-wheel MaterialPropertyBlock coverage. All model/color variants are wired in the tutorial. Static GPU/contact report: Docs/Validation/LivingMud/WheelContactFix.json. Runtime retest remains with the user.

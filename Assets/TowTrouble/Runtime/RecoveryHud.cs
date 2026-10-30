@@ -261,7 +261,7 @@ namespace TowTrouble
         private void BuildCredits()
         {
             Header(L("CREDITE","CREDITS"),"TOW TROUBLE");var card=Panel(pageRoot,76,220,1448,530);
-            Text(card,"Stylized Nature & Environment MEGA PACK — So Stylized\nLow Poly Road Pack — Broken Vector\nHot Rod Constructor: Modular Battle Cars — Slava Z.\nHot Rod Constructor: Modular Off-Road Cars — Slava Z.\nFishNet — FirstGearGames\nTextMesh Pro / Input System / URP — Unity",40,40,1368,310,26,Paper);
+            Text(card,"Stylized Nature & Environment MEGA PACK — So Stylized\nLow Poly Road Pack — Broken Vector\nHot Rod Constructor: Modular Battle Cars — Slava Z.\nHot Rod Constructor: Modular Off-Road Cars — Slava Z.\nLiving Mud URP — Dinopunch\nFishNet — FirstGearGames\nTextMesh Pro / Input System / URP — Unity",40,40,1368,310,26,Paper);
             Text(card,L("Imaginile conceptuale sunt referințe de artă. Misiunile sunt construite în Unity din asseturile originale.","Concept images are art references. Missions are built in Unity using the original assets."),40,402,1368,85,22,Muted);Footer();
         }
         private void Update()
