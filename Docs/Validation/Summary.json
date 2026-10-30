@@ -1,0 +1,22 @@
+{
+  "status": "Ready with limitations",
+  "date": "2026-10-30",
+  "editModeTestsPassed": 5,
+  "twoNativePeers": true,
+  "hostSlot": 0,
+  "clientSlot": 1,
+  "missionCompleteOnBoth": true,
+  "missionSeconds": 30.860515594482422,
+  "cableSnaps": 0,
+  "casualtyPositionErrorMetres": 9.155601365100043e-05,
+  "clientOnlyMovementMetres": 2.7896194458007812,
+  "hostMovementDuringClientInputMetres": 0.011478424072265625,
+  "disconnectCleanupPassed": true,
+  "lobbyResetPassed": true,
+  "keyboardSmokePassed": true,
+  "limitations": [
+    "Direct IP/LAN only; no relay, matchmaking or Steam",
+    "No latency simulation or physical gamepad validation",
+    "One low-poly mission with simplified water/mud and scenery collision"
+  ]
+}

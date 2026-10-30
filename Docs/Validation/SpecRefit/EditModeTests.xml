@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="9" result="Passed" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-30 19:57:31Z" end-time="2026-10-30 19:57:32Z" duration="0.0270848">
+  <test-suite type="TestSuite" id="1000" name="Tow Trouble" fullname="Tow Trouble" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-30 19:57:31Z" end-time="2026-10-30 19:57:32Z" duration="0.027085" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1012" name="TowTrouble.Tests.dll" fullname="/private/tmp/TowTrouble-spec-validation/Library/ScriptAssemblies/TowTrouble.Tests.dll" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-30 19:57:31Z" end-time="2026-10-30 19:57:32Z" duration="0.023089" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="94688" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1013" name="TowTrouble" fullname="TowTrouble" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-30 19:57:31Z" end-time="2026-10-30 19:57:32Z" duration="0.022925" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1014" name="Tests" fullname="TowTrouble.Tests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-30 19:57:31Z" end-time="2026-10-30 19:57:32Z" duration="0.022831" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="RecoveryProfileTests" fullname="TowTrouble.Tests.RecoveryProfileTests" classname="TowTrouble.Tests.RecoveryProfileTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-30 19:57:31Z" end-time="2026-10-30 19:57:32Z" duration="0.020983" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1003" name="CompletingTutorialUnlocksDitchWithoutRequiringDuo" fullname="TowTrouble.Tests.RecoveryProfileTests.CompletingTutorialUnlocksDitchWithoutRequiringDuo" methodname="CompletingTutorialUnlocksDitchWithoutRequiringDuo" classname="TowTrouble.Tests.RecoveryProfileTests" runstate="Runnable" seed="445401268" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.005787" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="FirstThreeContractsHaveDifferentConditionsAndDeliveryLocations" fullname="TowTrouble.Tests.RecoveryProfileTests.FirstThreeContractsHaveDifferentConditionsAndDeliveryLocations" methodname="FirstThreeContractsHaveDifferentConditionsAndDeliveryLocations" classname="TowTrouble.Tests.RecoveryProfileTests" runstate="Runnable" seed="247349260" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.005440" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="ProfileSurvivesSerializationWithBindingsAndAccessibility" fullname="TowTrouble.Tests.RecoveryProfileTests.ProfileSurvivesSerializationWithBindingsAndAccessibility" methodname="ProfileSurvivesSerializationWithBindingsAndAccessibility" classname="TowTrouble.Tests.RecoveryProfileTests" runstate="Runnable" seed="322177088" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.000427" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="ProgressionStartsWithOnlyTutorialUnlocked" fullname="TowTrouble.Tests.RecoveryProfileTests.ProgressionStartsWithOnlyTutorialUnlocked" methodname="ProgressionStartsWithOnlyTutorialUnlocked" classname="TowTrouble.Tests.RecoveryProfileTests" runstate="Runnable" seed="1692864642" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.000105" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1006" name="RecoveryRulesTests" fullname="TowTrouble.Tests.RecoveryRulesTests" classname="TowTrouble.Tests.RecoveryRulesTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.001314" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1009" name="ClosingCableCannotProduceNegativeTension" fullname="TowTrouble.Tests.RecoveryRulesTests.ClosingCableCannotProduceNegativeTension" methodname="ClosingCableCannotProduceNegativeTension" classname="TowTrouble.Tests.RecoveryRulesTests" runstate="Runnable" seed="827498086" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.000116" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1011" name="DeliveryIgnoresSuspensionHeight" fullname="TowTrouble.Tests.RecoveryRulesTests.DeliveryIgnoresSuspensionHeight" methodname="DeliveryIgnoresSuspensionHeight" classname="TowTrouble.Tests.RecoveryRulesTests" runstate="Runnable" seed="778994241" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.000151" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1010" name="DeliveryRequiresTheCasualtyInsideTheBayAndSlow" fullname="TowTrouble.Tests.RecoveryRulesTests.DeliveryRequiresTheCasualtyInsideTheBayAndSlow" methodname="DeliveryRequiresTheCasualtyInsideTheBayAndSlow" classname="TowTrouble.Tests.RecoveryRulesTests" runstate="Runnable" seed="1297750853" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.000112" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="SlackCableNeverPushesTheVehiclesApart" fullname="TowTrouble.Tests.RecoveryRulesTests.SlackCableNeverPushesTheVehiclesApart" methodname="SlackCableNeverPushesTheVehiclesApart" classname="TowTrouble.Tests.RecoveryRulesTests" runstate="Runnable" seed="460091966" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.000053" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1008" name="StretchedCableProducesTensionAndDampsSeparation" fullname="TowTrouble.Tests.RecoveryRulesTests.StretchedCableProducesTensionAndDampsSeparation" methodname="StretchedCableProducesTensionAndDampsSeparation" classname="TowTrouble.Tests.RecoveryRulesTests" runstate="Runnable" seed="1133400276" result="Passed" start-time="2026-10-30 19:57:32Z" end-time="2026-10-30 19:57:32Z" duration="0.000079" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /Users/gheorghe/Library/Application Support/Canyon County/Tow Trouble/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

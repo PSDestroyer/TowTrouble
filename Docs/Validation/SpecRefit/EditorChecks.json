@@ -1,0 +1,45 @@
+{
+  "validation": "Unity Editor / Play Mode only; no player build invoked",
+  "date": "2026-10-30",
+  "editModeTestsPassed": 10,
+  "soloContractsPassed": [
+    0,
+    1,
+    2
+  ],
+  "gamepadMenuNavigation": "passed",
+  "sampledMenuTextOverflow": [],
+  "soloPause": {
+    "elapsedBefore": 20.10027,
+    "elapsedAfter": 20.10027,
+    "timeScalePaused": 0,
+    "timeScaleResumed": 1
+  },
+  "sceneAudit": {
+    "missingScripts": 0,
+    "wrongEnvironmentReferences": 0,
+    "unsupportedMaterialShaders": [],
+    "activePipeline": "PC_RPAsset"
+  },
+  "terrainPersistence": {
+    "centerWorldHeight": 0.006225586,
+    "fixed": "SaveAssetIfDirty before later vehicle texture/audio imports"
+  },
+  "cooperativeEditors": "EditorCoopSmoke.json; authority and disconnect passed before final terrain persistence correction",
+  "knownWarnings": [
+    "TerrainCollider: MeshCollider is not supported on terrain at the moment (vendor tree prototypes)",
+    "Unity AI account API timeout",
+    "Metal memoryless depth surface load/store warning"
+  ],
+  "remainingArtWork": [
+    "Road and creek edge blending",
+    "Workshop grounding and decoration",
+    "Further lighting/composition refinement toward supplied concept images"
+  ],
+  "checkpointReset": {
+    "passed": true,
+    "resets": 1,
+    "uprightDot": 1,
+    "returnedToRoad": true
+  }
+}
