@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-31",
+  "baseline": "19d7a4f",
+  "playing": false,
+  "scene": "Assets/TowTrouble/Scenes/CanyonRecovery.unity",
+  "checks": [
+    "All four models: moderate throttle has more usable mud pull than full throttle; dry full throttle retains grip.",
+    "Combined steering/drive force stays within the friction ellipse.",
+    "Reverse traction is symmetric.",
+    "Resistance opposes tangential motion, adds no vertical force, and vanishes at rest."
+  ],
+  "budgets": [
+    {
+      "model": "Scout",
+      "throttle": 0.35,
+      "effectivePullNewtons": 4340.0,
+      "slip": 0.0
+    },
+    {
+      "model": "Scout",
+      "throttle": 0.6,
+      "effectivePullNewtons": 7440.00049,
+      "slip": 0.0
+    },
+    {
+      "model": "Scout",
+      "throttle": 1.0,
+      "effectivePullNewtons": 5991.36,
+      "slip": 0.5168258
+    },
+    {
+      "model": "Hauler",
+      "throttle": 0.35,
+      "effectivePullNewtons": 5460.0,
+      "slip": 0.0
+    },
+    {
+      "model": "Hauler",
+      "throttle": 0.6,
+      "effectivePullNewtons": 9360.0,
+      "slip": 0.0
+    },
+    {
+      "model": "Hauler",
+      "throttle": 1.0,
+      "effectivePullNewtons": 7766.57666,
+      "slip": 0.5021425
+    },
+    {
+      "model": "Buddy",
+      "throttle": 0.35,
+      "effectivePullNewtons": 3920.0,
+      "slip": 0.0
+    },
+    {
+      "model": "Buddy",
+      "throttle": 0.6,
+      "effectivePullNewtons": 6720.00049,
+      "slip": 0.0
+    },
+    {
+      "model": "Buddy",
+      "throttle": 1.0,
+      "effectivePullNewtons": 5103.75049,
+      "slip": 0.544308
+    },
+    {
+      "model": "Ranger",
+      "throttle": 0.35,
+      "effectivePullNewtons": 4900.0,
+      "slip": 0.0
+    },
+    {
+      "model": "Ranger",
+      "throttle": 0.6,
+      "effectivePullNewtons": 8400.0,
+      "slip": 0.0
+    },
+    {
+      "model": "Ranger",
+      "throttle": 1.0,
+      "effectivePullNewtons": 6878.969,
+      "slip": 0.5086451
+    }
+  ],
+  "frictionEllipse": 1.0,
+  "surface": {
+    "LongitudinalGrip": 0.78,
+    "LateralGrip": 0.6,
+    "ResistancePerWheel": 375.0,
+    "AggressiveThrottleLoss": 0.42,
+    "layer": 8
+  },
+  "emitters": 12,
+  "maxParticles": 336,
+  "missingBindings": [],
+  "missingScripts": 0,
+  "frameFields": [
+    "Position",
+    "Rotation",
+    "Speed",
+    "WheelRates",
+    "Slip",
+    "Controls",
+    "Mud",
+    "Effort"
+  ],
+  "runtimeTested": false,
+  "multiplayerTested": false,
+  "playerBuildCreated": false,
+  "compilation": {
+    "completed": true,
+    "failed": false,
+    "errors": []
+  },
+  "fishNetSerialization": {
+    "generatedVehicleFrameRoundTripPassed": true,
+    "bytesPerVehicleFrame": 68,
+    "allFieldsPreserved": true,
+    "livePeerSessionTested": false
+  }
+}

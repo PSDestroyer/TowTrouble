@@ -11,7 +11,11 @@ namespace TowTrouble
         public Vector3 Position;
         public Quaternion Rotation;
         public float Speed;
-        public VehicleFrame(RecoveryVehicle vehicle) { Position = vehicle.transform.position; Rotation = vehicle.transform.rotation; Speed = vehicle.Speed; }
+        public Vector4 WheelRates,Slip;
+        public Vector2 Controls;
+        public float Mud,Effort;
+        public VehicleFrame(RecoveryVehicle vehicle)
+        {Position=vehicle.transform.position;Rotation=vehicle.transform.rotation;Speed=vehicle.Speed;WheelRates=vehicle.WheelAngularVelocity;Slip=vehicle.WheelSlip;Controls=vehicle.ControlInput;Mud=vehicle.MudFraction;Effort=vehicle.EngineEffort;}
     }
 
     public struct RecoveryFrame
@@ -233,7 +237,7 @@ namespace TowTrouble
                 resets[i]=0;pullSeconds[i]=0;extending[i]=false;
                 drivers[i].SetSpawn(new Vector3(i==0?-2.3f:2.5f,.05f,30f),Quaternion.identity);drivers[i].SetSimulation(false);
             }
-            casualty.SetSpawn(Contract.Target,Quaternion.identity,Contract.MudDrag,Contract.Extraction-2f); casualty.SetSimulation(false);
+            casualty.SetSpawn(Contract.Target,Quaternion.identity,Contract.MudDrag,Contract.Extraction-2f,ContractIndex==2); casualty.SetSimulation(false);
         }
 
         private void FixedUpdate()
@@ -242,6 +246,7 @@ namespace TowTrouble
             elapsed += Time.fixedDeltaTime;
             for (int i = 0; i < 2; i++)
             {
+                drivers[i].SetTowForce(0);
                 if (Time.time - lastInput[i] > .6f) { drivers[i].SetInput(Vector2.zero, true); winching[i] = false;extending[i]=false; }
                 if (!connected[i]) { tensions[i] = 0; continue; }
                 var a = drivers[i].RearHitch; var b = casualty.FrontHitch;
@@ -256,6 +261,7 @@ namespace TowTrouble
                 if (overload[i] > .55f || distance > 25f)
                 { connected[i] = false; tensions[i] = 0; snaps++; continue; }
                 if(force>1000f)pullSeconds[i]+=Time.fixedDeltaTime;
+                drivers[i].SetTowForce(force);
                 casualty.Body.AddForceAtPosition(direction * force, b);
                 drivers[i].Body.AddForceAtPosition(-direction * force, a);
             }
@@ -291,9 +297,9 @@ namespace TowTrouble
         private void Snapshot(RecoveryFrame frame, Channel channel = Channel.Unreliable)
         {
             if (IsServerInitialized) return;
-            drivers[0].Receive(frame.Driver0.Position, frame.Driver0.Rotation, frame.Driver0.Speed);
-            drivers[1].Receive(frame.Driver1.Position, frame.Driver1.Rotation, frame.Driver1.Speed);
-            casualty.Receive(frame.Casualty.Position, frame.Casualty.Rotation, frame.Casualty.Speed);
+            drivers[0].Receive(frame.Driver0);
+            drivers[1].Receive(frame.Driver1);
+            casualty.Receive(frame.Casualty);
             connected[0] = frame.Cable0; connected[1] = frame.Cable1;
             tensions[0] = frame.Tension0; tensions[1] = frame.Tension1; elapsed = frame.Elapsed; snaps = frame.Snaps;resets[0]=frame.Resets0;resets[1]=frame.Resets1;pullSeconds[0]=frame.Pull0;pullSeconds[1]=frame.Pull1;
         }

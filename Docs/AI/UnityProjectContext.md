@@ -45,8 +45,18 @@ The user explicitly said not to create builds. Do not invoke BuildPipeline or bu
 
 ## Living Mud integration — 2026-10-31
 - Living Mud URP 1.0 core surface, Mud03 textures, tire stamp and dependencies imported under Assets/Living Mud, preserving GUIDs. Demo scenes, original package manifest and optional VFX Graph content excluded.
-- Tutorial contract 03 now uses Contract mud - Living Mud, a separate irregular surface/collider with native DMS material and batched wheel marks for both drivers and the casualty. Physics remains host-owned and existing mud drag remains 1700.
+- Tutorial contract 03 now uses Contract mud - Living Mud, a separate irregular surface/collider with native DMS material and batched wheel marks for both drivers and the casualty. Physics remains host-owned; see the later per-wheel traction update for resistance behavior.
 - Integration assembly Assets/TowTrouble/Integrations/LivingMud; isolated session material/render targets; runtime cleanup; legacy vendor keyboard Update disabled on the surface component. DynamicMudSurface has one public RefreshReferences hook for rebinding session resources.
 - The user tests the game. Do not enter Play Mode, run runtime tests or make player builds. Compilation and static Edit Mode inspection only. See Docs/Validation/LivingMud and Docs/DemoGuide.md.
 
 - Wheel mud correction: native DMS Flip UV must be 1 for this mesh; stamp positions use physics hit UVs. RecoveryWheelMud uses the original Texture with Mud Shader Graph only on wheel renderer paint slots, with per-wheel MaterialPropertyBlock coverage. All model/color variants are wired in the tutorial. Static GPU/contact report: Docs/Validation/LivingMud/WheelContactFix.json. Runtime retest remains with the user.
+
+
+## Mud traction and feedback — 2026-10-31
+- Baseline for this update: 19d7a4f, initially clean. Tutorial only; do not alter vendor Mega/Desert scenes.
+- RecoveryMudTerrain on the actual mud collider: longitudinal grip .78, lateral .60, resistance 375 per wheel scaled by mass, aggressive-throttle grip loss .42. RecoveryTraction holds force math; the existing host raycast solver limits combined drive/brake/side forces per wheel.
+- Contract 03 casualty resistance 1700 is a minimum spread over four possible real mud contacts, no world-Z persistence. Contract 02 ditch drag remains as before. Dry wheel grip is now physically capped too; driving feel needs user validation.
+- Per-wheel angular velocity/slip, input, mud fraction and engine effort are added to VehicleFrame snapshots at the existing 15 Hz. Both peers need matching code. Physics remains host-owned. Actual network play was not tested for this change.
+- RecoveryWheelMud drives twelve authored manual mesh-particle emitters (28 particles each, playOnAwake false), coverage and native Living Mud tire shader. Existing engine audio responds to load/throttle/slip. Dust reduces with mud contact; contextual HUD hint follows tutorial setting.
+- LivingMudAuthoring.ApplyPhysicsToTutorial reapplies bindings safely in Edit Mode; normal demo generation also includes them. No new package or audio library.
+- Static force/scene report: Docs/Validation/LivingMud/PhysicsAndFeedback.json; all four models, friction ellipse, reverse symmetry, resistance direction/rest, 12 bound emitters, zero missing scripts/references. C# compiled. Do not claim driving or multiplayer validation: user owns Play Mode testing. No builds.

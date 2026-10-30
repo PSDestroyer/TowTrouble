@@ -59,6 +59,7 @@ namespace TowTrouble.Editor
             var settings=new SerializedObject(surface);settings.FindProperty("thickness").intValue=(int)MudType.Sloppy;settings.FindProperty("boundingBoxSizeInUnits").floatValue=20;settings.FindProperty("OverrideMaterialStampTexture").boolValue=false;settings.ApplyModifiedPropertiesWithoutUndo();
             ConfigureWheelCoating(world);
             patch.AddComponent<RecoveryMudSurface>().Configure(world,world.Drivers.Concat(new[]{world.Casualty}).ToArray(),surface,stampShader,tread);
+            ConfigureFeedback(patch,world);
             patch.SetActive(false);EditorUtility.SetDirty(patch);
             Selection.activeGameObject=patch;
         }
@@ -111,6 +112,49 @@ namespace TowTrouble.Editor
                     var materials=renderer.sharedMaterials;int materialIndex=binding.FindPropertyRelative("Slot").intValue;if(derived.TryGetValue(materials[materialIndex],out var current))materials[materialIndex]=current;renderer.sharedMaterials=materials;
                 }
                 data.ApplyModifiedPropertiesWithoutUndo();var coating=vehicle.GetComponent<RecoveryWheelMud>();if(coating==null)coating=Undo.AddComponent<RecoveryWheelMud>(vehicle.gameObject);coating.Configure(vehicle);EditorUtility.SetDirty(coating);EditorUtility.SetDirty(vehicle);
+            }
+        }
+
+        [MenuItem("Tow Trouble/Integrate Mud Physics and Feedback")]
+        public static void ApplyPhysicsToTutorial()
+        {
+            if(EditorApplication.isPlaying)throw new InvalidOperationException("Exit Play Mode before authoring mud physics.");
+            var scene=SceneManager.GetSceneByPath(DemoBuilder.ScenePath);if(!scene.isLoaded)scene=EditorSceneManager.OpenScene(DemoBuilder.ScenePath,OpenSceneMode.Additive);
+            var world=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<RecoveryWorld>(true)).Single();
+            var patch=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<RecoveryMudSurface>(true)).Single();
+            ConfigureFeedback(patch.gameObject,world);EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
+        }
+        private static void ConfigureFeedback(GameObject patch,RecoveryWorld world)
+        {
+            if(patch.GetComponent<RecoveryMudTerrain>()==null)Undo.AddComponent<RecoveryMudTerrain>(patch);
+            Directory.CreateDirectory(Root);
+            var material=AssetDatabase.LoadAssetAtPath<Material>(Root+"/Mud spray.mat");
+            if(material==null)
+            {
+                material=new Material(Shader.Find("Universal Render Pipeline/Particles/Unlit"));material.SetColor("_BaseColor",new Color(.35f,.20f,.09f,1));
+                AssetDatabase.CreateAsset(material,Root+"/Mud spray.mat");
+            }
+            var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(Root+"/Mud clod.asset");
+            if(mesh==null)
+            {
+                var cube=GameObject.CreatePrimitive(PrimitiveType.Cube);mesh=UnityEngine.Object.Instantiate(cube.GetComponent<MeshFilter>().sharedMesh);UnityEngine.Object.DestroyImmediate(cube);
+                mesh.name="Small mud clod";mesh.vertices=mesh.vertices.Select(p=>Vector3.Scale(p,new Vector3(1,.65f,.8f))).ToArray();mesh.RecalculateBounds();AssetDatabase.CreateAsset(mesh,Root+"/Mud clod.asset");
+            }
+            foreach(var vehicle in world.Drivers.Concat(new[]{world.Casualty}))
+            {
+                var coating=vehicle.GetComponent<RecoveryWheelMud>();if(coating==null){coating=Undo.AddComponent<RecoveryWheelMud>(vehicle.gameObject);coating.Configure(vehicle);}
+                var particles=new ParticleSystem[4];
+                for(int wheel=0;wheel<4;wheel++)
+                {
+                    var child=vehicle.transform.Find("Mud spray "+wheel);
+                    if(child==null){var go=new GameObject("Mud spray "+wheel);Undo.RegisterCreatedObjectUndo(go,"Add wheel mud spray");go.transform.SetParent(vehicle.transform,false);child=go.transform;}
+                    var ps=child.GetComponent<ParticleSystem>();if(ps==null)ps=child.gameObject.AddComponent<ParticleSystem>();ps.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+                    var main=ps.main;main.playOnAwake=false;main.loop=true;main.duration=1;main.startLifetime=new ParticleSystem.MinMaxCurve(.28f,.58f);main.startSpeed=0;main.startSize=new ParticleSystem.MinMaxCurve(.035f,.09f);main.gravityModifier=1.1f;main.maxParticles=28;main.simulationSpace=ParticleSystemSimulationSpace.World;main.startRotation3D=true;main.startRotationX=new ParticleSystem.MinMaxCurve(0,Mathf.PI*2);main.startRotationY=new ParticleSystem.MinMaxCurve(0,Mathf.PI*2);main.startRotationZ=new ParticleSystem.MinMaxCurve(0,Mathf.PI*2);main.startColor=new ParticleSystem.MinMaxGradient(new Color(.58f,.43f,.27f),new Color(.85f,.66f,.43f));
+                    var emission=ps.emission;emission.enabled=false;var shape=ps.shape;shape.enabled=false;var size=ps.sizeOverLifetime;size.enabled=true;size.size=new ParticleSystem.MinMaxCurve(1,AnimationCurve.EaseInOut(0,1,1,0));
+                    var renderer=ps.GetComponent<ParticleSystemRenderer>();renderer.renderMode=ParticleSystemRenderMode.Mesh;renderer.mesh=mesh;renderer.sharedMaterial=material;renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;renderer.receiveShadows=false;renderer.motionVectorGenerationMode=MotionVectorGenerationMode.ForceNoMotion;
+                    particles[wheel]=ps;EditorUtility.SetDirty(ps);
+                }
+                coating.ConfigureSplashes(particles);EditorUtility.SetDirty(coating);
             }
         }
 

@@ -69,7 +69,7 @@ Aspectul este încă de demo: marginile drumului/pârâului, așezarea atelierul
 
 În contractul **03 — Roți în noroi**, noroiul simplu este înlocuit de o suprafață Living Mud cu material umed, margine mai uscată și făgașe discrete. Urmele celor 12 roți se compun pe GPU din pozițiile mașinilor existente, inclusiv pe client. Fiecare sesiune are material și texturi proprii; revenirea în lobby/reînceperea contractului curăță urmele. Escape nu mai este preluat de componenta demonstrativă Living Mud.
 
-Noroiul rămâne dezactivat în scena inițială și se activează prin sistemul existent numai pentru contractul 03. Deschide `Assets/TowTrouble/Scenes/CanyonRecovery.unity`, pornește tu Play Mode și alege contractul 03 pentru test. Fizica remorcării și rezistența de 1700 rămân în sistemul existent; urmele nu modifică geometria de coliziune în timpul rulării.
+Noroiul rămâne dezactivat în scena inițială și se activează prin sistemul existent numai pentru contractul 03. Deschide `Assets/TowTrouble/Scenes/CanyonRecovery.unity`, pornește tu Play Mode și alege contractul 03 pentru test. Urmele nu modifică geometria de coliziune în timpul rulării. Actualizarea de fizică descrisă mai jos aplică rezistența la contactele reale ale roților.
 
 Componentele necesare și dependențele lor ocupă aproximativ 83 MB. Scenele demo, pachetul VFX Graph și manifestul original al arhivei nu au fost importate. Instrumentul `Tow Trouble/Integrate Living Mud in Tutorial` reaplică doar zona de noroi; regenerarea demo-ului include aceeași integrare.
 
@@ -84,3 +84,23 @@ Shaderul DMS rotește coordonatele cu 180° când `_Flip_UV` este 0. Suprafața 
 Verificare statică: toate cele patru contacte ale țintei produc pixeli marcați în dreptul UV-ului corect; materialul pentru anvelope și shaderul de urme sunt suportate. `Editor-WheelContact-Fixed.png` arată o previzualizare cu murdărire de exemplu, restaurată apoi la starea inițială. Rularea efectivă și testul cu doi jucători rămân la utilizator.
 
 Pentru retest: pornește contractul 03, intră cu o mașină în noroi și verifică urmele direct la contactul roților și acumularea de noroi pe anvelope. Ieși pe pietriș: roțile trebuie să rămână murdare. Verifică și schimbarea vehiculului/culorii în lobby.
+
+
+### Tracțiune și feedback în noroi — 2026-10-31
+
+`RecoveryMudTerrain` definește aderența longitudinală/laterală și rezistența suprafeței. Solverul gazdei verifică separat fiecare roată: numai contactele cu acest collider primesc comportamentul de noroi. Forțele de accelerare, frânare și virare împart aceeași limită de aderență. Accelerația agresivă scade tracțiunea și produce patinare; rezistența crește cu masa și dispare pentru roțile care ies de pe suprafață. Pentru ținta contractului 03, rezistența veche de 1700 este distribuită peste cele patru contacte posibile, nu aplicată după coordonata Z. Contractul 02 păstrează rezistența șanțului.
+
+Fiecare roată are rotație și patinare separate. În noroi, viteza și patinarea controlează stropii și acumularea pe anvelope; praful uscat scade. Motorul răspunde la accelerație, patinare și sarcina cablului. HUD-ul afișează un indiciu contextual dacă indicatoarele tutorial sunt activate. Cele 12 emițătoare au maximum 336 particule în total și nu pornesc automat în Editor.
+
+FishNet transmite aceste valori vizuale în snapshoturile existente de 15 Hz. Gazda păstrează autoritatea fizică. Ambii jucători trebuie să folosească aceeași versiune actualizată a proiectului, deoarece structura snapshotului s-a extins.
+
+Validare: compilare reușită, limitele forțelor calculate pentru toate cele patru modele, tracțiune simetrică în marșarier, rezistență opusă mișcării și zero referințe/scripturi lipsă în scenă. Serializatoarele generate FishNet au trecut verificarea scriere/citire pentru toate câmpurile VehicleFrame (68 bytes). Raport: `Docs/Validation/LivingMud/PhysicsAndFeedback.json`. Aceste verificări statice nu confirmă senzația de condus sau sincronizarea într-o sesiune reală. Nu s-a pornit Play Mode și nu s-au făcut builduri pentru această actualizare.
+
+Pentru testul utilizatorului în Editor:
+
+1. Contractul 03: intră cu una, apoi cu toate roțile în noroi. Compară accelerația progresivă (controller) sau impulsuri scurte W cu accelerația continuă la maximum; urmărește tracțiunea, patinarea, stropii și sunetul motorului.
+2. Trage ținta cu cablul și verifică sarcina, frâna Space, marșarierul și revenirea aderenței după ieșirea din noroi.
+3. Reîncepe și revino în lobby: urmele, murdărirea și particulele trebuie curățate. Verifică și contractele 01/02 pe teren uscat.
+4. În cooperare, verifică pe ambele calculatoare roțile și stropii colegului, recuperarea comună și resetarea sesiunii.
+
+Instrumentul `Tow Trouble/Integrate Mud Physics and Feedback` reaplică legăturile în tutorial. Scenele originale `M_Demonstration_Mega` și `M_Demonstration_Desert` nu sunt modificate.

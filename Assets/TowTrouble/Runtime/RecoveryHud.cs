@@ -23,7 +23,7 @@ namespace TowTrouble
         private bool wasOnline, wasComplete, firstSetup;
         private RecoveryPhase previousPhase;
         private float refreshAt;
-        private TMP_Text objective, crew, speed, cableText, actionText, marker, partnerText, status, slots, readyText, summary, prompt;
+        private TMP_Text objective, mudFeedback, crew, speed, cableText, actionText, marker, partnerText, status, slots, readyText, summary, prompt;
         private UnityEngine.UI.Image cableFill, partnerFill;
         private GameObject cableGroup, partnerGroup;
         private UnityEngine.UI.Button startButton;
@@ -176,6 +176,7 @@ namespace TowTrouble
         {
             gameplay=Stretch("Mission HUD",root).gameObject;
             objective=Text(gameplay.transform,"",30,25,800,82,24,Paper,true);objective.GetComponent<TextMeshProUGUI>().outlineWidth=.12f;
+            mudFeedback=Text(gameplay.transform,"",30,116,980,48,18,Amber,true);
             crew=Text(gameplay.transform,"",1140,25,430,90,20,Paper,true);crew.alignment=TextAlignmentOptions.Right;
             var cable=Node("Cable HUD",gameplay.transform,35,762,520,110);cableGroup=cable.gameObject;
             cableText=Text(cable,"",0,0,520,28,20,Paper,true);var track=Panel(cable,0,35,370,20,new Color(.08f,.09f,.08f,.75f));track.gameObject.AddComponent<UnityEngine.UI.Outline>().effectColor=Paper;
@@ -304,6 +305,9 @@ namespace TowTrouble
             var w=session.World;int slot=session.LocalSlot,other=1-slot;bool attached=w.Attached(slot);float load=w.Tension(slot);
             objective.text=w.Phase==RecoveryPhase.Deliver?L("LIVREAZĂ ÎN ZONA SIGURĂ","DELIVER TO THE SAFE ZONE"):L("RECUPEREAZĂ MAȘINA","RECOVER THE CAR");
             crew.text=w.Cooperative?"CO-OP  "+w.Occupied+"/2"+(w.Occupied<2?"\n"+L("COECHIPIER DECONECTAT","CREWMATE DISCONNECTED")+"\n"+(session.UsingGamepad?"START":"ESC")+"  "+L("Meniu / Lobby","Menu / Lobby"):""):"";speed.text=Mathf.RoundToInt(w.Drivers[slot].Speed*3.6f)+" <size=27>km/h</size>";
+            var wheelSlip=w.Drivers[slot].WheelSlip;float slip=Mathf.Max(wheelSlip.x,wheelSlip.y,wheelSlip.z,wheelSlip.w);
+            mudFeedback.gameObject.SetActive(P.tutorial&&w.Drivers[slot].InMud);
+            mudFeedback.text=slip>.25f?L("PATINARE · Redu accelerația pentru mai multă tracțiune.","WHEELSPIN · Ease off for better traction."):L("NOROI · Accelerează progresiv și păstrează cablul întins.","MUD · Build throttle gently and keep the cable taut.");
             bool near=Vector3.Distance(w.Drivers[slot].RearHitch,w.Casualty.FrontHitch)<RecoveryRules.AttachRange;
             cableGroup.SetActive(attached||near);cableFill.transform.parent.gameObject.SetActive(attached);
             string level=load>.82f?L("! REDU ACCELERAȚIA","! EASE OFF"):load>.6f?L("! APROAPE DE LIMITĂ","! NEAR THE LIMIT"):L("SIGUR","SAFE");
