@@ -135,3 +135,10 @@ Gazda validează starea, participantul și piesele catalogului. Configurațiile 
 Compilare fără erori; 14 verificări Edit Mode de economie/migrare/configurații au trecut, invocate direct fără Test Runner; 38 de caroserii asamblate static, kit de aripi cu toate cele patru piese vizibile; zero scripturi și referințe de prefab lipsă. Panourile au fost randate într-o scenă temporară, la text normal și 130%, fără depășiri ale zonelor de text și fără rularea jocului. Rapoarte în `Docs/Validation/Garage`.
 
 **Nu s-au creat builduri și nu s-a pornit Play Mode.** Condusul cu ansamblurile noi, interacțiunile efective, persistența pe profilul real și sesiunea FishNet rămân pentru testul utilizatorului.
+
+
+## Finisare UI după logo — 2026-10-31
+
+Tema folosește acum butoane aurii, panouri cu margini, titluri rotunjite și pictograme native. Garajul grupează piesele în Stil / Tehnic / Tractare; contractele au fotografii statice din tutorial și recompense distincte. HUD-ul rămâne discret, cu obiectiv, cablu și viteză în pozițiile din referințe. Camera garajului pornește în fața atelierului și evită pereții.
+
+Compilare fără erori, 27 verificări statice de pagini RO/EN inclusiv text 130%, două verificări HUD și 14 aserțiuni Edit Mode de regresie reușite. Fonturile includ diacritice. Rapoarte și imagini: `Docs/Validation/UI-Finish`; direcția vizuală: `Docs/Design/UI-Style.md`. Profilul folosit în imagini este fictiv. Nu s-a pornit Play Mode și nu s-au creat builduri. Utilizatorul verifică interacțiunile efective în Editor.

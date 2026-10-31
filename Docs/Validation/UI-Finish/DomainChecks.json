@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-31",
+  "baseline": "5dbc54a",
+  "playing": false,
+  "validation": "Edit Mode domain assertions invoked directly; no Test Runner, runtime test, or player build",
+  "tests": [
+    {
+      "name": "NewProfileHasStockBuildAndNoDebt",
+      "passed": true
+    },
+    {
+      "name": "PurchaseIsAffordableAndCannotBeChargedTwice",
+      "passed": true
+    },
+    {
+      "name": "FailedPurchaseDoesNotChangeInventoryOrBalance",
+      "passed": true
+    },
+    {
+      "name": "MountedAndPresetPartsCannotBeSold",
+      "passed": true
+    },
+    {
+      "name": "SalePaysSeventyPercentOnlyOnce",
+      "passed": true
+    },
+    {
+      "name": "CompletionPaysOnceEvenAfterSerialization",
+      "passed": true
+    },
+    {
+      "name": "LegacyProfileMigratesOnceAndPreservesProgressAndPaint",
+      "passed": true
+    },
+    {
+      "name": "PresetsAndInventorySurviveSaveRoundTrip",
+      "passed": true
+    },
+    {
+      "name": "PreviewIsIndependentAndUnownedEquipmentIsRemovedBeforeCommit",
+      "passed": true
+    },
+    {
+      "name": "InvalidAndIncompatibleItemsAreNormalized",
+      "passed": true
+    },
+    {
+      "name": "EngineUpgradeTradesInOldEngineWithoutLeavingDanglingPresets",
+      "passed": true
+    },
+    {
+      "name": "LowRangeAndEngineRespectTheApprovedTradeoff",
+      "passed": true
+    },
+    {
+      "name": "CatalogIdsAreUniqueAndAssembliesHaveFourValidWheelAnchors",
+      "passed": true
+    },
+    {
+      "name": "UnsupportedSaveVersionIsRejected",
+      "passed": true
+    }
+  ],
+  "catalogEntries": 380,
+  "compatibility": [
+    {
+      "model": "Scout",
+      "family": "Taxi",
+      "available": 279
+    },
+    {
+      "model": "Hauler",
+      "family": "Villager",
+      "available": 283
+    },
+    {
+      "model": "Buddy",
+      "family": "Bulldog",
+      "available": 285
+    },
+    {
+      "model": "Ranger",
+      "family": "Goblin",
+      "available": 286
+    }
+  ],
+  "missingPrefabReferences": [],
+  "missingScripts": 0,
+  "sourceScenesModified": false,
+  "liveMultiplayerTested": false
+}

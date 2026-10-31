@@ -94,6 +94,7 @@ namespace TowTrouble.Editor
             hud.ConfigureLogo(AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Art/UI/TowTrouble-logo.png"));
             hud.ConfigureSkin(AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd"));
             hud.ConfigureImages(new[]{AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Art/UI/Contract01.png"),AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Art/UI/Contract02.png"),AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Art/UI/Contract03.png")});
+            UiSkinAuthoring.BindExisting(hud);
             world.ConfigureEnvironment(environment.gameObject);
             LivingMudAuthoring.ApplyToEnvironment(environment,world);
             networkObject.SetSceneId(9104737621UL);

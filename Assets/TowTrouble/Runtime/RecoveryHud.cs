@@ -20,7 +20,7 @@ namespace TowTrouble
         private GameObject gameplay;
         private string page="", returnPage="Main", settingsTab="Audio", pendingBinding;
         private int zone;
-        private string confirmationReturn="Pause";
+        private string confirmationReturn="Pause",focusName;
         private bool wasOnline, wasComplete, firstSetup;
         private RecoveryPhase previousPhase;
         private float refreshAt;
@@ -35,7 +35,7 @@ namespace TowTrouble
         private readonly TMP_Text[] worldNames=new TMP_Text[2];
         private readonly TMP_Text[] hudNames=new TMP_Text[2];
         private readonly RectTransform[] hudPlates=new RectTransform[2];
-        private static readonly Color Ink=new Color(.055f,.065f,.065f,.86f), Paper=new Color(1,.96f,.84f), Amber=new Color(1,.65f,.13f), Muted=new Color(.77f,.79f,.7f), Blue=new Color(.15f,.43f,1), Orange=new Color(1,.37f,.05f);
+        private static readonly Color Ink=new Color(.065f,.075f,.095f,.94f), Paper=new Color(1,.96f,.83f), Amber=new Color(1,.71f,.23f), Muted=new Color(.79f,.79f,.72f), Blue=new Color(.15f,.43f,1), Orange=new Color(1,.37f,.05f);
         private RecoveryProfile P=>session.Profile;
         private string L(string ro,string en)=>P.L(ro,en);
         public void Configure(DemoSession owner,TMP_FontAsset asset){session=owner;font=asset;}
@@ -56,24 +56,34 @@ namespace TowTrouble
         private RectTransform Stretch(string name,Transform parent)
         {var rt=Node(name,parent,0,0,0,0);rt.anchorMin=Vector2.zero;rt.anchorMax=Vector2.one;rt.offsetMin=rt.offsetMax=Vector2.zero;return rt;}
         private RectTransform Panel(Transform parent,float x,float y,float width,float height,Color? color=null)
-        {var rt=Node("Panel",parent,x,y,width,height);var image=rt.gameObject.AddComponent<UnityEngine.UI.Image>();image.color=color??Ink;if(panelSprite!=null){image.sprite=panelSprite;image.type=UnityEngine.UI.Image.Type.Sliced;}image.raycastTarget=false;return rt;}
+        {
+            var rt=Node("Panel",parent,x,y,width,height);var image=rt.gameObject.AddComponent<UnityEngine.UI.Image>();var tint=color??Ink;image.color=tint;image.raycastTarget=false;
+            if(height>28&&width>100){image.color=Color.clear;Plate(rt,tint);}
+            return rt;
+        }
         private TMP_Text Text(Transform parent,string text,float x,float y,float width,float height,float size=22,Color? color=null,bool bold=false)
-        {var rt=Node(text,parent,x,y,width,height);var t=rt.gameObject.AddComponent<TextMeshProUGUI>();t.font=font;t.text=text;t.fontSize=size*P.textScale;t.color=color??Paper;t.fontStyle=bold?FontStyles.Bold:FontStyles.Normal;t.textWrappingMode=TextWrappingModes.Normal;t.raycastTarget=false;textSizes[t]=size;return t;}
+        {var rt=Node(text,parent,x,y,width,height);var t=rt.gameObject.AddComponent<TextMeshProUGUI>();t.font=bold&&size>=26&&displayFont!=null?displayFont:font;t.text=text;t.fontSize=size*P.textScale;t.enableAutoSizing=true;t.fontSizeMin=size*Mathf.Min(1,P.textScale);t.fontSizeMax=size*P.textScale;t.color=color??Paper;t.fontStyle=bold&&t.font!=displayFont?FontStyles.Bold:FontStyles.Normal;t.textWrappingMode=TextWrappingModes.Normal;t.raycastTarget=false;textSizes[t]=size;return t;}
         private UnityEngine.UI.Button Button(Transform parent,string label,float x,float y,float width,Action action,bool primary=false,float height=54)
         {
-            var rt=Panel(parent,x,y,width,height,primary?Amber:new Color(.065f,.08f,.075f,.88f));rt.name=label;var img=rt.GetComponent<UnityEngine.UI.Image>();img.raycastTarget=true;var button=rt.gameObject.AddComponent<UnityEngine.UI.Button>();button.targetGraphic=img;
-            var colors=button.colors;colors.highlightedColor=new Color(1,.92f,.65f);colors.selectedColor=colors.highlightedColor;colors.disabledColor=new Color(.5f,.5f,.5f,.65f);button.colors=colors;
-            Text(rt,label,22,0,width-44,height,21,primary?Ink:Paper,true).alignment=TextAlignmentOptions.MidlineLeft;rt.gameObject.AddComponent<RecoveryUiFeedback>();
-            button.onClick.AddListener(()=>{uiAudio.PlayOneShot(clickClip,P.ui);action();});return button;
+            var rt=Panel(parent,x,y,width,height);rt.name=label;var img=rt.GetComponent<UnityEngine.UI.Image>();img.raycastTarget=true;img.color=Color.clear;
+            var plate=rt.GetComponentInChildren<RecoveryPlateGraphic>();if(plate==null)plate=Plate(rt,Ink,primary);plate.Style=primary?RecoveryPlateStyle.Gold:RecoveryPlateStyle.Charcoal;
+            var button=rt.gameObject.AddComponent<UnityEngine.UI.Button>();button.targetGraphic=plate;
+            var colors=button.colors;colors.normalColor=Color.white;colors.highlightedColor=new Color(1,.97f,.87f);colors.selectedColor=Color.white;colors.pressedColor=new Color(.85f,.77f,.62f);colors.disabledColor=new Color(.9f,.9f,.9f,1);colors.fadeDuration=.1f;button.colors=colors;
+            float padding=width<150?8:22;var text=Text(rt,label,padding,0,width-padding*2,height,21,primary?Ink:Paper,true);text.alignment=TextAlignmentOptions.MidlineLeft;
+            if(displayFont!=null){text.font=displayFont;text.fontStyle=FontStyles.Normal;}
+            text.enableAutoSizing=true;text.fontSizeMin=14;text.fontSizeMax=21*P.textScale;
+            var icon=ActionIcon(label);if(icon.HasValue&&width>260&&height>=48)ButtonIcon(button,icon.Value,primary);
+            rt.gameObject.AddComponent<RecoveryUiFeedback>();button.onClick.AddListener(()=>{uiAudio.PlayOneShot(clickClip,P.ui);action();});return button;
         }
         private void Header(string title,string sub)
-        {Text(pageRoot,title,76,64,1400,65,48,Paper,true);Text(pageRoot,sub,80,136,1400,50,19,Muted);}
+        {Panel(pageRoot,0,0,1600,196,new Color(.03f,.04f,.05f,.64f));Icon(pageRoot,RecoveryIcon.Hook,28,65,34,Amber);Text(pageRoot,title,80,58,1120,76,46,Paper,true);Panel(pageRoot,82,136,82,4,Amber);Text(pageRoot,sub,82,151,1400,40,18,Muted);}
         private void Logo(Transform parent,float x,float y,float size=82)
         {if(logo!=null){var rt=Node("Tow Trouble Logo",parent,x,y,size*6.0f,size*2.55f);var image=rt.gameObject.AddComponent<UnityEngine.UI.RawImage>();image.texture=logo;image.raycastTarget=false;}else Text(parent,"TOW\nTROUBLE",x,y,630,size*2.5f,size,Amber,true);}
         private void Footer(string back="Main")
-        {Button(pageRoot,L("ÎNAPOI","BACK"),76,808,230,()=>Show(back));Text(pageRoot,session.UsingGamepad?"A  "+L("Confirmă","Confirm")+"     B  "+L("Înapoi","Back"):"ENTER  "+L("Confirmă","Confirm")+"     ESC  "+L("Înapoi","Back"),340,866,1184,28,16,Paper).alignment=TextAlignmentOptions.Right;}
+        {Panel(pageRoot,0,850,1600,50,new Color(.03f,.04f,.05f,.52f));Button(pageRoot,L("ÎNAPOI","BACK"),76,808,230,()=>Show(back));Text(pageRoot,session.UsingGamepad?"A  "+L("Confirmă","Confirm")+"     B  "+L("Înapoi","Back"):"ENTER  "+L("Confirmă","Confirm")+"     ESC  "+L("Înapoi","Back"),340,866,1184,28,16,Paper).alignment=TextAlignmentOptions.Right;}
         public void Show(string target)
         {
+            focusName=page==target?EventSystem.current?.currentSelectedGameObject?.name:null;
             if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);pageRoot=null;}
             if(target=="Garage"&&page!="Garage")PrepareGarage();
             page=target;session.View=target;pendingBinding=null;session.World.ShowSinglePreview(target!="Title"&&target!="Lobby"&&(!session.Connected||session.World.Phase==RecoveryPhase.Lobby),Mathf.Max(0,session.LocalSlot));
@@ -83,27 +93,36 @@ namespace TowTrouble
             switch(target){case "Garage":BuildGarage();break;case "Board":BuildBoard();break;case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Contracts":BuildContracts();break;case "Vehicles":BuildVehicles();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;}
             StartCoroutine(FocusFirst());
         }
-        private IEnumerator FocusFirst(){var target=pageRoot;yield return null;if(page=="Gameplay"||target==null||target!=pageRoot||!target.gameObject.activeInHierarchy)yield break;foreach(var b in target.GetComponentsInChildren<UnityEngine.UI.Selectable>())if(b.IsInteractable()){EventSystem.current.SetSelectedGameObject(b.gameObject);break;}}
+        private IEnumerator FocusFirst()
+        {
+            var target=pageRoot;string remembered=focusName;yield return null;if(page=="Gameplay"||target==null||target!=pageRoot||!target.gameObject.activeInHierarchy)yield break;
+            var controls=target.GetComponentsInChildren<UnityEngine.UI.Selectable>();UnityEngine.UI.Selectable preferred=null;
+            foreach(var control in controls)if(control.IsInteractable())
+            {if(control.name==remembered){preferred=control;break;}if(preferred==null)preferred=control;var plate=control.GetComponentInChildren<RecoveryPlateGraphic>();if(remembered==null&&plate!=null&&plate.Style==RecoveryPlateStyle.Gold){preferred=control;break;}}
+            if(preferred!=null&&EventSystem.current!=null)EventSystem.current.SetSelectedGameObject(preferred.gameObject);
+        }
         private void BuildTitle()
         {
-            Logo(pageRoot,100,80,100);Text(pageRoot,L("DRUMURI GRELE. PRIETENI BUNI.","BAD ROADS. GOOD COMPANY."),108,333,700,40,21,Paper,true);
-            prompt=Text(pageRoot,"",0,752,1600,48,26,Paper,true);prompt.alignment=TextAlignmentOptions.Center;
-            Text(pageRoot,"TOW TROUBLE  •  FIRST RECOVERY",76,847,1000,25,13,Muted);
+            Logo(pageRoot,100,70,96);Text(pageRoot,L("DRUMURI GRELE. PRIETENI BUNI.","BAD ROADS. GOOD COMPANY."),108,333,700,40,21,Paper,true);
+            var titlePrompt=Panel(pageRoot,450,738,700,72);titlePrompt.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Gold;
+            prompt=Text(pageRoot,"",0,750,1600,48,26,Ink,true);prompt.alignment=TextAlignmentOptions.Center;
+            Text(pageRoot,"TOW TROUBLE  •  SOLO / CO-OP",76,847,1000,25,13,Muted);
         }
         private void BuildMain()
         {
-            Panel(pageRoot,48,35,490,830,new Color(.035f,.045f,.04f,.55f));Logo(pageRoot,80,55,76);
+            Panel(pageRoot,48,35,490,830,new Color(.035f,.045f,.04f,.9f));Logo(pageRoot,80,55,66);
+            Text(pageRoot,L("DRUMURI GRELE. PRIETENI BUNI.","BAD ROADS. GOOD COMPANY."),86,238,410,28,15,Muted,true);Wallet(pageRoot,P.credits);
             float y=276;
             if(P.completedMask!=0){Button(pageRoot,L("CONTINUĂ","CONTINUE"),80,y,410,()=>session.Host(true,true),true);y+=60;}
-            Button(pageRoot,L("EXPLOREAZĂ","EXPLORE"),80,y,410,()=>session.Host(true,true),true);y+=60;
+            Button(pageRoot,L("EXPLOREAZĂ","EXPLORE"),80,y,410,()=>session.Host(true,true),P.completedMask==0);y+=60;
             Button(pageRoot,L("TUTORIAL / CONTRACTE","TUTORIAL / CONTRACTS"),80,y,410,()=>Show("Contracts"));y+=60;
             Button(pageRoot,L("JOACĂ ÎN DOI","PLAY CO-OP"),80,y,410,()=>Show("Coop"));y+=60;
             Button(pageRoot,L("VEHICULE","VEHICLES"),80,y,410,()=>{returnPage="Main";Show("Vehicles");});y+=60;
             Button(pageRoot,L("SETĂRI","SETTINGS"),80,y,410,()=>{returnPage="Main";Show("Settings");});y+=60;
             Button(pageRoot,L("CREDITE","CREDITS"),80,y,410,()=>Show("Credits"));y+=60;
             Button(pageRoot,L("IEȘIRE","QUIT"),80,y,410,()=>Application.Quit());
-            Text(pageRoot,RecoveryVehicle.ModelNames[P.vehicle],1030,705,480,65,42,Paper,true).alignment=TextAlignmentOptions.Right;
-            Text(pageRoot,L("VALEA VERDE  /  RECUPERĂRI AUTO","GREEN VALLEY  /  RECOVERY SERVICE"),940,777,570,32,17,Muted,true).alignment=TextAlignmentOptions.Right;
+            var vehicleCard=Panel(pageRoot,1094,710,430,122);Icon(vehicleCard,RecoveryIcon.Body,20,17,30,Amber);Text(vehicleCard,L("MAȘINA TA","YOUR RIDE"),62,14,344,25,14,Muted,true);
+            Text(vehicleCard,RecoveryVehicle.ModelNames[P.vehicle],22,49,386,47,34,Paper,true);Text(pageRoot,L("VALEA VERDE · SERVICIUL DE RECUPERARE","GREEN VALLEY · RECOVERY SERVICE"),900,844,624,28,14,Paper,true).alignment=TextAlignmentOptions.Right;
         }
         private void BuildContracts()
         {
@@ -116,7 +135,7 @@ namespace TowTrouble
                 Text(left,L("SOLO / CO-OP 2\nFinalizează contractele pentru a deschide următorul traseu.","SOLO / CO-OP 2\nComplete contracts to unlock the next route."),28,332,520,110,20,Muted);
                 var selectedContract=RecoveryContract.Get(session.SelectedContract);
                 if(contractImages!=null&&contractImages.Length>session.SelectedContract&&contractImages[session.SelectedContract]!=null)
-                {var image=Node("Contract concept",right,18,18,808,220).gameObject.AddComponent<UnityEngine.UI.RawImage>();image.texture=contractImages[session.SelectedContract];image.color=Color.white;image.raycastTarget=false;Text(right,L("DIRECȚIE VIZUALĂ • CONCEPT","VISUAL REFERENCE • CONCEPT"),30,205,770,23,12,Paper);}
+                {ContractPhoto(right,session.SelectedContract,18,18,808,220);}
                 Text(right,selectedContract.TitleFor(P),30,258,780,44,31,Paper,true);Text(right,selectedContract.DescriptionFor(P)+"\n"+L("Teren: ","Terrain: ")+selectedContract.TerrainFor(P)+"   •   "+L("Recomandat: Scout / Hauler","Recommended: Scout / Hauler"),30,310,780,90,20,Muted);
                 Text(right,L("Medalii: finalizare · fără resetări · fără cablu rupt","Medals: complete · no resets · no broken cable"),30,423,780,40,17,Amber);
                 Button(pageRoot,L("SCHIMBĂ MAȘINA","CHANGE VEHICLE"),680,790,300,()=>{returnPage="Contracts";Show("Vehicles");});
@@ -127,8 +146,8 @@ namespace TowTrouble
             {
                 string[] titles=zone==1?new[]{"04  Pârâul","06  Malul moale","07  Drumul lung"}:new[]{"08  Înghițit de nisip","09  Curba suspendată","10  Ultima tragere","12  Două unghiuri · Duo"};
                 for(int i=0;i<titles.Length;i++)Text(left,titles[i],28,30+i*72,520,52,25,Muted,true);
-                Text(right,L("URMĂTOAREA ETAPĂ","NEXT CONTENT STAGE"),36,45,760,60,32,Amber,true);
-                Text(right,L("MD-ul stabilește contractele 01–03 ca primul prototip. Lacul și canionul se extind după validarea conducerii și remorcării; nu sunt prezentate aici ca misiuni deja construite.","The design document defines contracts 01–03 as the first prototype. Lake and canyon missions follow after driving and towing are validated."),36,137,760,220,25,Paper);
+                Text(right,L("ALTE DRUMURI NE AȘTEAPTĂ","MORE ROADS AHEAD"),36,45,760,60,32,Amber,true);
+                Text(right,L("Intervențiile din această regiune nu sunt încă disponibile. Între timp, echipa are nevoie de tine în Valea Verde.","Recoveries in this region are not available yet. Your crew needs you in Green Valley."),36,137,760,220,25,Paper);
             }
             Footer();
         }
@@ -140,7 +159,7 @@ namespace TowTrouble
             string[] labels={L("TRACȚIUNE","TRACTION"),L("MANEVRABILITATE","HANDLING"),L("STABILITATE","STABILITY")};
             float[] values={RecoveryVehicle.PullForces[selected]/3900f,RecoveryVehicle.SteeringAngles[selected]/35f,RecoveryVehicle.Masses[selected]/1750f};
             for(int i=0;i<3;i++){Text(stats,labels[i],24,100+i*65,340,25,17,Paper,true);Panel(stats,24,134+i*65,340,7,new Color(.25f,.28f,.24f));Panel(stats,24,134+i*65,340*values[i],7,Amber);}
-            Text(pageRoot,L("Comparație bazată pe forța de tracțiune, unghiul de virare și masa configurată.\nTrage cu mouse-ul sau folosește stickul drept pentru rotire.","Comparison uses configured drive force, steering angle and mass.\nDrag the mouse or use the right stick to rotate."),80,580,450,120,18,Muted);
+            Text(pageRoot,L("Fiecare mașină are punctele sale forte.\nTrage cu mouse-ul sau folosește stickul drept pentru rotire.","Every ride has its strengths.\nDrag the mouse or use the right stick to rotate."),80,580,450,120,18,Muted);
             string[] paintLabels={L("ORIGINAL","ORIGINAL"),L("CREM","CREAM"),L("MĂSLINIU","OLIVE"),L("MUȘTAR","MUSTARD")};for(int i=0;i<4;i++){int c=i;Button(pageRoot,paintLabels[i],620+i*220,634,200,()=>{session.SelectPaint(c);Show("Vehicles");},P.paint==i,48);}
             for(int i=0;i<4;i++){int v=i;bool unlocked=i==0||i==3||P.Completed(i==1?0:1);Button(pageRoot,(unlocked?"":"—  ")+RecoveryVehicle.ModelNames[i],76+i*368,714,348,()=>{if(unlocked){session.SelectVehicle(v);Show("Vehicles");}},P.vehicle==i,64).interactable=unlocked;}
             Button(pageRoot,L("SELECTEAZĂ","SELECT"),1184,808,340,()=>Show(returnPage),true);Footer(returnPage);
@@ -156,7 +175,7 @@ namespace TowTrouble
             var card=Panel(pageRoot,76,225,650,520);
             Input(card,L("NUMELE TĂU","YOUR NAME"),P.name,30,30,590,v=>{P.name=v;P.Save();});
             Text(card,L("GAZDĂ","HOST"),30,149,590,36,26,Amber,true);
-            Text(card,L("Alege contractul în lobby. Prietenul se conectează la IP-ul acestui calculator, pe portul UDP 7777.","Choose a contract in the lobby. Your friend joins this computer's IP address on UDP port 7777."),30,201,590,110,22,Paper);
+            Text(card,L("Porniți împreună, apoi alegeți intervenția cu Tab. Prietenul se conectează la IP-ul acestui calculator, pe portul UDP 7777.","Start together, then choose a recovery with Tab. Your friend joins this computer's IP address on UDP port 7777."),30,201,590,110,22,Paper);
             Button(card,L("CREEAZĂ SESIUNE","HOST SESSION"),30,350,590,()=>session.Host(false,true),true);
             var join=Panel(pageRoot,754,225,770,520);Text(join,L("ALĂTURĂ-TE ECHIPEI","JOIN THE CREW"),30,30,710,50,31,Paper,true);
             address=Input(join,"IP / HOST",PlayerPrefs.GetString("TowTrouble.LastHost","127.0.0.1"),30,122,710,v=>PlayerPrefs.SetString("TowTrouble.LastHost",v));
@@ -210,7 +229,7 @@ namespace TowTrouble
         }
         private void Confirm(string question,Action yes,string back)
         {
-            if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);}page="Confirm";confirmationReturn=back;session.View="Confirm";pageRoot=Stretch("Confirmation",root);Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.65f));var card=Panel(pageRoot,475,300,650,290);Text(card,question,32,30,586,130,29,Paper,true);Button(card,L("CONFIRMĂ","CONFIRM"),32,200,270,yes,true);Button(card,L("RENUNȚĂ","CANCEL"),328,200,290,()=>Show(back));StartCoroutine(FocusFirst());
+            if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);}page="Confirm";focusName=null;confirmationReturn=back;session.View="Confirm";pageRoot=Stretch("Confirmation",root);Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.65f));var card=Panel(pageRoot,475,300,650,290);Text(card,question,32,30,586,130,29,Paper,true);Button(card,L("CONFIRMĂ","CONFIRM"),32,200,270,yes,true);Button(card,L("RENUNȚĂ","CANCEL"),328,200,290,()=>Show(back));StartCoroutine(FocusFirst());
         }
         private void BuildResults()
         {
@@ -232,9 +251,9 @@ namespace TowTrouble
         private void Slider(Transform parent,string label,float value,float min,float max,float y,Action<float> change)
         {
             var text=Text(parent,label+"   "+Mathf.RoundToInt(value*100)+"%",30,y,770,32,22,Paper,true);var rt=Node(label,parent,30,y+48,750,20);var bg=Panel(rt,0,7,750,6,new Color(.25f,.3f,.26f));var fill=Stretch("Fill",bg);var fg=fill.gameObject.AddComponent<UnityEngine.UI.Image>();fg.color=Amber;
-            var handle=Node("Handle",rt,0,-4,25,28);var hg=handle.gameObject.AddComponent<UnityEngine.UI.Image>();hg.color=Paper;
-            var slider=rt.gameObject.AddComponent<UnityEngine.UI.Slider>();slider.fillRect=fill;slider.handleRect=handle;slider.targetGraphic=hg;slider.direction=UnityEngine.UI.Slider.Direction.LeftToRight;slider.minValue=min;slider.maxValue=max;slider.value=value;
-            slider.onValueChanged.AddListener(v=>{change(v);text.text=label+"   "+Mathf.RoundToInt(v*100)+"%";foreach(var entry in textSizes)if(entry.Key!=null)entry.Key.fontSize=entry.Value*P.textScale;session.ApplySettings();P.Save();});
+            var handle=Node("Handle",rt,0,-4,25,28);var hg=handle.gameObject.AddComponent<UnityEngine.UI.Image>();hg.color=Color.clear;var knob=Plate(handle,Amber,true);
+            var slider=rt.gameObject.AddComponent<UnityEngine.UI.Slider>();slider.fillRect=fill;slider.handleRect=handle;slider.targetGraphic=knob;slider.direction=UnityEngine.UI.Slider.Direction.LeftToRight;slider.minValue=min;slider.maxValue=max;slider.value=value;
+            slider.onValueChanged.AddListener(v=>{change(v);text.text=label+"   "+Mathf.RoundToInt(v*100)+"%";foreach(var entry in textSizes)if(entry.Key!=null){entry.Key.fontSize=entry.Value*P.textScale;entry.Key.fontSizeMax=entry.Value*P.textScale;entry.Key.fontSizeMin=entry.Value*Mathf.Min(1,P.textScale);}session.ApplySettings();P.Save();});
         }
         private void BuildSettings()
         {

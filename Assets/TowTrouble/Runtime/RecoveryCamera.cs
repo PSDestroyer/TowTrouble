@@ -24,8 +24,8 @@ namespace TowTrouble
                     if(session.GarageOpen)
                     {
                         var box=car.GetComponent<BoxCollider>();var focus=box==null?center+Vector3.up:box.bounds.center;
-                        var offset=Quaternion.Euler(0,orbit,0)*new Vector3(9,3.4f,12);var right=Vector3.Cross(Vector3.up,-offset).normalized;
-                        position=focus+offset;look=focus+right*1.7f+Vector3.up*.45f;
+                        var offset=Quaternion.Euler(0,orbit,0)*new Vector3(9,3.4f,-12);var right=Vector3.Cross(Vector3.up,-offset).normalized;
+                        position=focus+offset;look=focus+right*1.7f+Vector3.up*.45f;if(Physics.Linecast(focus,position,out var obstruction,1<<8,QueryTriggerInteraction.Ignore))position=obstruction.point+obstruction.normal*.7f;
                     }
                     else {position=center+Quaternion.Euler(0,orbit,0)*new Vector3(7,3.8f,9);look=center+new Vector3(2.2f,1,-2.2f);}
                 }
