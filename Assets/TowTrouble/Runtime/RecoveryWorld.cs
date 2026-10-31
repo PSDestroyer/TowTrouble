@@ -14,8 +14,9 @@ namespace TowTrouble
         public Vector4 WheelRates,Slip;
         public Vector2 Controls;
         public float Mud,Effort;
+        public bool BrakeLights,EngineRunning;
         public VehicleFrame(RecoveryVehicle vehicle)
-        {Position=vehicle.transform.position;Rotation=vehicle.transform.rotation;Speed=vehicle.Speed;WheelRates=vehicle.WheelAngularVelocity;Slip=vehicle.WheelSlip;Controls=vehicle.ControlInput;Mud=vehicle.MudFraction;Effort=vehicle.EngineEffort;}
+        {Position=vehicle.transform.position;Rotation=vehicle.transform.rotation;Speed=vehicle.Speed;WheelRates=vehicle.WheelAngularVelocity;Slip=vehicle.WheelSlip;Controls=vehicle.ControlInput;Mud=vehicle.MudFraction;Effort=vehicle.EngineEffort;BrakeLights=vehicle.BrakeLights;EngineRunning=vehicle.EngineRunning;}
     }
 
     public struct RecoveryFrame

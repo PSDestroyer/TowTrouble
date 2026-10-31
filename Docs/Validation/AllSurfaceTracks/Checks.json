@@ -1,0 +1,47 @@
+{
+  "playMode": false,
+  "physicsSimulation": false,
+  "testRunner": false,
+  "results": [
+    {
+      "name": "PaintProducesDistinctTracksWithoutChangingGrip",
+      "passed": true
+    },
+    {
+      "name": "HardAndWoodHaveNoRutRelief",
+      "passed": true
+    },
+    {
+      "name": "TracksStayOnTiltedDeckAndStopAtItsEdge",
+      "passed": true
+    },
+    {
+      "name": "WoodUsesOverrideAndLivingMudIsNotDoubleStamped",
+      "passed": true
+    },
+    {
+      "name": "TerrainHolesAndOutsideBoundsRejectProjection",
+      "passed": true
+    },
+    {
+      "name": "WheelImpressionsBreakAtTeleportsAndSurfaceTransitions",
+      "passed": true
+    },
+    {
+      "name": "StationaryWheelsDoNotAllocateRepeatedGeometry",
+      "passed": true
+    },
+    {
+      "name": "WorldCoordinatesSelectThePaintedSurfaceAndClampAtBoundary",
+      "passed": true
+    },
+    {
+      "name": "WheelCoverageStaysInsideRoadMaskAndWorldBounds",
+      "passed": true
+    },
+    {
+      "name": "MissingMapSafelyUsesDryGroundAndInvalidDimensionsAreRejected",
+      "passed": true
+    }
+  ]
+}

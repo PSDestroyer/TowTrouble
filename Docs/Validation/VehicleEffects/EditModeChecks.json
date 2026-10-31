@@ -1,0 +1,198 @@
+{
+  "tests": [
+    {
+      "test": "BrakeSignalsDistinguishBrakingFromSteadyReverse",
+      "pass": true
+    },
+    {
+      "test": "ExhaustStopsWithEngineAndSharesABoundedEmissionBudget",
+      "pass": true
+    },
+    {
+      "test": "BrakingAtlasOnlyChangesTheNativeRearLampCells",
+      "pass": true
+    },
+    {
+      "test": "RemoteSignalsSurviveSnapshotsAndResetWithoutPhysics",
+      "pass": true
+    },
+    {
+      "test": "EffectsRebindToVisiblePipesAndDoNotAccumulateOnModelChanges",
+      "pass": true
+    }
+  ],
+  "geometry": [
+    {
+      "type": "base",
+      "data": {
+        "model": 0,
+        "parts": [
+          {
+            "name": "Body_Taxi_Mesh",
+            "rearLampVertices": 14
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          }
+        ],
+        "exhausts": 0
+      }
+    },
+    {
+      "type": "garage",
+      "data": {
+        "model": 0,
+        "parts": [
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Body_Taxi_Mesh",
+            "rearLampVertices": 14
+          }
+        ],
+        "exhausts": 0
+      }
+    },
+    {
+      "type": "base",
+      "data": {
+        "model": 1,
+        "parts": [
+          {
+            "name": "Body_Villager_Mesh",
+            "rearLampVertices": 14
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          }
+        ],
+        "exhausts": 0
+      }
+    },
+    {
+      "type": "garage",
+      "data": {
+        "model": 1,
+        "parts": [
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Body_Villager_Mesh",
+            "rearLampVertices": 14
+          }
+        ],
+        "exhausts": 0
+      }
+    },
+    {
+      "type": "base",
+      "data": {
+        "model": 2,
+        "parts": [
+          {
+            "name": "Body_Bulldog_Mesh",
+            "rearLampVertices": 14
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          }
+        ],
+        "exhausts": 1
+      }
+    },
+    {
+      "type": "garage",
+      "data": {
+        "model": 2,
+        "parts": [
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Body_Bulldog_Mesh",
+            "rearLampVertices": 14
+          }
+        ],
+        "exhausts": 1
+      }
+    },
+    {
+      "type": "base",
+      "data": {
+        "model": 3,
+        "parts": [
+          {
+            "name": "Goblin_Body_NoInterior",
+            "rearLampVertices": 64
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          }
+        ],
+        "exhausts": 0
+      }
+    },
+    {
+      "type": "garage",
+      "data": {
+        "model": 3,
+        "parts": [
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Tow eye",
+            "rearLampVertices": 1
+          },
+          {
+            "name": "Goblin_Body_NoInterior",
+            "rearLampVertices": 64
+          }
+        ],
+        "exhausts": 0
+      }
+    }
+  ],
+  "atlasCount": 2,
+  "exhaustMeshes": 23,
+  "ports": 28,
+  "shaderErrors": []
+}

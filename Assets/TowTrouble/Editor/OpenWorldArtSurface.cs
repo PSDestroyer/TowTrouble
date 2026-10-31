@@ -25,6 +25,7 @@ namespace TowTrouble.Editor
             map.Configure(new Vector2(terrain.transform.position.x,terrain.transform.position.z),new Vector2(data.size.x,data.size.z),n,values);
             map.ConfigureWheelImpressions(impressions);
             map=VisualAsset(map,"Painted ground grip.asset");
+            BakeWheelTrackKinds(map);
             foreach(var surface in environment.GetComponentsInChildren<RecoveryGroundSurface>(true)){surface.ConfigureMap(map);EditorUtility.SetDirty(surface);}
             // Match reset points to the actual terrain/deck contact surface after authoring.
             Physics.SyncTransforms();

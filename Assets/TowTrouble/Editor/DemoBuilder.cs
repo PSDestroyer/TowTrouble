@@ -371,6 +371,7 @@ namespace TowTrouble.Editor
             var controller=go.AddComponent<RecoveryVehicle>();controller.Configure(wheels,models[0].Wheels,front,rear,casualty);controller.ConfigureModels(models);controller.ConfigurePaints(paintSlots.ToArray());
             if(name=="Hauler")controller.SetModel(1);
             var audio=go.AddComponent<AudioSource>();audio.clip=EngineClip();audio.loop=true;audio.playOnAwake=true;audio.spatialBlend=.8f;audio.minDistance=3;audio.maxDistance=45;audio.volume=.12f;
+            VehicleEffectsAuthoring.Attach(controller);
             AddDust(go.transform);PrefabUtility.SaveAsPrefabAssetAndConnect(go,Root+"/Prefabs/"+name.Replace(" ","")+".prefab",InteractionMode.AutomatedAction);return controller;
         }
 

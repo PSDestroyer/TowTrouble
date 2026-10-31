@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d31875c3ab774698aeeee5beba3ac55, type: 3}
+  m_Name: Hot Rod vehicle effects
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryVehicleEffectsProfile
+  Atlases:
+  - Source: {fileID: 2800000, guid: 0a8f0ea445f949247be49c83ebae38d3, type: 3}
+    Running: {fileID: 2800000, guid: 9ea36c70476784b35a5cc3df781b81f9, type: 2}
+    Braking: {fileID: 2800000, guid: 4cf8d6460abb44fd583989879aedc77a, type: 2}
+  - Source: {fileID: 2800000, guid: d6611f93f9c74a542b1e189ff37c8f53, type: 3}
+    Running: {fileID: 2800000, guid: bf5757b093a9d4da0bc5e67fccbd2839, type: 2}
+    Braking: {fileID: 2800000, guid: c12c3a34208c84edb88e316f0f48f732, type: 2}
+  Exhausts:
+  - Mesh: {fileID: 6164611409695770099, guid: 332f6e07b611e4d489b2178a1d53b98b, type: 3}
+    Positions:
+    - {x: -0.306, y: -0.174, z: -0.207}
+    - {x: 0.306, y: -0.174, z: -0.207}
+    Directions:
+    - {x: 0, y: 0, z: -1}
+    - {x: 0, y: 0, z: -1}
+  - Mesh: {fileID: -8301633317217164174, guid: 4d03072d770fecc40840ea572af4e03e, type: 3}
+    Positions:
+    - {x: -0.31, y: -0.136, z: -0.279}
+    Directions:
+    - {x: 0, y: 0, z: -1}
+  - Mesh: {fileID: -2514844656174302245, guid: 311e8e4f63bd1e24387024fa8c4baba1, type: 3}
+    Positions:
+    - {x: -0.31, y: -0.135, z: -0.342}
+    - {x: 0.322, y: -0.135, z: -0.342}
+    Directions:
+    - {x: 0, y: 0, z: -1}
+    - {x: 0, y: 0, z: -1}
+  - Mesh: {fileID: 5338559774683141257, guid: 311e8e4f63bd1e24387024fa8c4baba1, type: 3}
+    Positions:
+    - {x: -0.3615, y: 0.0369, z: -0.4194}
+    - {x: 0.3615, y: 0.0369, z: -0.4194}
+    Directions:
+    - {x: 0, y: 0.532, z: -0.847}
+    - {x: 0, y: 0.532, z: -0.847}
+  - Mesh: {fileID: 7540786597366621258, guid: 26d31f981a33e534e853cca187a2df97, type: 3}
+    Positions:
+    - {x: -0.773, y: 0.228, z: 0.218}
+    Directions:
+    - {x: -1, y: 0, z: 0}
+  - Mesh: {fileID: -3686760171032540121, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.773, y: 0.228, z: 0.218}
+    Directions:
+    - {x: 1, y: 0, z: 0}
+  - Mesh: {fileID: 4739162764037335025, guid: 26d31f981a33e534e853cca187a2df97, type: 3}
+    Positions:
+    - {x: -0.693, y: 0.213, z: -0.125}
+    - {x: -0.758, y: 0.213, z: 0.226}
+    Directions:
+    - {x: -0.13596079, y: 0, z: -0.9907142}
+    - {x: -1, y: 0, z: 0}
+  - Mesh: {fileID: 7148982041357625432, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.693, y: 0.213, z: -0.125}
+    - {x: 0.758, y: 0.213, z: 0.226}
+    Directions:
+    - {x: 0.13596079, y: 0, z: -0.9907142}
+    - {x: 1, y: 0, z: 0}
+  - Mesh: {fileID: -2815579239958873341, guid: 795092f1a0d24e8499d05b86b30c11f3, type: 3}
+    Positions:
+    - {x: -0.406, y: -0.043, z: -0.088}
+    Directions:
+    - {x: 1, y: -0, z: -0}
+  - Mesh: {fileID: 1505563032480617038, guid: 26d31f981a33e534e853cca187a2df97, type: 3}
+    Positions:
+    - {x: -0.432, y: -0.088, z: -1.015}
+    Directions:
+    - {x: 1, y: -0, z: -0}
+  - Mesh: {fileID: -5081737336436760500, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.432, y: -0.088, z: -1.015}
+    Directions:
+    - {x: -1, y: -0, z: -0}
+  - Mesh: {fileID: -4388213889235507371, guid: b54e4e7dbe1c5d84daeb67acb6e81572, type: 3}
+    Positions:
+    - {x: -0.451, y: -0.019, z: -0.211}
+    Directions:
+    - {x: 1, y: -0, z: -0}
+  - Mesh: {fileID: 4901066053486097667, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.451, y: -0.019, z: -0.211}
+    Directions:
+    - {x: -1, y: -0, z: -0}
+  - Mesh: {fileID: -7229439821016266501, guid: b54e4e7dbe1c5d84daeb67acb6e81572, type: 3}
+    Positions:
+    - {x: -0.6577, y: -0.023, z: -0.2697}
+    Directions:
+    - {x: -0.24013679, y: -0.019010829, z: -0.9705529}
+  - Mesh: {fileID: 5475589834312789384, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.6577, y: -0.023, z: -0.2697}
+    Directions:
+    - {x: 0.24013679, y: -0.019010829, z: -0.9705529}
+  - Mesh: {fileID: -2055097696022492115, guid: b54e4e7dbe1c5d84daeb67acb6e81572, type: 3}
+    Positions:
+    - {x: -0.714, y: -0.016, z: -1.036}
+    Directions:
+    - {x: -0.8922334, y: -0.020050189, z: -0.45112923}
+  - Mesh: {fileID: -4298973929451677640, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.714, y: -0.016, z: -1.036}
+    Directions:
+    - {x: 0.8922334, y: -0.020050189, z: -0.45112923}
+  - Mesh: {fileID: 1821971148863035776, guid: 26d31f981a33e534e853cca187a2df97, type: 3}
+    Positions:
+    - {x: -0.6724, y: 0.8778, z: 0.0295}
+    Directions:
+    - {x: -0.26299238, y: 0.2999913, z: -0.9169734}
+  - Mesh: {fileID: -763758959337710657, guid: 26d31f981a33e534e853cca187a2df97, type: 3}
+    Positions:
+    - {x: -0.641, y: 0.806, z: 0.243}
+    Directions:
+    - {x: 0, y: 1, z: 0}
+  - Mesh: {fileID: -8895584803323341341, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.641, y: 0.806, z: 0.243}
+    Directions:
+    - {x: 0, y: 1, z: 0}
+  - Mesh: {fileID: -8500648629706749445, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.6724, y: 0.8778, z: 0.0295}
+    Directions:
+    - {x: 0.26299238, y: 0.2999913, z: -0.9169734}
+  - Mesh: {fileID: -808118153216194219, guid: 26d31f981a33e534e853cca187a2df97, type: 3}
+    Positions:
+    - {x: -0.706, y: 0.733, z: 0.149}
+    Directions:
+    - {x: 0, y: 1, z: 0}
+  - Mesh: {fileID: -721760415642644540, guid: e974eea1408335440a90b18a9b387832, type: 3}
+    Positions:
+    - {x: 0.706, y: 0.733, z: 0.149}
+    Directions:
+    - {x: 0, y: 1, z: 0}
+  Smoke: {fileID: 2100000, guid: 34d2d18304c954ad2be257f0dcb01509, type: 2}

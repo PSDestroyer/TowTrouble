@@ -135291,6 +135291,7 @@ GameObject:
   - component: {fileID: 469335361}
   - component: {fileID: 469335360}
   - component: {fileID: 469335359}
+  - component: {fileID: 469335362}
   m_Layer: 8
   m_Name: Bridge entry ramp
   m_TagString: Untagged
@@ -135391,6 +135392,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 469335357}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &469335362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469335357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &469706954
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -191064,6 +191078,7 @@ GameObject:
   - component: {fileID: 640734313}
   - component: {fileID: 640734312}
   - component: {fileID: 640734311}
+  - component: {fileID: 640734314}
   m_Layer: 8
   m_Name: Bridge entry ramp
   m_TagString: Untagged
@@ -191164,6 +191179,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 640734309}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &640734314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640734309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &640794625
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -203024,6 +203052,7 @@ GameObject:
   - component: {fileID: 678449313}
   - component: {fileID: 678449312}
   - component: {fileID: 678449311}
+  - component: {fileID: 678449314}
   m_Layer: 8
   m_Name: Bridge drive surface
   m_TagString: Untagged
@@ -203124,6 +203153,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 678449309}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &678449314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678449309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &678497647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -211834,6 +211876,7 @@ GameObject:
   - component: {fileID: 708274759}
   - component: {fileID: 708274758}
   - component: {fileID: 708274757}
+  - component: {fileID: 708274760}
   m_Layer: 8
   m_Name: Bridge entry ramp
   m_TagString: Untagged
@@ -211934,6 +211977,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708274755}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &708274760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708274755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &708727408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -317845,6 +317901,7 @@ GameObject:
   - component: {fileID: 1008423070}
   - component: {fileID: 1008423069}
   - component: {fileID: 1008423068}
+  - component: {fileID: 1008423071}
   m_Layer: 8
   m_Name: Bridge drive surface
   m_TagString: Untagged
@@ -317945,6 +318002,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008423066}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1008423071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008423066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &1008552549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -388903,6 +388973,7 @@ GameObject:
   - component: {fileID: 1215366235}
   - component: {fileID: 1215366234}
   - component: {fileID: 1215366233}
+  - component: {fileID: 1215366236}
   m_Layer: 8
   m_Name: Bridge entry ramp
   m_TagString: Untagged
@@ -389003,6 +389074,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1215366231}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1215366236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215366231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &1216018592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -421661,6 +421745,7 @@ GameObject:
   - component: {fileID: 1307709560}
   - component: {fileID: 1307709559}
   - component: {fileID: 1307709558}
+  - component: {fileID: 1307709561}
   m_Layer: 8
   m_Name: Bridge entry ramp
   m_TagString: Untagged
@@ -421761,6 +421846,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1307709556}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1307709561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307709556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &1308345897
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -430650,6 +430748,7 @@ GameObject:
   - component: {fileID: 1325722159}
   - component: {fileID: 1325722158}
   - component: {fileID: 1325722157}
+  - component: {fileID: 1325722160}
   m_Layer: 8
   m_Name: Bridge drive surface
   m_TagString: Untagged
@@ -430750,6 +430849,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1325722155}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1325722160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325722155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &1326312589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -450007,6 +450119,7 @@ GameObject:
   - component: {fileID: 1399497095}
   - component: {fileID: 1399497094}
   - component: {fileID: 1399497093}
+  - component: {fileID: 1399497096}
   m_Layer: 8
   m_Name: Bridge entry ramp
   m_TagString: Untagged
@@ -450107,6 +450220,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1399497091}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1399497096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399497091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1 &1400039251
 GameObject:
   m_ObjectHideFlags: 0
@@ -451326,6 +451452,7 @@ GameObject:
   - component: {fileID: 1403210473}
   - component: {fileID: 1403210472}
   - component: {fileID: 1403210471}
+  - component: {fileID: 1403210474}
   m_Layer: 8
   m_Name: Bridge entry ramp
   m_TagString: Untagged
@@ -451426,6 +451553,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403210469}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1403210474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403210469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &1403529414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -553290,6 +553430,7 @@ GameObject:
   - component: {fileID: 1712675616}
   - component: {fileID: 1712675615}
   - component: {fileID: 1712675614}
+  - component: {fileID: 1712675617}
   m_Layer: 8
   m_Name: Bridge entry ramp
   m_TagString: Untagged
@@ -553390,6 +553531,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712675612}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1712675617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712675612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1001 &1713045700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -573591,6 +573745,7 @@ GameObject:
   - component: {fileID: 1786524909}
   - component: {fileID: 1786524908}
   - component: {fileID: 1786524907}
+  - component: {fileID: 1786524910}
   m_Layer: 8
   m_Name: Bridge drive surface
   m_TagString: Untagged
@@ -573691,6 +573846,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786524905}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1786524910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786524905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234134f4b30864525a44f3588a354c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryTrackSurface
+  kind: 5
 --- !u!1 &1786667596
 GameObject:
   m_ObjectHideFlags: 0
@@ -576968,15 +577136,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 4c231cb2d337249eb9d2b59a4fa7fff9, type: 2}
   - {fileID: 2100000, guid: ca41f5d0fe1154a359c2c1fb28b7db48, type: 2}
   - {fileID: 2100000, guid: c52c5de39692e4a278289eec1f4489dc, type: 2}
-  bridgeExclusions:
-  - m_Center: {x: -187.5894, y: 31.042168, z: 73.12847}
-    m_Extent: {x: 10.058868, y: 7, z: 15.141401}
-  - m_Center: {x: -137.90851, y: 51.171787, z: 162.94}
-    m_Extent: {x: 14.497494, y: 7, z: 7.5843506}
-  - m_Center: {x: -235.79594, y: 22.891201, z: 22.466072}
-    m_Extent: {x: 14.505768, y: 7, z: 12.1577835}
-  - m_Center: {x: -257.9289, y: 20.551743, z: -27.215815}
-    m_Extent: {x: 16.458008, y: 7, z: 12.932291}
+  - {fileID: 2100000, guid: ded41d3631d8f4bb685d7a34f73cf0ca, type: 2}
+  - {fileID: 2100000, guid: 9c441528906584ac494c34eff6a0aa7e, type: 2}
+  - {fileID: 2100000, guid: 9584b582ea4cf46f5a8492a5cca774b1, type: 2}
 --- !u!1001 &1799283633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -653773,6 +653935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3a3af323e60f4bf9a08e340c34defb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryCamera
+  playerFollowDistance: 7
 --- !u!114 &2031568714
 MonoBehaviour:
   m_ObjectHideFlags: 0

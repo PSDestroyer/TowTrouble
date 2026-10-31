@@ -1,0 +1,46 @@
+[
+  {
+    "test": "WheelImpressionsBlendSurfacesButBreakAtTeleports",
+    "pass": true
+  },
+  {
+    "test": "StationaryWheelsDoNotAllocateRepeatedGeometry",
+    "pass": true
+  },
+  {
+    "test": "PaintProducesDistinctTracksWithoutChangingGrip",
+    "pass": true
+  },
+  {
+    "test": "VisualBoundaryBlendsContinuouslyAndPreservesTraction",
+    "pass": true
+  },
+  {
+    "test": "HardAndWoodHaveNoRutRelief",
+    "pass": true
+  },
+  {
+    "test": "TracksStayOnTiltedDeckAndStopAtItsEdge",
+    "pass": true
+  },
+  {
+    "test": "WoodUsesOverrideAndLivingMudIsNotDoubleStamped",
+    "pass": true
+  },
+  {
+    "test": "TerrainHolesAndOutsideBoundsRejectProjection",
+    "pass": true
+  },
+  {
+    "test": "WorldCoordinatesSelectThePaintedSurfaceAndClampAtBoundary",
+    "pass": true
+  },
+  {
+    "test": "WheelCoverageStaysInsideRoadMaskAndWorldBounds",
+    "pass": true
+  },
+  {
+    "test": "MissingMapSafelyUsesDryGroundAndInvalidDimensionsAreRejected",
+    "pass": true
+  }
+]

@@ -68,19 +68,24 @@ namespace TowTrouble
         private Vector4 remoteRates,remoteSlip;
         private Vector2 remoteControls;
         private float remoteMud,remoteEffort;
+        private bool remoteBrakeLights,remoteEngine;
         private static Vector4 Pack(float[] values)=>new Vector4(values[0],values[1],values[2],values[3]);
         public Vector4 WheelAngularVelocity=>simulate?Pack(wheelRates):remoteRates;
         public Vector4 WheelSlip=>simulate?Pack(wheelSlips):remoteSlip;
         public Vector2 ControlInput=>simulate?input:remoteControls;
         public float MudFraction=>simulate?mudFraction:remoteMud;
         public float EngineEffort=>simulate?engineEffort:remoteEffort;
+        public bool EngineRunning=>!casualty&&(simulate||hasRemote&&remoteEngine);
+        public bool BrakeLights=>!casualty&&(simulate
+            ?RecoveryVehicleEffects.ShouldBrake(input.y,brake,body==null?0:Vector3.Dot(body.linearVelocity,transform.forward))
+            :hasRemote&&remoteBrakeLights);
         public float SlipAtWheel(int index)=>WheelSlip[index];
         public void SetTowForce(float force){towLoad=Mathf.Clamp01(force/Mathf.Max(1,driveForce*4));}
         private void ClearWheelFeedback()
         {
             System.Array.Clear(wheelRates,0,4);System.Array.Clear(wheelSlips,0,4);System.Array.Clear(wheelAngles,0,4);
             for(int i=0;i<4;i++)wheelLoads[i]=(body!=null?body.mass:1350)*Physics.gravity.magnitude*.25f;
-            mudFraction=engineEffort=towLoad=remoteMud=remoteEffort=0;remoteRates=remoteSlip=Vector4.zero;remoteControls=Vector2.zero;
+            mudFraction=engineEffort=towLoad=remoteMud=remoteEffort=0;remoteRates=remoteSlip=Vector4.zero;remoteControls=Vector2.zero;remoteBrakeLights=remoteEngine=false;
         }
 
         public static float EffectsGain=.8f;
@@ -176,7 +181,7 @@ namespace TowTrouble
         public void Receive(VehicleFrame frame)
         {
             Receive(frame.Position,frame.Rotation,frame.Speed);
-            remoteRates=frame.WheelRates;remoteSlip=frame.Slip;remoteControls=frame.Controls;remoteMud=frame.Mud;remoteEffort=frame.Effort;
+            remoteRates=frame.WheelRates;remoteSlip=frame.Slip;remoteControls=frame.Controls;remoteMud=frame.Mud;remoteEffort=frame.Effort;remoteBrakeLights=frame.BrakeLights;remoteEngine=frame.EngineRunning;
         }
 
         [SerializeField] private RecoveryMap recoveryMap;

@@ -6072,6 +6072,7 @@ GameObject:
   - component: {fileID: 367815742596774379}
   - component: {fileID: 1571196263296037943}
   - component: {fileID: 1916257951298994540}
+  - component: {fileID: 8394522773160075824}
   m_Layer: 0
   m_Name: Hauler
   m_TagString: Untagged
@@ -6878,6 +6879,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 519613274b2fe4f409827cc9205a4b2e, type: 2}
     - {fileID: 2100000, guid: 62f69bdd298ec434989736cdb58b34c7, type: 2}
     - {fileID: 2100000, guid: 5b468bce2988f4766a0ce7b5173c0f38, type: 2}
+  recoveryMap: {fileID: 0}
 --- !u!82 &1916257951298994540
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6975,6 +6977,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8394522773160075824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3547823604861869712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66e06867d8491448c9c84131ec209b67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryVehicleEffects
+  vehicle: {fileID: 1571196263296037943}
+  profile: {fileID: 11400000, guid: b041d321bdf9b4ce5916816eb6c50541, type: 2}
 --- !u!1 &3550014077750463828
 GameObject:
   m_ObjectHideFlags: 0
