@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TowTrouble
 {
-    public enum RecoveryPhase { Lobby, HookUp, Recover, Deliver, Complete }
+    public enum RecoveryPhase { Lobby, HookUp, Recover, Deliver, Complete, Explore }
 
     public static class RecoveryRules
     {

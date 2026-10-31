@@ -104,3 +104,34 @@ Pentru testul utilizatorului în Editor:
 4. În cooperare, verifică pe ambele calculatoare roțile și stropii colegului, recuperarea comună și resetarea sesiunii.
 
 Instrumentul `Tow Trouble/Integrate Mud Physics and Feedback` reaplică legăturile în tutorial. Scenele originale `M_Demonstration_Mega` și `M_Demonstration_Desert` nu sunt modificate.
+
+
+## Garaj, economie și contracte în explorare — 2026-10-31
+
+Designul curent este `Docs/Design/TOW_TROUBLE-open-world.md`. Documentul sursă anterior rămâne referința istorică a tutorialului. Punctele 1–4 sunt integrate în zona existentă; adaptarea Mega și Desert este etapa 5, separată și neefectuată.
+
+### Cum testezi în Editor
+
+1. Deschide `Assets/TowTrouble/Scenes/CanyonRecovery.unity` și pornește tu Play Mode.
+2. Din meniul principal alege **Explorează**. Pornești în curtea atelierului existent, cu configurația salvată. **Tutorial / Contracte** păstrează fluxul vechi.
+3. Oprește în marcajul garajului și apasă **G** (controller: X). Garajul este disponibil fără cablu și fără intervenție activă. Rotește mașina cu mouse-ul pe zona liberă sau stickul drept.
+4. Alege categoria și piesa. Previzualizarea nu cumpără. **Cumpără și montează** debitează o singură dată și salvează; piesele deținute se montează gratuit. Schimbarea caroseriei poate demonta piese incompatibile din configurație, păstrându-le în inventar.
+5. Salvează configurația montată în Pădure / Munte / Nisip. Încarcă altă configurație, închide și redeschide Play Mode pentru verificarea persistenței. Vânzarea plătește 70%; piesa trebuie demontată și eliminată din preseturi înainte de vânzare.
+6. Ieși din garaj. **Tab** (controller: apăsare stick stânga) deschide intervențiile: distanță, teren, dificultate, recompensă și pregătire recomandată. Acceptă o intervenție și condu la țintă; mașina jucătorului nu este teleportată.
+7. Recuperează și livrează. Rezultatele arată recompensa și soldul; **Continuă explorarea** păstrează mașina la poziția curentă. Repetarea ecranului nu trebuie să dubleze plata. Abandonarea prin Tab cere confirmare și nu plătește.
+
+Nu există încă trasee noi în Mega, deșert jucabil sau misiuni Greu/Expert. Cele trei recuperări existente oferă recompense de bază 450 / 800 / 1300 CR. Duratele scurte ale tutorialului nu validează economia pe oră a viitoarei lumi deschise. Roțile pentru nisip și iarnă sunt disponibile ca aspect/configurație; comportamentul pe suprafețele respective se conectează la etapa biomurilor.
+
+### Conținut și salvare
+
+Catalogul conține 380 intrări în 16 categorii, incluzând echipamentul inițial și configurațiile funcționale. Audit: `Docs/Design/HotRod-AssetAudit.csv` (717 prefaburi sursă). Sumar: `Docs/Design/HotRod-Catalog.md`. Compatibilitatea verifică familia și socketurile; potrivirea vizuală a combinațiilor necesită verificare. Prefaburile derivate ocupă aproximativ 10 MB, cu referințe la mesh-urile/texturile existente.
+
+Profilul v2 migrează profilul v1 păstrând progresul, setările și culorile. Contractele istorice finalizate primesc o singură creditare de migrare. Se păstrează copia profilului anterior în PlayerPrefs, iar verificările agentului nu scriu în profilul real. Motorul nivel 3 costă 8800 CR direct sau 6000 CR la schimb cu motorul nivel 2; schimbul înlocuiește referințele vechi din configurații/preseturi.
+
+Gazda validează starea, participantul și piesele catalogului. Configurațiile se transmit la schimbare. Contractul nu poate fi acceptat cât timp un coechipier este în garaj. Banii rămân progres local al fiecărui jucător, nu economie competitivă cu backend.
+
+### Dovezi și limite
+
+Compilare fără erori; 14 verificări Edit Mode de economie/migrare/configurații au trecut, invocate direct fără Test Runner; 38 de caroserii asamblate static, kit de aripi cu toate cele patru piese vizibile; zero scripturi și referințe de prefab lipsă. Panourile au fost randate într-o scenă temporară, la text normal și 130%, fără depășiri ale zonelor de text și fără rularea jocului. Rapoarte în `Docs/Validation/Garage`.
+
+**Nu s-au creat builduri și nu s-a pornit Play Mode.** Condusul cu ansamblurile noi, interacțiunile efective, persistența pe profilul real și sesiunea FishNet rămân pentru testul utilizatorului.

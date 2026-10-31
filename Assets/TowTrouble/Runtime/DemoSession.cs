@@ -15,6 +15,12 @@ namespace TowTrouble
         private float nextInput;
         private float connectDeadline;
         private bool quickStart;
+        private bool explorationRequested,garageIdentitySent;
+        private string participatingRun;
+        public RecoveryGarageCatalog GarageCatalog=>world.Drivers[0].GetComponent<RecoveryCustomization>()?.Catalog;
+        public bool GarageOpen=>View=="Garage";
+        public bool BoardOpen=>View=="Board";
+        public int LastReward=>Profile.lastPayout;
         private bool identitySent, recorded;
         public RecoveryProfile Profile {get;private set;}
         public int SelectedContract {get;private set;}
@@ -26,11 +32,11 @@ namespace TowTrouble
         private UnityEngine.Rendering.Universal.ColorAdjustments grade;
         private void Awake(){Profile=RecoveryProfile.Load();SelectedContract=Profile.lastContract;ApplySettings();}
         public void ApplySettings(){AudioListener.volume=Profile.master;RecoveryVehicle.EffectsGain=Profile.effects;if(QualitySettings.GetQualityLevel()!=Mathf.Clamp(Profile.quality,0,QualitySettings.names.Length-1))QualitySettings.SetQualityLevel(Mathf.Clamp(Profile.quality,0,QualitySettings.names.Length-1),true);if(grade==null){var volume=FindFirstObjectByType<UnityEngine.Rendering.Volume>();if(volume!=null&&volume.profile!=null)volume.profile.TryGet(out grade);}if(grade!=null)grade.postExposure.Override(Mathf.Log(Profile.brightness,2)+.1f);}
-        public void SelectContract(int value){SelectedContract=Mathf.Clamp(value,0,RecoveryContract.All.Length-1);if(Profile.Unlocked(SelectedContract)){Profile.lastContract=SelectedContract;Profile.Save();}if(Profile.Unlocked(SelectedContract)&&Connected&&IsHost&&world.Phase==RecoveryPhase.Lobby)world.ConfigureSession(SelectedContract,!Solo);}
+        public void SelectContract(int value){SelectedContract=Mathf.Clamp(value,0,RecoveryContract.All.Length-1);if(Profile.Unlocked(SelectedContract)){Profile.lastContract=SelectedContract;Profile.Save();}if(Profile.Unlocked(SelectedContract)&&Connected&&IsHost&&world.Phase==RecoveryPhase.Lobby)world.ConfigureSession(SelectedContract,!Solo,world.FreeRoam);}
         public void SelectVehicle(int value){Profile.vehicle=Mathf.Clamp(value,0,3);Profile.Save();if(Connected&&world.Phase==RecoveryPhase.Lobby)world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);else world.PreviewVehicle(Profile.vehicle);world.PreviewPaint(Profile.paint);}
         public void SelectPaint(int value){Profile.paint=Mathf.Clamp(value,0,3);Profile.Save();if(Connected&&world.Phase==RecoveryPhase.Lobby)world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);else world.PreviewPaint(Profile.paint);}
         public void ResetAtCheckpoint(){if(Connected)world.Unstuck();menuOpen=false;Time.timeScale=1;}
-        public void RestartContract(){if(Connected&&IsHost){world.ReturnToLobby();readySent=false;quickStart=Solo;menuOpen=false;Time.timeScale=1;}}
+        public void RestartContract(){if(Connected&&IsHost){if(world.FreeRoam){int contract=world.ContractIndex;CloseOverlay();world.ReturnToExplore();world.AcceptContract(contract);}else{world.ReturnToLobby();readySent=false;quickStart=Solo;menuOpen=false;Time.timeScale=1;}}}
         private bool readySent;
         private bool leaving;
         private bool wasConnected;
@@ -88,10 +94,10 @@ namespace TowTrouble
             }
         }
 
-        public void Host(bool solo)
+        public void Host(bool solo,bool exploration=false)
         {
             if (Connecting || Connected || leaving) return;
-            Solo=solo;identitySent=false;recorded=false;
+            Solo=solo;explorationRequested=exploration;garageIdentitySent=false;identitySent=false;recorded=false;
             quickStart = solo; readySent = false; Connecting = true; connectDeadline = Time.unscaledTime + 12f;
             status = "Starting FishNet host...";
             network.TransportManager.Transport.SetMaximumClients(2);
@@ -106,7 +112,7 @@ namespace TowTrouble
             if (Connecting || Connected || leaving) return;
             address = address.Trim();
             if (address.Length == 0 || address.Length > 253) { status = "Enter a valid host address."; return; }
-            Solo=false;identitySent=false;recorded=false;
+            Solo=false;garageIdentitySent=false;identitySent=false;recorded=false;
             quickStart = false; readySent = false; Connecting = true; connectDeadline = Time.unscaledTime + 12f;
             status = "Connecting to crew...";
             network.TransportManager.Transport.SetPort(7777);
@@ -121,7 +127,41 @@ namespace TowTrouble
 
         public void Deploy() { if (Connected && IsHost) world.StartRecovery(); }
         public void Replay() { if (Connected && IsHost) { menuOpen = false; world.ReturnToLobby(); } }
-        public void ToggleMenu() { menuOpen = !menuOpen;if(Solo)Time.timeScale=menuOpen?0:1; }
+        public void ToggleMenu() {if(BoardOpen||GarageOpen){CloseOverlay();return;}menuOpen = !menuOpen;if(Solo)Time.timeScale=menuOpen?0:1; }
+        public void ToggleBoard()
+        {
+            if(!Connected||!world.FreeRoam||world.Phase==RecoveryPhase.Lobby||world.Phase==RecoveryPhase.Complete)return;
+            if(BoardOpen){CloseOverlay();return;}if(menuOpen)return;
+            world.Drive(Vector2.zero,true,false);menuOpen=true;View="Board";if(Solo)Time.timeScale=0;
+        }
+        public void OpenGarage()
+        {
+            if(!Connected||!world.FreeRoam||menuOpen||!world.AtGarage(LocalSlot)||GarageCatalog==null)return;
+            world.SetGarageState(true);world.Drive(Vector2.zero,true,false);menuOpen=true;View="Garage";if(Solo)Time.timeScale=0;
+        }
+        public void PreviewGarage(RecoveryBuild build)
+        {if(GarageOpen)world.Drivers[LocalSlot].GetComponent<RecoveryCustomization>().Apply(build,Profile.paint,true);}
+        public void CommitGarage(RecoveryBuild build)
+        {
+            if(!GarageOpen||GarageCatalog==null)return;build=build.Copy();build.Normalize(GarageCatalog,Profile.Owns);Profile.builds[Profile.vehicle]=build;Profile.Save();PreviewGarage(build);SendGarageBuild();
+        }
+        public void SendGarageBuild()
+        {if(Connected&&GarageCatalog!=null){var build=Profile.Build(Profile.vehicle);build.Normalize(GarageCatalog,Profile.Owns);world.SetGarageBuild(JsonUtility.ToJson(build));}}
+        public void CloseOverlay()
+        {
+            if(GarageOpen){world.SetGarageState(false);var build=Profile.Build(Profile.vehicle);world.Drivers[LocalSlot].GetComponent<RecoveryCustomization>()?.Apply(build,Profile.paint,true);SendGarageBuild();}
+            menuOpen=false;View="Gameplay";Time.timeScale=1;
+        }
+        public void AcceptBoardContract(int index)
+        {if(!BoardOpen||!IsHost||world.Phase!=RecoveryPhase.Explore)return;CloseOverlay();world.AcceptContract(index);}
+        public void RecordCompletion()
+        {
+            if(!Connected||world.Phase!=RecoveryPhase.Complete||recorded)return;
+            recorded=true;if(participatingRun==world.RunId){RecoveryEconomy.Claim(Profile,world.RunId,world.ContractIndex,world.Resets(0)+world.Resets(1)==0,world.Snaps==0);Profile.Save();}
+        }
+        public void FinishExplorationContract()
+        {if(!Connected||!IsHost)return;CloseOverlay();world.ReturnToExplore();}
+
 
         public void Leave()
         {
@@ -146,19 +186,30 @@ namespace TowTrouble
                 status = "Connection timed out. Check the address and host firewall.";
             }
             if(Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame){lastKeyboard=Time.unscaledTime;lastGamepad=false;}
-            var activePad=Gamepad.current;if(activePad!=null&&(activePad.buttonSouth.wasPressedThisFrame||activePad.buttonEast.wasPressedThisFrame||activePad.buttonNorth.wasPressedThisFrame||activePad.startButton.wasPressedThisFrame||activePad.leftShoulder.isPressed||activePad.rightShoulder.isPressed||activePad.leftStick.ReadValue().sqrMagnitude>.05f||activePad.rightStick.ReadValue().sqrMagnitude>.05f||activePad.dpad.ReadValue().sqrMagnitude>.05f||activePad.rightTrigger.ReadValue()>.05f||activePad.leftTrigger.ReadValue()>.05f))lastGamepad=true;
+            var activePad=Gamepad.current;if(activePad!=null&&(activePad.buttonSouth.wasPressedThisFrame||activePad.buttonEast.wasPressedThisFrame||activePad.buttonNorth.wasPressedThisFrame||activePad.buttonWest.wasPressedThisFrame||activePad.leftStickButton.wasPressedThisFrame||activePad.startButton.wasPressedThisFrame||activePad.leftShoulder.isPressed||activePad.rightShoulder.isPressed||activePad.leftStick.ReadValue().sqrMagnitude>.05f||activePad.rightStick.ReadValue().sqrMagnitude>.05f||activePad.dpad.ReadValue().sqrMagnitude>.05f||activePad.rightTrigger.ReadValue()>.05f||activePad.leftTrigger.ReadValue()>.05f))lastGamepad=true;
             if (!Connected || LocalSlot < 0) return;
-            if(!identitySent){identitySent=true;if(IsHost)world.ConfigureSession(SelectedContract,!Solo);world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);}
-            if(world.Phase==RecoveryPhase.Complete&&!recorded){recorded=true;Profile.Finish(world.ContractIndex,world.Resets(0)+world.Resets(1)==0,world.Snaps==0);}
+            if(!identitySent){identitySent=true;if(IsHost)world.ConfigureSession(SelectedContract,!Solo,explorationRequested);world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);}
+            if(world.FreeRoam&&!garageIdentitySent){garageIdentitySent=true;SendGarageBuild();}
+            if(GarageOpen&&world.Phase!=RecoveryPhase.Explore)CloseOverlay();
+            if(world.HasContract)participatingRun=world.RunId;
+            if(world.Phase==RecoveryPhase.Complete&&!recorded)RecordCompletion();
             if(world.Phase!=RecoveryPhase.Complete)recorded=false;
             if (quickStart && world.Phase == RecoveryPhase.Lobby)
             {
                 if (!readySent) { readySent = true; world.SetReady(true); }
                 if (world.CanStart) { quickStart = false; world.StartRecovery(); }
             }
+            bool overlayWasOpen=BoardOpen||GarageOpen;
             var keyboard = Keyboard.current;
             var pad = Gamepad.current;
-            if((View=="Gameplay"||View=="Pause")&&((keyboard!=null&&keyboard.escapeKey.wasPressedThisFrame)||(pad!=null&&pad.startButton.wasPressedThisFrame)))ToggleMenu();
+            if(world.FreeRoam&&View=="Gameplay")
+            {
+                if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.boardKey,Key.Tab)].wasPressedThisFrame)||(pad!=null&&pad.leftStickButton.wasPressedThisFrame))ToggleBoard();
+                if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.garageKey,Key.G)].wasPressedThisFrame)||(pad!=null&&pad.buttonWest.wasPressedThisFrame))OpenGarage();
+            }
+            else if(BoardOpen&&((keyboard!=null&&(keyboard[Profile.ReadKey(Profile.boardKey,Key.Tab)].wasPressedThisFrame||keyboard.escapeKey.wasPressedThisFrame))||(pad!=null&&(pad.buttonEast.wasPressedThisFrame||pad.leftStickButton.wasPressedThisFrame))))CloseOverlay();
+            else if(GarageOpen&&((keyboard!=null&&keyboard.escapeKey.wasPressedThisFrame)||(pad!=null&&pad.buttonEast.wasPressedThisFrame)))CloseOverlay();
+            if(!overlayWasOpen&&(View=="Gameplay"||View=="Pause")&&((keyboard!=null&&keyboard.escapeKey.wasPressedThisFrame)||(pad!=null&&pad.startButton.wasPressedThisFrame)))ToggleMenu();
             if (world.Phase == RecoveryPhase.Lobby || world.Phase == RecoveryPhase.Complete){pad?.ResetHaptics();return;}
             if (!menuOpen)
             {

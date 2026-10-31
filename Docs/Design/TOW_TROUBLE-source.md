@@ -1,3 +1,5 @@
+> **Actualizare de design aprobată — 2026-10-31:** direcția curentă este descrisă în [TOW_TROUBLE-open-world.md](TOW_TROUBLE-open-world.md). Acest document rămâne sursa istorică pentru tutorial și referințele vizuale. Planul vechi cu trei zone separate este înlocuit de o lume Mega deschisă cu biomuri. Adaptarea hărții se face separat.
+
 # TOW TROUBLE — document de proiect
 
 > Versiune 0.1 · 30 octombrie 2026 · Design propus pentru implementare.

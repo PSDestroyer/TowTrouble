@@ -32,6 +32,22 @@ namespace TowTrouble
         private Vector3 safePosition;
         private Quaternion safeRotation;
         private float radius=.47f, driveForce=3100f, steering=30f;
+        private float maxSpeed=13f,mudGripScale=1f,mudResistanceScale=1f,suspensionLift;
+        private int geometryVersion;
+        public int GeometryVersion=>geometryVersion;
+        public float CableStrength {get;private set;}=RecoveryRules.BreakForce;
+        public float WinchSpeed {get;private set;}=1.3f;
+        public RecoveryVehicleModel CurrentModel=>models[modelIndex];
+        public void UseAssembly(RecoveryAssembly assembly,GaragePerformance performance)
+        {
+            foreach(var m in models)m.Root.SetActive(false);wheelVisuals=assembly.Wheels;radius=assembly.Radius;
+            if(body==null)body=GetComponent<Rigidbody>();body.mass=performance.Mass;driveForce=performance.Drive;maxSpeed=performance.Speed;mudGripScale=performance.MudGrip;mudResistanceScale=performance.MudResistance;suspensionLift=performance.Lift;
+            CableStrength=performance.Cable;WinchSpeed=performance.Winch;
+            for(int i=0;i<4;i++){var anchor=assembly.Anchors[i];anchor.x*=performance.Track;anchor.y+=performance.Lift;wheels[i].transform.localPosition=anchor;wheels[i].radius=assembly.Radii!=null&&assembly.Radii.Length==4?assembly.Radii[i]:radius;wheelVisuals[i].position=transform.TransformPoint(anchor-Vector3.up*.12f);}
+            if(suspensionPositions==null)suspensionPositions=new Vector3[4];for(int i=0;i<4;i++)suspensionPositions[i]=wheelVisuals[i].position;
+            frontHitch.localPosition=assembly.FrontHitch;rearHitch.localPosition=assembly.RearHitch;
+            var collision=GetComponent<BoxCollider>();collision.center=assembly.ColliderCenter+Vector3.up*performance.Lift;collision.size=assembly.ColliderSize;geometryVersion++;
+        }
         private Rigidbody body;
         private bool simulate;
         private Vector2 input;
@@ -87,7 +103,7 @@ namespace TowTrouble
             if(models==null||models.Length==0)return;
             modelIndex=Mathf.Clamp(index,0,models.Length-1);var m=models[modelIndex];
             for(int i=0;i<models.Length;i++)models[i].Root.SetActive(i==modelIndex);
-            wheelVisuals=m.Wheels;radius=m.Radius;driveForce=m.Drive;steering=m.Steering;
+            wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=13;mudGripScale=mudResistanceScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=1.3f;geometryVersion++;driveForce=m.Drive;steering=m.Steering;
             for(int i=0;i<wheels.Length;i++){wheels[i].transform.localPosition=m.Anchors[i];wheels[i].radius=radius;}
             if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?950f:m.Mass;
             if(suspensionPositions!=null)for(int i=0;i<wheels.Length;i++)suspensionPositions[i]=wheelVisuals[i].position;
@@ -174,7 +190,7 @@ namespace TowTrouble
                 grounded=true;
                 var pointVelocity=body.GetPointVelocity(w.transform.position);
                 float compression=Mathf.Clamp(reach-hit.distance,0,w.suspensionDistance);
-                float support=Mathf.Clamp(compression*37000-Vector3.Dot(pointVelocity,up)*4500,0,18000);
+                float support=Mathf.Clamp(compression*(37000*(1+suspensionLift))-Vector3.Dot(pointVelocity,up)*4500,0,18000);
                 body.AddForceAtPosition(up*support,w.transform.position);
                 float staticLoad=body.mass*Physics.gravity.magnitude/wheels.Length;
                 wheelLoads[i]=Mathf.Lerp(wheelLoads[i],Mathf.Clamp(support,staticLoad*.3f,staticLoad*1.8f),blend);
@@ -183,16 +199,16 @@ namespace TowTrouble
                 float longitudinal=Vector3.Dot(pointVelocity,forward),lateral=Vector3.Dot(pointVelocity,right);
                 bool muddy=hit.collider.TryGetComponent<RecoveryMudTerrain>(out var mud);
                 if(muddy)mudWheels++;
-                float drive=casualty||brake?0:input.y*driveForce*Mathf.Clamp01((13-Mathf.Abs(forwardSpeed))/3);
+                float drive=casualty||brake?0:input.y*driveForce*Mathf.Clamp01((maxSpeed-Mathf.Abs(forwardSpeed))/3);
                 float rolling=casualty?100:Mathf.Abs(input.y)<.05f?240:35;
                 float braking=Mathf.Clamp(-longitudinal*(brake?1300:rolling),-5500,5500);
-                float grip=RecoveryTraction.Grip(muddy?mud.LongitudinalGrip:1.25f,brake?0:input.y,muddy?mud.AggressiveThrottleLoss:0);
-                float forwardLimit=wheelLoads[i]*grip,sideLimit=wheelLoads[i]*(muddy?mud.LateralGrip:1.3f);
+                float grip=RecoveryTraction.Grip(muddy?mud.LongitudinalGrip*mudGripScale:1.25f,brake?0:input.y,muddy?mud.AggressiveThrottleLoss:0);
+                float forwardLimit=wheelLoads[i]*grip,sideLimit=wheelLoads[i]*(muddy?mud.LateralGrip*mudGripScale:1.3f);
                 var tire=RecoveryTraction.LimitForces(new Vector2(drive+braking,-lateral*1400),forwardLimit,sideLimit);
                 body.AddForceAtPosition(forward*tire.x+right*tire.y,hit.point);
                 if(muddy)
                 {
-                    float resistance=mud.ResistancePerWheel;
+                    float resistance=mud.ResistancePerWheel*mudResistanceScale;
                     // Contract resistance is divided over the actual mud contacts.
                     // It never continues merely because the car has a small world Z.
                     if(casualty&&resistanceNeedsMud)resistance=Mathf.Max(resistance,mudDrag/wheels.Length/(body.mass/1350f));
@@ -200,7 +216,7 @@ namespace TowTrouble
                 }
                 float slip=casualty||brake?0:RecoveryTraction.Slip(drive,forwardLimit);
                 wheelSlips[i]=Mathf.Lerp(wheelSlips[i],slip,blend);
-                wheelRates[i]=longitudinal/radius+(casualty||brake?0:Mathf.Sign(input.y)*wheelSlips[i]*18);
+                wheelRates[i]=longitudinal/w.radius+(casualty||brake?0:Mathf.Sign(input.y)*wheelSlips[i]*18);
                 suspensionPositions[i]=hit.point+hit.normal*w.radius;
             }
             mudFraction=mudWheels/(float)wheels.Length;
@@ -230,7 +246,7 @@ namespace TowTrouble
                 if(simulate||hasRemote)
                 {
                     var p=suspensionPositions[i];
-                    if(!simulate)p=TryGetWheelContact(i,out var hit)?hit.point+hit.normal*radius:wheels[i].transform.position-transform.up*wheels[i].suspensionDistance;
+                    if(!simulate)p=TryGetWheelContact(i,out var hit)?hit.point+hit.normal*wheels[i].radius:wheels[i].transform.position-transform.up*wheels[i].suspensionDistance;
                     wheelVisuals[i].SetPositionAndRotation(p,transform.rotation*Quaternion.Euler(wheelAngles[i],i<2?steer:0,0));
                 }
             }

@@ -33,12 +33,12 @@ namespace TowTrouble
         private void Awake(){properties=new MaterialPropertyBlock();BindModel();}
         private void BindModel()
         {
-            ClearMud();model=vehicle.ModelIndex;
+            ClearMud();model=vehicle.GeometryVersion;
             for(int wheel=0;wheel<4;wheel++)renderers[wheel]=vehicle.WheelVisual(wheel).GetComponentsInChildren<Renderer>(true);
         }
         public void AddMud(int wheel,float amount)
         {
-            if(model!=vehicle.ModelIndex)BindModel();
+            if(model!=vehicle.GeometryVersion)BindModel();
             touching[wheel]=true;coverage[wheel]=Mathf.Clamp01(Mathf.Max(.24f,coverage[wheel]+amount));
         }
         public void ClearMud()
@@ -56,7 +56,7 @@ namespace TowTrouble
         }
         private void LateUpdate()
         {
-            if(model!=vehicle.ModelIndex)BindModel();
+            if(model!=vehicle.GeometryVersion)BindModel();
             for(int wheel=0;wheel<4;wheel++)
             {
                 if(!touching[wheel])coverage[wheel]=Mathf.MoveTowards(coverage[wheel],0,Time.deltaTime*.008f);

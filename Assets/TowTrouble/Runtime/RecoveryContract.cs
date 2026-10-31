@@ -8,6 +8,8 @@ namespace TowTrouble
         public readonly string Title, Description, Terrain, Tip;
         public readonly Vector3 Target, Delivery;
         public readonly float Extraction, MudDrag;
+        public int Reward=>RecoveryEconomy.Rewards[Mathf.Clamp(Id-1,0,4)];
+        public string Difficulty(RecoveryProfile p)=>p.L(new[]{"Local","Standard","Specializat"}[Id-1],new[]{"Local","Standard","Specialist"}[Id-1]);
         public RecoveryContract(int id, int zone, string title, string description, string terrain, string tip, Vector3 target, Vector3 delivery, float extraction, float drag)
         { Id=id; Zone=zone; Title=title; Description=description; Terrain=terrain; Tip=tip; Target=target; Delivery=delivery; Extraction=extraction; MudDrag=drag; }
 

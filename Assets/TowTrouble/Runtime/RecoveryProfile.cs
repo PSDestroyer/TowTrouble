@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,26 +8,61 @@ namespace TowTrouble
     // Small, versioned desktop profile. No network authority or scene references are persisted.
     [Serializable] public sealed class RecoveryProfile
     {
-        public int version=1, completedMask, medalMask, noResetMask, noSnapMask, lastContract, vehicle, paint;
+        public int version=2, completedMask, medalMask, noResetMask, noSnapMask, lastContract, vehicle, paint;
         public bool onboarded, reducedMotion, invertCamera, vibration=true, tutorial=true, colorHelp=true;
         public float master=.8f, effects=.8f, ui=.7f, brightness=1f, textScale=1f, cameraSensitivity=1f;
         public int quality=1;
         public string forwardKey="W",reverseKey="S",leftKey="A",rightKey="D",brakeKey="Space";
         public string language="ro", name="Driver", hookKey="E", resetKey="R", reelKey="Q", extendKey="F";
+        public int credits,lastPayout;
+        public List<string> ownedParts=new List<string>();
+        public List<string> paidRuns=new List<string>();
+        public RecoveryBuild[] builds;
+        public List<GaragePreset> presets=new List<GaragePreset>();
+        public string boardKey="Tab",garageKey="G";
+        public bool Owns(string id)=>ownedParts!=null&&ownedParts.Contains(id);
+        public RecoveryBuild Build(int model)
+        {EnsureGarage();return builds[Mathf.Clamp(model,0,3)];}
+        public void EnsureGarage()
+        {
+            if(ownedParts==null)ownedParts=new List<string>();if(paidRuns==null)paidRuns=new List<string>();if(presets==null)presets=new List<GaragePreset>();
+            if(builds==null||builds.Length!=4){var old=builds;builds=new RecoveryBuild[4];if(old!=null)Array.Copy(old,builds,Mathf.Min(old.Length,4));}
+            for(int i=0;i<4;i++){if(builds[i]==null)builds[i]=new RecoveryBuild();builds[i].Model=i;}
+            credits=Mathf.Clamp(credits,0,1000000000);
+        }
+        public static RecoveryProfile Parse(string saved)
+        {
+            var p=string.IsNullOrEmpty(saved)?new RecoveryProfile():JsonUtility.FromJson<RecoveryProfile>(saved);
+            if(p==null)return new RecoveryProfile();
+            if(p.version!=1&&p.version!=2)throw new ArgumentException("Unsupported profile version");
+            p.EnsureGarage();
+            if(p.version==1)
+            {
+                p.credits=0;for(int i=0;i<3;i++)if(p.Completed(i))p.credits+=RecoveryEconomy.Payout(RecoveryContract.Get(i).Reward,(p.noResetMask&(1<<i))!=0,(p.noSnapMask&(1<<i))!=0,true);
+                for(int i=1;i<4;i++)p.ownedParts.Add("paint_"+i);
+                if(p.paint>0)p.builds[Mathf.Clamp(p.vehicle,0,3)].Items=new[]{"paint_"+p.paint};
+                p.version=2;
+            }
+            p.EnsureGarage();p.Clamp();return p;
+        }
         private const string Key="TowTrouble.Profile.v1";
         public static RecoveryProfile Load()
         {
             string saved=PlayerPrefs.GetString(Key,"");
-            try { var value=JsonUtility.FromJson<RecoveryProfile>(saved);if(value!=null&&value.version==1){value.Clamp();return value;}if(value!=null&&value.version!=1){PlayerPrefs.SetString(Key+".unsupportedBackup",saved);Debug.LogWarning("[TowTrouble] Versiune de profil necunoscută; copia originală a fost păstrată.");} }
-            catch(ArgumentException){ Debug.LogWarning("[TowTrouble] Profilul nu a putut fi citit; sunt folosite valorile implicite."); }
-            return new RecoveryProfile();
+            try {return Parse(saved);}
+            catch(ArgumentException){if(!string.IsNullOrEmpty(saved))PlayerPrefs.SetString(Key+".unreadableBackup",saved);Debug.LogWarning("[TowTrouble] Profilul original a fost păstrat; sunt folosite valorile implicite.");return new RecoveryProfile();}
         }
-        public void Save(){Clamp();PlayerPrefs.SetString(Key,JsonUtility.ToJson(this));PlayerPrefs.Save();}
+        public void Save()
+        {
+            EnsureGarage();Clamp();var previous=PlayerPrefs.GetString(Key,"");if(!string.IsNullOrEmpty(previous))PlayerPrefs.SetString(Key+".previous",previous);
+            PlayerPrefs.SetString(Key,JsonUtility.ToJson(this));PlayerPrefs.Save();
+        }
         private void Clamp(){paint=Mathf.Clamp(paint,0,3);vehicle=Mathf.Clamp(vehicle,0,3);lastContract=Mathf.Clamp(lastContract,0,2);master=Mathf.Clamp01(master);effects=Mathf.Clamp01(effects);ui=Mathf.Clamp01(ui);brightness=Mathf.Clamp(brightness,.7f,1.4f);textScale=Mathf.Clamp(textScale,.85f,1.3f);cameraSensitivity=Mathf.Clamp(cameraSensitivity,.3f,2f);}
         public bool Completed(int id)=>(completedMask&(1<<id))!=0;
         public bool Unlocked(int id)=>id==0||Completed(id-1);
         public bool Clean(int id)=>(medalMask&(1<<id))!=0;
-        public void Finish(int id,bool noResets,bool noSnaps){completedMask|=1<<id;if(noResets)noResetMask|=1<<id;if(noSnaps)noSnapMask|=1<<id;if(noResets&&noSnaps)medalMask|=1<<id;lastContract=Mathf.Min(2,id+1);Save();}
+        public void RecordFinish(int id,bool noResets,bool noSnaps){completedMask|=1<<id;if(noResets)noResetMask|=1<<id;if(noSnaps)noSnapMask|=1<<id;if(noResets&&noSnaps)medalMask|=1<<id;lastContract=Mathf.Min(2,id+1);}
+        public void Finish(int id,bool noResets,bool noSnaps){RecordFinish(id,noResets,noSnaps);Save();}
         public Key ReadKey(string binding,Key fallback)=>Enum.TryParse(binding,true,out Key parsed)&&Enum.IsDefined(typeof(Key),parsed)&&parsed!=UnityEngine.InputSystem.Key.None?parsed:fallback;
         public string L(string ro,string en)=>language=="en"?en:ro;
     }

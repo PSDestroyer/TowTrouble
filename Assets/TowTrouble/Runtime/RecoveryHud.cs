@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.UI;
 
 namespace TowTrouble
 {
-    public sealed class RecoveryHud : MonoBehaviour
+    public sealed partial class RecoveryHud : MonoBehaviour
     {
         [SerializeField] private DemoSession session;
         [SerializeField] private TMP_FontAsset font;
@@ -20,6 +20,7 @@ namespace TowTrouble
         private GameObject gameplay;
         private string page="", returnPage="Main", settingsTab="Audio", pendingBinding;
         private int zone;
+        private string confirmationReturn="Pause";
         private bool wasOnline, wasComplete, firstSetup;
         private RecoveryPhase previousPhase;
         private float refreshAt;
@@ -73,12 +74,13 @@ namespace TowTrouble
         {Button(pageRoot,L("ÎNAPOI","BACK"),76,808,230,()=>Show(back));Text(pageRoot,session.UsingGamepad?"A  "+L("Confirmă","Confirm")+"     B  "+L("Înapoi","Back"):"ENTER  "+L("Confirmă","Confirm")+"     ESC  "+L("Înapoi","Back"),340,866,1184,28,16,Paper).alignment=TextAlignmentOptions.Right;}
         public void Show(string target)
         {
-            if(pageRoot!=null){EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);pageRoot=null;}
+            if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);pageRoot=null;}
+            if(target=="Garage"&&page!="Garage")PrepareGarage();
             page=target;session.View=target;pendingBinding=null;session.World.ShowSinglePreview(target!="Title"&&target!="Lobby"&&(!session.Connected||session.World.Phase==RecoveryPhase.Lobby),Mathf.Max(0,session.LocalSlot));
             if(target=="Gameplay"){gameplay.SetActive(true);return;}
             gameplay.SetActive(false);pageRoot=Stretch(target,root);
-            if(target!="Title"&&target!="Main"&&target!="Lobby"&&target!="Vehicles")Panel(pageRoot,0,0,1600,900,new Color(.03f,.04f,.035f,.42f));
-            switch(target){case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Contracts":BuildContracts();break;case "Vehicles":BuildVehicles();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;}
+            if(target!="Title"&&target!="Main"&&target!="Lobby"&&target!="Vehicles"&&target!="Garage")Panel(pageRoot,0,0,1600,900,new Color(.03f,.04f,.035f,.42f));
+            switch(target){case "Garage":BuildGarage();break;case "Board":BuildBoard();break;case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Contracts":BuildContracts();break;case "Vehicles":BuildVehicles();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;}
             StartCoroutine(FocusFirst());
         }
         private IEnumerator FocusFirst(){var target=pageRoot;yield return null;if(page=="Gameplay"||target==null||target!=pageRoot||!target.gameObject.activeInHierarchy)yield break;foreach(var b in target.GetComponentsInChildren<UnityEngine.UI.Selectable>())if(b.IsInteractable()){EventSystem.current.SetSelectedGameObject(b.gameObject);break;}}
@@ -91,13 +93,14 @@ namespace TowTrouble
         private void BuildMain()
         {
             Panel(pageRoot,48,35,490,830,new Color(.035f,.045f,.04f,.55f));Logo(pageRoot,80,55,76);
-            float y=298;
-            if(P.completedMask!=0){Button(pageRoot,L("CONTINUĂ","CONTINUE"),80,y,410,()=>{session.SelectContract(P.lastContract);Show("Contracts");},true);y+=66;}
-            Button(pageRoot,L("JOACĂ SOLO","PLAY SOLO"),80,y,410,()=>Show("Contracts"),P.completedMask==0);y+=66;
-            Button(pageRoot,L("JOACĂ ÎN DOI","PLAY CO-OP"),80,y,410,()=>Show("Coop"));y+=66;
-            Button(pageRoot,L("VEHICULE","VEHICLES"),80,y,410,()=>{returnPage="Main";Show("Vehicles");});y+=66;
-            Button(pageRoot,L("SETĂRI","SETTINGS"),80,y,410,()=>{returnPage="Main";Show("Settings");});y+=66;
-            Button(pageRoot,L("CREDITE","CREDITS"),80,y,410,()=>Show("Credits"));y+=66;
+            float y=276;
+            if(P.completedMask!=0){Button(pageRoot,L("CONTINUĂ","CONTINUE"),80,y,410,()=>session.Host(true,true),true);y+=60;}
+            Button(pageRoot,L("EXPLOREAZĂ","EXPLORE"),80,y,410,()=>session.Host(true,true),true);y+=60;
+            Button(pageRoot,L("TUTORIAL / CONTRACTE","TUTORIAL / CONTRACTS"),80,y,410,()=>Show("Contracts"));y+=60;
+            Button(pageRoot,L("JOACĂ ÎN DOI","PLAY CO-OP"),80,y,410,()=>Show("Coop"));y+=60;
+            Button(pageRoot,L("VEHICULE","VEHICLES"),80,y,410,()=>{returnPage="Main";Show("Vehicles");});y+=60;
+            Button(pageRoot,L("SETĂRI","SETTINGS"),80,y,410,()=>{returnPage="Main";Show("Settings");});y+=60;
+            Button(pageRoot,L("CREDITE","CREDITS"),80,y,410,()=>Show("Credits"));y+=60;
             Button(pageRoot,L("IEȘIRE","QUIT"),80,y,410,()=>Application.Quit());
             Text(pageRoot,RecoveryVehicle.ModelNames[P.vehicle],1030,705,480,65,42,Paper,true).alignment=TextAlignmentOptions.Right;
             Text(pageRoot,L("VALEA VERDE  /  RECUPERĂRI AUTO","GREEN VALLEY  /  RECOVERY SERVICE"),940,777,570,32,17,Muted,true).alignment=TextAlignmentOptions.Right;
@@ -154,7 +157,7 @@ namespace TowTrouble
             Input(card,L("NUMELE TĂU","YOUR NAME"),P.name,30,30,590,v=>{P.name=v;P.Save();});
             Text(card,L("GAZDĂ","HOST"),30,149,590,36,26,Amber,true);
             Text(card,L("Alege contractul în lobby. Prietenul se conectează la IP-ul acestui calculator, pe portul UDP 7777.","Choose a contract in the lobby. Your friend joins this computer's IP address on UDP port 7777."),30,201,590,110,22,Paper);
-            Button(card,L("CREEAZĂ SESIUNE","HOST SESSION"),30,350,590,()=>session.Host(false),true);
+            Button(card,L("CREEAZĂ SESIUNE","HOST SESSION"),30,350,590,()=>session.Host(false,true),true);
             var join=Panel(pageRoot,754,225,770,520);Text(join,L("ALĂTURĂ-TE ECHIPEI","JOIN THE CREW"),30,30,710,50,31,Paper,true);
             address=Input(join,"IP / HOST",PlayerPrefs.GetString("TowTrouble.LastHost","127.0.0.1"),30,122,710,v=>PlayerPrefs.SetString("TowTrouble.LastHost",v));
             Button(join,L("CONECTEAZĂ","JOIN SESSION"),30,252,710,()=>session.Join(address.text));
@@ -177,6 +180,7 @@ namespace TowTrouble
             gameplay=Stretch("Mission HUD",root).gameObject;
             objective=Text(gameplay.transform,"",30,25,800,82,24,Paper,true);objective.GetComponent<TextMeshProUGUI>().outlineWidth=.12f;
             mudFeedback=Text(gameplay.transform,"",30,116,980,48,18,Amber,true);
+            garagePrompt=Text(gameplay.transform,"",440,842,720,42,19,Amber,true);garagePrompt.alignment=TextAlignmentOptions.Center;
             crew=Text(gameplay.transform,"",1140,25,430,90,20,Paper,true);crew.alignment=TextAlignmentOptions.Right;
             var cable=Node("Cable HUD",gameplay.transform,35,762,520,110);cableGroup=cable.gameObject;
             cableText=Text(cable,"",0,0,520,28,20,Paper,true);var track=Panel(cable,0,35,370,20,new Color(.08f,.09f,.08f,.75f));track.gameObject.AddComponent<UnityEngine.UI.Outline>().effectColor=Paper;
@@ -199,23 +203,27 @@ namespace TowTrouble
             Text(card,session.Solo?L("Ia o pauză. Mașina rămâne frânată.","Take a break. Your car stays braked."):L("Meniul este local. Echipa continuă să joace.","This menu is local. Your crew keeps playing."),32,108,496,70,20,Muted);
             Button(card,L("CONTINUĂ","RESUME"),32,207,496,()=>{session.ToggleMenu();Show("Gameplay");},true);
             Button(card,L("REVINO LA PUNCT SIGUR","RESET TO SAFE POINT"),32,277,496,()=>{session.ResetAtCheckpoint();Show("Gameplay");});
-            Button(card,L("REÎNCEPE CONTRACTUL","RESTART CONTRACT"),32,347,496,()=>Confirm(L("Reîncepi și pierzi progresul acestui contract?","Restart and lose this run's progress?"),()=>{session.RestartContract();Show("Lobby");},"Pause")).interactable=session.IsHost;
+            Button(card,L("REÎNCEPE CONTRACTUL","RESTART CONTRACT"),32,347,496,()=>Confirm(L("Reîncepi și pierzi progresul acestui contract?","Restart and lose this run's progress?"),()=>{session.RestartContract();Show(session.World.FreeRoam?"Gameplay":"Lobby");},"Pause")).interactable=session.IsHost&&(!session.World.FreeRoam||session.World.HasContract);
             Button(card,L("SETĂRI","SETTINGS"),32,417,496,()=>{returnPage="Pause";Show("Settings");});
-            Button(card,L("ÎNAPOI LA CONTRACTE","BACK TO CONTRACTS"),32,487,496,()=>Confirm(L("Părăsești misiunea curentă?","Leave the current mission?"),()=>{if(session.IsHost){session.Replay();session.ToggleMenu();Show("Contracts");}else session.Leave();},"Pause"));
+            if(session.World.FreeRoam)Button(card,L("INTERVENȚII","RECOVERIES"),32,487,496,()=>{session.CloseOverlay();session.ToggleBoard();Show("Board");});
+            else Button(card,L("ÎNAPOI LA CONTRACTE","BACK TO CONTRACTS"),32,487,496,()=>Confirm(L("Părăsești misiunea curentă?","Leave the current mission?"),()=>{if(session.World.FreeRoam){session.CloseOverlay();session.ToggleBoard();Show("Board");}else if(session.IsHost){session.Replay();session.ToggleMenu();Show("Contracts");}else session.Leave();},"Pause"));
         }
         private void Confirm(string question,Action yes,string back)
         {
-            if(pageRoot!=null){EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);}page="Confirm";session.View="Pause";pageRoot=Stretch("Confirmation",root);Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.65f));var card=Panel(pageRoot,475,300,650,290);Text(card,question,32,30,586,130,29,Paper,true);Button(card,L("CONFIRMĂ","CONFIRM"),32,200,270,yes,true);Button(card,L("RENUNȚĂ","CANCEL"),328,200,290,()=>Show(back));StartCoroutine(FocusFirst());
+            if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);}page="Confirm";confirmationReturn=back;session.View="Confirm";pageRoot=Stretch("Confirmation",root);Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.65f));var card=Panel(pageRoot,475,300,650,290);Text(card,question,32,30,586,130,29,Paper,true);Button(card,L("CONFIRMĂ","CONFIRM"),32,200,270,yes,true);Button(card,L("RENUNȚĂ","CANCEL"),328,200,290,()=>Show(back));StartCoroutine(FocusFirst());
         }
         private void BuildResults()
         {
-            var w=session.World;var card=Panel(pageRoot,440,126,720,650);Text(card,L("CONTRACT ÎNCHEIAT","CONTRACT COMPLETE"),36,34,648,60,40,Amber,true);
+            session.RecordCompletion();var w=session.World;var card=Panel(pageRoot,440,126,720,650);Text(card,L("CONTRACT ÎNCHEIAT","CONTRACT COMPLETE"),36,34,648,60,40,Amber,true);
             Text(card,w.Contract.TitleFor(P),36,111,648,48,30,Paper,true);
             for(int i=0;i<3;i++){bool earned=i==0||(i==1?w.Resets(0)+w.Resets(1)==0:w.Snaps==0);var medal=Node("Medal "+i,card,126+i*190,175,66,66).gameObject.AddComponent<RecoveryMedalGraphic>();medal.color=earned?Amber:new Color(.25f,.28f,.24f);}
             string data=L("Timp   ","Time   ")+TimeSpan.FromSeconds(w.Elapsed).ToString(@"mm\:ss")+"\n"+L("Resetări   ","Resets   ")+(w.Resets(0)+w.Resets(1))+"   •   "+L("Cabluri rupte   ","Broken cables   ")+w.Snaps;
+            data+="\n"+L("Recompensă: ","Reward: ")+session.LastReward+" CR   •   "+L("Sold: ","Balance: ")+P.credits+" CR";
             data+="\n"+(w.Resets(0)+w.Resets(1)==0?"+ ":"— ")+L("Fără resetări","No resets")+"    "+(w.Snaps==0?"+ ":"— ")+L("Fără cablu rupt","No cable breaks");
             if(w.Cooperative)data+="\n"+w.DriverName(0)+" / "+w.DriverName(1)+"  •  "+Mathf.RoundToInt(w.PullSeconds(0))+"s / "+Mathf.RoundToInt(w.PullSeconds(1))+"s "+L("în tracțiune","pulling");
             Text(card,data,36,270,648,160,21,Paper);
+            if(w.FreeRoam)
+            {Button(card,L("CONTINUĂ EXPLORAREA","CONTINUE EXPLORING"),36,470,648,()=>{session.FinishExplorationContract();Show("Gameplay");},true).interactable=session.IsHost;return;}
             Button(card,L("URMĂTORUL CONTRACT","NEXT CONTRACT"),36,449,648,()=>{session.Replay();session.SelectContract(Mathf.Min(2,w.ContractIndex+1));Show("Contracts");},true).interactable=session.IsHost;
             Button(card,L("REJOACĂ","REPLAY"),36,521,308,()=>{session.RestartContract();Show("Lobby");}).interactable=session.IsHost;
             Button(card,L("CONTRACTE","CONTRACTS"),368,521,316,()=>{session.Replay();Show("Contracts");}).interactable=session.IsHost;
@@ -282,14 +290,17 @@ namespace TowTrouble
             {
                 if(w.Phase==RecoveryPhase.Complete&&!wasComplete)Show("Results");
                 else if(w.Phase!=previousPhase&&w.Phase!=RecoveryPhase.Complete){if(w.Phase!=RecoveryPhase.Lobby||(page!="Contracts"&&page!="Vehicles"))Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");}
-                if(session.MenuOpen&&page=="Gameplay")Show("Pause");
+                if(session.MenuOpen&&page=="Gameplay"&&session.View!="Garage"&&session.View!="Board")Show("Pause");
                 if(!session.MenuOpen&&page=="Pause")Show("Gameplay");
                 wasComplete=w.Phase==RecoveryPhase.Complete;previousPhase=w.Phase;
             }
+            if(online&&(session.View=="Garage"||session.View=="Board")&&page!=session.View)Show(session.View);
+            else if(online&&(page=="Garage"||page=="Board")&&session.View=="Gameplay")Show("Gameplay");
             wasOnline=online;
             bool back=(Keyboard.current!=null&&Keyboard.current.escapeKey.wasPressedThisFrame)||(Gamepad.current!=null&&Gamepad.current.buttonEast.wasPressedThisFrame);
+            if(back&&page=="Confirm"){Show(confirmationReturn);return;}
             if(back&&page=="Lobby")Confirm(L("Părăsești sesiunea?","Leave this session?"),()=>session.Leave(),"Lobby");
-            else if(back&&page!="Gameplay"&&page!="Pause"&&page!="Confirm"&&page!="Results"&&page!="Lobby")Show(page=="Settings"||page=="Vehicles"?returnPage:"Main");
+            else if(back&&page!="Gameplay"&&page!="Pause"&&page!="Confirm"&&page!="Results"&&page!="Lobby"&&page!="Garage"&&page!="Board")Show(page=="Settings"||page=="Vehicles"?returnPage:"Main");
             if(Time.unscaledTime<refreshAt)return;refreshAt=Time.unscaledTime+.08f;
             if(status!=null&&pendingBinding==null&&page=="Coop")status.text=session.Status;
             if(page=="Lobby"&&online)
@@ -298,11 +309,15 @@ namespace TowTrouble
                 for(int i=0;i<2;i++)if(worldNames[i]!=null)worldNames[i].text=w.OccupiedSlot(i)?w.DriverName(i)+" • "+RecoveryVehicle.ModelNames[w.VehicleIndex(i)]+"\n"+(w.Ready(i)?L("PREGĂTIT","READY"):L("SE PREGĂTEȘTE","GETTING READY")):L("AȘTEPTĂM UN PRIETEN…","WAITING FOR A FRIEND…");
                 readyText.text=w.Ready(session.LocalSlot)?L("NU SUNT GATA","NOT READY"):L("PREGĂTIT","READY");startButton.interactable=session.IsHost&&w.CanStart;
             }
+            if(page=="Board"&&online&&startButton!=null)startButton.interactable=session.IsHost&&w.Phase==RecoveryPhase.Explore&&!w.CrewInGarage;
             if(page=="Gameplay"&&online)RefreshGameplay();
         }
         private void RefreshGameplay()
         {
             var w=session.World;int slot=session.LocalSlot,other=1-slot;bool attached=w.Attached(slot);float load=w.Tension(slot);
+            if(w.Phase==RecoveryPhase.Explore)
+            {objective.text=L("EXPLORARE LIBERĂ","FREE EXPLORATION");crew.text=P.credits+" CR";speed.text=Mathf.RoundToInt(w.Drivers[slot].Speed*3.6f)+" <size=27>km/h</size>";cableGroup.SetActive(false);partnerGroup.SetActive(false);mudFeedback.gameObject.SetActive(false);garagePrompt.text=w.AtGarage(slot)?L("G · Intră în garaj    |    TAB · Contracte","G · Enter garage    |    TAB · Contracts"):L("TAB · Contracte    |    Garaj: ","TAB · Contracts    |    Garage: ")+Mathf.RoundToInt(Vector3.Distance(w.Drivers[slot].transform.position,w.GaragePosition))+" m";PlaceMarker(marker,w.GaragePosition+Vector3.up*3,Camera.main);marker.text=L("GARAJ","GARAGE");foreach(var tag in hudPlates)tag.gameObject.SetActive(false);return;}
+            garagePrompt.text=w.FreeRoam?L("TAB · Contracte","TAB · Contracts"):"";
             objective.text=w.Phase==RecoveryPhase.Deliver?L("LIVREAZĂ ÎN ZONA SIGURĂ","DELIVER TO THE SAFE ZONE"):L("RECUPEREAZĂ MAȘINA","RECOVER THE CAR");
             crew.text=w.Cooperative?"CO-OP  "+w.Occupied+"/2"+(w.Occupied<2?"\n"+L("COECHIPIER DECONECTAT","CREWMATE DISCONNECTED")+"\n"+(session.UsingGamepad?"START":"ESC")+"  "+L("Meniu / Lobby","Menu / Lobby"):""):"";speed.text=Mathf.RoundToInt(w.Drivers[slot].Speed*3.6f)+" <size=27>km/h</size>";
             var wheelSlip=w.Drivers[slot].WheelSlip;float slip=Mathf.Max(wheelSlip.x,wheelSlip.y,wheelSlip.z,wheelSlip.w);
