@@ -1,0 +1,112 @@
+{
+  "baseline": "a7788dc",
+  "date": "2026-10-31",
+  "playing": false,
+  "tests": [
+    {
+      "name": "NewProfileHasStockBuildAndNoDebt",
+      "passed": true
+    },
+    {
+      "name": "PurchaseIsAffordableAndCannotBeChargedTwice",
+      "passed": true
+    },
+    {
+      "name": "FailedPurchaseDoesNotChangeInventoryOrBalance",
+      "passed": true
+    },
+    {
+      "name": "MountedAndPresetPartsCannotBeSold",
+      "passed": true
+    },
+    {
+      "name": "SalePaysSeventyPercentOnlyOnce",
+      "passed": true
+    },
+    {
+      "name": "CompletionPaysOnceEvenAfterSerialization",
+      "passed": true
+    },
+    {
+      "name": "LegacyProfileMigratesOnceAndPreservesProgressAndPaint",
+      "passed": true
+    },
+    {
+      "name": "PresetsAndInventorySurviveSaveRoundTrip",
+      "passed": true
+    },
+    {
+      "name": "PreviewIsIndependentAndUnownedEquipmentIsRemovedBeforeCommit",
+      "passed": true
+    },
+    {
+      "name": "InvalidAndIncompatibleItemsAreNormalized",
+      "passed": true
+    },
+    {
+      "name": "EngineUpgradeTradesInOldEngineWithoutLeavingDanglingPresets",
+      "passed": true
+    },
+    {
+      "name": "LowRangeAndEngineRespectTheApprovedTradeoff",
+      "passed": true
+    },
+    {
+      "name": "CatalogIdsAreUniqueAndAssembliesHaveFourValidWheelAnchors",
+      "passed": true
+    },
+    {
+      "name": "UnsupportedSaveVersionIsRejected",
+      "passed": true
+    },
+    {
+      "name": "ExtractionWorksAcrossTheWorldAxes",
+      "passed": true
+    },
+    {
+      "name": "DeliveryRejectsWrongAltitudeAndAllowsElevatedBays",
+      "passed": true
+    },
+    {
+      "name": "WorldPayoutPreservesTutorialProgressAndDeduplicates",
+      "passed": true
+    },
+    {
+      "name": "TierControlsRewardIndependentlyOfMapIndex",
+      "passed": true
+    },
+    {
+      "name": "SpecializedTiresKeepTheirTradeoffs",
+      "passed": true
+    }
+  ],
+  "progressIds": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "uniqueProgressIds": true,
+  "unresolvedDeliveries": [],
+  "validation": "Pure Edit Mode assertions, directly invoked; no Test Runner, Play Mode, or build"
+}

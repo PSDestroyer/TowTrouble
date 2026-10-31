@@ -1,0 +1,14 @@
+{
+  "playMode": false,
+  "simulation": false,
+  "geometrySegments": 60,
+  "finite": true,
+  "pooledVertexCapacity": 1792,
+  "passed": [
+    "WheelImpressionsBreakAtTeleportsAndSurfaceTransitions",
+    "StationaryWheelsDoNotAllocateRepeatedGeometry",
+    "WorldCoordinatesSelectThePaintedSurfaceAndClampAtBoundary",
+    "WheelCoverageStaysInsideRoadMaskAndWorldBounds",
+    "MissingMapSafelyUsesDryGroundAndInvalidDimensionsAreRejected"
+  ]
+}

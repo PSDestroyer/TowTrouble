@@ -104,7 +104,7 @@ namespace TowTrouble.Editor
             PlayerSettings.runInBackground = true;
             PlayerSettings.defaultScreenWidth = 1600; PlayerSettings.defaultScreenHeight = 900;
             PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
+            EditorBuildSettings.scenes = File.Exists(OpenWorldAuthoring.ScenePath)?new[] { new EditorBuildSettingsScene(ScenePath, true),new EditorBuildSettingsScene(OpenWorldAuthoring.ScenePath,true) }:new[] { new EditorBuildSettingsScene(ScenePath, true) };
             EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
             AssetDatabase.SaveAssets();
             Selection.activeGameObject = sessionGo;

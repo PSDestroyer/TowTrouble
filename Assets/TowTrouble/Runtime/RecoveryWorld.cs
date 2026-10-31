@@ -33,6 +33,10 @@ namespace TowTrouble
         [SerializeField] private RecoveryVehicle casualty;
         [SerializeField] private LineRenderer[] cables;
         [SerializeField] private GameObject environment;
+        [SerializeField] private RecoveryMap map;
+        public RecoveryMap Map=>map;
+        public void ConfigureMap(RecoveryMap value){map=value;}
+        public RecoveryContract[] AvailableContracts=>map!=null?map.Contracts:RecoveryContract.All;
         [SerializeField] private Vector3 garagePosition=new Vector3(16,0,92);
         private readonly SyncVar<int> garageMask=new SyncVar<int>();
         public bool CrewInGarage=>garageMask.Value!=0;
@@ -89,7 +93,7 @@ namespace TowTrouble
         public int Snaps => snaps;
         public int Occupied => (driver0Id.Value >= 0 ? 1 : 0) + (driver1Id.Value >= 0 ? 1 : 0);
         public bool CanStart => Occupied > 0 && ready0.Value && (!cooperative.Value || Occupied==2) && (driver1Id.Value < 0 || ready1.Value);
-        public RecoveryContract Contract=>RecoveryContract.Get(contractId.Value);
+        public RecoveryContract Contract=>map!=null&&FreeRoam?map.Contracts[Mathf.Clamp(contractId.Value,0,map.Contracts.Length-1)]:RecoveryContract.Get(contractId.Value);
         public int ContractIndex=>contractId.Value;
         public bool Cooperative=>cooperative.Value;
         public string DriverName(int slot)=>slot==0?name0.Value:name1.Value;
@@ -156,7 +160,7 @@ namespace TowTrouble
         public void ConfigureSession(int contract,bool coop,bool roam=false,NetworkConnection sender=null)
         {
             if(sender==null||Slot(sender.ClientId)!=0||Phase!=RecoveryPhase.Lobby)return;
-            contractId.Value=Mathf.Clamp(contract,0,RecoveryContract.All.Length-1);cooperative.Value=coop;freeRoam.Value=roam;ResetRecovery();
+            contractId.Value=Mathf.Clamp(contract,0,(roam?AvailableContracts:RecoveryContract.All).Length-1);cooperative.Value=coop;freeRoam.Value=roam;ResetRecovery();
         }
 
         [ServerRpc(RequireOwnership=false)]
@@ -183,9 +187,9 @@ namespace TowTrouble
         [ServerRpc(RequireOwnership=false)]
         public void AcceptContract(int contract,NetworkConnection sender=null)
         {
-            if(sender==null||Slot(sender.ClientId)!=0||!FreeRoam||CrewInGarage||Phase!=RecoveryPhase.Explore||contract<0||contract>=RecoveryContract.All.Length)return;
+            if(sender==null||Slot(sender.ClientId)!=0||!FreeRoam||CrewInGarage||Phase!=RecoveryPhase.Explore||contract<0||contract>=AvailableContracts.Length)return;
             contractId.Value=contract;ApplyContract();ClearContract();
-            casualty.gameObject.SetActive(true);casualty.SetSimulation(true);casualty.SetSpawn(Contract.Target,Quaternion.identity,Contract.MudDrag,Contract.Extraction-2,contract==2);
+            casualty.gameObject.SetActive(true);casualty.SetSimulation(true);casualty.SetSpawn(Contract.Target,Quaternion.Euler(0,Contract.Heading,0),Contract.MudDrag,Contract.Extraction-2,!Contract.IsOpenWorld&&contract==2);
             runId.Value=System.Guid.NewGuid().ToString("N");phase.Value=(int)RecoveryPhase.HookUp;
         }
         [ServerRpc(RequireOwnership=false)]
@@ -217,6 +221,7 @@ namespace TowTrouble
         private void ApplyContract()
         {
             var c=Contract;
+            if(map!=null){appliedContract=contractId.Value;return;}
             float offset=c.Delivery.z-(appliedContract<0?108f:RecoveryContract.Get(appliedContract).Delivery.z);
             if(environment!=null)foreach(var t in environment.GetComponentsInChildren<Transform>(true))
             {
@@ -293,7 +298,7 @@ namespace TowTrouble
                 resets[i]=0;pullSeconds[i]=0;extending[i]=false;
                 drivers[i].SetSpawn(FreeRoam?garagePosition+new Vector3(i==0?-2.5f:2.5f,.05f,-2):new Vector3(i==0?-2.3f:2.5f,.05f,30f),FreeRoam?Quaternion.Euler(0,180,0):Quaternion.identity);drivers[i].SetSimulation(false);appliedBuild[i]=null;ApplyBuild(i);
             }
-            casualty.SetSpawn(Contract.Target,Quaternion.identity,Contract.MudDrag,Contract.Extraction-2f,ContractIndex==2); casualty.SetSimulation(false);
+            casualty.SetSpawn(Contract.Target,Quaternion.Euler(0,Contract.Heading,0),Contract.MudDrag,Contract.Extraction-2f,!Contract.IsOpenWorld&&ContractIndex==2); casualty.SetSimulation(false);
         }
 
         private void FixedUpdate()
@@ -322,11 +327,11 @@ namespace TowTrouble
                 casualty.Body.AddForceAtPosition(direction * force, b);
                 drivers[i].Body.AddForceAtPosition(-direction * force, a);
             }
-            if (Phase == RecoveryPhase.Recover && casualty.transform.position.z >= Contract.Extraction)
+            if (Phase == RecoveryPhase.Recover && Contract.IsExtracted(casualty.transform.position))
                 phase.Value = (int)RecoveryPhase.Deliver;
             if (Phase == RecoveryPhase.Deliver)
             {
-                deliveryHold = (Vector3.Distance(new Vector3(casualty.transform.position.x,0,casualty.transform.position.z),Contract.Delivery)<7f && casualty.Speed<2f) ? deliveryHold + Time.fixedDeltaTime : 0;
+                deliveryHold = (Contract.ContainsDelivery(casualty.transform.position) && casualty.Speed<2f) ? deliveryHold + Time.fixedDeltaTime : 0;
                 if (deliveryHold > 1.2f)
                 {
                     phase.Value = (int)RecoveryPhase.Complete;

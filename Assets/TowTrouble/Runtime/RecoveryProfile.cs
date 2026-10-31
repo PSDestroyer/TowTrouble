@@ -61,7 +61,7 @@ namespace TowTrouble
         public bool Completed(int id)=>(completedMask&(1<<id))!=0;
         public bool Unlocked(int id)=>id==0||Completed(id-1);
         public bool Clean(int id)=>(medalMask&(1<<id))!=0;
-        public void RecordFinish(int id,bool noResets,bool noSnaps){completedMask|=1<<id;if(noResets)noResetMask|=1<<id;if(noSnaps)noSnapMask|=1<<id;if(noResets&&noSnaps)medalMask|=1<<id;lastContract=Mathf.Min(2,id+1);}
+        public void RecordFinish(int id,bool noResets,bool noSnaps){completedMask|=1<<id;if(noResets)noResetMask|=1<<id;if(noSnaps)noSnapMask|=1<<id;if(noResets&&noSnaps)medalMask|=1<<id;if(id<3)lastContract=Mathf.Min(2,id+1);}
         public void Finish(int id,bool noResets,bool noSnaps){RecordFinish(id,noResets,noSnaps);Save();}
         public Key ReadKey(string binding,Key fallback)=>Enum.TryParse(binding,true,out Key parsed)&&Enum.IsDefined(typeof(Key),parsed)&&parsed!=UnityEngine.InputSystem.Key.None?parsed:fallback;
         public string L(string ro,string en)=>language=="en"?en:ro;

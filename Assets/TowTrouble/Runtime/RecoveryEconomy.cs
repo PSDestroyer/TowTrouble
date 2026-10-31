@@ -30,11 +30,16 @@ namespace TowTrouble
         }
         public static int Claim(RecoveryProfile profile,string run,int contract,bool noResets,bool noSnaps)
         {
-            if(string.IsNullOrEmpty(run)||profile.paidRuns.Contains(run)||contract<0||contract>=RecoveryContract.All.Length)return 0;
-            int payout=Payout(RecoveryContract.Get(contract).Reward,noResets,noSnaps,!profile.Completed(contract));
+            if(contract<0||contract>=RecoveryContract.All.Length)return 0;
+            return Claim(profile,run,RecoveryContract.Get(contract),noResets,noSnaps);
+        }
+        public static int Claim(RecoveryProfile profile,string run,RecoveryContract contract,bool noResets,bool noSnaps)
+        {
+            if(contract==null||string.IsNullOrEmpty(run)||profile.paidRuns.Contains(run)||contract.CompletionId<0||contract.CompletionId>26)return 0;
+            int payout=Payout(contract.Reward,noResets,noSnaps,!profile.Completed(contract.CompletionId));
             profile.paidRuns.Add(run);if(profile.paidRuns.Count>128)profile.paidRuns.RemoveAt(0);
             profile.credits=Mathf.Min(1000000000,profile.credits+payout);profile.lastPayout=payout;
-            profile.RecordFinish(contract,noResets,noSnaps);return payout;
+            profile.RecordFinish(contract.CompletionId,noResets,noSnaps);return payout;
         }
     }
 }

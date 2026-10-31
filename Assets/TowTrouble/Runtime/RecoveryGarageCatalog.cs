@@ -77,14 +77,15 @@ namespace TowTrouble
     [Serializable] public sealed class GaragePreset { public string Name; public RecoveryBuild Build; }
     public struct GaragePerformance
     {
-        public float Mass, Drive, Speed, MudGrip, MudResistance, Lift, Track, Cable, Winch;
+        public float Mass, Drive, Speed, MudGrip, MudResistance, SandGrip, SnowGrip, Lift, Track, Cable, Winch;
         public static GaragePerformance Calculate(RecoveryBuild build,RecoveryGarageCatalog catalog)
         {
             int model=Mathf.Clamp(build.Model,0,3);
-            var value=new GaragePerformance{Mass=RecoveryVehicle.Masses[model],Drive=RecoveryVehicle.PullForces[model],Speed=13,MudGrip=1,MudResistance=1,Track=1,Cable=18000,Winch=1.3f};
+            var value=new GaragePerformance{Mass=RecoveryVehicle.Masses[model],Drive=RecoveryVehicle.PullForces[model],Speed=13,MudGrip=1,MudResistance=1,SandGrip=1,SnowGrip=1,Track=1,Cable=18000,Winch=1.3f};
             if(build.Items!=null)foreach(var id in build.Items)
             {
                 var p=catalog.Find(id);if(p==null)continue;
+                if(id=="tires_sand")value.SandGrip=1.45f;if(id=="tires_winter")value.SnowGrip=1.65f;
                 value.Mass+=p.AddedMass;value.Drive*=p.DriveMultiplier;value.Speed*=p.SpeedMultiplier;
                 value.MudGrip*=p.MudGrip;value.MudResistance*=p.MudResistance;value.Lift+=p.Lift;value.Track*=p.Track;
                 if(p.Slot==GarageSlot.Cable)value.Cable=p.CableStrength;if(p.Slot==GarageSlot.Winch)value.Winch=p.WinchSpeed;

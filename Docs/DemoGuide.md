@@ -142,3 +142,29 @@ Compilare fără erori; 14 verificări Edit Mode de economie/migrare/configuraț
 Tema folosește acum butoane aurii, panouri cu margini, titluri rotunjite și pictograme native. Garajul grupează piesele în Stil / Tehnic / Tractare; contractele au fotografii statice din tutorial și recompense distincte. HUD-ul rămâne discret, cu obiectiv, cablu și viteză în pozițiile din referințe. Camera garajului pornește în fața atelierului și evită pereții.
 
 Compilare fără erori, 27 verificări statice de pagini RO/EN inclusiv text 130%, două verificări HUD și 14 aserțiuni Edit Mode de regresie reușite. Fonturile includ diacritice. Rapoarte și imagini: `Docs/Validation/UI-Finish`; direcția vizuală: `Docs/Design/UI-Style.md`. Profilul folosit în imagini este fictiv. Nu s-a pornit Play Mode și nu s-au creat builduri. Utilizatorul verifică interacțiunile efective în Editor.
+
+
+## Lumea deschisă — prima hartă, 2026-10-31
+
+Deschide `Assets/TowTrouble/Scenes/OpenWorldRecovery.unity` (lăsată activă în Editor), pornește tu Play Mode și alege **Explorează**. Din tutorial, Explorează încarcă aceeași hartă. Butonul Tutorial / Contracte din meniul hărții revine la scena tutorialului. Registrul EditorBuildSettings conține ambele scene pentru această trecere; nu s-au creat builduri.
+
+Harta are 24 de recuperări, 8 predări A–H, garaj central G, șase biomuri, râu/poduri și acces la vârf pe serpentine. Tab deschide contractele; filtrele aleg biomul, săgețile schimbă paginile. G deschide garajul lângă marcaj, cu mașina oprită. Nu sunt teleportate mașinile jucătorilor la acceptarea unui contract. Ținta este activată la amplasamentul său.
+
+Începe cu R01 și predarea A. Apoi verifică R03 în noroi, R17 pe nisip și R13 pe zăpadă, după montarea anvelopelor potrivite. Verifică remorcarea la altitudine, intrarea în predare și R pe drum/pod. Nu toate contractele Expert sunt potrivite configurației inițiale; nu există blocări artificiale de regiune. La finalizare, continuă explorarea.
+
+Gazda FishNet păstrează autoritatea asupra fizicii și misiunii. Pentru cooperare, ambii jucători trebuie să ruleze aceeași versiune și noua scenă. Conectarea din meniul tutorialului duce la harta open-world. Testul multiplayer nu a fost efectuat.
+
+Validare: compilare fără erori, 19 aserțiuni pure Edit Mode invocate direct fără Test Runner, toate punctele conectate în rețeaua de drumuri, 16 randări statice ale panoului RO/EN la text 130%. Rapoarte în `Docs/Validation/OpenWorld`. Fotografii de contract statice, cu mașina pozată, fără simulare. Nu s-a pornit Play Mode și nu s-au creat builduri.
+
+
+### Corecție pornire solo — 2026-10-31
+
+Blocajul NullReferenceException la pornirea hărții venea din ținta inițial inactivă: ResetRecovery apela SetSpawn înainte ca Awake să pregătească Rigidbody. RecoveryVehicle are acum inițializare comună, executată o singură dată, înainte de spawn/reset/simulare. Activarea ulterioară păstrează poziția și geometria. Nu au fost editate scenele sau aspectul hărții în această corecție.
+
+Aceeași reproducere izolată nu mai aruncă excepția; cinci verificări Edit Mode și verificările celor trei prefaburi au trecut. Rapoarte: Docs/Validation/SoloStartup. Nu s-a pornit Play Mode, Test Runner, server/client sau build. Pentru retest: Play → Explorează (solo), apoi Tab → R01 → Acceptă.
+
+## Aspectul hărții open world — 2026-10-31
+
+OpenWorldRecovery are acum relieful și drumurile netezite, trasee cu curbe, texturi și margini estompate, atelier detaliat, vegetație pe biomuri, apă și poduri refăcute, iluminare proprie și nori nativi. Cele 24 de recuperări și 8 predări sunt păstrate. Tutorialul și scenele originale Mega/Desert nu au fost modificate. Imagini comparative și verificări statice: `Docs/Validation/VisualPolish`.
+
+Pentru această etapă nu s-a pornit Play Mode și nu s-au creat builduri. Utilizatorul verifică în Editor: Explorează → garaj → Tab → R01, apoi accesul spre lac, deșert și zăpadă. Performanța și comportamentul fizic după remodelare necesită această verificare.

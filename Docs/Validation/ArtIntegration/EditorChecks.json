@@ -1,0 +1,41 @@
+{
+  "editModeAssertions": [
+    {
+      "test": "WorldCoordinatesSelectThePaintedSurfaceAndClampAtBoundary",
+      "passed": true
+    },
+    {
+      "test": "MissingMapSafelyUsesDryGroundAndInvalidDimensionsAreRejected",
+      "passed": true
+    },
+    {
+      "test": "ExtractionWorksAcrossTheWorldAxes",
+      "passed": true
+    },
+    {
+      "test": "DeliveryRejectsWrongAltitudeAndAllowsElevatedBays",
+      "passed": true
+    },
+    {
+      "test": "WorldPayoutPreservesTutorialProgressAndDeduplicates",
+      "passed": true
+    },
+    {
+      "test": "TierControlsRewardIndependentlyOfMapIndex",
+      "passed": true
+    },
+    {
+      "test": "SpecializedTiresKeepTheirTradeoffs",
+      "passed": true
+    }
+  ],
+  "meshCollidersBefore": 1912,
+  "meshCollidersAfter": 600,
+  "allColliders": 1631,
+  "lodGroupsWithDuplicateMeshCollidersBefore": 402,
+  "lodGroupsWithDuplicateMeshCollidersAfter": 0,
+  "terrainResolution": 1025,
+  "missingScripts": 0,
+  "playMode": false,
+  "buildStarted": false
+}

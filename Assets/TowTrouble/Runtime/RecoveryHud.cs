@@ -115,14 +115,14 @@ namespace TowTrouble
             float y=276;
             if(P.completedMask!=0){Button(pageRoot,L("CONTINUĂ","CONTINUE"),80,y,410,()=>session.Host(true,true),true);y+=60;}
             Button(pageRoot,L("EXPLOREAZĂ","EXPLORE"),80,y,410,()=>session.Host(true,true),P.completedMask==0);y+=60;
-            Button(pageRoot,L("TUTORIAL / CONTRACTE","TUTORIAL / CONTRACTS"),80,y,410,()=>Show("Contracts"));y+=60;
+            Button(pageRoot,L("TUTORIAL / CONTRACTE","TUTORIAL / CONTRACTS"),80,y,410,()=>{if(session.World.Map!=null)session.OpenTutorial();else Show("Contracts");});y+=60;
             Button(pageRoot,L("JOACĂ ÎN DOI","PLAY CO-OP"),80,y,410,()=>Show("Coop"));y+=60;
             Button(pageRoot,L("VEHICULE","VEHICLES"),80,y,410,()=>{returnPage="Main";Show("Vehicles");});y+=60;
             Button(pageRoot,L("SETĂRI","SETTINGS"),80,y,410,()=>{returnPage="Main";Show("Settings");});y+=60;
             Button(pageRoot,L("CREDITE","CREDITS"),80,y,410,()=>Show("Credits"));y+=60;
             Button(pageRoot,L("IEȘIRE","QUIT"),80,y,410,()=>Application.Quit());
             var vehicleCard=Panel(pageRoot,1094,710,430,122);Icon(vehicleCard,RecoveryIcon.Body,20,17,30,Amber);Text(vehicleCard,L("MAȘINA TA","YOUR RIDE"),62,14,344,25,14,Muted,true);
-            Text(vehicleCard,RecoveryVehicle.ModelNames[P.vehicle],22,49,386,47,34,Paper,true);Text(pageRoot,L("VALEA VERDE · SERVICIUL DE RECUPERARE","GREEN VALLEY · RECOVERY SERVICE"),900,844,624,28,14,Paper,true).alignment=TextAlignmentOptions.Right;
+            Text(vehicleCard,RecoveryVehicle.ModelNames[P.vehicle],22,49,386,47,34,Paper,true);Text(pageRoot,session.World.Map!=null?"TOW COUNTY · RECOVERY SERVICE":L("VALEA VERDE · SERVICIUL DE RECUPERARE","GREEN VALLEY · RECOVERY SERVICE"),900,844,624,28,14,Paper,true).alignment=TextAlignmentOptions.Right;
         }
         private void BuildContracts()
         {
@@ -188,7 +188,7 @@ namespace TowTrouble
             for(int i=0;i<2;i++){var plate=Panel(pageRoot,430+i*460,560,420,120);Text(plate,"PLAYER "+(i+1),20,14,380,30,22,i==0?Blue:Orange,true);worldNames[i]=Text(plate,"",20,48,380,62,21,Paper,true);}
             var side=Panel(pageRoot,76,220,340,520);Text(side,L("CONTRACT","CONTRACT"),24,24,292,25,16,Amber,true);
             summary=Text(side,"",24,70,292,140,25,Paper,true);slots=Text(side,"",24,220,292,105,18,Muted);
-            Button(side,L("ALEGE CONTRACTUL","CHOOSE CONTRACT"),24,370,292,()=>Show("Contracts"));
+            Button(side,session.World.Map!=null?L("CONTRACTE DUPĂ PORNIRE","JOBS AFTER DEPLOYMENT"):L("ALEGE CONTRACTUL","CHOOSE CONTRACT"),24,370,292,()=>Show("Contracts")).interactable=session.World.Map==null;
             Button(side,L("SCHIMBĂ MAȘINA","CHANGE VEHICLE"),24,444,292,()=>{returnPage="Lobby";Show("Vehicles");});
             var ready=Button(pageRoot,L("PREGĂTIT","READY"),470,752,420,()=>session.ToggleReady());readyText=ready.GetComponentInChildren<TMP_Text>();
             startButton=Button(pageRoot,L("PORNEȘTE CONTRACTUL","START CONTRACT"),920,752,590,()=>session.Deploy(),true);
@@ -324,7 +324,7 @@ namespace TowTrouble
             if(status!=null&&pendingBinding==null&&page=="Coop")status.text=session.Status;
             if(page=="Lobby"&&online)
             {
-                summary.text=w.Contract.TitleFor(P)+"\n"+w.Contract.TerrainFor(P)+"\nSOLO / CO-OP";slots.text=w.Occupied+" / 2\n"+(session.IsHost?L("GAZDĂ • IP / LAN","HOST • IP / LAN"):L("CONECTAT LA GAZDĂ","CONNECTED TO HOST"))+"\nUDP 7777";
+                summary.text=w.Map!=null?L("EXPLORARE LIBERĂ\nAlegeți intervenția cu TAB după pornire.","FREE EXPLORATION\nChoose a job with TAB after deployment."):w.Contract.TitleFor(P)+"\n"+w.Contract.TerrainFor(P)+"\nSOLO / CO-OP";slots.text=w.Occupied+" / 2\n"+(session.IsHost?L("GAZDĂ • IP / LAN","HOST • IP / LAN"):L("CONECTAT LA GAZDĂ","CONNECTED TO HOST"))+"\nUDP 7777";
                 for(int i=0;i<2;i++)if(worldNames[i]!=null)worldNames[i].text=w.OccupiedSlot(i)?w.DriverName(i)+" • "+RecoveryVehicle.ModelNames[w.VehicleIndex(i)]+"\n"+(w.Ready(i)?L("PREGĂTIT","READY"):L("SE PREGĂTEȘTE","GETTING READY")):L("AȘTEPTĂM UN PRIETEN…","WAITING FOR A FRIEND…");
                 readyText.text=w.Ready(session.LocalSlot)?L("NU SUNT GATA","NOT READY"):L("PREGĂTIT","READY");startButton.interactable=session.IsHost&&w.CanStart;
             }

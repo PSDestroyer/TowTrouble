@@ -1,0 +1,257 @@
+{
+  "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+  "nodes": 66,
+  "edges": 68,
+  "sites": 24,
+  "deliveries": 8,
+  "allSitesConnected": true,
+  "allDeliveriesConnected": true,
+  "sourceSceneHashesPreserved": {
+    "Assets/SoStylized/Demo/M_Demonstration_Mega.unity": true,
+    "Assets/SoStylized/Demo/M_Demonstration_Desert.unity": true,
+    "Assets/TowTrouble/Scenes/CanyonRecovery.unity": true
+  },
+  "contracts": [
+    {
+      "id": "R01",
+      "name": "Poiana atelierului",
+      "biome": 0,
+      "tier": 0,
+      "delivery": "A",
+      "transportMetersApprox": 200,
+      "garageAccessMetersApprox": 142,
+      "crossRegion": false
+    },
+    {
+      "id": "R02",
+      "name": "Șleaurile din pădure",
+      "biome": 0,
+      "tier": 1,
+      "delivery": "B",
+      "transportMetersApprox": 180,
+      "garageAccessMetersApprox": 303,
+      "crossRegion": false
+    },
+    {
+      "id": "R03",
+      "name": "Groapa cu noroi",
+      "biome": 0,
+      "tier": 2,
+      "delivery": "B",
+      "transportMetersApprox": 243,
+      "garageAccessMetersApprox": 366,
+      "crossRegion": false
+    },
+    {
+      "id": "R04",
+      "name": "Râpa pădurarului",
+      "biome": 0,
+      "tier": 3,
+      "delivery": "E",
+      "transportMetersApprox": 577,
+      "garageAccessMetersApprox": 454,
+      "crossRegion": true
+    },
+    {
+      "id": "R05",
+      "name": "Malul de pescuit",
+      "biome": 1,
+      "tier": 0,
+      "delivery": "E",
+      "transportMetersApprox": 164,
+      "garageAccessMetersApprox": 388,
+      "crossRegion": false
+    },
+    {
+      "id": "R06",
+      "name": "Mâlul de lângă stuf",
+      "biome": 1,
+      "tier": 1,
+      "delivery": "B",
+      "transportMetersApprox": 289,
+      "garageAccessMetersApprox": 502,
+      "crossRegion": true
+    },
+    {
+      "id": "R07",
+      "name": "Bolovanii de pe mal",
+      "biome": 1,
+      "tier": 2,
+      "delivery": "E",
+      "transportMetersApprox": 390,
+      "garageAccessMetersApprox": 850,
+      "crossRegion": false
+    },
+    {
+      "id": "R08",
+      "name": "Golful izolat",
+      "biome": 1,
+      "tier": 3,
+      "delivery": "A",
+      "transportMetersApprox": 506,
+      "garageAccessMetersApprox": 448,
+      "crossRegion": true
+    },
+    {
+      "id": "R09",
+      "name": "Curba cu pietriș",
+      "biome": 2,
+      "tier": 1,
+      "delivery": "C",
+      "transportMetersApprox": 187,
+      "garageAccessMetersApprox": 469,
+      "crossRegion": false
+    },
+    {
+      "id": "R10",
+      "name": "Treptele de piatră",
+      "biome": 2,
+      "tier": 2,
+      "delivery": "C",
+      "transportMetersApprox": 241,
+      "garageAccessMetersApprox": 358,
+      "crossRegion": false
+    },
+    {
+      "id": "R11",
+      "name": "Râpa de sub drum",
+      "biome": 2,
+      "tier": 3,
+      "delivery": "B",
+      "transportMetersApprox": 324,
+      "garageAccessMetersApprox": 447,
+      "crossRegion": true
+    },
+    {
+      "id": "R12",
+      "name": "Cornișa estică",
+      "biome": 2,
+      "tier": 4,
+      "delivery": "H",
+      "transportMetersApprox": 1169,
+      "garageAccessMetersApprox": 957,
+      "crossRegion": true
+    },
+    {
+      "id": "R13",
+      "name": "Prima limbă de zăpadă",
+      "biome": 3,
+      "tier": 2,
+      "delivery": "D",
+      "transportMetersApprox": 306,
+      "garageAccessMetersApprox": 1033,
+      "crossRegion": false
+    },
+    {
+      "id": "R14",
+      "name": "Serpentina înghețată",
+      "biome": 3,
+      "tier": 3,
+      "delivery": "C",
+      "transportMetersApprox": 555,
+      "garageAccessMetersApprox": 927,
+      "crossRegion": false
+    },
+    {
+      "id": "R15",
+      "name": "Șanțul din viscol",
+      "biome": 3,
+      "tier": 4,
+      "delivery": "D",
+      "transportMetersApprox": 351,
+      "garageAccessMetersApprox": 1078,
+      "crossRegion": false
+    },
+    {
+      "id": "R16",
+      "name": "Platoul de sub vârf",
+      "biome": 3,
+      "tier": 4,
+      "delivery": "A",
+      "transportMetersApprox": 1166,
+      "garageAccessMetersApprox": 1108,
+      "crossRegion": true
+    },
+    {
+      "id": "R17",
+      "name": "Intrarea în nisip",
+      "biome": 4,
+      "tier": 0,
+      "delivery": "F",
+      "transportMetersApprox": 203,
+      "garageAccessMetersApprox": 571,
+      "crossRegion": false
+    },
+    {
+      "id": "R18",
+      "name": "Faleza joasă",
+      "biome": 4,
+      "tier": 1,
+      "delivery": "F",
+      "transportMetersApprox": 53,
+      "garageAccessMetersApprox": 527,
+      "crossRegion": false
+    },
+    {
+      "id": "R19",
+      "name": "Nisipul umed",
+      "biome": 4,
+      "tier": 2,
+      "delivery": "E",
+      "transportMetersApprox": 221,
+      "garageAccessMetersApprox": 681,
+      "crossRegion": false
+    },
+    {
+      "id": "R20",
+      "name": "Duna de pe mal",
+      "biome": 4,
+      "tier": 3,
+      "delivery": "A",
+      "transportMetersApprox": 477,
+      "garageAccessMetersApprox": 534,
+      "crossRegion": true
+    },
+    {
+      "id": "R21",
+      "name": "Vadul uscat",
+      "biome": 5,
+      "tier": 1,
+      "delivery": "G",
+      "transportMetersApprox": 204,
+      "garageAccessMetersApprox": 380,
+      "crossRegion": false
+    },
+    {
+      "id": "R22",
+      "name": "Dunele adânci",
+      "biome": 5,
+      "tier": 2,
+      "delivery": "H",
+      "transportMetersApprox": 374,
+      "garageAccessMetersApprox": 544,
+      "crossRegion": false
+    },
+    {
+      "id": "R23",
+      "name": "Fundul canionului",
+      "biome": 5,
+      "tier": 3,
+      "delivery": "G",
+      "transportMetersApprox": 151,
+      "garageAccessMetersApprox": 591,
+      "crossRegion": false
+    },
+    {
+      "id": "R24",
+      "name": "Versantul de nisip",
+      "biome": 5,
+      "tier": 4,
+      "delivery": "F",
+      "transportMetersApprox": 672,
+      "garageAccessMetersApprox": 760,
+      "crossRegion": true
+    }
+  ],
+  "note": "Distances follow authored centerlines; no driving times or runtime pathfinding validated."
+}

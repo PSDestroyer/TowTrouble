@@ -60,6 +60,11 @@ namespace TowTrouble
         public void Configure(NetworkManager manager, RecoveryWorld recoveryWorld, RecoveryCamera cameraRig)
         { network = manager; world = recoveryWorld; recoveryCamera = cameraRig; }
 
+        private static int travelMode;
+        private static string travelAddress;
+        public void OpenTutorial(){if(!Connected)TravelTo("CanyonRecovery",0,null);}
+        private void TravelTo(string scene,int mode,string address)
+        {travelMode=mode;travelAddress=address;Time.timeScale=1;SceneManager.LoadScene(scene);}
         private void Start()
         {
             Application.targetFrameRate = 60;
@@ -67,6 +72,8 @@ namespace TowTrouble
             network.ClientManager.SetFrameRate(60);
             network.ClientManager.OnClientConnectionState += ClientState;
             recoveryCamera.Bind(this);world.PreviewVehicle(Profile.vehicle);world.PreviewPaint(Profile.paint);
+            int mode=travelMode;string destination=travelAddress;travelMode=0;travelAddress=null;
+            if(mode==1||mode==2)Host(mode==1,true);else if(mode==3)Join(destination);
             var args = System.Environment.GetCommandLineArgs();
             for (int i = 0; i < args.Length; i++)
             {
@@ -97,6 +104,7 @@ namespace TowTrouble
         public void Host(bool solo,bool exploration=false)
         {
             if (Connecting || Connected || leaving) return;
+            if(exploration&&world.Map==null){TravelTo("OpenWorldRecovery",solo?1:2,null);return;}
             Solo=solo;explorationRequested=exploration;garageIdentitySent=false;identitySent=false;recorded=false;
             quickStart = solo; readySent = false; Connecting = true; connectDeadline = Time.unscaledTime + 12f;
             status = "Starting FishNet host...";
@@ -110,6 +118,7 @@ namespace TowTrouble
         public void Join(string address)
         {
             if (Connecting || Connected || leaving) return;
+            if(world.Map==null){TravelTo("OpenWorldRecovery",3,address);return;}
             address = address.Trim();
             if (address.Length == 0 || address.Length > 253) { status = "Enter a valid host address."; return; }
             Solo=false;garageIdentitySent=false;identitySent=false;recorded=false;
@@ -157,7 +166,7 @@ namespace TowTrouble
         public void RecordCompletion()
         {
             if(!Connected||world.Phase!=RecoveryPhase.Complete||recorded)return;
-            recorded=true;if(participatingRun==world.RunId){RecoveryEconomy.Claim(Profile,world.RunId,world.ContractIndex,world.Resets(0)+world.Resets(1)==0,world.Snaps==0);Profile.Save();}
+            recorded=true;if(participatingRun==world.RunId){RecoveryEconomy.Claim(Profile,world.RunId,world.Contract,world.Resets(0)+world.Resets(1)==0,world.Snaps==0);Profile.Save();}
         }
         public void FinishExplorationContract()
         {if(!Connected||!IsHost)return;CloseOverlay();world.ReturnToExplore();}
@@ -188,7 +197,7 @@ namespace TowTrouble
             if(Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame){lastKeyboard=Time.unscaledTime;lastGamepad=false;}
             var activePad=Gamepad.current;if(activePad!=null&&(activePad.buttonSouth.wasPressedThisFrame||activePad.buttonEast.wasPressedThisFrame||activePad.buttonNorth.wasPressedThisFrame||activePad.buttonWest.wasPressedThisFrame||activePad.leftStickButton.wasPressedThisFrame||activePad.startButton.wasPressedThisFrame||activePad.leftShoulder.isPressed||activePad.rightShoulder.isPressed||activePad.leftStick.ReadValue().sqrMagnitude>.05f||activePad.rightStick.ReadValue().sqrMagnitude>.05f||activePad.dpad.ReadValue().sqrMagnitude>.05f||activePad.rightTrigger.ReadValue()>.05f||activePad.leftTrigger.ReadValue()>.05f))lastGamepad=true;
             if (!Connected || LocalSlot < 0) return;
-            if(!identitySent){identitySent=true;if(IsHost)world.ConfigureSession(SelectedContract,!Solo,explorationRequested);world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);}
+            if(!identitySent){identitySent=true;if(IsHost)world.ConfigureSession(world.Map!=null?0:SelectedContract,!Solo,explorationRequested||world.Map!=null);world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);}
             if(world.FreeRoam&&!garageIdentitySent){garageIdentitySent=true;SendGarageBuild();}
             if(GarageOpen&&world.Phase!=RecoveryPhase.Explore)CloseOverlay();
             if(world.HasContract)participatingRun=world.RunId;

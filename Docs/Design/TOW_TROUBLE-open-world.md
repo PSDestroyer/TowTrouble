@@ -3,15 +3,15 @@
 ## Direcție
 Scena Mega devine ulterior lumea deschisă. Garajul este un loc fizic pentru personalizare. Tab deschide intervențiile; jucătorul acceptă, conduce până la țintă, recuperează, livrează și primește bani. Tutorialul existent rămâne separat. Fizica și rezultatul misiunii sunt ale gazdei FishNet.
 
-## Etapa autorizată curentă: punctele 1–4
+## Etapele 1–4 implementate; etapa 5 autorizată la 2026-10-31
 1. Documentul și economia.
 2. Catalogul real al celor două pachete Hot Rod, cu ID-uri stabile, compatibilități și excluderi explicite.
 3. Garaj: previzualizare 3D, cumpărare, montare, vânzare, salvarea configurației și preseturi.
 4. Contracte în gameplay prin Tab, obiectiv în lume, recompensă și profil persistent.
 
-Punctul 5, adaptarea M_Demonstration_Mega și a deșertului/biomurilor, NU intră în etapa curentă. Cele trei intervenții existente și curtea atelierului din CanyonRecovery sunt terenul de integrare. Alegerea Tutorial / Contracte păstrează fluxul anterior. Explorează pornește fluxul nou pe aceeași zonă de test.
+Etapa 5 este acum autorizată prin aprobarea hărții cu 24 recuperări și 8 predări. Scena de joc este OpenWorldRecovery, derivată din Mega și sistemele tutorialului. CanyonRecovery și scenele demo originale rămân separate. Explorează încarcă harta nouă; Tutorial / Contracte păstrează accesul la tutorial.
 
-## Biomuri viitoare și echipament
+## Biomuri și echipament
 | Biom | Provocare | Pregătire |
 |---|---|---|
 | Pădure | Noroi și poziționare îngustă | Anvelope de noroi, gardă la sol |
@@ -20,7 +20,7 @@ Punctul 5, adaptarea M_Demonstration_Mega și a deșertului/biomurilor, NU intr�
 | Munte / zăpadă | Pantă, alunecare, răsturnare | Reductor, echipament de iarnă, stabilitate, cablu |
 | Deșert | Dune și șocuri în cablu | Anvelope de nisip, suspensie, cablu rezistent |
 
-Fiecare biom conține dificultăți diferite. Motorul este limitat de aderență; un cablu mai puternic nu produce tracțiune suplimentară. Nisipul și zăpada nu sunt implementate în această etapă; piesele corespunzătoare au aspect și configurație în catalog, iar efectele pe suprafețele viitoare se conectează la etapa 5. Inventarul actual oferă roți cu crampoane; lanțurile din concept nu au fost confirmate ca model 3D separat.
+Fiecare biom conține dificultăți diferite. Motorul este limitat de aderență; un cablu mai puternic nu produce tracțiune suplimentară. Nisipul și zăpada au acum aderență locală pe colliderul drumului și pe terenul hărții. Anvelopele de nisip cresc aderența pe nisip cu 45%; cele de iarnă cresc aderența pe zăpadă cu 65%. Compromisurile în noroi rămân -10% / -15%. Inventarul actual oferă roți cu crampoane; lanțurile din concept nu au fost confirmate ca model 3D separat.
 
 ## Economie
 Scout, echipament inițial și zero credite pentru profil nou. Tutorialul plătește ca prima intervenție. Profilurile vechi păstrează progresul și primesc o singură creditare pentru contractele deja finalizate, după medaliile salvate.
@@ -64,4 +64,17 @@ Garajul se deschide cu G când mașina este oprită în zona atelierului, fără
 Profil v2 migrează profilul v1, păstrează setări/progres/culori și adaugă bani, inventar, configurații și preseturi. ID de intervenție emis de gazdă pentru plată o singură dată pe profil. Banii locali nu sunt o economie competitivă cu backend. Gazda validează slotul solicitantului, starea, accesul la garaj și ID-urile catalogului; nu acceptă coeficienți fizici trimiși de client. Configurațiile se transmit la schimbare, nu în fiecare snapshot. Ambii jucători au nevoie de aceeași versiune.
 
 ## Validare
-Fără builduri și fără pornirea Play Mode de către agent. Compilare, verificări Edit Mode pentru economie/migrare/catalog și previzualizare statică. Condusul, navigarea reală a meniurilor și multiplayerul se testează de utilizator. Punctul 5 rămâne separat.
+Fără builduri și fără pornirea Play Mode de către agent. Compilare, verificări Edit Mode pentru economie/migrare/catalog și previzualizare statică. Condusul, navigarea reală a meniurilor și multiplayerul se testează de utilizator. Etapa 5 este construită în scena separată OpenWorldRecovery; condusul și multiplayerul rămân pentru testul utilizatorului.
+
+
+## Harta construită — etapa 5
+
+Scenă: Assets/TowTrouble/Scenes/OpenWorldRecovery.unity. Teren 1000 × 1000 m derivat dintr-o copie a TerrainData Mega, relieful și vopsirea adaptate planului. So Stylized pentru natură și deșert; Broken Vector la accesul atelierului, drumuri de pământ conforme terenului pentru restul rețelei. Originalele Mega, Desert și CanyonRecovery nu sunt rescrise.
+
+24 recuperări, câte 4 în Pădure, Lac, Munte, Zăpadă, Plajă și Deșert; 8 predări A–H. 16 transporturi regionale și 8 între regiuni. JSON-ul de authoring cu ID-uri și legături este Assets/TowTrouble/Editor/OpenWorldPlan.json. C, R19 și R23 au fost repoziționate ușor față de schiță pentru a evita suprapunerea acceselor la înălțimi diferite.
+
+Garaj central G, râu cu două traversări, serpentine, zone de Living Mud pentru 6 recuperări din pădure/lac. Panoul Tab are filtre de biom și 8 pagini, cu fotografii statice pozate în scenă. O singură țintă activă, activată de gazdă la acceptarea contractului; nu se simulează 24 de mașini simultan.
+
+Extragerea este măsurată prin distanță față de țintă, nu prin Z global. Predarea verifică distanța orizontală și diferența de altitudine. Progresul tutorialului folosește în continuare biții 0–2; harta folosește 3–26, fără migrarea formatului v2. Resetarea folosește puncte sigure de pe suprafața drumului, inclusiv deasupra podurilor. Apa adâncă a lacului resetează mașina la ultimul punct sigur.
+
+Aceasta este prima versiune a hărții. Nu sunt validate încă senzația de condus, durata economică efectivă, potrivirea dificultății fiecărui contract sau multiplayerul pe hartă. Dovezi: Docs/Validation/OpenWorld.

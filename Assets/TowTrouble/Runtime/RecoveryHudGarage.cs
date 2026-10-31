@@ -80,22 +80,32 @@ namespace TowTrouble
         }
         private bool UsedPart(string id)
         {foreach(var b in P.builds)if(b.Items!=null&&Array.IndexOf(b.Items,id)>=0)return true;foreach(var p in P.presets)if(p.Build?.Items!=null&&Array.IndexOf(p.Build.Items,id)>=0)return true;return false;}
+        private int boardPage,boardBiome=-1;
         private void BuildBoard()
         {
             Header(L("INTERVENȚII DISPONIBILE","AVAILABLE RECOVERIES"),L("Alege intervenția. Pregătește mașina. Adu-i acasă.","Pick a job. Prepare your ride. Bring them home."));Wallet(pageRoot,P.credits);
             var w=session.World;var car=w.Drivers[Mathf.Max(0,session.LocalSlot)];
-            for(int i=0;i<RecoveryContract.All.Length;i++)
+            var contracts=w.AvailableContracts;var visible=new List<int>();
+            for(int i=0;i<contracts.Length;i++)if(w.Map==null||boardBiome<0||contracts[i].Zone==boardBiome)visible.Add(i);
+            if(w.Map!=null)
             {
-                int id=i;var contract=RecoveryContract.Get(i);bool active=boardIndex==i;float distance=Vector3.Distance(car.transform.position,contract.Target);
+                string[] tabs={L("TOATE","ALL"),L("PĂDURE","FOREST"),L("LAC","LAKE"),L("MUNTE","MOUNTAIN"),L("ZĂPADĂ","SNOW"),L("PLAJĂ","BEACH"),L("DEȘERT","DESERT")};
+                for(int i=0;i<7;i++){int filter=i-1;Button(pageRoot,tabs[i],76+i*207,194,196,()=>{boardBiome=filter;boardPage=0;boardIndex=0;for(int j=0;j<contracts.Length;j++)if(filter<0||contracts[j].Zone==filter){boardIndex=j;break;}Show("Board");},boardBiome==filter,30);}
+            }
+            int pages=Mathf.Max(1,(visible.Count+2)/3);boardPage=Mathf.Clamp(boardPage,0,pages-1);boardIndex=Mathf.Clamp(boardIndex,0,contracts.Length-1);
+            for(int row=0;row<3;row++)
+            {
+                int index=boardPage*3+row;if(index>=visible.Count)break;int id=visible[index];var contract=contracts[id];bool active=boardIndex==id;int i=row;float distance=Vector3.Distance(car.transform.position,contract.Target);
                 var card=Button(pageRoot,contract.TitleFor(P),76,232+i*158,580,()=>{boardIndex=id;Show("Board");},active,142);var title=card.GetComponentInChildren<TMP_Text>();title.rectTransform.anchoredPosition=new Vector2(216,-12);title.rectTransform.sizeDelta=new Vector2(344,50);title.font=displayFont!=null?displayFont:font;title.fontSize=24*P.textScale;
-                ContractPhoto(card.transform,i,14,14,184,112);var number=Panel(card.transform,23,22,38,28,Amber);Text(number,contract.Id.ToString("00"),0,0,38,28,16,Ink,true).alignment=TextAlignmentOptions.Center;
+                ContractPhoto(card.transform,id,14,14,184,112);var number=Panel(card.transform,23,22,38,28,Amber);Text(number,contract.Id.ToString("00"),0,0,38,28,16,Ink,true).alignment=TextAlignmentOptions.Center;
                 Text(card.transform,contract.Difficulty(P)+"  ·  "+Mathf.RoundToInt(distance)+" m",218,65,340,25,16,active?Ink:Muted);Icon(card.transform,RecoveryIcon.Coins,218,103,22,active?Ink:Amber);Text(card.transform,contract.Reward.ToString("N0")+" CR",250,94,300,36,23,active?Ink:Amber,true);
             }
-            var selected=RecoveryContract.Get(boardIndex);var detail=Panel(pageRoot,690,232,834,458);Text(detail,selected.TitleFor(P),30,17,774,50,33,Paper,true);ContractPhoto(detail,boardIndex,30,80,774,178);
-            Text(detail,selected.DescriptionFor(P)+"\n"+L("Teren: ","Terrain: ")+selected.TerrainFor(P)+"\n"+L(new[]{"Echipamentul inițial este suficient.","Caută sprijin pe teren tare și trage spre drum.","Anvelope de noroi. Accelerează treptat."}[boardIndex],new[]{"Stock equipment is enough.","Find firm ground and pull towards the road.","Mud tires. Build throttle gently."}[boardIndex]),30,277,482,115,19,Paper);
+            var selected=contracts[boardIndex];var detail=Panel(pageRoot,690,232,834,458);Text(detail,selected.TitleFor(P),30,17,774,50,33,Paper,true);ContractPhoto(detail,boardIndex,30,80,774,178);
+            Text(detail,selected.DescriptionFor(P)+"\n"+L("Teren: ","Terrain: ")+selected.TerrainFor(P)+"\n"+(selected.IsOpenWorld?RecoveryMap.Preparation(selected.Zone,P.language=="en"):L(new[]{"Echipamentul inițial este suficient.","Caută sprijin pe teren tare și trage spre drum.","Anvelope de noroi. Accelerează treptat."}[boardIndex],new[]{"Stock equipment is enough.","Find firm ground and pull towards the road.","Mud tires. Build throttle gently."}[boardIndex])),30,277,482,115,19,Paper);
             var reward=Panel(detail,542,277,262,111);reward.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Paper;Icon(reward,RecoveryIcon.Coins,15,17,26,Ink);Text(reward,L("RECOMPENSĂ","REWARD"),50,12,196,27,14,Ink,true);Text(reward,selected.Reward.ToString("N0")+" CR",17,45,228,50,35,Ink,true).alignment=TextAlignmentOptions.Center;
             Text(detail,L("BONUSURI  ·  +10% fără resetări  ·  +10% fără cablu rupt  ·  +5% prima recuperare","BONUSES  ·  +10% no resets  ·  +10% no cable breaks  ·  +5% first recovery"),30,411,774,30,14,Muted);
-            var statusCard=Panel(pageRoot,76,720,1448,50);Icon(statusCard,w.HasContract?RecoveryIcon.Hook:RecoveryIcon.Flag,18,13,25,Amber);Text(statusCard,w.HasContract?L("ÎN DESFĂȘURARE: ","IN PROGRESS: ")+w.Contract.TitleFor(P):L("Nicio intervenție activă. Alege unde mergem mai departe.","No active recovery. Choose where we go next."),60,0,1368,50,18,Paper).alignment=TextAlignmentOptions.MidlineLeft;
+            if(w.Map!=null){Button(pageRoot,"‹",76,704,90,()=>{boardPage--;boardIndex=visible[Mathf.Max(0,boardPage*3)];Show("Board");},false,34).interactable=boardPage>0;Text(pageRoot,(boardPage+1)+" / "+pages+"   ·   "+visible.Count+L(" recuperări"," recoveries"),180,708,370,30,16,Paper);Button(pageRoot,"›",566,704,90,()=>{boardPage++;boardIndex=visible[Mathf.Min(visible.Count-1,boardPage*3)];Show("Board");},false,34).interactable=boardPage<pages-1;}
+            var statusCard=Panel(pageRoot,76,w.Map!=null?750:720,1448,w.Map!=null?40:50);Icon(statusCard,w.HasContract?RecoveryIcon.Hook:RecoveryIcon.Flag,18,13,25,Amber);Text(statusCard,w.HasContract?L("ÎN DESFĂȘURARE: ","IN PROGRESS: ")+w.Contract.TitleFor(P):L("Nicio intervenție activă. Alege unde mergem mai departe.","No active recovery. Choose where we go next."),60,0,1368,50,18,Paper).alignment=TextAlignmentOptions.MidlineLeft;
             startButton=Button(pageRoot,w.HasContract?L("AI DEJA UN CONTRACT","JOB ALREADY ACTIVE"):L("ACCEPTĂ INTERVENȚIA","ACCEPT RECOVERY"),1004,805,520,()=>session.AcceptBoardContract(boardIndex),true,62);startButton.interactable=session.IsHost&&w.Phase==RecoveryPhase.Explore&&!w.CrewInGarage;
             if(w.HasContract)Button(pageRoot,L("ABANDONEAZĂ","ABANDON"),690,805,290,()=>Confirm(L("Abandonezi intervenția fără recompensă?","Abandon this job without payment?"),()=>{session.FinishExplorationContract();Show("Gameplay");},"Board"),false,62).interactable=session.IsHost;
             Button(pageRoot,L("ÎNAPOI ÎN JOC","BACK TO DRIVING"),76,805,340,()=>{session.CloseOverlay();Show("Gameplay");},false,62);

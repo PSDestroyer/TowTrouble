@@ -1,0 +1,27 @@
+{
+  "cause": "Inactive target received SetSpawn before Awake initialized Rigidbody and suspension",
+  "before": "Same isolated prefab call threw NullReferenceException in ResetVehicle",
+  "after": [
+    {
+      "name": "InactiveTargetCanBeSpawnedBeforeAwake",
+      "passed": true
+    },
+    {
+      "name": "DelayedAwakeDoesNotRebuildGeometryOrReplaceSpawn",
+      "passed": true
+    },
+    {
+      "name": "InitializingSimulationBeforeSpawnKeepsLaterResetPosition",
+      "passed": true
+    },
+    {
+      "name": "ResetBeforeAwakeHasAValidBodyAndSafePosition",
+      "passed": true
+    },
+    {
+      "name": "RepeatedSpawnsDoNotRepeatInitialization",
+      "passed": true
+    }
+  ],
+  "validation": "Directly invoked Edit Mode initialization assertions on temporary prefab copies; no Test Runner, physics simulation, Play Mode, profile write or build"
+}
