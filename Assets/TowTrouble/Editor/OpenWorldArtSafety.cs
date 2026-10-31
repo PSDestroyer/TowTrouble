@@ -13,7 +13,7 @@ namespace TowTrouble.Editor
             if(EditorApplication.isPlaying||scene.path!=ScenePath||scene.isDirty)
                 throw new InvalidOperationException("Open and save OpenWorldRecovery in Edit Mode first.");
             IntegrateLandforms();IntegrateBiomeArt();FinishArtComposition();BlendWorkshopApproaches();
-            IntegrateWorkshopAndLighting();FinalizeArtSafety();BakeGroundSurfaceMap();ConfigureWheelTracks();CaptureMapPhotos();
+            IntegrateWorkshopAndLighting();FinalizeArtSafety();RecomposeMountainGorge();BakeGroundSurfaceMap();ConfigureWheelTracks();CaptureMapPhotos();
         }
         private static Vector3 SafeSignPoint(Vector3 origin, Vector3 approach, float radius, float halfWidth)
         {

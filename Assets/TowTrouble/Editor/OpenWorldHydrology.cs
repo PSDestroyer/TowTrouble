@@ -15,7 +15,7 @@ namespace TowTrouble.Editor
             // The last reach overlaps the lake. Heights are solved separately from the terrain.
             var raw=new[]{new Vector2(.36f,.19f),new Vector2(.35f,.29f),new Vector2(.34f,.38f),new Vector2(.24f,.46f),new Vector2(.20f,.56f),new Vector2(.24f,.65f),new Vector2(.22f,.69f),new Vector2(.215f,.72f)};
             var points=raw.Select(p=>new Vector3((p.x-.5f)*900,0,(.5f-p.y)*900)).ToList();for(int i=0;i<2;i++)points=SmoothShore(points,false);
-            var result=new List<Vector3>();for(int s=1;s<points.Count;s++){int n=Mathf.CeilToInt(Vector3.Distance(points[s-1],points[s])/1.5f);for(int i=0;i<n;i++)result.Add(Vector3.Lerp(points[s-1],points[s],i/(float)n));}result.Add(points.Last());return result;
+            var result=new List<Vector3>();for(int s=1;s<points.Count;s++){int n=Mathf.CeilToInt(Vector3.Distance(points[s-1],points[s])/1.5f);for(int i=0;i<n;i++)result.Add(Vector3.Lerp(points[s-1],points[s],i/(float)n));}result.Add(points.Last());return ComposeHeadwaters(result);
         }
         private static List<Vector3> cachedRiverPlan;
         private static float RiverDistance(Vector3 p)
@@ -49,7 +49,7 @@ namespace TowTrouble.Editor
             }
             // A rock cascade connects the high headwater pool to the valley. The lower reach
             // follows a gentle continuous gradient rather than ending in a floating rectangle.
-            anchors.Add(new Vector2(20,106));anchors.Add(new Vector2(35,87));
+            AddHeadwaterAnchors(centers,arcs,anchors);
             anchors=anchors.OrderBy(a=>a.x).ToList();
             for(int i=1;i<anchors.Count;i++){var a=anchors[i];a.y=Mathf.Min(a.y,anchors[i-1].y);a.y=Mathf.Max(10.4f,a.y);anchors[i]=a;}
             for(int i=0;i<centers.Count;i++)
@@ -58,12 +58,12 @@ namespace TowTrouble.Editor
                 var a=anchors[k-1];var b=anchors[k];var p=centers[i];p.y=Mathf.Lerp(a.y,b.y,Mathf.InverseLerp(a.x,b.x,arcs[i]));centers[i]=p;
             }
         }
-        private static float RiverHalfWidth(float arc)=>3.5f+.45f*Mathf.Sin(arc*.043f)+.18f*Mathf.Sin(arc*.12f);
+        private static float RiverHalfWidth(float arc)=>HeadwaterHalfWidth(arc);
         private static void BuildConnectedRiver(Material water,Transform landmarks)
         {
             ScenicRoadField(terrain.terrainData.heightmapResolution);
             var centers=RiverPlan();SolveRiver(centers,out var arcs);
-            var data=terrain.terrainData;int n=data.heightmapResolution;var h=data.GetHeights(0,0,n,n);var baseline=AssetDatabase.LoadAssetAtPath<TerrainData>(VisualRoot+"/Road graded terrain snapshot.asset");var original=baseline.GetHeights(0,0,n,n);float scale=(n-1)/1000f;
+            var data=terrain.terrainData;int n=data.heightmapResolution;var h=data.GetHeights(0,0,n,n);var baseline=AssetDatabase.LoadAssetAtPath<TerrainData>(VisualRoot+"/Road graded terrain snapshot.asset");var original=gorgeRiverBaseline??baseline.GetHeights(0,0,n,n);float scale=(n-1)/1000f;
             var nearest=new float[n,n];var level=new float[n,n];var width=new float[n,n];for(int z=0;z<n;z++)for(int x=0;x<n;x++)nearest[z,x]=10000;
             for(int i=1;i<centers.Count;i++)
             {
@@ -120,9 +120,9 @@ namespace TowTrouble.Editor
             var vs=new List<Vector3>();var uv=new List<Vector2>();var flatTr=new List<int>();var fallTr=new List<int>();
             for(int i=0;i<centers.Count;i++)
             {
-                var dir=Flat(centers[Mathf.Min(i+1,centers.Count-1)]-centers[Mathf.Max(0,i-1)]).normalized;var right=Vector3.Cross(Vector3.up,dir);float w=RiverHalfWidth(arcs[i])+1.95f;
+                var dir=Flat(centers[Mathf.Min(i+1,centers.Count-1)]-centers[Mathf.Max(0,i-1)]).normalized;var right=Vector3.Cross(Vector3.up,dir);float w=RiverSurfaceHalfWidth(centers,arcs,i);
                 vs.Add(centers[i]-right*w);vs.Add(centers[i]+right*w);uv.Add(new Vector2(0,1-Mathf.Clamp01(arcs[i]/140)));uv.Add(new Vector2(1,1-Mathf.Clamp01(arcs[i]/140)));
-                if(i<centers.Count-1&&(centers[i].y>10.401f||ShoreDistance(centers[i])>-5)){float grade=(centers[i].y-centers[i+1].y)/Mathf.Max(.01f,arcs[i+1]-arcs[i]);var tr=grade>.38f?fallTr:flatTr;int a=i*2;tr.AddRange(new[]{a,a+2,a+1,a+1,a+2,a+3});}
+                if(i<centers.Count-1&&(centers[i].y>10.401f||ShoreDistance(centers[i])>-5)){float grade=(centers[i].y-centers[i+1].y)/Mathf.Max(.01f,arcs[i+1]-arcs[i]);if(grade>.38f&&centers[i].z>210)continue;var tr=grade>.38f?fallTr:flatTr;int a=i*2;tr.AddRange(new[]{a,a+2,a+1,a+1,a+2,a+3});}
             }
             var cascadeVertices=vs.ToList();
             flatTr=RemoveLakeOverlap(vs,flatTr);
@@ -132,6 +132,7 @@ namespace TowTrouble.Editor
             var go=new GameObject("River - continuous channel and cascade",typeof(MeshFilter),typeof(MeshRenderer));go.transform.SetParent(landmarks,false);go.GetComponent<MeshFilter>().sharedMesh=VisualAsset(mesh,"Winding river.asset");go.GetComponent<MeshRenderer>().sharedMaterial=water;go.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;
             var fall=new Mesh{name="Headwater cascade"};fall.SetVertices(cascadeVertices);fall.SetUVs(0,uv);fall.SetColors(Enumerable.Repeat(Color.white,cascadeVertices.Count).ToList());fall.SetTriangles(fallTr,0);fall.RecalculateNormals();fall.RecalculateTangents();fall.RecalculateBounds();
             var fallGo=new GameObject("River - headwater cascade",typeof(MeshFilter),typeof(MeshRenderer));fallGo.transform.SetParent(landmarks,false);fallGo.GetComponent<MeshFilter>().sharedMesh=VisualAsset(fall,"Headwater cascade.asset");fallGo.GetComponent<MeshRenderer>().sharedMaterial=cascade;fallGo.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;
+            BuildAuthoredWaterfalls(landmarks);
             foreach(var crossing in riverCrossings)BuildRiverBridge(crossing,landmarks);
             Debug.Log("[TowTrouble] Connected river to lake; "+riverCrossings.Count+" surveyed road crossings.");
         }
