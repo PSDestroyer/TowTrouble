@@ -37,7 +37,7 @@ namespace TowTrouble
                 else {position=center+new Vector3(12,4.4f,5);look=center+new Vector3(1.5f,1,-3.5f);if(!p.reducedMotion)position.x+=Mathf.Sin(Time.unscaledTime*.12f)*.15f;}
             }
             else if(session.World.Phase==RecoveryPhase.Complete)
-            {var target=session.World.Casualty.transform.position;position=target+new Vector3(8,4.6f,9);look=target+Vector3.up;}
+            {var target=session.World.TowTargetPosition;position=target+new Vector3(8,4.6f,9);look=target+Vector3.up;}
             else
             {
                 int slot=Mathf.Max(0,session.LocalSlot);var car=session.World.Drivers[slot].transform;bool moving=false;
@@ -48,7 +48,7 @@ namespace TowTrouble
                     if(Keyboard.current!=null&&Keyboard.current.cKey.wasPressedThisFrame){orbit=0;elevation=8;}
                 }
                 if(!moving)orbit=Mathf.LerpAngle(orbit,0,Time.deltaTime*2.5f);
-                var rotation=Quaternion.Euler(0,car.eulerAngles.y+orbit,0);var target=session.World.Casualty.transform.position;
+                var rotation=Quaternion.Euler(0,car.eulerAngles.y+orbit,0);var target=session.World.TowTargetPosition;
                 bool includeTarget=session.World.HasContract&&Vector3.Distance(car.position,target)<28;
                 var center=includeTarget?Vector3.Lerp(car.position,target,.38f):car.position;
                 var followOffset=includeTarget

@@ -339,10 +339,11 @@ namespace TowTrouble
             garagePrompt.text=w.FreeRoam?L("TAB · Contracte","TAB · Contracts"):"";
             objective.text=w.Phase==RecoveryPhase.Deliver?L("LIVREAZĂ ÎN ZONA SIGURĂ","DELIVER TO THE SAFE ZONE"):L("RECUPEREAZĂ MAȘINA","RECOVER THE CAR");
             crew.text=w.Cooperative?"CO-OP  "+w.Occupied+"/2"+(w.Occupied<2?"\n"+L("COECHIPIER DECONECTAT","CREWMATE DISCONNECTED")+"\n"+(session.UsingGamepad?"START":"ESC")+"  "+L("Meniu / Lobby","Menu / Lobby"):""):"";speed.text=Mathf.RoundToInt(w.Drivers[slot].Speed*3.6f)+" <size=27>km/h</size>";
+            if(w.ClearingObstacle)objective.text=L("1/2 · ELIBEREAZĂ ACCESUL — TRAGE COPACUL ÎN LATERAL","1/2 · CLEAR ACCESS — PULL THE FALLEN TREE ASIDE");
             var wheelSlip=w.Drivers[slot].WheelSlip;float slip=Mathf.Max(wheelSlip.x,wheelSlip.y,wheelSlip.z,wheelSlip.w);
             mudFeedback.gameObject.SetActive(P.tutorial&&w.Drivers[slot].InMud);
             mudFeedback.text=slip>.25f?L("PATINARE · Redu accelerația pentru mai multă tracțiune.","WHEELSPIN · Ease off for better traction."):L("NOROI · Accelerează progresiv și păstrează cablul întins.","MUD · Build throttle gently and keep the cable taut.");
-            bool near=Vector3.Distance(w.Drivers[slot].RearHitch,w.Casualty.FrontHitch)<RecoveryRules.AttachRange;
+            bool near=Vector3.Distance(w.Drivers[slot].RearHitch,w.TowPoint)<RecoveryRules.AttachRange;
             cableGroup.SetActive(attached||near);cableFill.transform.parent.gameObject.SetActive(attached);
             string level=load>.82f?L("! REDU ACCELERAȚIA","! EASE OFF"):load>.6f?L("! APROAPE DE LIMITĂ","! NEAR THE LIMIT"):L("SIGUR","SAFE");
             cableText.text=attached?L("CABLU  ","CABLE  ")+(P.colorHelp?level:""):L("CÂRLIG DISPONIBIL","HITCH IN RANGE");
@@ -358,8 +359,8 @@ namespace TowTrouble
                 tag.gameObject.SetActive(visible);
                 if(visible){tag.anchorMin=tag.anchorMax=new Vector2(viewport.x,viewport.y);tag.pivot=new Vector2(.5f,0);tag.anchoredPosition=Vector2.zero;int signal=w.Signal(i);string[] signals={"",L("GATA","READY"),L("TRAGE","PULL"),L("OPREȘTE","STOP")};hudNames[i].text=w.DriverName(i)+"  /  P"+(i+1)+(signal==0?"":"\n"+signals[Mathf.Clamp(signal,0,3)]);float width=Mathf.Clamp(hudNames[i].GetPreferredValues().x+26,130,280);tag.sizeDelta=new Vector2(width,70);((RectTransform)hudNames[i].transform.parent).sizeDelta=new Vector2(width,56);hudNames[i].rectTransform.sizeDelta=new Vector2(width-16,56);((RectTransform)tag.GetChild(1)).anchoredPosition=new Vector2(width*.5f-7,-49);}
             }
-            var goal=w.Phase==RecoveryPhase.Deliver?w.Contract.Delivery+Vector3.up*3:w.Casualty.transform.position+Vector3.up*3;
-            PlaceMarker(marker,goal,camera);marker.text=w.Phase==RecoveryPhase.Deliver?L("ZONĂ SIGURĂ","SAFE ZONE")+"  "+Mathf.RoundToInt(Vector3.Distance(w.Casualty.transform.position,w.Contract.Delivery))+" m":L("MAȘINA DE RECUPERAT","STRANDED CAR");
+            var goal=w.Phase==RecoveryPhase.Deliver?w.Contract.Delivery+Vector3.up*3:w.TowTargetPosition+Vector3.up*3;
+            PlaceMarker(marker,goal,camera);marker.text=w.Phase==RecoveryPhase.Deliver?L("ZONĂ SIGURĂ","SAFE ZONE")+"  "+Mathf.RoundToInt(Vector3.Distance(w.Casualty.transform.position,w.Contract.Delivery))+" m":w.ClearingObstacle?L("1/2 · TRAGE COPACUL ÎN LATERAL","1/2 · PULL THE LOG ASIDE"):L("MAȘINA DE RECUPERAT","STRANDED CAR");
         }
         private static void PlaceMarker(TMP_Text text,Vector3 position,Camera camera)
         {var p=camera.WorldToViewportPoint(position);text.gameObject.SetActive(p.z>0&&p.x>.06f&&p.x<.94f&&p.y>.12f&&p.y<.88f);text.rectTransform.anchorMin=text.rectTransform.anchorMax=new Vector2(p.x,p.y);text.rectTransform.pivot=new Vector2(.5f,0);text.rectTransform.anchoredPosition=Vector2.zero;}

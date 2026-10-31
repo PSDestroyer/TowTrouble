@@ -26,9 +26,10 @@ namespace TowTrouble
         public float Tension0, Tension1, Elapsed;
         public int Snaps, Resets0, Resets1;
         public float Pull0, Pull1;
+        public Vector3 ObstaclePosition;public Quaternion ObstacleRotation;
     }
 
-    public sealed class RecoveryWorld : NetworkBehaviour
+    public sealed partial class RecoveryWorld : NetworkBehaviour
     {
         [SerializeField] private RecoveryVehicle[] drivers;
         [SerializeField] private RecoveryVehicle casualty;
@@ -190,14 +191,14 @@ namespace TowTrouble
         {
             if(sender==null||Slot(sender.ClientId)!=0||!FreeRoam||CrewInGarage||Phase!=RecoveryPhase.Explore||contract<0||contract>=AvailableContracts.Length)return;
             contractId.Value=contract;ApplyContract();ClearContract();
-            casualty.gameObject.SetActive(true);casualty.SetSimulation(true);casualty.SetSpawn(Contract.Target,Quaternion.Euler(0,Contract.Heading,0),Contract.MudDrag,Contract.Extraction-2,!Contract.IsOpenWorld&&contract==2);
-            runId.Value=System.Guid.NewGuid().ToString("N");phase.Value=(int)RecoveryPhase.HookUp;
+            casualty.gameObject.SetActive(true);casualty.SetSimulation(true);casualty.SetSpawn(Contract.Target,Quaternion.Euler(Contract.Pitch,Contract.Heading,Contract.Roll),Contract.MudDrag,Contract.Extraction-2,!Contract.IsOpenWorld&&contract==2);
+            runId.Value=System.Guid.NewGuid().ToString("N");phase.Value=(int)RecoveryPhase.HookUp;BeginScenario();
         }
         [ServerRpc(RequireOwnership=false)]
         public void ReturnToExplore(NetworkConnection sender=null)
         {
             if(sender==null||Slot(sender.ClientId)!=0||!FreeRoam||Phase==RecoveryPhase.Lobby)return;
-            ClearContract();phase.Value=(int)RecoveryPhase.Explore;casualty.SetSimulation(false);casualty.gameObject.SetActive(false);
+            StopScenario();ClearContract();phase.Value=(int)RecoveryPhase.Explore;casualty.SetSimulation(false);casualty.gameObject.SetActive(false);
             foreach(var car in drivers)car.SetInput(Vector2.zero,true);
         }
         private void ClearContract()
@@ -274,7 +275,7 @@ namespace TowTrouble
             if (slot < 0 || !HasContract || Time.time - lastAction[slot] < .35f) return;
             lastAction[slot] = Time.time;
             if (connected[slot]) { connected[slot] = false; tensions[slot] = 0; return; }
-            float distance = Vector3.Distance(drivers[slot].RearHitch, casualty.FrontHitch);
+            float distance = Vector3.Distance(drivers[slot].RearHitch, TowPoint);
             if (distance > RecoveryRules.AttachRange) return;
             connected[slot] = true; lengths[slot] = Mathf.Max(3.5f, distance - .3f); overload[slot] = 0f;
             if (Phase == RecoveryPhase.HookUp) phase.Value = (int)RecoveryPhase.Recover;
@@ -290,6 +291,7 @@ namespace TowTrouble
 
         private void ResetRecovery()
         {
+            StopScenario();
             if(appliedContract!=contractId.Value)ApplyContract();
             elapsed = 0; snaps = 0; deliveryHold = 0;
             drivers[0].SetModel(vehicle0.Value);drivers[1].SetModel(vehicle1.Value);
@@ -299,24 +301,25 @@ namespace TowTrouble
                 resets[i]=0;pullSeconds[i]=0;extending[i]=false;
                 drivers[i].SetSpawn(FreeRoam?garagePosition+new Vector3(i==0?-2.5f:2.5f,.05f,-2):new Vector3(i==0?-2.3f:2.5f,.05f,30f),FreeRoam?Quaternion.Euler(0,180,0):Quaternion.identity);drivers[i].SetSimulation(false);appliedBuild[i]=null;ApplyBuild(i);
             }
-            casualty.SetSpawn(Contract.Target,Quaternion.Euler(0,Contract.Heading,0),Contract.MudDrag,Contract.Extraction-2f,!Contract.IsOpenWorld&&ContractIndex==2); casualty.SetSimulation(false);
+            casualty.SetSpawn(Contract.Target,Quaternion.Euler(Contract.Pitch,Contract.Heading,Contract.Roll),Contract.MudDrag,Contract.Extraction-2f,!Contract.IsOpenWorld&&ContractIndex==2); casualty.SetSimulation(false);
         }
 
         private void FixedUpdate()
         {
             if (!IsServerInitialized || Phase == RecoveryPhase.Lobby || Phase == RecoveryPhase.Complete) return;
             if(HasContract)elapsed += Time.fixedDeltaTime;
+            Vector3 totalPull=Vector3.zero;
             for (int i = 0; i < 2; i++)
             {
                 drivers[i].SetTowForce(0);
                 if (Time.time - lastInput[i] > .6f) { drivers[i].SetInput(Vector2.zero, true); winching[i] = false;extending[i]=false; }
                 if (!connected[i]) { tensions[i] = 0; continue; }
-                var a = drivers[i].RearHitch; var b = casualty.FrontHitch;
+                var a = drivers[i].RearHitch; var b = TowPoint;
                 var delta = a - b; float distance = delta.magnitude;
                 var direction = distance > .01f ? delta / distance : Vector3.forward;
                 if (winching[i]) lengths[i] = Mathf.Max(3.5f, lengths[i] - Time.fixedDeltaTime * drivers[i].WinchSpeed);
                 if(extending[i])lengths[i]=Mathf.Min(20f,lengths[i]+Time.fixedDeltaTime*1.7f);
-                float speed = Vector3.Dot(drivers[i].Body.GetPointVelocity(a) - casualty.Body.GetPointVelocity(b), direction);
+                float speed = Vector3.Dot(drivers[i].Body.GetPointVelocity(a) - TowBody.GetPointVelocity(b), direction);
                 float force = RecoveryRules.CableForce(distance, lengths[i], speed);
                 float strength=FreeRoam?drivers[i].CableStrength:RecoveryRules.BreakForce;
                 tensions[i] = Mathf.Clamp01(force / strength);
@@ -325,10 +328,11 @@ namespace TowTrouble
                 { connected[i] = false; tensions[i] = 0; snaps++; continue; }
                 if(force>1000f)pullSeconds[i]+=Time.fixedDeltaTime;
                 drivers[i].SetTowForce(force);
-                casualty.Body.AddForceAtPosition(direction * force, b);
+                TowBody.AddForceAtPosition(direction * force, b);totalPull+=direction*force;
                 drivers[i].Body.AddForceAtPosition(-direction * force, a);
             }
-            if (Phase == RecoveryPhase.Recover && Contract.IsExtracted(casualty.transform.position))
+            TickScenario(totalPull);
+            if (!ClearingObstacle && Phase == RecoveryPhase.Recover && Contract.IsExtracted(casualty.transform.position))
                 phase.Value = (int)RecoveryPhase.Deliver;
             if (Phase == RecoveryPhase.Deliver)
             {
@@ -344,6 +348,7 @@ namespace TowTrouble
 
         private void Update()
         {
+            PresentObstacle();
             bool targetVisible=HasContract||Phase==RecoveryPhase.Complete;
             if(casualty.gameObject.activeSelf!=targetVisible)casualty.gameObject.SetActive(targetVisible);
             if(appliedContract!=contractId.Value)ApplyContract();
@@ -354,7 +359,7 @@ namespace TowTrouble
             {
                 nextSnapshot = Time.unscaledTime + 1f / 15f;
                 Snapshot(new RecoveryFrame { Driver0 = new VehicleFrame(drivers[0]), Driver1 = new VehicleFrame(drivers[1]), Casualty = new VehicleFrame(casualty),
-                    Cable0 = connected[0], Cable1 = connected[1], Tension0 = tensions[0], Tension1 = tensions[1], Elapsed = elapsed, Snaps = snaps,Resets0=resets[0],Resets1=resets[1],Pull0=pullSeconds[0],Pull1=pullSeconds[1] });
+                    Cable0 = connected[0], Cable1 = connected[1], Tension0 = tensions[0], Tension1 = tensions[1], Elapsed = elapsed, Snaps = snaps,Resets0=resets[0],Resets1=resets[1],Pull0=pullSeconds[0],Pull1=pullSeconds[1],ObstaclePosition=activeObstacle!=null?activeObstacle.transform.position:Vector3.zero,ObstacleRotation=activeObstacle!=null?activeObstacle.transform.rotation:Quaternion.identity });
             }
         }
 
@@ -362,6 +367,7 @@ namespace TowTrouble
         private void Snapshot(RecoveryFrame frame, Channel channel = Channel.Unreliable)
         {
             if (IsServerInitialized) return;
+            ReceiveObstacle(frame.ObstaclePosition,frame.ObstacleRotation);
             drivers[0].Receive(frame.Driver0);
             drivers[1].Receive(frame.Driver1);
             casualty.Receive(frame.Casualty);
@@ -375,7 +381,7 @@ namespace TowTrouble
             {
                 cables[i].enabled = connected[i];
                 if (!connected[i]) continue;
-                var a = drivers[i].RearHitch; var b = casualty.FrontHitch;
+                var a = drivers[i].RearHitch; var b = TowPoint;
                 float sag = Mathf.Lerp(.5f, .03f, tensions[i]);
                 for (int j = 0; j < cables[i].positionCount; j++)
                 {
