@@ -9,6 +9,7 @@ namespace TowTrouble.Editor
         public static void BakeGroundSurfaceMap()
         {
             VisualContext();ScenicPaths();ScenicRoadField(1025);var data=terrain.terrainData;const int n=512;
+            var dropoffs=UnityEngine.Object.FindFirstObjectByType<RecoveryMap>().Deliveries;
             var paint=data.GetAlphamaps(0,0,data.alphamapWidth,data.alphamapHeight);var values=new byte[n*n];var impressions=new byte[n*n];
             for(int z=0;z<n;z++)for(int x=0;x<n;x++)
             {
@@ -17,6 +18,7 @@ namespace TowTrouble.Editor
                 int rx=Mathf.RoundToInt(x/(float)(n-1)*1024),rz=Mathf.RoundToInt(z/(float)(n-1)*1024);
                 var p=new Vector3(x/(float)(n-1)*1000-500,0,z/(float)(n-1)*1000-500);
                 if(roadDistance[rz,rx]<roadWidth[rz,rx]+1||!ClearRecoveryAccess(p,-2))impressions[z*n+x]=1;
+                if(paint[az,ax,1]>.4f&&dropoffs.Any(b=>Flat(p-b.Position).sqrMagnitude<225))impressions[z*n+x]=1;
                 values[z*n+x]=(byte)(snow>.45f?RecoveryGroundKind.Snow:sand>.5f?RecoveryGroundKind.Sand:RecoveryGroundKind.Rock);
             }
             var map=ScriptableObject.CreateInstance<RecoveryGroundMap>();map.name="Tow County painted surface grip";

@@ -1,0 +1,27 @@
+{
+  "playMode": false,
+  "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+  "sceneDirty": false,
+  "results": [
+    {
+      "name": "InactiveTargetCanBeSpawnedBeforeAwake",
+      "passed": true
+    },
+    {
+      "name": "DelayedAwakeDoesNotRebuildGeometryOrReplaceSpawn",
+      "passed": true
+    },
+    {
+      "name": "InitializingSimulationBeforeSpawnKeepsLaterResetPosition",
+      "passed": true
+    },
+    {
+      "name": "ResetBeforeAwakeHasAValidBodyAndSafePosition",
+      "passed": true
+    },
+    {
+      "name": "RepeatedSpawnsDoNotRepeatInitialization",
+      "passed": true
+    }
+  ]
+}

@@ -44,7 +44,7 @@ namespace TowTrouble
             if(body==null)body=GetComponent<Rigidbody>();body.mass=performance.Mass;driveForce=performance.Drive;maxSpeed=performance.Speed;mudGripScale=performance.MudGrip;sandGripScale=performance.SandGrip;snowGripScale=performance.SnowGrip;mudResistanceScale=performance.MudResistance;suspensionLift=performance.Lift;
             CableStrength=performance.Cable;WinchSpeed=performance.Winch;
             for(int i=0;i<4;i++){var anchor=assembly.Anchors[i];anchor.x*=performance.Track;anchor.y+=performance.Lift;wheels[i].transform.localPosition=anchor;wheels[i].radius=assembly.Radii!=null&&assembly.Radii.Length==4?assembly.Radii[i]:radius;wheelVisuals[i].position=transform.TransformPoint(anchor-Vector3.up*.12f);}
-            if(suspensionPositions==null)suspensionPositions=new Vector3[4];for(int i=0;i<4;i++)suspensionPositions[i]=wheelVisuals[i].position;
+            ResetWheelPresentation();
             frontHitch.localPosition=assembly.FrontHitch;rearHitch.localPosition=assembly.RearHitch;
             var collision=GetComponent<BoxCollider>();collision.center=assembly.ColliderCenter+Vector3.up*performance.Lift;collision.size=assembly.ColliderSize;geometryVersion++;
         }
@@ -61,7 +61,7 @@ namespace TowTrouble
         private bool hasRemote;
         private AudioSource engine;
         private ParticleSystem dust;
-        private Vector3[] suspensionPositions;
+        private readonly float[] suspensionOffsets=new float[4],previousSuspensionOffsets=new float[4];
         private readonly float[] wheelAngles=new float[4],wheelRates=new float[4],wheelSlips=new float[4],wheelLoads=new float[4];
         private bool resistanceNeedsMud;
         private float mudFraction,engineEffort,towLoad;
@@ -88,7 +88,7 @@ namespace TowTrouble
         public Vector3 WheelAnchor(int index)=>wheels[index].transform.position;
         public Transform WheelVisual(int index)=>wheelVisuals[index];
         public bool TryGetWheelContact(int index,out RaycastHit hit)
-        {var w=wheels[index];var up=transform.up;return Physics.Raycast(w.transform.position+up*.3f,-up,out hit,w.radius+w.suspensionDistance+.3f,1<<8,QueryTriggerInteraction.Ignore);}
+        {var w=wheels[index];var up=transform.up;return Physics.Raycast(w.transform.position+up*RecoveryWheelPose.ProbeLift,-up,out hit,w.radius+w.suspensionDistance+RecoveryWheelPose.ProbeLift,1<<8,QueryTriggerInteraction.Ignore);}
         public Vector3 FrontHitch => frontHitch.position;
         public Vector3 RearHitch => rearHitch.position;
         public float Speed => simulate ? body.linearVelocity.magnitude : remoteSpeed;
@@ -107,7 +107,7 @@ namespace TowTrouble
             wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=13;mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=1.3f;geometryVersion++;driveForce=m.Drive;steering=m.Steering;
             for(int i=0;i<wheels.Length;i++){wheels[i].transform.localPosition=m.Anchors[i];wheels[i].radius=radius;}
             if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?950f:m.Mass;
-            if(suspensionPositions!=null)for(int i=0;i<wheels.Length;i++)suspensionPositions[i]=wheelVisuals[i].position;
+            ResetWheelPresentation();
         }
         public void SetSpawn(Vector3 position,Quaternion rotation,float drag=0f,float mudEnd=27f,bool mudOnly=false)
         {EnsureInitialized();startPosition=position;startRotation=rotation;safePosition=position;safeRotation=rotation;mudDrag=drag;mudLimit=mudEnd;resistanceNeedsMud=mudOnly;ResetVehicle(true);}
@@ -131,8 +131,7 @@ namespace TowTrouble
             remotePosition = startPosition; remoteRotation = startRotation;
             engine = GetComponent<AudioSource>();
             dust = GetComponentInChildren<ParticleSystem>(true);
-            suspensionPositions = new Vector3[wheels.Length];
-            for (int i = 0; i < wheels.Length; i++) suspensionPositions[i] = wheelVisuals[i].position;
+            ResetWheelPresentation();
             initialized=true;
             SetSimulation(false);
         }
@@ -140,6 +139,7 @@ namespace TowTrouble
         public void SetSimulation(bool value)
         {
             EnsureInitialized();
+            if(simulate!=value)ResetWheelPresentation();
             simulate = value;
             body.interpolation = value ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
             body.isKinematic = !value;
@@ -163,13 +163,14 @@ namespace TowTrouble
             var r = original ? startRotation : safeRotation;
             body.position = p; body.rotation = r;
             if (!body.isKinematic) { body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero; }
-            transform.SetPositionAndRotation(p, r); input = Vector2.zero;brake=false; hasRemote = false;ClearWheelFeedback();
+            transform.SetPositionAndRotation(p, r); input = Vector2.zero;brake=false; hasRemote = false;ClearWheelFeedback();ResetWheelPresentation();
         }
 
         public void Receive(Vector3 position, Quaternion rotation, float speed)
         {
             remotePosition = position; remoteRotation = rotation; remoteSpeed = speed; hasRemote = true;
-            if (Vector3.Distance(transform.position, position) > 12f) transform.SetPositionAndRotation(position, rotation);
+            if (Vector3.Distance(transform.position, position) > 12f)
+            {transform.SetPositionAndRotation(position, rotation);ResetWheelPresentation();}
         }
 
         public void Receive(VehicleFrame frame)
@@ -183,16 +184,17 @@ namespace TowTrouble
         private void FixedUpdate()
         {
             if (!simulate) return;
+            System.Array.Copy(suspensionOffsets,previousSuspensionOffsets,wheels.Length);
             float forwardSpeed=Vector3.Dot(body.linearVelocity,transform.forward);
             float steer=input.x*Mathf.Lerp(steering,15,Mathf.Abs(forwardSpeed)/14);
             float blend=1-Mathf.Exp(-10*Time.fixedDeltaTime);
             bool grounded=false;int mudWheels=0;
             for(int i=0;i<wheels.Length;i++)
             {
-                var w=wheels[i];var up=transform.up;float reach=w.radius+w.suspensionDistance+.3f;
+                var w=wheels[i];var up=transform.up;float reach=w.radius+w.suspensionDistance+RecoveryWheelPose.ProbeLift;
                 if(!TryGetWheelContact(i,out var hit))
                 {
-                    suspensionPositions[i]=w.transform.position-up*w.suspensionDistance;
+                    suspensionOffsets[i]=-w.suspensionDistance;
                     wheelSlips[i]=Mathf.Lerp(wheelSlips[i],0,blend);wheelLoads[i]=0;
                     wheelRates[i]=Mathf.Lerp(wheelRates[i],casualty||brake?0:input.y*18,blend);
                     continue;
@@ -229,7 +231,7 @@ namespace TowTrouble
                 float slip=casualty||brake?0:RecoveryTraction.Slip(drive,forwardLimit);
                 wheelSlips[i]=Mathf.Lerp(wheelSlips[i],slip,blend);
                 wheelRates[i]=longitudinal/w.radius+(casualty||brake?0:Mathf.Sign(input.y)*wheelSlips[i]*18);
-                suspensionPositions[i]=hit.point+hit.normal*w.radius;
+                suspensionOffsets[i]=RecoveryWheelPose.SuspensionOffset(hit.distance,w.radius,w.suspensionDistance);
             }
             mudFraction=mudWheels/(float)wheels.Length;
             if(grounded)body.AddForce(-transform.up*body.linearVelocity.magnitude*70);
@@ -245,6 +247,12 @@ namespace TowTrouble
             if(transform.position.y<-10||recoveryMap!=null&&transform.position.y<9.5f)ResetVehicle(false);
         }
 
+        private void ResetWheelPresentation()
+        {
+            for(int i=0;i<wheels.Length;i++)
+                previousSuspensionOffsets[i]=suspensionOffsets[i]=-Mathf.Min(.12f,wheels[i].suspensionDistance);
+        }
+
         private void LateUpdate()
         {
             if(!simulate&&hasRemote)
@@ -254,14 +262,24 @@ namespace TowTrouble
             }
             var controls=ControlInput;var rates=WheelAngularVelocity;
             float steer=controls.x*Mathf.Lerp(steering,15,Speed/14);
+            float poseBlend=RecoveryWheelPose.InterpolationAlpha(Time.timeAsDouble,Time.fixedTimeAsDouble,Time.fixedDeltaTime);
             for(int i=0;i<wheels.Length;i++)
             {
                 wheelAngles[i]=Mathf.Repeat(wheelAngles[i]+rates[i]*Time.deltaTime*Mathf.Rad2Deg,360);
                 if(simulate||hasRemote)
                 {
-                    var p=suspensionPositions[i];
-                    if(!simulate)p=TryGetWheelContact(i,out var hit)?hit.point+hit.normal*wheels[i].radius:wheels[i].transform.position-transform.up*wheels[i].suspensionDistance;
-                    wheelVisuals[i].SetPositionAndRotation(p,transform.rotation*Quaternion.Euler(wheelAngles[i],i<2?steer:0,0));
+                    float offset;
+                    if(simulate)offset=Mathf.Lerp(previousSuspensionOffsets[i],suspensionOffsets[i],poseBlend);
+                    else
+                    {
+                        float target=TryGetWheelContact(i,out var hit)
+                            ?RecoveryWheelPose.SuspensionOffset(hit.distance,wheels[i].radius,wheels[i].suspensionDistance)
+                            :-wheels[i].suspensionDistance;
+                        offset=suspensionOffsets[i]=Mathf.Lerp(suspensionOffsets[i],target,1-Mathf.Exp(-20*Time.deltaTime));
+                    }
+                    // Reconstruct from the interpolated chassis, never from a cached world-space hit.
+                    var p=RecoveryWheelPose.Position(wheels[i].transform.position,transform.up,offset);
+                    wheelVisuals[i].SetPositionAndRotation(p,RecoveryWheelPose.Rotation(transform.rotation,i<2?steer:0,wheelAngles[i]));
                 }
             }
             if(engine!=null)

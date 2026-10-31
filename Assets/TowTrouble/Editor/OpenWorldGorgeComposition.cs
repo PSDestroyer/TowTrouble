@@ -12,7 +12,7 @@ namespace TowTrouble.Editor
         [MenuItem("Tow Trouble/Art Integration/8 - Compose Mountain Gorge")]
         public static void ComposeMountainGorge()
         {
-            RecomposeMountainGorge();BakeGroundSurfaceMap();ConfigureWheelTracks();CaptureMapPhotosWhere(p=>p.z>165&&p.x>-235&&p.x<175);
+            RecomposeMountainGorge();RecomposeMountainApproaches();BakeGroundSurfaceMap();ConfigureWheelTracks();CaptureMapPhotosWhere(p=>p.z>165&&p.x>-235&&p.x<175);
             Debug.Log("[TowTrouble] Three cascade drops, plunge pools and native cliff massifs composed in Edit Mode.");
         }
         private static bool InGorgePilot(Vector3 p)=>p.x>-192&&p.x<-78&&p.z>183&&p.z<315;
@@ -90,9 +90,9 @@ namespace TowTrouble.Editor
         private static Material GorgeRockMaterial(string name,Color tint,bool wet,bool snow)
         {
             var source=AssetDatabase.LoadAssetAtPath<Material>("Assets/SoStylized/Environment/Rocks/Materials/Classic/MV_RockClassic_Cliff.mat");
-            var m=new Material(source.shader){name=name};m.CopyPropertiesFromMaterial(source);m.SetColor("_Rock_Tint",tint);m.SetFloat("_Rock_Scale",18);m.SetFloat("_RockMetallic",0);m.SetFloat("_Smoothness",wet?.43f:.12f);m.SetFloat("_Emissive_Strength",.045f);m.SetFloat("_Rock_Brightness",.08f);m.SetFloat("_Rock_Normal_Flatten",.5f);
+            var m=VisualAsset(new Material(source.shader){name=name},name+".mat");m.CopyPropertiesFromMaterial(source);m.SetColor("_Rock_Tint",tint);m.SetFloat("_Rock_Scale",18);m.SetFloat("_RockMetallic",0);m.SetFloat("_Smoothness",wet?.43f:.12f);m.SetFloat("_Emissive_Strength",.045f);m.SetFloat("_Rock_Brightness",.08f);m.SetFloat("_Rock_Normal_Flatten",.5f);
             m.SetFloat("_TopGrass",0);m.SetFloat("_TopSnow",snow?1:0);m.SetFloat("_TopLayer_Blend_Sharpness",3.2f);m.SetFloat("_TopLayer_Blend_Offset",.48f);m.SetColor("_Grass_Tint",new Color(.54f,.65f,.34f));m.SetFloat("_Moss",wet?1:0);m.SetFloat("_Moss_Multiply",.8f);m.SetFloat("_Moss_Offset",-.35f);m.SetColor("_Moss_Color",new Color(.26f,.37f,.16f));m.SetColor("_Moss_Color_2",new Color(.18f,.26f,.10f));
-            return VisualAsset(m,name+".mat");
+            EditorUtility.SetDirty(m);return m;
         }
         private static int gorgeRockIndex;
         private static GameObject AddGorgeRock(string prefab,Vector3 center,Vector3 size,float yaw,Material material,Transform parent)

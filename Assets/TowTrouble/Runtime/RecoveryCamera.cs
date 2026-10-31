@@ -5,6 +5,10 @@ namespace TowTrouble
 {
     public sealed class RecoveryCamera : MonoBehaviour
     {
+        [Header("Player Follow")]
+        [Tooltip("Distance behind the player car when it is framed alone. Smaller values bring the camera closer; recovery framing keeps its wider view.")]
+        [SerializeField, Min(1f)] private float playerFollowDistance = 9f;
+
         private DemoSession session;
         private Vector3 velocity;
         private float orbit, elevation=8f;
@@ -44,8 +48,13 @@ namespace TowTrouble
                     if(Keyboard.current!=null&&Keyboard.current.cKey.wasPressedThisFrame){orbit=0;elevation=8;}
                 }
                 if(!moving)orbit=Mathf.LerpAngle(orbit,0,Time.deltaTime*2.5f);
-                var rotation=Quaternion.Euler(0,car.eulerAngles.y+orbit,0);var target=session.World.Casualty.transform.position;var center=session.World.HasContract&&Vector3.Distance(car.position,target)<28?Vector3.Lerp(car.position,target,.38f):car.position;
-                position=center+rotation*new Vector3(9.5f,elevation,-14);look=center+Vector3.up*1.2f+car.forward;
+                var rotation=Quaternion.Euler(0,car.eulerAngles.y+orbit,0);var target=session.World.Casualty.transform.position;
+                bool includeTarget=session.World.HasContract&&Vector3.Distance(car.position,target)<28;
+                var center=includeTarget?Vector3.Lerp(car.position,target,.38f):car.position;
+                var followOffset=includeTarget
+                    ?new Vector3(9.5f,elevation,-14f)
+                    :new Vector3(6f,elevation*.7f,-Mathf.Max(1f,playerFollowDistance));
+                position=center+rotation*followOffset;look=center+Vector3.up*1.2f+car.forward;
                 if(Physics.Linecast(look,position,out var hit,1<<8))position=hit.point+hit.normal*.5f;
             }
             transform.position=Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
