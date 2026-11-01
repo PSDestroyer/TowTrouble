@@ -79,7 +79,7 @@ namespace TowTrouble.Editor
             }
             AddKits(entries,all,"Fender_",GarageSlot.Fenders);
             AddKits(entries,all,"Chassis_",GarageSlot.Chassis);
-            Functional(entries);ConfigureCableProgression(entries);ConfigureWinchPrototype(entries);
+            Functional(entries);ConfigureCableProgression(entries);ConfigureWinchPrototype(entries);GarageHandlingAuthoring.Apply(entries);
             var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(CatalogPath);if(catalog==null){catalog=ScriptableObject.CreateInstance<RecoveryGarageCatalog>();AssetDatabase.CreateAsset(catalog,CatalogPath);}
             foreach(var entry in entries)if(entry.Slot==GarageSlot.Paint&&entry.Price==0)entry.PaintIndex=0;
             catalog.Configure(entries.ToArray(),stock);catalog.TireShader=AssetDatabase.LoadAssetAtPath<Shader>("Assets/Living Mud/Shaders/Texture with Mud.shadergraph");
@@ -194,7 +194,7 @@ namespace TowTrouble.Editor
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Edit Mode only");
             var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(CatalogPath);
-            Undo.RecordObject(catalog,"Expert recovery equipment");var entries=new List<GaragePart>(catalog.Parts);ConfigureSpecialistRecoveryEquipment(entries);
+            Undo.RecordObject(catalog,"Expert recovery equipment");var entries=new List<GaragePart>(catalog.Parts);ConfigureSpecialistRecoveryEquipment(entries);GarageHandlingAuthoring.Apply(entries);
             var serialized=new SerializedObject(catalog);var saved=serialized.FindProperty("stockAssemblies");
             var assemblies=new GameObject[saved.arraySize];for(int i=0;i<assemblies.Length;i++)assemblies[i]=(GameObject)saved.GetArrayElementAtIndex(i).objectReferenceValue;
             catalog.Configure(entries.ToArray(),assemblies);EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssetIfDirty(catalog);

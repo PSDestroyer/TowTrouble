@@ -9,9 +9,9 @@ namespace TowTrouble
         private RecoveryPlateGraphic plate;
         private UnityEngine.UI.Button button;
         private CanvasGroup group;
-        private bool selected,hovered,pressed;
+        private bool selected,hovered,pressed,layoutDriven;
         private float submitUntil;
-        private void Awake(){rect=(RectTransform)transform;origin=rect.anchoredPosition;plate=GetComponentInChildren<RecoveryPlateGraphic>();button=GetComponent<UnityEngine.UI.Button>();group=gameObject.AddComponent<CanvasGroup>();}
+        private void Awake(){rect=(RectTransform)transform;origin=rect.anchoredPosition;layoutDriven=transform.parent!=null&&transform.parent.GetComponent<UnityEngine.UI.LayoutGroup>()!=null;plate=GetComponentInChildren<RecoveryPlateGraphic>();button=GetComponent<UnityEngine.UI.Button>();group=gameObject.AddComponent<CanvasGroup>();}
         public void OnSelect(BaseEventData e){selected=true;}
         public void OnDeselect(BaseEventData e){selected=false;}
         public void OnPointerEnter(PointerEventData e){hovered=true;}
@@ -23,7 +23,7 @@ namespace TowTrouble
         {
             bool enabled=button==null||button.IsInteractable(),focus=enabled&&(selected||hovered),down=enabled&&(pressed||Time.unscaledTime<submitUntil);
             plate?.State(focus,down);float blend=1-Mathf.Exp(-18*Time.unscaledDeltaTime);
-            rect.anchoredPosition=Vector2.Lerp(rect.anchoredPosition,origin+new Vector2(focus?3:0,down?-2:0),blend);
+            if(!layoutDriven)rect.anchoredPosition=Vector2.Lerp(rect.anchoredPosition,origin+new Vector2(focus?3:0,down?-2:0),blend);
             if(group!=null)group.alpha=enabled?1:.48f;
         }
     }

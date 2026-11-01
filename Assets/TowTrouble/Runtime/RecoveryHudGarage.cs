@@ -10,65 +10,63 @@ namespace TowTrouble
         private GarageSlot garageSlot=GarageSlot.Wheels;
         private RecoveryBuild garageDraft;
         private string garageSelected,garageMessage="";
-        private int garagePage,boardIndex;
+        private int boardIndex;
         private TMP_Text garagePrompt;
         private string SlotName(GarageSlot slot)=>L(new[]{"CAROSERIE","ROȚI","CAPOTĂ","BARĂ FAȚĂ","BARĂ SPATE","ARIPI","ACCESORII","ADMISIE","EVACUARE","ȘASIU","MOTOR","TRANSMISIE","SUSPENSIE","CABLU","TROLIU","VOPSEA"}[(int)slot],new[]{"BODY","WHEELS","BONNET","FRONT BUMPER","REAR BUMPER","FENDERS","ACCESSORIES","INTAKE","EXHAUST","CHASSIS","ENGINE","TRANSMISSION","SUSPENSION","CABLE","WINCH","PAINT"}[(int)slot]);
         private void PrepareGarage()
-        {garageDraft=P.Build(P.vehicle).Copy();garageDraft.Normalize(session.GarageCatalog,P.Owns);garageSelected=garageDraft.Item(garageSlot,session.GarageCatalog);garageMessage="";garagePage=0;}
+        {garageDraft=P.Build(P.vehicle).Copy();garageDraft.Normalize(session.GarageCatalog,P.Owns);garageSelected=garageDraft.Item(garageSlot,session.GarageCatalog);garageMessage="";garageScrollY=0;}
         private int garageSection=1;
         private void BuildGarage()
         {
             var catalog=session.GarageCatalog;if(catalog==null){Header(L("GARAJ INDISPONIBIL","GARAGE UNAVAILABLE"),"");return;}
             if(garageDraft==null)PrepareGarage();
             Header(L("ATELIERUL TĂU","YOUR WORKSHOP"),L("Pregătește mașina pentru următoarea recuperare.","Get your ride ready for the next recovery."));Wallet(pageRoot,P.credits);
-            var categories=Panel(pageRoot,36,212,246,548);Text(categories,L("MODIFICĂRI","CUSTOMIZE"),16,14,214,28,19,Paper,true);
+            var categories=Panel(pageRoot,36,212,GarageCategoryWidth,548);Text(categories,L("MODIFICĂRI","CUSTOMIZE"),16,14,268,28,19,Paper,true);
             string[] sections={L("STIL","STYLE"),L("TEHNIC","TECH"),L("TRACTARE","TOWING")};
-            for(int i=0;i<3;i++){int section=i;var tab=Button(categories,sections[i],new[]{12f,70f,144f}[i],51,new[]{52f,68f,90f}[i],()=>{garageSection=section;garagePage=0;Show("Garage");},garageSection==i,34);tab.GetComponentInChildren<TMP_Text>().fontSize=13*P.textScale;}
+            for(int i=0;i<3;i++){int section=i;var tab=Button(categories,sections[i],new[]{12f,92f,188f}[i],51,new[]{72f,88f,100f}[i],()=>{garageSection=section;garageScrollY=0;Show("Garage");},garageSection==i,34);var text=tab.GetComponentInChildren<TMP_Text>();text.fontSize=15*P.textScale;text.textWrappingMode=TextWrappingModes.NoWrap;}
             GarageSlot[] slots=garageSection==0?new[]{GarageSlot.Assembly,GarageSlot.Bonnet,GarageSlot.FrontBumper,GarageSlot.RearBumper,GarageSlot.Fenders,GarageSlot.Roof,GarageSlot.Intake,GarageSlot.Exhaust,GarageSlot.Paint}:garageSection==1?new[]{GarageSlot.Wheels,GarageSlot.Engine,GarageSlot.Transmission,GarageSlot.Suspension,GarageSlot.Chassis}:new[]{GarageSlot.Cable,GarageSlot.Winch};
-            if(Array.IndexOf(slots,garageSlot)<0){garageSlot=slots[0];garageSelected=garageDraft.Item(garageSlot,catalog);garagePage=0;}
+            if(Array.IndexOf(slots,garageSlot)<0){garageSlot=slots[0];garageSelected=garageDraft.Item(garageSlot,catalog);garageScrollY=0;}
             for(int i=0;i<slots.Length;i++)
-            {var choice=slots[i];var tab=Button(categories,SlotName(choice),12,101+i*46,222,()=>{garageSlot=choice;garagePage=0;garageSelected=garageDraft.Item(choice,catalog);Show("Garage");},garageSlot==choice,42);ButtonIcon(tab,SlotIcon(choice),garageSlot==choice);tab.GetComponentInChildren<TMP_Text>().fontSize=16*P.textScale;}
-            if(slots.Length<=5){Icon(categories,garageSection==1?RecoveryIcon.Gears:RecoveryIcon.Hook,16,411,23,Amber);Text(categories,L("SFAT DE ATELIER","WORKSHOP TIP"),48,409,180,30,14,Paper,true);Panel(categories,16,445,198,2,Amber);Text(categories,garageSection==1?L("Mai multă putere ajută doar dacă ai aderență.","More power helps when your tires can grip."):L("Trage lin. Poziționează mașina înainte să forțezi cablul.","Pull steadily. Position your car before loading the cable."),16,460,212,69,14,Muted);}
-            var selected=catalog.Find(garageSelected);var summary=Panel(pageRoot,306,212,690,119);
-            Text(summary,selected==null?SlotName(garageSlot):PartName(selected),22,12,646,43,29,Paper,true);
-            Text(summary,selected==null?"":L(selected.Description??"",selected.EnglishDescription??""),22,61,646,45,17,Muted);
+            {var choice=slots[i];var tab=Button(categories,SlotName(choice),12,101+i*46,GarageCategoryWidth-24,()=>{garageSlot=choice;garageScrollY=0;garageSelected=garageDraft.Item(choice,catalog);Show("Garage");},garageSlot==choice,42);ButtonIcon(tab,SlotIcon(choice),garageSlot==choice);tab.GetComponentInChildren<TMP_Text>().fontSize=16*P.textScale;}
+            if(slots.Length<=5){Icon(categories,garageSection==1?RecoveryIcon.Gears:RecoveryIcon.Hook,16,411,23,Amber);Text(categories,L("SFAT DE ATELIER","WORKSHOP TIP"),48,409,236,30,14,Paper,true);Panel(categories,16,445,268,2,Amber);Text(categories,garageSection==1?L("Mai multă putere ajută doar dacă ai aderență.","More power helps when your tires can grip."):L("Trage lin. Poziționează mașina înainte să forțezi cablul.","Pull steadily. Position your car before loading the cable."),16,460,268,69,14,Muted);}
+            var selected=catalog.Find(garageSelected);var summary=Panel(pageRoot,GaragePreviewX,212,GaragePreviewWidth,garageSlot==GarageSlot.Wheels?164:136);
+            Text(summary,selected==null?SlotName(garageSlot):PartName(selected),22,12,GaragePreviewWidth-44,43,27,Paper,true);
+            Text(summary,selected==null?"":L(selected.Description??"",selected.EnglishDescription??""),22,58,GaragePreviewWidth-44,garageSlot==GarageSlot.Wheels?88:60,17,Muted);
             var candidates=new List<GaragePart>();foreach(var part in catalog.Parts)if(part.Slot==garageSlot&&catalog.Compatible(part,garageDraft))candidates.Add(part);
-            candidates.Sort((a,b)=>{int Group(GaragePart part)=>part.Price==0?0:part.Id.StartsWith("part_")?2:1;int order=Group(a).CompareTo(Group(b));return order!=0?order:string.Compare(PartName(a),PartName(b),StringComparison.Ordinal);});
-            int pages=Mathf.Max(1,(candidates.Count+5)/6);garagePage=Mathf.Clamp(garagePage,0,pages-1);
-            var list=Panel(pageRoot,1020,212,540,548);Icon(list,SlotIcon(garageSlot),20,16,28,Amber);Text(list,SlotName(garageSlot),60,12,370,36,24,Paper,true);Text(list,candidates.Count.ToString(),438,17,80,26,17,Muted).alignment=TextAlignmentOptions.Right;
-            for(int i=0;i<6;i++)
+            candidates.Sort((a,b)=>
             {
-                int index=garagePage*6+i;if(index>=candidates.Count)break;var part=candidates[index];bool owned=part.Price==0||P.Owns(part.Id),active=garageSelected==part.Id;
-                var row=Button(list,PartName(part),16,66+i*64,508,()=>{garageSelected=part.Id;garageDraft.Set(part,catalog);garageDraft.Normalize(catalog);session.PreviewGarage(garageDraft);Show("Garage");},active,58);
-                row.gameObject.name=part.Id;ButtonIcon(row,SlotIcon(garageSlot),active);var name=row.GetComponentInChildren<TMP_Text>();name.font=font;name.fontStyle=FontStyles.Bold;name.fontSize=18*P.textScale;name.rectTransform.sizeDelta=new Vector2(326,58);
-                var price=Text(row.transform,owned?L("DEȚINUT","OWNED"):RecoveryEconomy.Price(P,part).ToString("N0")+" CR",386,0,106,58,15,active?Ink:Amber,true);price.alignment=TextAlignmentOptions.MidlineRight;
-            }
-            Button(list,"‹",16,474,90,()=>{garagePage--;Show("Garage");});Text(list,(garagePage+1)+" / "+pages,126,487,270,30,18,Muted).alignment=TextAlignmentOptions.Center;Button(list,"›",418,474,106,()=>{garagePage++;Show("Garage");});
+                int price=RecoveryEconomy.Price(P,a).CompareTo(RecoveryEconomy.Price(P,b));
+                if(price!=0)return price;
+                int name=string.Compare(PartName(a),PartName(b),StringComparison.Ordinal);
+                return name!=0?name:string.CompareOrdinal(a.Id,b.Id);
+            });
+            BuildGarageCatalog(candidates);
             var stats=GaragePerformance.Calculate(garageDraft,catalog);var original=GaragePerformance.Calculate(P.Build(P.vehicle),catalog);
-            StatTile(306,650,222,RecoveryIcon.Wheel,L("TRACȚIUNE","PULLING FORCE"),(stats.Drive*4/1000).ToString("0.0")+" kN",L("Noroi: ","Mud: ")+stats.MudGrip.ToString("0.00")+"×"+(Mathf.Abs(stats.Drive-original.Drive)>1?"  ·  "+((stats.Drive-original.Drive)*4/1000).ToString("+0.0;-0.0")+" kN":""));
-            StatTile(540,650,222,RecoveryIcon.Hook,L("CABLU","CABLE"),(stats.Cable/1000).ToString("0")+" kN",L("Troliu: ","Winch: ")+(stats.WinchForce/1000).ToString("0")+" kN · "+stats.Winch.ToString("0.0")+" m/s");
-            StatTile(774,650,222,RecoveryIcon.Body,L("VEHICUL","VEHICLE"),stats.Mass.ToString("0")+" kg",L("Viteză: ","Top speed: ")+(stats.Speed*3.6f).ToString("0")+" km/h");
-            if(!string.IsNullOrEmpty(garageMessage)){var message=Panel(pageRoot,370,592,562,40);Icon(message,RecoveryIcon.Check,12,10,20,Amber);Text(message,garageMessage,44,0,500,40,16,Paper);}
+            float tileWidth=(GaragePreviewWidth-24)/3;
+            StatTile(GaragePreviewX,650,tileWidth,RecoveryIcon.Wheel,L("FORȚĂ","FORCE"),(stats.Drive*4/1000).ToString("0.0")+" kN",L("Noroi: ","Mud: ")+stats.MudGrip.ToString("0.00")+"×"+(Mathf.Abs(stats.Drive-original.Drive)>1?"  ·  "+((stats.Drive-original.Drive)*4/1000).ToString("+0.0;-0.0")+" kN":""));
+            StatTile(GaragePreviewX+tileWidth+12,650,tileWidth,RecoveryIcon.Hook,L("CABLU","CABLE"),(stats.Cable/1000).ToString("0")+" kN",L("Troliu: ","Winch: ")+(stats.WinchForce/1000).ToString("0")+" kN · "+stats.Winch.ToString("0.0")+" m/s");
+            StatTile(GaragePreviewX+(tileWidth+12)*2,650,tileWidth,RecoveryIcon.Body,L("VEHICUL","VEHICLE"),stats.Mass.ToString("0")+" kg",L("Viteză: ","Top speed: ")+(stats.Speed*3.6f).ToString("0")+" km/h");
+            if(!string.IsNullOrEmpty(garageMessage)){var message=Panel(pageRoot,GaragePreviewX,592,GaragePreviewWidth,40);Icon(message,RecoveryIcon.Check,12,10,20,Amber);Text(message,garageMessage,44,0,GaragePreviewWidth-56,40,16,Paper);}
             if(selected!=null)
             {
                 bool owned=selected.Price==0||P.Owns(selected.Id);
-                var equip=Button(pageRoot,owned?L("MONTEAZĂ CONFIGURAȚIA","FIT SETUP"):L("CUMPĂRĂ ȘI MONTEAZĂ","BUY AND FIT")+" · "+RecoveryEconomy.Price(P,selected)+" CR",1020,792,540,()=>
+                var equip=Button(pageRoot,owned?L("MONTEAZĂ CONFIGURAȚIA","FIT SETUP"):L("CUMPĂRĂ ȘI MONTEAZĂ","BUY AND FIT")+" · "+RecoveryEconomy.Price(P,selected)+" CR",GarageCatalogX,792,GarageCatalogWidth,()=>
                 {if(!owned&&!RecoveryEconomy.Buy(P,selected))return;garageDraft.Normalize(catalog,P.Owns);session.CommitGarage(garageDraft);garageMessage=L("Configurație montată și salvată.","Setup fitted and saved.");Show("Garage");},true,56);equip.interactable=owned||P.credits>=RecoveryEconomy.Price(P,selected);
-                var sell=Button(pageRoot,L("VINDE · ","SELL · ")+(selected.Price*70/100)+" CR",1020,858,540,()=>{if(RecoveryEconomy.Sell(P,selected,catalog)){P.Save();garageSelected=null;garageDraft=P.Build(P.vehicle).Copy();garageMessage=L("Piesă vândută.","Part sold.");Show("Garage");}},false,32);sell.interactable=selected.Price>0&&P.Owns(selected.Id)&&!UsedPart(selected.Id);sell.GetComponentInChildren<TMP_Text>().fontSize=15*P.textScale;
+                var sell=Button(pageRoot,L("VINDE · ","SELL · ")+(selected.Price*70/100)+" CR",GarageCatalogX,858,GarageCatalogWidth,()=>{if(RecoveryEconomy.Sell(P,selected,catalog)){P.Save();garageSelected=null;garageDraft=P.Build(P.vehicle).Copy();garageMessage=L("Piesă vândută.","Part sold.");Show("Garage");}},false,32);sell.interactable=selected.Price>0&&P.Owns(selected.Id)&&!UsedPart(selected.Id);sell.GetComponentInChildren<TMP_Text>().fontSize=15*P.textScale;
             }
             string[] names={L("Pădure","Forest"),L("Munte","Mountain"),L("Nisip","Sand")};var icons=new[]{RecoveryIcon.Tree,RecoveryIcon.Mountain,RecoveryIcon.Sand};
             for(int i=0;i<3;i++)
             {
-                int preset=i;string key="setup_"+P.vehicle+"_"+i;var saved=P.presets.Find(part=>part.Name==key);var card=Panel(pageRoot,306+i*234,792,222,98);Icon(card,icons[i],14,12,22,Amber);Text(card,names[i],44,6,164,32,18,Paper,true);
-                var save=Button(card,L("SALVEAZĂ","SAVE"),12,48,94,()=>{if(saved==null){saved=new GaragePreset{Name=key};P.presets.Add(saved);}saved.Build=P.Build(P.vehicle).Copy();P.Save();garageMessage=L("Configurație memorată.","Preset saved.");Show("Garage");},false,34);save.gameObject.name=key+"_save";save.GetComponentInChildren<TMP_Text>().fontSize=13*P.textScale;
-                var load=Button(card,L("APLICĂ","APPLY"),116,48,94,()=>{garageDraft=saved.Build.Copy();garageDraft.Normalize(catalog,P.Owns);session.CommitGarage(garageDraft);session.PreviewGarage(garageDraft);garageSelected=garageDraft.Item(garageSlot,catalog);Show("Garage");},false,34);load.gameObject.name=key+"_load";load.interactable=saved?.Build!=null;load.GetComponentInChildren<TMP_Text>().fontSize=13*P.textScale;
+                int preset=i;string key="setup_"+P.vehicle+"_"+i;var saved=P.presets.Find(part=>part.Name==key);var card=Panel(pageRoot,GaragePreviewX+i*(tileWidth+12),792,tileWidth,98);Icon(card,icons[i],14,12,22,Amber);Text(card,names[i],40,6,tileWidth-48,32,16,Paper,true);
+                var save=Button(card,L("SALVEAZĂ","SAVE"),10,48,(tileWidth-28)/2,()=>{if(saved==null){saved=new GaragePreset{Name=key};P.presets.Add(saved);}saved.Build=P.Build(P.vehicle).Copy();P.Save();garageMessage=L("Configurație memorată.","Preset saved.");Show("Garage");},false,34);save.gameObject.name=key+"_save";save.GetComponentInChildren<TMP_Text>().fontSize=12*P.textScale;
+                var load=Button(card,L("APLICĂ","APPLY"),18+(tileWidth-28)/2,48,(tileWidth-28)/2,()=>{garageDraft=saved.Build.Copy();garageDraft.Normalize(catalog,P.Owns);session.CommitGarage(garageDraft);session.PreviewGarage(garageDraft);garageSelected=garageDraft.Item(garageSlot,catalog);Show("Garage");},false,34);load.gameObject.name=key+"_load";load.interactable=saved?.Build!=null;load.GetComponentInChildren<TMP_Text>().fontSize=12*P.textScale;
             }
-            var back=Button(pageRoot,L("ÎNAPOI ÎN JOC","BACK TO DRIVING"),36,792,246,()=>{garageDraft=null;session.CloseOverlay();Show("Gameplay");},false,56);ButtonIcon(back,RecoveryIcon.Back);back.GetComponentInChildren<TMP_Text>().fontSize=18*P.textScale;
-            Text(pageRoot,L("Montarea pieselor deținute este gratuită.","Refitting owned equipment is free."),40,858,238,38,13,Muted);FitNewPanelText();
+            var back=Button(pageRoot,L("ÎNAPOI ÎN JOC","BACK TO DRIVING"),36,792,GarageCategoryWidth,()=>{garageDraft=null;session.CloseOverlay();Show("Gameplay");},false,56);ButtonIcon(back,RecoveryIcon.Back);back.GetComponentInChildren<TMP_Text>().fontSize=18*P.textScale;
+            Text(pageRoot,L("Montarea pieselor deținute este gratuită.","Refitting owned equipment is free."),40,858,GarageCategoryWidth-8,38,13,Muted);FitNewPanelText();
         }
         private void StatTile(float x,float y,float width,RecoveryIcon kind,string label,string value,string note)
         {
-            var tile=Panel(pageRoot,x,y,width,110);Icon(tile,kind,13,14,23,Amber);Text(tile,label,45,10,width-59,28,14,Muted,true);Text(tile,value,16,39,width-32,43,30,Paper,true);Text(tile,note,16,83,width-32,23,13,Muted);
+            var tile=Panel(pageRoot,x,y,width,110);Icon(tile,kind,13,14,23,Amber);Text(tile,label,45,8,width-59,37,14,Muted,true);Text(tile,value,16,43,width-32,40,30,Paper,true);Text(tile,note,16,83,width-32,23,13,Muted);
         }
         private void FitNewPanelText()
         {
