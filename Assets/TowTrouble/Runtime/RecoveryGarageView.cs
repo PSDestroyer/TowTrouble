@@ -41,28 +41,30 @@ namespace TowTrouble
                 case GarageSlot.Engine:case GarageSlot.Intake:yaw=-48;elevation=32;break;
             }
             var frame=new GarageViewFrame{Focus=detail.center,Yaw=yaw,Elevation=elevation};
-            frame.Distance=Distance(detail,Direction(yaw,elevation),fov,aspect);
+            float height=slot==GarageSlot.Assembly||slot==GarageSlot.Paint?.30f:slot==GarageSlot.Wheels||slot==GarageSlot.Roof?.26f:.28f;
+            frame.Distance=Distance(detail,Direction(yaw,elevation),fov,aspect,height);
             return frame;
         }
         public static Vector3 Direction(float yaw,float elevation)
             =>Quaternion.Euler(-elevation,yaw,0)*Vector3.forward;
-        public static float Distance(Bounds detail,Vector3 direction,float fov,float aspect)
+        public static float Distance(Bounds detail,Vector3 direction,float fov,float aspect,float height=.28f)
         {
-            var rotation=Quaternion.LookRotation(-direction,Vector3.up);var inverse=Quaternion.Inverse(rotation);float width=0,height=0,depth=0;
+            var rotation=Quaternion.LookRotation(-direction,Vector3.up);var inverse=Quaternion.Inverse(rotation);float width=0,vertical=0,depth=0;
             for(int i=0;i<8;i++)
             {
                 var local=inverse*Vector3.Scale(detail.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1));
-                width=Mathf.Max(width,Mathf.Abs(local.x));height=Mathf.Max(height,Mathf.Abs(local.y));depth=Mathf.Max(depth,Mathf.Abs(local.z));
+                width=Mathf.Max(width,Mathf.Abs(local.x));vertical=Mathf.Max(vertical,Mathf.Abs(local.y));depth=Mathf.Max(depth,Mathf.Abs(local.z));
             }
             float tangent=Mathf.Tan(Mathf.Clamp(fov,20,100)*.5f*Mathf.Deg2Rad);
-            return Mathf.Max(3.2f,Mathf.Max(width/(tangent*Mathf.Max(.6f,aspect)*.29f),height/(tangent*.26f))+depth*.6f);
+            float widthFraction=.29f*RecoveryGarageLayout.PreviewWidth/538f;
+            return Mathf.Max(3.2f,Mathf.Max(width/(tangent*Mathf.Max(.6f,aspect)*widthFraction),vertical/(tangent*height))+depth*.6f);
         }
         public static void Pose(Vector3 focus,Vector3 direction,float distance,float fov,float aspect,out Vector3 position,out Vector3 look)
         {
             position=focus+direction.normalized*distance;var rotation=Quaternion.LookRotation(-direction,Vector3.up);
             float halfHeight=distance*Mathf.Tan(fov*.5f*Mathf.Deg2Rad);
             // Keep the workpiece in the open centre column, below the part description.
-            look=focus+rotation*Vector3.right*(halfHeight*aspect*.22f)+rotation*Vector3.up*(halfHeight*.08f);
+            look=focus+rotation*Vector3.right*(halfHeight*aspect*(1-2*RecoveryGarageLayout.PreviewCenter))+rotation*Vector3.up*(halfHeight*.08f);
         }
         public static Vector3 OutsideBody(Vector3 camera,Bounds body)
         {

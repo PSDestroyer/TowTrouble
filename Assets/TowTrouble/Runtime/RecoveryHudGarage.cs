@@ -74,7 +74,7 @@ namespace TowTrouble
             foreach(var text in pageRoot.GetComponentsInChildren<TMP_Text>())
             {
                 if(text.fontSize>=48){text.rectTransform.anchoredPosition=new Vector2(text.rectTransform.anchoredPosition.x,-50);text.rectTransform.sizeDelta=new Vector2(text.rectTransform.sizeDelta.x,80);}
-                text.enableAutoSizing=true;text.fontSizeMax=text.fontSize;text.fontSizeMin=text.fontSize/Mathf.Max(1,P.textScale);
+                text.enableAutoSizing=true;text.fontSizeMax=text.fontSize;text.fontSizeMin=text.gameObject.name=="Garage item name"?14:text.fontSize/Mathf.Max(1,P.textScale);
             }
         }
         private bool UsedPart(string id)

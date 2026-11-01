@@ -5,7 +5,8 @@ namespace TowTrouble
 {
     public sealed partial class RecoveryHud
     {
-        private const float GarageCategoryWidth=300,GaragePreviewX=356,GaragePreviewWidth=538,GarageCatalogX=918,GarageCatalogWidth=646;
+        private const float GarageCategoryWidth=RecoveryGarageLayout.CategoryWidth,GaragePreviewX=RecoveryGarageLayout.PreviewX,
+            GaragePreviewWidth=RecoveryGarageLayout.PreviewWidth,GarageCatalogX=RecoveryGarageLayout.CatalogX,GarageCatalogWidth=RecoveryGarageLayout.CatalogWidth;
         private float garageScrollY;
         private void BuildGarageCatalog(List<GaragePart> candidates)
         {
@@ -49,8 +50,8 @@ namespace TowTrouble
         {
             var catalog=session.GarageCatalog;bool active=garageSelected==part.Id,owned=part.Price==0||P.Owns(part.Id);
             var card=Button(content,"",0,0,width,()=>{garageScrollY=scroll.content.anchoredPosition.y;garageSelected=part.Id;garageDraft.Set(part,catalog);garageDraft.Normalize(catalog);session.PreviewGarage(garageDraft);Show("Garage");},active,220);
-            card.gameObject.name=part.Id;var label=card.GetComponentInChildren<TMP_Text>();label.text=GarageCardName(part);label.font=font;label.fontStyle=FontStyles.Bold;label.fontSize=17*P.textScale;label.rectTransform.anchoredPosition=new Vector2(12,-104);label.rectTransform.sizeDelta=new Vector2(width-24,56);label.alignment=TextAlignmentOptions.TopLeft;
-            var imageBack=Panel(card.transform,9,9,width-18,89,new Color(.10f,.13f,.14f,.96f));imageBack.name="Part image";
+            card.gameObject.name=part.Id;var label=card.GetComponentInChildren<TMP_Text>();label.gameObject.name="Garage item name";label.text=GarageCardName(part);label.font=font;label.fontStyle=FontStyles.Bold;label.fontSize=17*P.textScale;label.rectTransform.anchoredPosition=new Vector2(12,-95);label.rectTransform.sizeDelta=new Vector2(width-24,66);label.alignment=TextAlignmentOptions.TopLeft;
+            var imageBack=Panel(card.transform,9,9,width-18,80,new Color(.10f,.13f,.14f,.96f));imageBack.name="Part image";
             if(part.Thumbnail!=null)
             {
                 var image=Stretch("Item thumbnail",imageBack).gameObject.AddComponent<UnityEngine.UI.RawImage>();image.texture=part.Thumbnail;image.uvRect=part.ThumbnailUV;image.raycastTarget=false;

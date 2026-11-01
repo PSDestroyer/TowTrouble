@@ -126,7 +126,7 @@ namespace TowTrouble.Tests
                 var focus=Car.transform.TransformPoint(frame.Focus);
                 Assert.That(Vector3.Distance(camera.transform.position,focus),Is.EqualTo(frame.Distance).Within(.03f),"Camera did not converge: "+slot);
                 var vp=camera.WorldToViewportPoint(focus);
-                Assert.That(vp.x,Is.InRange(.35f,.43f));Assert.That(vp.y,Is.InRange(.4f,.48f));
+                Assert.That(vp.x,Is.InRange(RecoveryGarageLayout.PreviewCenter-.04f,RecoveryGarageLayout.PreviewCenter+.04f));Assert.That(vp.y,Is.InRange(.4f,.48f));
                 var min=Vector2.one;var max=Vector2.zero;
                 for(int i=0;i<8;i++)
                 {
