@@ -37,6 +37,9 @@ Bonusuri: +10% fără resetări, +10% fără cablu rupt, +5% la prima finalizare
 
 | Echipament | Preț |
 |---|---:|
+| Cablu stock 11 kN | Inclus |
+| Cablu ușor 14 kN | 200 CR |
+| Cablu standard 18 kN | 450 CR |
 | Set universal îmbunătățit / noroi / nisip | 1200 CR fiecare |
 | Set de iarnă | 1600 CR |
 | Cablu 26 kN | 1400 CR |
@@ -48,9 +51,11 @@ Bonusuri: +10% fără resetări, +10% fără cablu rupt, +5% la prima finalizare
 | Cablu 36 kN | 3400 CR |
 | Vopsea | 100 CR |
 
-Motoare: +20% / +35% față de baza vehiculului. Reductor: +25% forță și -20% viteză maximă. Cablu inițial în explorare: 18 kN; tutorialul păstrează pragul validat de 31 kN. Piesele cosmetice nu primesc bonus de motor. Montarea pieselor deținute și încărcarea presetului sunt gratuite. Vânzare la 70%; piesele montate sau referite de un preset se demontează înainte de vânzare. Fără taxe obligatorii de combustibil/reparații/cablu și fără amendă la abandon. Piesa cumpărată rămâne în inventar.
+Motoare: +20% / +35% față de baza vehiculului. Reductor: +25% forță și -20% viteză maximă. La ultima cerere a utilizatorului din 2026-11-01, cablul stock este 11 kN în explorare și tutorial; 14 kN devine primul upgrade la 200 CR, urmat de 18 kN la 450 CR. Progresie: 11 → 14 → 18 → 26 → 36 kN. Piesele cosmetice nu primesc bonus de motor. Montarea pieselor deținute și încărcarea presetului sunt gratuite. Vânzare la 70%; piesele montate sau referite de un preset se demontează înainte de vânzare. Fără taxe obligatorii de combustibil/reparații/cablu și fără amendă la abandon. Piesa cumpărată rămâne în inventar.
 
 ## Configurație și compatibilitate
+Ruperea cablului depinde de mărimea suprasarcinii, nu de o fereastră fixă de0,8s. Se verifică cererea de forță înainte de netezire și înainte de aplicarea impulsului: la≥165% din rezistența cablului se rupe în același pas de fizică; depășirile mai mici consumă un buget de stres în aproximativ0,04–0,18s. Smuciturile apropiate acumulează stres; acesta se relaxează gradual fără sarcină și nu se șterge instant prin deconectare. Nu este uzură permanentă. Galben peste60%, portocaliu peste82%, roșu la limita de100%. Gazda decide ruperea; ambele capete pierd forța de tractare în pasul ruperii.
+
 Caroserii complete sanitizate, cu rig și socketuri compatibile, din ambele pachete. Alte sloturi: roți, capotă, bare, aripi, accesorii de plafon/benă, admisie, evacuare, șasiu, motor, transmisie, suspensie, cablu, troliu și vopsea. Rigurile și materialele originale nu se modifică. Schimbarea caroseriei demontează în configurația nouă piesele incompatibile, dar le păstrează în inventar. Compatibilitatea automată verifică familia și socketul; potrivirea vizuală trebuie inspectată.
 
 Preseturi per vehicul: Pădure, Munte, Nisip. Sunt salvate doar configurații cu piese deținute. Previzualizarea unei piese nu cumpără și nu salvează nimic. Ieșirea fără montare restaurează configurația instalată.

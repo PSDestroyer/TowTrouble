@@ -26,6 +26,8 @@ namespace TowTrouble
         public float Tension0, Tension1, Elapsed;
         public int Snaps, Resets0, Resets1;
         public float Pull0, Pull1;
+        public byte ExtractionStage;
+        public float ExtractionProgress, ExtractionAlignment, ExtractionStalled, ExtractionReleasedSeconds;
         public Vector3 ObstaclePosition;public Quaternion ObstacleRotation;
     }
 
@@ -80,7 +82,7 @@ namespace TowTrouble
         private readonly bool[] winching = new bool[2];
         private readonly float[] lengths = new float[2];
         private readonly float[] tensions = new float[2];
-        private readonly float[] overload = new float[2];
+        private readonly float[] cableStress = new float[2];
         private readonly float[] lastInput = new float[2];
         private readonly float[] lastAction = new float[2];
         private float nextSnapshot;
@@ -204,7 +206,7 @@ namespace TowTrouble
         private void ClearContract()
         {
             elapsed=0;snaps=0;deliveryHold=0;
-            for(int i=0;i<2;i++){connected[i]=false;tensions[i]=0;winching[i]=false;extending[i]=false;resets[i]=0;pullSeconds[i]=0;overload[i]=0;}
+            for(int i=0;i<2;i++){connected[i]=false;tensions[i]=0;winching[i]=false;extending[i]=false;resets[i]=0;pullSeconds[i]=0;cableStress[i]=0;}
         }
 
         [ServerRpc(RequireOwnership=false)]
@@ -277,7 +279,7 @@ namespace TowTrouble
             if (connected[slot]) { connected[slot] = false; tensions[slot] = 0; return; }
             float distance = Vector3.Distance(drivers[slot].RearHitch, TowPoint);
             if (distance > RecoveryRules.AttachRange) return;
-            connected[slot] = true; lengths[slot] = Mathf.Max(3.5f, distance - .3f); overload[slot] = 0f;
+            connected[slot] = true; lengths[slot] = Mathf.Max(3.5f, distance - .3f);
             if (Phase == RecoveryPhase.HookUp) phase.Value = (int)RecoveryPhase.Recover;
         }
 
@@ -298,7 +300,7 @@ namespace TowTrouble
             for (int i = 0; i < 2; i++)
             {
                 connected[i] = false; tensions[i] = 0; winching[i] = false; lastInput[i] = Time.time;
-                resets[i]=0;pullSeconds[i]=0;extending[i]=false;
+                resets[i]=0;pullSeconds[i]=0;extending[i]=false;cableStress[i]=0;
                 drivers[i].SetSpawn(FreeRoam?garagePosition+new Vector3(i==0?-2.5f:2.5f,.05f,-2):new Vector3(i==0?-2.3f:2.5f,.05f,30f),FreeRoam?Quaternion.Euler(0,180,0):Quaternion.identity);drivers[i].SetSimulation(false);appliedBuild[i]=null;ApplyBuild(i);
             }
             casualty.SetSpawn(Contract.Target,Quaternion.Euler(Contract.Pitch,Contract.Heading,Contract.Roll),Contract.MudDrag,Contract.Extraction-2f,!Contract.IsOpenWorld&&ContractIndex==2); casualty.SetSimulation(false);
@@ -313,26 +315,36 @@ namespace TowTrouble
             {
                 drivers[i].SetTowForce(0);
                 if (Time.time - lastInput[i] > .6f) { drivers[i].SetInput(Vector2.zero, true); winching[i] = false;extending[i]=false; }
-                if (!connected[i]) { tensions[i] = 0; continue; }
+                float strength=FreeRoam?drivers[i].CableStrength:RecoveryRules.BreakForce;
+                if (!connected[i])
+                {
+                    tensions[i] = 0; loadedCableForces[i] = 0;
+                    cableStress[i]=RecoveryRules.CableStressAfter(cableStress[i],0,strength,Time.fixedDeltaTime);
+                    continue;
+                }
                 var a = drivers[i].RearHitch; var b = TowPoint;
                 var delta = a - b; float distance = delta.magnitude;
                 var direction = distance > .01f ? delta / distance : Vector3.forward;
                 if (winching[i]) lengths[i] = Mathf.Max(3.5f, lengths[i] - Time.fixedDeltaTime * drivers[i].WinchSpeed);
                 if(extending[i])lengths[i]=Mathf.Min(20f,lengths[i]+Time.fixedDeltaTime*1.7f);
                 float speed = Vector3.Dot(drivers[i].Body.GetPointVelocity(a) - TowBody.GetPointVelocity(b), direction);
-                float force = RecoveryRules.CableForce(distance, lengths[i], speed);
-                float strength=FreeRoam?drivers[i].CableStrength:RecoveryRules.BreakForce;
-                tensions[i] = Mathf.Clamp01(force / strength);
-                overload[i] = force > strength ? overload[i] + Time.fixedDeltaTime : Mathf.Max(0, overload[i] - Time.fixedDeltaTime * 2f);
-                if (overload[i] > .55f || distance > 25f)
-                { connected[i] = false; tensions[i] = 0; snaps++; continue; }
+                // Failure reads unsmoothed, uncapped demand. Taking-up-load smoothing
+                // and the physics force ceiling must not act as shock immunity.
+                float demand = RecoveryRules.CableDemand(distance, lengths[i], speed);
+                tensions[i] = Mathf.Clamp01(demand / strength);
+                cableStress[i]=RecoveryRules.CableStressAfter(cableStress[i],demand,strength,Time.fixedDeltaTime);
+                if (cableStress[i] >= 1 || distance > 25f)
+                { connected[i] = false; tensions[i] = 0; loadedCableForces[i]=0;cableStress[i]=0;snaps++;continue; }
+                float force = Mathf.Min(demand, RecoveryRules.MaxCableForce);
+                if(UsesArcadeExtraction&&!ClearingObstacle)force=RecoveryExtraction.LoadedCableForce(loadedCableForces[i],force,strength,Time.fixedDeltaTime);
+                loadedCableForces[i]=force;
                 if(force>1000f)pullSeconds[i]+=Time.fixedDeltaTime;
                 drivers[i].SetTowForce(force);
                 TowBody.AddForceAtPosition(direction * force, b);totalPull+=direction*force;
                 drivers[i].Body.AddForceAtPosition(-direction * force, a);
             }
             TickScenario(totalPull);
-            if (!ClearingObstacle && Phase == RecoveryPhase.Recover && Contract.IsExtracted(casualty.transform.position))
+            if (!ClearingObstacle && Phase == RecoveryPhase.Recover && (UsesArcadeExtraction?extraction!=null&&extraction.IsFree:Contract.IsExtracted(casualty.transform.position)))
                 phase.Value = (int)RecoveryPhase.Deliver;
             if (Phase == RecoveryPhase.Deliver)
             {
@@ -349,6 +361,7 @@ namespace TowTrouble
         private void Update()
         {
             PresentObstacle();
+            PresentExtraction();
             bool targetVisible=HasContract||Phase==RecoveryPhase.Complete;
             if(casualty.gameObject.activeSelf!=targetVisible)casualty.gameObject.SetActive(targetVisible);
             if(appliedContract!=contractId.Value)ApplyContract();
@@ -359,7 +372,8 @@ namespace TowTrouble
             {
                 nextSnapshot = Time.unscaledTime + 1f / 15f;
                 Snapshot(new RecoveryFrame { Driver0 = new VehicleFrame(drivers[0]), Driver1 = new VehicleFrame(drivers[1]), Casualty = new VehicleFrame(casualty),
-                    Cable0 = connected[0], Cable1 = connected[1], Tension0 = tensions[0], Tension1 = tensions[1], Elapsed = elapsed, Snaps = snaps,Resets0=resets[0],Resets1=resets[1],Pull0=pullSeconds[0],Pull1=pullSeconds[1],ObstaclePosition=activeObstacle!=null?activeObstacle.transform.position:Vector3.zero,ObstacleRotation=activeObstacle!=null?activeObstacle.transform.rotation:Quaternion.identity });
+                    Cable0 = connected[0], Cable1 = connected[1], Tension0 = tensions[0], Tension1 = tensions[1], Elapsed = elapsed, Snaps = snaps,Resets0=resets[0],Resets1=resets[1],Pull0=pullSeconds[0],Pull1=pullSeconds[1],ObstaclePosition=activeObstacle!=null?activeObstacle.transform.position:Vector3.zero,ObstacleRotation=activeObstacle!=null?activeObstacle.transform.rotation:Quaternion.identity,
+                    ExtractionStage=(byte)ExtractionStage,ExtractionProgress=ExtractionProgress,ExtractionAlignment=ExtractionAlignment,ExtractionStalled=ExtractionStalled,ExtractionReleasedSeconds=ExtractionReleasedSeconds });
             }
         }
 
@@ -368,6 +382,7 @@ namespace TowTrouble
         {
             if (IsServerInitialized) return;
             ReceiveObstacle(frame.ObstaclePosition,frame.ObstacleRotation);
+            ExtractionStage=(ExtractionStage)frame.ExtractionStage;ExtractionProgress=frame.ExtractionProgress;ExtractionAlignment=frame.ExtractionAlignment;ExtractionStalled=frame.ExtractionStalled;ExtractionReleasedSeconds=frame.ExtractionReleasedSeconds;
             drivers[0].Receive(frame.Driver0);
             drivers[1].Receive(frame.Driver1);
             casualty.Receive(frame.Casualty);

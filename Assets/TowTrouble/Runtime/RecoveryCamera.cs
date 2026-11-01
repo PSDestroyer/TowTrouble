@@ -12,11 +12,14 @@ namespace TowTrouble
         private DemoSession session;
         private Vector3 velocity;
         private float orbit, elevation=8f;
+        private float extractionFraming;
         public void Bind(DemoSession owner){session=owner;}
         private void LateUpdate()
         {
             if(session==null)return;
             var p=session.Profile;bool lobby=!session.Connected||session.World.Phase==RecoveryPhase.Lobby;
+            bool frameWheel=session.World.HasContract&&session.World.UsesArcadeExtraction&&!session.World.ClearingObstacle;
+            extractionFraming=Mathf.MoveTowards(extractionFraming,frameWheel?1:0,Time.unscaledDeltaTime*2);
             Vector3 position,look;
             if(lobby||session.GarageOpen)
             {
@@ -50,10 +53,18 @@ namespace TowTrouble
                 if(!moving)orbit=Mathf.LerpAngle(orbit,0,Time.deltaTime*2.5f);
                 var rotation=Quaternion.Euler(0,car.eulerAngles.y+orbit,0);var target=session.World.TowTargetPosition;
                 bool includeTarget=session.World.HasContract&&Vector3.Distance(car.position,target)<28;
-                var center=includeTarget?Vector3.Lerp(car.position,target,.38f):car.position;
+                var center=includeTarget?Vector3.Lerp(car.position,target,Mathf.Lerp(.38f,.5f,extractionFraming)):car.position;
                 var followOffset=includeTarget
                     ?new Vector3(9.5f,elevation,-14f)
                     :new Vector3(6f,elevation*.7f,-Mathf.Max(1f,playerFollowDistance));
+                if(includeTarget)
+                {
+                    // R01's blocked wheel is on the left. Keep both vehicles in
+                    // frame from that side, and retain the player's manual orbit.
+                    float spread=Mathf.Clamp(Vector3.Distance(car.position,target)/10f,.9f,2.2f);
+                    var wheelView=new Vector3(-8*spread,elevation+3*spread,-6*spread);
+                    followOffset=Vector3.Lerp(followOffset,wheelView,extractionFraming);
+                }
                 position=center+rotation*followOffset;look=center+Vector3.up*1.2f+car.forward;
                 if(Physics.Linecast(look,position,out var hit,1<<8))position=hit.point+hit.normal*.5f;
             }

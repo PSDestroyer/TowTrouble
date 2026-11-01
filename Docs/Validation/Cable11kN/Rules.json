@@ -1,0 +1,212 @@
+{
+  "mode": "Direct Edit Mode invocation with per-test setup",
+  "passed": 41,
+  "failed": 0,
+  "results": [
+    {
+      "test": "RecoveryGarageTests.NewProfileHasStockBuildAndNoDebt",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.FirstCableUpgradeIsEarnedAfterOneStarterRecovery",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.CableTiersIncreaseInStrengthAndCostWithoutGivingFreeUpgrades",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.PurchasedStrongerCablesRemainEquippedAfterSaveRoundTrip",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.PurchaseIsAffordableAndCannotBeChargedTwice",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.FailedPurchaseDoesNotChangeInventoryOrBalance",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.MountedAndPresetPartsCannotBeSold",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.SalePaysSeventyPercentOnlyOnce",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.CompletionPaysOnceEvenAfterSerialization",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.LegacyProfileMigratesOnceAndPreservesProgressAndPaint",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.PresetsAndInventorySurviveSaveRoundTrip",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.PreviewIsIndependentAndUnownedEquipmentIsRemovedBeforeCommit",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.InvalidAndIncompatibleItemsAreNormalized",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.EngineUpgradeTradesInOldEngineWithoutLeavingDanglingPresets",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.LowRangeAndEngineRespectTheApprovedTradeoff",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.CatalogIdsAreUniqueAndAssembliesHaveFourValidWheelAnchors",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryGarageTests.UnsupportedSaveVersionIsRejected",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.ReleaseParticlesRespectDisabledEffectsAndTheParticleBudget",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.HoldingThrottleWithoutDisplacementNeverReleasesTheCar",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.SidewaysReverseAndVerticalTravelDoNotClearTheExit",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.RotatingTheWheelAcrossTheExitWithoutMovingTheBodyDoesNotRelease",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.BodyCrossingBeforeTheBlockedWheelDoesNotRelease",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.AirborneExitDoesNotReleaseOrApplyGroundResistance",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.ForwardExitRequiresContactHoldThenSmoothlyRemovesResistance",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.LostSupportRestartsTheContactHold",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.BeforeConnectionCrossingThePlaneCannotCompleteRecovery",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.ResistanceAtRestNeverPullsTheCarBackOrExceedsTheAppliedPull",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.PoorAngleNeedsMoreForceThanAnAlignedPull",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.AStrongPullWithoutMovementDoesNotClaimTheCarIsMoving",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.AReleasedCarStaysFreeWhenTurningOrReversingAndANewRunResets",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.PartialProgressIsPositionBasedAndSurvivesDetaching",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.CableTakesLoadGraduallyButSlackDropsForceImmediately",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryExtractionTests.ReleaseAndAngleFeedbackAreLocalizedAndExpire",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryScenarioTests.FallenTreeMustMoveAsideBeforeCarRecovery",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryScenarioTests.OpenWorldExtractionRequiresTheAuthoredExit",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryScenarioTests.FallenTreeResetRestoresItsAuthoredPoseWithoutSimulation",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryRulesTests.SlackCableNeverPushesTheVehiclesApart",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryRulesTests.StretchedCableProducesTensionAndDampsSeparation",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryRulesTests.ClosingCableCannotProduceNegativeTension",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryRulesTests.DeliveryRequiresTheCasualtyInsideTheBayAndSlow",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RecoveryRulesTests.DeliveryIgnoresSuspensionHeight",
+      "passed": true,
+      "error": ""
+    }
+  ]
+}

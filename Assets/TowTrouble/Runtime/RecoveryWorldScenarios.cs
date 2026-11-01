@@ -23,9 +23,10 @@ namespace TowTrouble
             obstaclePending.Value=activeObstacle!=null;
             if(activeObstacle!=null)activeObstacle.Body.isKinematic=false;
             casualty.SetSimulation(!obstaclePending.Value);
+            BeginExtraction();
         }
         private void StopScenario()
-        {obstaclePending.Value=false;foreach(var item in siteObstacles)if(item!=null)item.ResetObstacle();activeObstacle=null;}
+        {ResetExtraction();obstaclePending.Value=false;foreach(var item in siteObstacles)if(item!=null)item.ResetObstacle();activeObstacle=null;}
         private void TickScenario(Vector3 totalPull)
         {
             if(!FreeRoam||!HasContract)return;
@@ -35,8 +36,9 @@ namespace TowTrouble
                 // A new object always requires a fresh connection; no cable teleports to the car.
                 activeObstacle.Body.isKinematic=true;obstaclePending.Value=false;
                 for(int i=0;i<2;i++){connected[i]=false;tensions[i]=0;winching[i]=false;extending[i]=false;}
-                casualty.SetSimulation(true);phase.Value=(int)RecoveryPhase.HookUp;return;
+                casualty.SetSimulation(true);phase.Value=(int)RecoveryPhase.HookUp;BeginExtraction();return;
             }
+            if(extraction!=null){TickExtraction(totalPull);return;}
             float remaining=1-Mathf.Clamp01(Vector3.Distance(casualty.transform.position,Contract.Target)/Contract.Extraction);
             float resistance=Contract.BreakoutResistance*remaining;
             var velocity=Vector3.ProjectOnPlane(casualty.Body.linearVelocity,Vector3.up);

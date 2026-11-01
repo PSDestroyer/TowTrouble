@@ -12,6 +12,7 @@ namespace TowTrouble
         public int Tier,ProgressId=-1;
         public float Heading,Pitch,Roll,BreakoutResistance;public Vector3 ExitDirection;
         public string EnglishTitle,EnglishDescription,DeliveryName,DeliveryEnglish;
+        public RecoveryExtractionSettings ExtractionProfile;
         public bool IsExtracted(Vector3 position)=>IsOpenWorld?(Vector3.Distance(position,Target)>=Extraction&&(ExitDirection.sqrMagnitude<.1f||Vector3.Dot(position-Target,ExitDirection)>=Extraction*.65f)):position.z>=Extraction;
         public bool ContainsDelivery(Vector3 position)=>Vector2.Distance(new Vector2(position.x,position.z),new Vector2(Delivery.x,Delivery.z))<7&&Mathf.Abs(position.y-Delivery.y)<4;
         public int CompletionId=>ProgressId>=0?ProgressId:Id-1;

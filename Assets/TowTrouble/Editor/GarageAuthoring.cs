@@ -79,7 +79,7 @@ namespace TowTrouble.Editor
             }
             AddKits(entries,all,"Fender_",GarageSlot.Fenders);
             AddKits(entries,all,"Chassis_",GarageSlot.Chassis);
-            Functional(entries);
+            Functional(entries);ConfigureCableProgression(entries);
             var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(CatalogPath);if(catalog==null){catalog=ScriptableObject.CreateInstance<RecoveryGarageCatalog>();AssetDatabase.CreateAsset(catalog,CatalogPath);}
             foreach(var entry in entries)if(entry.Slot==GarageSlot.Paint&&entry.Price==0)entry.PaintIndex=0;
             catalog.Configure(entries.ToArray(),stock);catalog.TireShader=AssetDatabase.LoadAssetAtPath<Shader>("Assets/Living Mud/Shaders/Texture with Mud.shadergraph");
@@ -94,6 +94,41 @@ namespace TowTrouble.Editor
             return "Garage catalog: "+entries.Count+" entries; source audit: "+all.Length+" prefabs; tutorial wired; Mega/Desert untouched.";
         }
         private static void Audit(string path,string kind,string reason){audit.Add("\""+path+"\",\""+kind+"\",\""+reason+"\"");}
+        [MenuItem("Tow Trouble/Garage/Refresh Cable Progression")]
+        public static void RefreshCableProgression()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Edit Mode only.");
+            var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(CatalogPath);
+            if(catalog==null)throw new InvalidOperationException("Missing garage catalog.");
+            Undo.RecordObject(catalog,"Add starter cable progression");
+            var entries=new List<GaragePart>(catalog.Parts);
+            ConfigureCableProgression(entries);
+            var serialized=new SerializedObject(catalog);var saved=serialized.FindProperty("stockAssemblies");
+            var assemblies=new GameObject[saved.arraySize];for(int i=0;i<assemblies.Length;i++)assemblies[i]=(GameObject)saved.GetArrayElementAtIndex(i).objectReferenceValue;
+            catalog.Configure(entries.ToArray(),assemblies);
+            EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssetIfDirty(catalog);
+        }
+        private static void ConfigureCableProgression(List<GaragePart> entries)
+        {
+            // Keep the free stock ID and all purchased upgrade IDs stable in saved builds.
+            var stock=entries.Single(p=>p.Id=="stock_Cable");
+            stock.Name="Cablu stock · 11 kN";stock.EnglishName="Stock cable · 11 kN";
+            stock.Price=0;stock.CableStrength=RecoveryRules.BreakForce;
+            stock.Description="Prag de rupere 11 kN. Trage progresiv și evită smuciturile.";
+            stock.EnglishDescription="Break threshold 11 kN. Build the pull gently and avoid sudden jerks.";
+            var light=entries.FirstOrDefault(p=>p.Id=="cable_14");
+            if(light==null){light=new GaragePart{Id="cable_14",Slot=GarageSlot.Cable};entries.Insert(entries.IndexOf(stock)+1,light);}
+            light.Name="Cablu ușor · 14 kN";light.EnglishName="Light cable · 14 kN";
+            light.Price=200;light.CableStrength=14000;
+            light.Description="Primul upgrade de cablu. Prag de rupere 14 kN.";
+            light.EnglishDescription="First cable upgrade. Break threshold 14 kN.";
+            var standard=entries.FirstOrDefault(p=>p.Id=="cable_18");
+            if(standard==null){standard=new GaragePart{Id="cable_18",Slot=GarageSlot.Cable};entries.Insert(entries.IndexOf(light)+1,standard);}
+            standard.Name="Cablu standard · 18 kN";standard.EnglishName="Standard cable · 18 kN";
+            standard.Price=450;standard.CableStrength=18000;
+            standard.Description="Prag de rupere 18 kN. Mai multă rezervă pentru sarcini și smucituri.";
+            standard.EnglishDescription="Break threshold 18 kN. More headroom for load and sudden jerks.";
+        }
         private static string[] FitFamilies(string family)=>family=="Geep"?new[]{"Geep","Goblin"}:family=="Pickupster"?new[]{"Pickupster","Goblin"}:new[]{family};
         private static GaragePart Part(string path,GarageSlot slot,int price,GameObject[] prefabs,string[] sockets,string[] families)
         {

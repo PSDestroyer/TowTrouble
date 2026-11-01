@@ -80,6 +80,13 @@ namespace TowTrouble
             ?RecoveryVehicleEffects.ShouldBrake(input.y,brake,body==null?0:Vector3.Dot(body.linearVelocity,transform.forward))
             :hasRemote&&remoteBrakeLights);
         public float SlipAtWheel(int index)=>WheelSlip[index];
+        public void ShowExtractionRelease(Vector3 point)
+        {
+            if(dust==null||!dust.gameObject.activeInHierarchy||EffectsGain<=0)return;
+            var main=dust.main;var basis=main.simulationSpace==ParticleSystemSimulationSpace.Custom&&main.customSimulationSpace!=null?main.customSimulationSpace:dust.transform;
+            var burst=new ParticleSystem.EmitParams{position=main.simulationSpace==ParticleSystemSimulationSpace.World?point:basis.InverseTransformPoint(point)};
+            dust.Emit(burst,Mathf.RoundToInt(10*Mathf.Clamp01(EffectsGain)));
+        }
         public void SetTowForce(float force){towLoad=Mathf.Clamp01(force/Mathf.Max(1,driveForce*4));}
         private void ClearWheelFeedback()
         {

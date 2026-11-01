@@ -10,6 +10,7 @@ namespace TowTrouble
         public float Heading;
         public bool CrossRegion;
         public float Depth,Pitch,Roll,Resistance;public Vector3 ExitDirection;
+        public RecoveryExtractionSettings Extraction = new RecoveryExtractionSettings();
         public string Situation,EnglishSituation;
     }
     [Serializable] public sealed class RecoveryDropoff
@@ -31,7 +32,7 @@ namespace TowTrouble
             {
                 if(contracts==null){contracts=new RecoveryContract[sites.Length];for(int i=0;i<sites.Length;i++)
                 {var s=sites[i];contracts[i]=new RecoveryContract(i+1,s.Biome,s.Name,(s.Situation??"")+" Recuperează mașina și livreaz-o la "+s.DeliveryName+".",BiomeName(s.Biome),"Alege un unghi bun și trage progresiv.",s.Position-Vector3.up*s.Depth,s.Delivery,8+s.Tier,0)
-                {IsOpenWorld=true,ProgressId=3+i,Tier=s.Tier,EnglishTitle=s.English,EnglishDescription=(s.EnglishSituation??"")+" Recover the car and deliver it to "+s.DeliveryEnglish+".",DeliveryName=s.DeliveryName,DeliveryEnglish=s.DeliveryEnglish,Heading=s.Heading,Pitch=s.Pitch,Roll=s.Roll,BreakoutResistance=s.Resistance,ExitDirection=s.ExitDirection};}}
+                {IsOpenWorld=true,ProgressId=3+i,Tier=s.Tier,EnglishTitle=s.English,EnglishDescription=(s.EnglishSituation??"")+" Recover the car and deliver it to "+s.DeliveryEnglish+".",DeliveryName=s.DeliveryName,DeliveryEnglish=s.DeliveryEnglish,Heading=s.Heading,Pitch=s.Pitch,Roll=s.Roll,BreakoutResistance=s.Resistance,ExitDirection=s.ExitDirection,ExtractionProfile=s.Extraction};}}
                 return contracts;
             }
         }

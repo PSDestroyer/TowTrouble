@@ -333,6 +333,7 @@ namespace TowTrouble
         }
         private void RefreshGameplay()
         {
+            marker.color=Amber;
             var w=session.World;int slot=session.LocalSlot,other=1-slot;bool attached=w.Attached(slot);float load=w.Tension(slot);
             if(w.Phase==RecoveryPhase.Explore)
             {objective.text=L("EXPLORARE LIBERĂ","FREE EXPLORATION");crew.text=P.credits+" CR";speed.text=Mathf.RoundToInt(w.Drivers[slot].Speed*3.6f)+" <size=27>km/h</size>";cableGroup.SetActive(false);partnerGroup.SetActive(false);mudFeedback.gameObject.SetActive(false);garagePrompt.text=w.AtGarage(slot)?L("G · Intră în garaj    |    TAB · Contracte","G · Enter garage    |    TAB · Contracts"):L("TAB · Contracte    |    Garaj: ","TAB · Contracts    |    Garage: ")+Mathf.RoundToInt(Vector3.Distance(w.Drivers[slot].transform.position,w.GaragePosition))+" m";PlaceMarker(marker,w.GaragePosition+Vector3.up*3,Camera.main);marker.text=L("GARAJ","GARAGE");foreach(var tag in hudPlates)tag.gameObject.SetActive(false);return;}
@@ -343,11 +344,12 @@ namespace TowTrouble
             var wheelSlip=w.Drivers[slot].WheelSlip;float slip=Mathf.Max(wheelSlip.x,wheelSlip.y,wheelSlip.z,wheelSlip.w);
             mudFeedback.gameObject.SetActive(P.tutorial&&w.Drivers[slot].InMud);
             mudFeedback.text=slip>.25f?L("PATINARE · Redu accelerația pentru mai multă tracțiune.","WHEELSPIN · Ease off for better traction."):L("NOROI · Accelerează progresiv și păstrează cablul întins.","MUD · Build throttle gently and keep the cable taut.");
+            RefreshExtractionFeedback(w);
             bool near=Vector3.Distance(w.Drivers[slot].RearHitch,w.TowPoint)<RecoveryRules.AttachRange;
             cableGroup.SetActive(attached||near);cableFill.transform.parent.gameObject.SetActive(attached);
-            string level=load>.82f?L("! REDU ACCELERAȚIA","! EASE OFF"):load>.6f?L("! APROAPE DE LIMITĂ","! NEAR THE LIMIT"):L("SIGUR","SAFE");
+            string level=load>=1?L("! LA LIMITĂ · RISC DE RUPERE","! AT LIMIT · BREAK RISK"):load>.82f?L("! REDU ACCELERAȚIA","! EASE OFF"):load>.6f?L("SUB SARCINĂ","UNDER LOAD"):L("SIGUR","SAFE");
             cableText.text=attached?L("CABLU  ","CABLE  ")+(P.colorHelp?level:""):L("CÂRLIG DISPONIBIL","HITCH IN RANGE");
-            cableFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(load),1);cableFill.color=load>.82f?new Color(1,.12f,.05f):load>.6f?new Color(1,.72f,.05f):new Color(.16f,.9f,.27f);
+            cableFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(load),1);cableFill.color=load>=1?new Color(1,.12f,.05f):load>.82f?new Color(1,.43f,.05f):load>.6f?new Color(1,.72f,.05f):new Color(.16f,.9f,.27f);
             actionText.text=attached?(session.UsingGamepad?"A  "+L("Desprinde","Detach")+"   LB / RB  "+L("Troliu","Winch"):P.hookKey+"  "+L("Desprinde","Detach")+"   "+P.reelKey+" / "+P.extendKey+"  "+L("Scurtează / Alungește","Shorten / Lengthen")):(session.UsingGamepad?"A":P.hookKey)+"  "+L("Conectează cablul","Attach cable");
             if(P.tutorial&&w.ContractIndex==0&&!attached)actionText.text+="\n"+L("Cârlig spate → cârlig față. Accelerează lin.","Rear hitch → front hitch. Pull gently.");
             partnerGroup.SetActive(w.Cooperative&&w.Attached(other));partnerText.text=w.DriverName(other)+"  /  "+L("CABLU","CABLE");partnerFill.rectTransform.anchorMax=new Vector2(w.Tension(other),1);partnerFill.color=other==0?Blue:Orange;
@@ -359,6 +361,7 @@ namespace TowTrouble
                 tag.gameObject.SetActive(visible);
                 if(visible){tag.anchorMin=tag.anchorMax=new Vector2(viewport.x,viewport.y);tag.pivot=new Vector2(.5f,0);tag.anchoredPosition=Vector2.zero;int signal=w.Signal(i);string[] signals={"",L("GATA","READY"),L("TRAGE","PULL"),L("OPREȘTE","STOP")};hudNames[i].text=w.DriverName(i)+"  /  P"+(i+1)+(signal==0?"":"\n"+signals[Mathf.Clamp(signal,0,3)]);float width=Mathf.Clamp(hudNames[i].GetPreferredValues().x+26,130,280);tag.sizeDelta=new Vector2(width,70);((RectTransform)hudNames[i].transform.parent).sizeDelta=new Vector2(width,56);hudNames[i].rectTransform.sizeDelta=new Vector2(width-16,56);((RectTransform)tag.GetChild(1)).anchoredPosition=new Vector2(width*.5f-7,-49);}
             }
+            if(RefreshExtractionMarker(w,camera))return;
             var goal=w.Phase==RecoveryPhase.Deliver?w.Contract.Delivery+Vector3.up*3:w.TowTargetPosition+Vector3.up*3;
             PlaceMarker(marker,goal,camera);marker.text=w.Phase==RecoveryPhase.Deliver?L("ZONĂ SIGURĂ","SAFE ZONE")+"  "+Mathf.RoundToInt(Vector3.Distance(w.Casualty.transform.position,w.Contract.Delivery))+" m":w.ClearingObstacle?L("1/2 · TRAGE COPACUL ÎN LATERAL","1/2 · PULL THE LOG ASIDE"):L("MAȘINA DE RECUPERAT","STRANDED CAR");
         }

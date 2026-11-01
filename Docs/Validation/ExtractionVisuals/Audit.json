@@ -1,0 +1,65 @@
+{
+  "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+  "sceneDirty": false,
+  "playing": false,
+  "worldBinding": true,
+  "missingScripts": 0,
+  "visualColliders": 0,
+  "repeatable": true,
+  "relocatedBirch": {
+    "name": "P_BirchTree2",
+    "x": -115.748917,
+    "y": 23.6781483,
+    "z": 68.7793655,
+    "nearestRoadDistance": 45.6730347
+  },
+  "materials": [
+    {
+      "name": "Exposed dark earth",
+      "shader": "TowTrouble/Wheel Impressions",
+      "shaderError": false
+    },
+    {
+      "name": "Fresh rut edge",
+      "shader": "TowTrouble/Wheel Impressions",
+      "shaderError": false
+    },
+    {
+      "name": "Broken soil clods",
+      "shader": "Universal Render Pipeline/Lit",
+      "shaderError": false
+    },
+    {
+      "name": "Recovery soil dust",
+      "shader": "TowTrouble/Exhaust Vapor",
+      "shaderError": false
+    },
+    {
+      "name": "Cut soil banks",
+      "shader": "TowTrouble/Wheel Impressions",
+      "shaderError": false
+    }
+  ],
+  "particles": [
+    {
+      "name": "Release soil dust",
+      "maxParticles": 18,
+      "worldSpace": true,
+      "playOnAwake": false,
+      "loop": false,
+      "automaticEmission": false,
+      "collision": false,
+      "isPlaying": false
+    },
+    {
+      "name": "Release soil clods",
+      "maxParticles": 14,
+      "worldSpace": true,
+      "playOnAwake": false,
+      "loop": false,
+      "automaticEmission": false,
+      "collision": false,
+      "isPlaying": false
+    }
+  ]
+}

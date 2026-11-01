@@ -274,12 +274,55 @@ MonoBehaviour:
     WinchSpeed: 1.3
     PaintIndex: -1
   - Id: stock_Cable
-    Name: Original
-    EnglishName: Stock
-    Description: "Echipamentul ini\u021Bial."
-    EnglishDescription: Original equipment.
+    Name: "Cablu stock \xB7 11 kN"
+    EnglishName: "Stock cable \xB7 11 kN"
+    Description: "Prag de rupere 11 kN. Trage progresiv \u0219i evit\u0103 smuciturile."
+    EnglishDescription: Break threshold 11 kN. Build the pull gently and avoid sudden
+      jerks.
     Slot: 13
     Price: 0
+    Prefabs: []
+    Sockets: []
+    Families: []
+    DriveMultiplier: 1
+    SpeedMultiplier: 1
+    MudGrip: 1
+    MudResistance: 1
+    AddedMass: 0
+    Lift: 0
+    Track: 1
+    CableStrength: 11000
+    WinchSpeed: 1.3
+    PaintIndex: -1
+  - Id: cable_14
+    Name: "Cablu u\u0219or \xB7 14 kN"
+    EnglishName: "Light cable \xB7 14 kN"
+    Description: Primul upgrade de cablu. Prag de rupere 14 kN.
+    EnglishDescription: First cable upgrade. Break threshold 14 kN.
+    Slot: 13
+    Price: 200
+    Prefabs: []
+    Sockets: []
+    Families: []
+    DriveMultiplier: 1
+    SpeedMultiplier: 1
+    MudGrip: 1
+    MudResistance: 1
+    AddedMass: 0
+    Lift: 0
+    Track: 1
+    CableStrength: 14000
+    WinchSpeed: 1.3
+    PaintIndex: -1
+  - Id: cable_18
+    Name: "Cablu standard \xB7 18 kN"
+    EnglishName: "Standard cable \xB7 18 kN"
+    Description: "Prag de rupere 18 kN. Mai mult\u0103 rezerv\u0103 pentru sarcini
+      \u0219i smucituri."
+    EnglishDescription: Break threshold 18 kN. More headroom for load and sudden
+      jerks.
+    Slot: 13
+    Price: 450
     Prefabs: []
     Sockets: []
     Families: []

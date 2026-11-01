@@ -1,0 +1,122 @@
+{
+  "mode": "Direct Edit Mode invocation; no Test Runner, Play Mode or physics simulation",
+  "passed": 23,
+  "failed": 0,
+  "results": [
+    {
+      "test": "HoldingThrottleWithoutDisplacementNeverReleasesTheCar",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "SidewaysReverseAndVerticalTravelDoNotClearTheExit",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RotatingTheWheelAcrossTheExitWithoutMovingTheBodyDoesNotRelease",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "BodyCrossingBeforeTheBlockedWheelDoesNotRelease",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "AirborneExitDoesNotReleaseOrApplyGroundResistance",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "ForwardExitRequiresContactHoldThenSmoothlyRemovesResistance",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "LostSupportRestartsTheContactHold",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "BeforeConnectionCrossingThePlaneCannotCompleteRecovery",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "ResistanceAtRestNeverPullsTheCarBackOrExceedsTheAppliedPull",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "PoorAngleNeedsMoreForceThanAnAlignedPull",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "AStrongPullWithoutMovementDoesNotClaimTheCarIsMoving",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "AReleasedCarStaysFreeWhenTurningOrReversingAndANewRunResets",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "PartialProgressIsPositionBasedAndSurvivesDetaching",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "CableTakesLoadGraduallyButSlackDropsForceImmediately",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "ReleaseAndAngleFeedbackAreLocalizedAndExpire",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "FallenTreeMustMoveAsideBeforeCarRecovery",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "OpenWorldExtractionRequiresTheAuthoredExit",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "FallenTreeResetRestoresItsAuthoredPoseWithoutSimulation",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "SlackCableNeverPushesTheVehiclesApart",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "StretchedCableProducesTensionAndDampsSeparation",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "ClosingCableCannotProduceNegativeTension",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "DeliveryRequiresTheCasualtyInsideTheBayAndSlow",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "DeliveryIgnoresSuspensionHeight",
+      "passed": true,
+      "error": ""
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Workshop forest clearing — 2026-11-01
+
+R01 / Poiana atelierului is the first local art reference. The generic bead-like stone arrangement is disabled. A separate owned group adds irregular birch/fir canopy islands, native understory, clustered rock outcrops, deadwood and a short broken timber boundary. Native woodland-soil and grass paint blend around a clear entry; two subtle old tire strips establish the approach. Through-road paint is preserved by road-distance exclusion. No gameplay parameters were changed.
+
+Reapply with Tow Trouble > Art Integration >12 - Finish Workshop Forest Clearing after larger scene regeneration passes. The local paint uses an immutable derivative terrain baseline for repeatability, and native source assets/materials remain shared. Small foliage has no collision and casts no shadows; tree collision is limited to trunks. All objects are scene-authored, with no runtime spawning logic. Scene/terrain/visual-kind updates use Undo. Before scene copy: /Users/gheorghe/Desktop/TowTrublw/Backups/ForestClearing-20261101/Before.unity.
+
+Validation: Unity compilation zero errors/warnings.51 recovery-lane samples and60 nearby road samples clear of new colliders. No height changes, no paint changes beyond42m, no missing scripts/materials. Three static camera renders inspected: Approach, Recovery, Overview. R01 contract photo refreshed. Counts in SceneAudit.json include native LOD renderer children; no measured draw-call or frame-rate claim. No Play Mode, Test Runner, physics simulation, networking startup or builds.
+
+User Editor check: start Solo, accept R01 and drive from the road into the clearing; inspect camera visibility, connect and pull straight out, then deliver normally. Driving feel/performance remains for the user's test. Before.png is the Git baseline photo; the three new PNGs are static scene previews with a posed target car.
