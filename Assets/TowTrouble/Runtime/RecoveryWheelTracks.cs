@@ -96,7 +96,7 @@ namespace TowTrouble
             var collider=hit.collider;
             if(collider==null||collider.isTrigger||collider.GetComponentInParent<RecoveryVehicle>()!=null)return false;
             // Living Mud owns this collider's stamps/coating. Never double-stamp it.
-            if(collider.TryGetComponent<RecoveryMudTerrain>(out _))return false;
+            if(collider.TryGetComponent<RecoveryMudTerrain>(out var mud)&&mud.OwnsTracks)return false;
             if(collider.TryGetComponent<RecoveryTrackSurface>(out var marked)){kind=(int)marked.Kind;return true;}
             bool terrain=collider is TerrainCollider;
             if((terrain||roads!=null&&roads.Contains(collider))&&surfaceMap!=null&&surfaceMap.TryTrackKind(hit.point,out var painted))

@@ -7,6 +7,9 @@ namespace TowTrouble
     {
         [SerializeField] private RecoveryGroundKind kind;
         [SerializeField] private bool terrain;
+        [SerializeField,Range(0,1)] private float softness;
+        public float Softness=>softness;
+        public void ConfigureSoftness(float value){softness=Mathf.Clamp01(value);}
         [SerializeField] private RecoveryGroundMap surfaceMap;
         public RecoveryGroundKind Kind=>kind;
         public void ConfigureTerrain(){terrain=true;}

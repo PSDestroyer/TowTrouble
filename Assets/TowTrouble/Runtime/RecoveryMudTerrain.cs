@@ -10,6 +10,9 @@ namespace TowTrouble
         [SerializeField,Range(.1f,1.5f)] private float lateralGrip=.60f;
         [SerializeField,Range(0,1000)] private float resistancePerWheel=375f;
         [SerializeField,Range(0,.8f)] private float aggressiveThrottleLoss=.42f;
+        [SerializeField] private bool ownsTracks=true;
+        public bool OwnsTracks=>ownsTracks;
+        public void ConfigureTracks(bool value){ownsTracks=value;}
         public float LongitudinalGrip=>longitudinalGrip;
         public float LateralGrip=>lateralGrip;
         public float ResistancePerWheel=>resistancePerWheel;

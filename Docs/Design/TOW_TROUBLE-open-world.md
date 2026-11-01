@@ -53,6 +53,12 @@ Bonusuri: +10% fără resetări, +10% fără cablu rupt, +5% la prima finalizare
 
 Motoare: +20% / +35% față de baza vehiculului. Reductor: +25% forță și -20% viteză maximă. La ultima cerere a utilizatorului din 2026-11-01, cablul stock este 11 kN în explorare și tutorial; 14 kN devine primul upgrade la 200 CR, urmat de 18 kN la 450 CR. Progresie: 11 → 14 → 18 → 26 → 36 kN. Piesele cosmetice nu primesc bonus de motor. Montarea pieselor deținute și încărcarea presetului sunt gratuite. Vânzare la 70%; piesele montate sau referite de un preset se demontează înainte de vânzare. Fără taxe obligatorii de combustibil/reparații/cablu și fără amendă la abandon. Piesa cumpărată rămâne în inventar.
 
+## Prototip troliu — 2026-11-01
+
+Troliul stock are 8 kN nominal și până la 1,0 m/s; upgrade-ul existent de 2400 CR are 14 kN și până la 1,3 m/s. Motorul încetinește sub sarcină, oprește scurtarea aproape de limita proprie și reia viteza progresiv când ținta cedează. Q scurtează, eliberarea Q păstrează lungimea, F dă cablu; controller LB/RB. Frâna oferă sprijin limitat de aderență, fără ancorare artificială. HUD-ul și sunetul disting preluarea cablului, tragerea și limita troliului.
+
+Capacitatea troliului limitează scurtarea produsă de motor. Cablul păstrează separat pragul de rupere: un troliu de 14 kN poate suprasolicita cablul de 11 kN, iar smuciturile cu vehiculul rămân periculoase. Treapta profesională, bateria și supraîncălzirea sunt amânate. Acesta este un prototip; forța și ritmul pe R01 se calibrează după testul utilizatorului. Detalii și verificări: `Docs/Validation/WinchPrototype`.
+
 ## Configurație și compatibilitate
 Ruperea cablului depinde de mărimea suprasarcinii, nu de o fereastră fixă de0,8s. Se verifică cererea de forță înainte de netezire și înainte de aplicarea impulsului: la≥165% din rezistența cablului se rupe în același pas de fizică; depășirile mai mici consumă un buget de stres în aproximativ0,04–0,18s. Smuciturile apropiate acumulează stres; acesta se relaxează gradual fără sarcină și nu se șterge instant prin deconectare. Nu este uzură permanentă. Galben peste60%, portocaliu peste82%, roșu la limita de100%. Gazda decide ruperea; ambele capete pierd forța de tractare în pasul ruperii.
 
@@ -83,3 +89,8 @@ Garaj central G, râu cu două traversări, serpentine, zone de Living Mud pentr
 Extragerea este măsurată prin distanță față de țintă, nu prin Z global. Predarea verifică distanța orizontală și diferența de altitudine. Progresul tutorialului folosește în continuare biții 0–2; harta folosește 3–26, fără migrarea formatului v2. Resetarea folosește puncte sigure de pe suprafața drumului, inclusiv deasupra podurilor. Apa adâncă a lacului resetează mașina la ultimul punct sigur.
 
 Aceasta este prima versiune a hărții. Nu sunt validate încă senzația de condus, durata economică efectivă, potrivirea dificultății fiecărui contract sau multiplayerul pe hartă. Dovezi: Docs/Validation/OpenWorld.
+
+
+## Situații vizibile la intervenții — 2026-11-01
+Cele24 de intervenții au acum cauze distincte: șanțuri, făgașe și burta pe noroi, două mașini în apa lacului, taluzuri, pietre sub șasiu sau culoare între bolovani, zăpadă acumulată, punți îngropate în nisip, creastă de dună și albie uscată. R09/R16/R24 sunt defecțiuni de motor pe teren liber, semnalate prin fum de sub capotă, pată de ulei și triunghi de avertizare. Acestea cer remorcare, fără rezistență artificială de blocaj. Fumul urmărește ținta până la încheierea/abandonarea contractului.
+R01 păstrează prototipul anterior. Celelalte situații folosesc teren și poziții locale noi, descrieri RO/EN și fotografii actualizate, păstrând identificatorii, clasele, recompensele și predările. Apa folosește lacul existent, cu fund puțin adânc și rampă spre mal; nu există încă plutire sau sistem nou de înec. Cauza trebuie să fie vizibilă la apropiere, cârligul accesibil și direcția de ieșire lizibilă. Extragerea efectivă și dificultatea se calibrează după testul utilizatorului. Dovezi și distribuția completă: Docs/Validation/RecoverySituations.

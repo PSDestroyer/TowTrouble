@@ -12,7 +12,7 @@ namespace TowTrouble
         public int Price;
         public GameObject[] Prefabs;
         public string[] Sockets, Families;
-        public float DriveMultiplier=1, SpeedMultiplier=1, MudGrip=1, MudResistance=1, AddedMass, Lift, Track=1, CableStrength=RecoveryRules.BreakForce, WinchSpeed=1.3f;
+        public float DriveMultiplier=1, SpeedMultiplier=1, MudGrip=1, MudResistance=1, AddedMass, Lift, Track=1, CableStrength=RecoveryRules.BreakForce, WinchSpeed=RecoveryWinch.StockSpeed, WinchForce=RecoveryWinch.StockForce;
         public int PaintIndex=-1;
         public string Label(RecoveryProfile profile)=>profile.L(Name,EnglishName);
         public bool Fits(string family)=>Families==null||Families.Length==0||Array.IndexOf(Families,family)>=0;
@@ -77,18 +77,18 @@ namespace TowTrouble
     [Serializable] public sealed class GaragePreset { public string Name; public RecoveryBuild Build; }
     public struct GaragePerformance
     {
-        public float Mass, Drive, Speed, MudGrip, MudResistance, SandGrip, SnowGrip, Lift, Track, Cable, Winch;
+        public float Mass, Drive, Speed, MudGrip, MudResistance, SandGrip, SnowGrip, Lift, Track, Cable, Winch, WinchForce;
         public static GaragePerformance Calculate(RecoveryBuild build,RecoveryGarageCatalog catalog)
         {
             int model=Mathf.Clamp(build.Model,0,3);
-            var value=new GaragePerformance{Mass=RecoveryVehicle.Masses[model],Drive=RecoveryVehicle.PullForces[model],Speed=13,MudGrip=1,MudResistance=1,SandGrip=1,SnowGrip=1,Track=1,Cable=RecoveryRules.BreakForce,Winch=1.3f};
+            var value=new GaragePerformance{Mass=RecoveryVehicle.Masses[model],Drive=RecoveryVehicle.PullForces[model],Speed=13,MudGrip=1,MudResistance=1,SandGrip=1,SnowGrip=1,Track=1,Cable=RecoveryRules.BreakForce,Winch=RecoveryWinch.StockSpeed,WinchForce=RecoveryWinch.StockForce};
             if(build.Items!=null)foreach(var id in build.Items)
             {
                 var p=catalog.Find(id);if(p==null)continue;
                 if(id=="tires_sand")value.SandGrip=1.45f;if(id=="tires_winter")value.SnowGrip=1.65f;
                 value.Mass+=p.AddedMass;value.Drive*=p.DriveMultiplier;value.Speed*=p.SpeedMultiplier;
                 value.MudGrip*=p.MudGrip;value.MudResistance*=p.MudResistance;value.Lift+=p.Lift;value.Track*=p.Track;
-                if(p.Slot==GarageSlot.Cable)value.Cable=p.CableStrength;if(p.Slot==GarageSlot.Winch)value.Winch=p.WinchSpeed;
+                if(p.Slot==GarageSlot.Cable)value.Cable=p.CableStrength;if(p.Slot==GarageSlot.Winch){value.Winch=p.WinchSpeed;value.WinchForce=p.WinchForce;}
             }
             value.Mass=Mathf.Clamp(value.Mass,900,2400);value.Track=Mathf.Clamp(value.Track,.9f,1.15f);value.Lift=Mathf.Clamp(value.Lift,0,.22f);return value;
         }

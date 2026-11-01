@@ -18,7 +18,7 @@ namespace TowTrouble
         {
             if(session==null)return;
             var p=session.Profile;bool lobby=!session.Connected||session.World.Phase==RecoveryPhase.Lobby;
-            bool frameWheel=session.World.HasContract&&session.World.UsesArcadeExtraction&&!session.World.ClearingObstacle;
+            bool frameWheel=session.World.HasContract&&!session.World.ClearingObstacle&&(session.World.UsesArcadeExtraction||(session.World.FreeRoam&&(session.World.Contract.SituationKind==RecoverySituationKind.Ditch||session.World.Contract.SituationKind==RecoverySituationKind.Embankment)));
             extractionFraming=Mathf.MoveTowards(extractionFraming,frameWheel?1:0,Time.unscaledDeltaTime*2);
             Vector3 position,look;
             if(lobby||session.GarageOpen)
@@ -59,7 +59,7 @@ namespace TowTrouble
                     :new Vector3(6f,elevation*.7f,-Mathf.Max(1f,playerFollowDistance));
                 if(includeTarget)
                 {
-                    // R01's blocked wheel is on the left. Keep both vehicles in
+                    // The authored wheel ditches are on the left. Keep both vehicles in
                     // frame from that side, and retain the player's manual orbit.
                     float spread=Mathf.Clamp(Vector3.Distance(car.position,target)/10f,.9f,2.2f);
                     var wheelView=new Vector3(-8*spread,elevation+3*spread,-6*spread);

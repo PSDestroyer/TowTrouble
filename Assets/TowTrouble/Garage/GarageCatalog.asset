@@ -32,6 +32,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Wheels
     Name: Original
@@ -52,6 +53,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Bonnet
     Name: Original
@@ -72,6 +74,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_FrontBumper
     Name: Original
@@ -92,6 +95,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_RearBumper
     Name: Original
@@ -112,6 +116,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Fenders
     Name: Original
@@ -132,6 +137,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Roof
     Name: Original
@@ -152,6 +158,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Intake
     Name: Original
@@ -172,6 +179,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Exhaust
     Name: Original
@@ -192,6 +200,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Chassis
     Name: Original
@@ -212,6 +221,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Engine
     Name: Original
@@ -232,6 +242,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Transmission
     Name: Original
@@ -252,6 +263,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Suspension
     Name: Original
@@ -272,6 +284,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Cable
     Name: "Cablu stock \xB7 11 kN"
@@ -293,6 +306,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 11000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: cable_14
     Name: "Cablu u\u0219or \xB7 14 kN"
@@ -313,6 +327,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 14000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: cable_18
     Name: "Cablu standard \xB7 18 kN"
@@ -335,12 +350,14 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Winch
-    Name: Original
-    EnglishName: Stock
-    Description: "Echipamentul ini\u021Bial."
-    EnglishDescription: Original equipment.
+    Name: "Troliu stock \xB7 8 kN"
+    EnglishName: "Stock winch \xB7 8 kN"
+    Description: "8 kN; p\xE2n\u0103 la 1,0 m/s. \xCEncetine\u0219te sub sarcin\u0103
+      \u0219i se opre\u0219te la limit\u0103."
+    EnglishDescription: 8 kN; up to 1.0 m/s. Slows under load and stalls at its limit.
     Slot: 14
     Price: 0
     Prefabs: []
@@ -354,7 +371,8 @@ MonoBehaviour:
     Lift: 0
     Track: 1
     CableStrength: 18000
-    WinchSpeed: 1.3
+    WinchSpeed: 1
+    WinchForce: 8000
     PaintIndex: -1
   - Id: stock_Paint
     Name: Original
@@ -375,6 +393,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: 0
   - Id: part_db6772488e62a844a820c7dd2658153e
     Name: Geep
@@ -397,6 +416,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_181007b3b8a24c1458b536fe22e5cbd6
     Name: Geep Bigfoot
@@ -419,6 +439,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1c3b260692ecb5746bb3e8ac2f691a50
     Name: Geep Buggy
@@ -441,6 +462,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fd5389d73d329d042a23dc697f8477ab
     Name: Goblin Buggy High
@@ -463,6 +485,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f2342a2aa6e60ed45b249712da41c26e
     Name: Goblin Roadster
@@ -485,6 +508,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_dce5dc84aeb924f46a0db5bfa19304f0
     Name: Pickupster Bigfoot
@@ -507,6 +531,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f59caaef599de6844872131db5db17ad
     Name: Pickupster Low
@@ -529,6 +554,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a845e18cfd6a28f40ae8b75d0ec5588e
     Name: Pickupster Tow
@@ -551,6 +577,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9737a756495ddf64789c36986c6bf141
     Name: Attachment Flatbed Winch
@@ -577,6 +604,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_70d5fe3016651d94c90143184804abeb
     Name: Bonnet Armorcar
@@ -601,6 +629,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0a6ed0f6c00673141997dce1c3f2d7c5
     Name: Bonnet Armorcar Grill
@@ -625,6 +654,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_76b39f6118f6cc642b8f6a36655f022e
     Name: Bonnet Geep
@@ -650,6 +680,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a3f462fb87872af45ba39263058fcff5
     Name: Bonnet Geep Grill
@@ -675,6 +706,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9a1dd985834dd774f8b17b197a394f2f
     Name: Bonnet Pickupster Bun
@@ -700,6 +732,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_260a42988fc24a447b52f1c356e1913b
     Name: Bonnet Pickupster Bun Grill
@@ -725,6 +758,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e9b81bfc59ec4b444944675a2fd28263
     Name: Bonnet Pickupster Jp
@@ -750,6 +784,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4d84dbc97b39b2e4896e43d47bdfb198
     Name: Bonnet Pickupster Jp Grill
@@ -775,6 +810,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7ecaf690ef39ee245816df600c21eb84
     Name: Bonnet Radiator Slant
@@ -799,6 +835,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_022d9bdec0ad34a4880cead22ded81ef
     Name: Bumper A Exhaust 3 Rear
@@ -822,6 +859,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6f0ac922087f1cc42a3f01229f0317b1
     Name: Bumper Bug Shovel Front
@@ -845,6 +883,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_58e5a8eeac37c5f499c8490c98e8d5fd
     Name: Bumper Bugster Front
@@ -868,6 +907,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b38f2c7dd71b7c44bba454091032e1db
     Name: Bumper Bugster Rear
@@ -891,6 +931,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4e58b5b934642e243a46998ff3b42b81
     Name: Bumper Geep Front Winch
@@ -914,6 +955,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f6787316c1f5ed94599819e11764bd15
     Name: Bumper Pickupster Front
@@ -937,6 +979,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3ed9546b1d61cc544a7646858ac9d05d
     Name: Bumper Pickupster Rail Front
@@ -960,6 +1003,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2c69c703736f0b34a8ababe0305490c5
     Name: Bumper Pickupster Rail Rear
@@ -983,6 +1027,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_83b25ae8ce8667046a4cec39c9fd723f
     Name: Bumper Pickupster Rear
@@ -1006,6 +1051,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ef429447ce61aaa448d9424b395a714f
     Name: A Motor 4Banger Full
@@ -1029,6 +1075,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2c6c9d39b13f0ef47a25a99e5ba5547a
     Name: Motor 4Banger
@@ -1052,6 +1099,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d2435538cc5c430479f624a01cb95329
     Name: Motor Carb Dish
@@ -1075,6 +1123,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0507b3f68172c0e45b60b7867470cbf1
     Name: Motor Exhaust Rear Chrome Left
@@ -1098,6 +1147,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2d3593ff8c252a649825469cd79b4830
     Name: Wheel Bug Front Lvl1
@@ -1127,6 +1177,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1220514db264db6458f3599afea278dc
     Name: Wheel Bug Front Lvl3
@@ -1156,6 +1207,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_074fb12dc766a734680348b6e0cb8841
     Name: Wheel Bug Rear Lvl1
@@ -1185,6 +1237,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4d431e022b49463429a2653d8ce5191a
     Name: Wheel Bug Rear Lvl3
@@ -1214,6 +1267,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c9ff7805b3403b54a8c4a0f49515b5f7
     Name: Wheel Offroad Lvl1
@@ -1243,6 +1297,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_69b5e94cbe90c024ebb06e94d1cbb1b9
     Name: Wheel Offroad Lvl2
@@ -1272,6 +1327,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a1473d43c9bb928458425484b396af1a
     Name: Wheel Offroad Lvl3
@@ -1301,6 +1357,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2509451e50440224f92eaaaacb64599f
     Name: Wheel Offroad Tractor
@@ -1330,6 +1387,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b9f4e74710357644d80aab6b3c542346
     Name: Wheel Stamp Geep
@@ -1359,6 +1417,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_12fcb724bf1d54d4bbaab0c1219dea34
     Name: Historic Bucket
@@ -1381,6 +1440,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b56046536aeaa1248a125370bbfc6c98
     Name: Historic Electron
@@ -1403,6 +1463,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_505188f6659a8c24ab7fa339e7bc88f6
     Name: Historic Lorry
@@ -1425,6 +1486,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_68a5fd0c999e0cd4a8eed59649abe203
     Name: Historic Prince
@@ -1447,6 +1509,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f9626ec65bde66e4295c9233cd0f0c8a
     Name: Historic Rumpler
@@ -1469,6 +1532,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fb67f93385f34cb4b8d3cd454e26dd27
     Name: Historic Spartan
@@ -1491,6 +1555,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_754480f2a5f9c3d48b22a1cb1eb5c178
     Name: Historic Speedster
@@ -1513,6 +1578,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fc41577994828ff41846a7d4ba82236b
     Name: Historic Speedster Bug
@@ -1535,6 +1601,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4cec1c5680c8d47438781f0bf4b217a8
     Name: Historic Speedster Electron
@@ -1557,6 +1624,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_46c2751f652b98646906203d83dcde11
     Name: Historic Taxi Aero
@@ -1579,6 +1647,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_cfef07357ab890b4f9a771159bcf9d75
     Name: Historic Villager Low
@@ -1601,6 +1670,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_bfdaa1cdb78302846a593b6c2544bd8d
     Name: Historic Villager OffRoad
@@ -1623,6 +1693,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_96087c5ac55135347829d929ed42ceaf
     Name: Rod Bucket
@@ -1645,6 +1716,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d90af076e3a34f04c999b75cce5ddd65
     Name: Rod Bulldog
@@ -1667,6 +1739,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e2f3804ea32ae964f88bf37684e17c04
     Name: Rod Bulldog Cartoon
@@ -1689,6 +1762,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fbd4a1a691d465b43aa47a0477754c11
     Name: Rod Bulldog GT
@@ -1711,6 +1785,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_bc603ae6795378d46a2e202056a4d06c
     Name: Rod Electron
@@ -1733,6 +1808,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_82b197edb24a4d24fbd4394e4c712eab
     Name: Rod Lorry
@@ -1755,6 +1831,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b8ff17d532f4f4540a992bb546daee88
     Name: Rod Martian
@@ -1777,6 +1854,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_392607754adf06e478a918a210b9e9b7
     Name: Rod Martian LeMans
@@ -1799,6 +1877,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ed5523aa6ea2eb747a299391edbfd247
     Name: Rod Midjet Wood
@@ -1821,6 +1900,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0b8f866c414f7f948bdf64f99bfaf755
     Name: Rod Prince
@@ -1843,6 +1923,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1937714fd5d917e46b7b8f69825de444
     Name: Rod Prince Cartoon
@@ -1865,6 +1946,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_626a9fff9212f8c42ab8797646556fed
     Name: Rod Rumpler
@@ -1887,6 +1969,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_236a88ddf6eba9e47aa5c2e8c2e5f315
     Name: Rod Speedster LeMans
@@ -1909,6 +1992,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6fc45b9957e0337458c8fb00da09bfad
     Name: Rod Taxi
@@ -1931,6 +2015,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c0ee106b1981608458b1df733d6a345f
     Name: Rod Taxi LeMans
@@ -1953,6 +2038,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3cbdebdac19de5047a0d02f6da70232c
     Name: Rod Taxi Low Cabrio
@@ -1975,6 +2061,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_35415f7c446e66f47a3a41d1827915b8
     Name: Rod Villager Low
@@ -1997,6 +2084,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_55e53e2aedb38f1428ee2d2ec59ee755
     Name: Attachment Top Antenna
@@ -2020,6 +2108,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ead678ef9c0a9ed458550c0809e34a4c
     Name: Attachment Top Antenna Short
@@ -2043,6 +2132,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a8c38b9051e0e064bb93f72586658165
     Name: Attachment Top Deco Spartan Lvl1
@@ -2066,6 +2156,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8d4a0ffa542e0e3449daea710983cc14
     Name: Attachment Top Deco Spartan Lvl2
@@ -2089,6 +2180,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fb8805cbf7e5f4d4592e5131fcf11138
     Name: Attachment Top Light GT
@@ -2112,6 +2204,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_72ddbe852a3c2454da0c71ec604e3662
     Name: Attachment Top Light Modern
@@ -2135,6 +2228,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b19ba822d16df884cacd088df1a8e6f5
     Name: Attachment Top Lights Lvl1
@@ -2158,6 +2252,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_38a8d2e4064d4be468779d5aac9a9e69
     Name: Attachment Top Lights Lvl2
@@ -2181,6 +2276,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7b80442344f71c44c9c057efb1e16251
     Name: Attachment Top Lights Lvl3
@@ -2204,6 +2300,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f3fdc75a970841e46aae0d25a5695303
     Name: Attachment Top Lights Lvl4
@@ -2227,6 +2324,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_92c5b835c69c69f4382aa1a30a5cd92b
     Name: Attachment Top Metal Rack
@@ -2250,6 +2348,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a120f28904b390348a1da0120fb4cb98
     Name: Attachment Top Scoop 1
@@ -2273,6 +2372,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8fd9e637c929f8b4d81d56b212c99b7d
     Name: Attachment Top Scoop 2
@@ -2296,6 +2396,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_59485f651f8af6e488340e5c349093ca
     Name: Attachment Top Spoiler GT
@@ -2319,6 +2420,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a7c7c0724f4353d45abfcd381f11f992
     Name: Attachment Top Spoiler LeMans
@@ -2342,6 +2444,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6704fa3f796668c419bd0990f623f4da
     Name: Attachment Top Spoiler Wood
@@ -2365,6 +2468,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_525c0c94043787a4da2597a95ea3e8fd
     Name: Bonnet Armor
@@ -2389,6 +2493,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_60f3104e7083c0d4e9f180d475d0e672
     Name: Bonnet Armor Grill
@@ -2413,6 +2518,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_175a4a1d35f42f44ea6794ac88efc890
     Name: Bonnet Baron
@@ -2437,6 +2543,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_940a625236065154f9cfcce296c3a98a
     Name: Bonnet Baron Grill
@@ -2461,6 +2568,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fe5d570bb1a87304781c5184c1ad6472
     Name: Bonnet Bucket
@@ -2485,6 +2593,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_52323693ba1d2df409547af19c35423e
     Name: Bonnet Bucket Grill
@@ -2509,6 +2618,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_48a2c9ec3578e6444bd3e653e784a2ef
     Name: Bonnet Bulldog
@@ -2533,6 +2643,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6199f82f796f1f24ba7e468e860e69f9
     Name: Bonnet Bulldog Chrome
@@ -2557,6 +2668,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_422e284228c919344880a8ee82b74cd1
     Name: Bonnet Bulldog Chrome Grill
@@ -2581,6 +2693,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_bf892cbeab6bee94fbb64e2876683154
     Name: Bonnet Bulldog Grill
@@ -2605,6 +2718,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_67d0e653ed448aa46a29640bf3f94129
     Name: Bonnet Bulldog Low
@@ -2629,6 +2743,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_08823311796674e4985797bdd606d79e
     Name: Bonnet Bulldog Low Grill
@@ -2653,6 +2768,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fd38b659fe2f0134980d4dab2220e81b
     Name: Bonnet Electron
@@ -2677,6 +2793,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d9ea97ddc910cd342ae1a9b466fd6800
     Name: Bonnet LeMans
@@ -2701,6 +2818,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_703baf42f3c012949a164b608f624832
     Name: Bonnet LeMans Grill
@@ -2725,6 +2843,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b0f9d8558bc5c214caddb199234032c2
     Name: Bonnet Lorry
@@ -2749,6 +2868,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_674009ba3427ffe4e83aca11b0cd0955
     Name: Bonnet Martian
@@ -2773,6 +2893,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e37ba2d8b30b7ea4fbec3440f5f71722
     Name: Bonnet Martian Grill
@@ -2797,6 +2918,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_652748bb2c9af0f41af74e7884e5f114
     Name: Bonnet Midget
@@ -2821,6 +2943,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_5996c547e004cfc468e69c12253bdb3e
     Name: Bonnet Midget Open
@@ -2845,6 +2968,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1df1110c4bcfcc64fbce4b2ec57ec1cc
     Name: Bonnet Prince
@@ -2869,6 +2993,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ed1f089e9f4aa2f43bc1ca9d904177f9
     Name: Bonnet Prince Grill
@@ -2893,6 +3018,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_647f50d04115a5e4e8c5590ad105fb05
     Name: Bonnet Rumpler
@@ -2917,6 +3043,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e9f0f187e5fe7eb4592bc5944be68978
     Name: Bonnet Rumpler Open
@@ -2941,6 +3068,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_653dda88d300d21439375ac396bbb4f7
     Name: Bonnet Scooter
@@ -2965,6 +3093,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_489d7acd964499d42b6e3b65006a2398
     Name: Bonnet Scooter Open
@@ -2989,6 +3118,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_bb684341a8bfd15468cfebbd04279b12
     Name: Bonnet Short Bucket
@@ -3013,6 +3143,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ba6318efe5a2e1d4a9cc027d8f72c124
     Name: Bonnet Short Electron
@@ -3037,6 +3168,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3a209dc68d8115d4383d5a2c6b33a5a0
     Name: Bonnet Short Omnibus
@@ -3061,6 +3193,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0038548db6b249542a33b82565158b1c
     Name: Bonnet Short Racer
@@ -3085,6 +3218,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_896b356d3f5be5049a4c0721896f3266
     Name: Bonnet Slope
@@ -3109,6 +3243,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4179a71f37752dc4091dd9408824a960
     Name: Bonnet Slope Open
@@ -3133,6 +3268,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1a8026f261e8bc54aa7c1d6a920c3845
     Name: Bonnet Spartan
@@ -3157,6 +3293,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b8287c82b0fcae748b7041cf58c8612b
     Name: Bonnet Speedster
@@ -3181,6 +3318,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b223bd77d3447174fb5166046844bfbb
     Name: Bonnet Speedster Grill
@@ -3205,6 +3343,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c14e258abbf3956408a68c2ea9776761
     Name: Bonnet Taxi
@@ -3229,6 +3368,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9745eae313416d543bfc2c70fed3e025
     Name: Bonnet Taxi Grill
@@ -3253,6 +3393,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c3cc62492b5c7614ab8cce15ade9e5a6
     Name: Bonnet Villager
@@ -3277,6 +3418,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0052e0699bb667643ab542d56b763a72
     Name: Bonnet Villager Grill
@@ -3301,6 +3443,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_367edf5c5a409b74b958fe7094c6b4f1
     Name: Bonnet Villager Low
@@ -3325,6 +3468,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f26b06c5e054269489559349b24fc96d
     Name: Bonnet Villager Low Open
@@ -3349,6 +3493,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e13535ee047d0c645b654903524601fb
     Name: Bumper Bulldog Front
@@ -3372,6 +3517,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e926bfddca40fa744be66190ae017019
     Name: Bumper Bulldog Rear
@@ -3395,6 +3541,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c20bf76a179fc0a458ce653099165619
     Name: Bumper Front Cage
@@ -3418,6 +3565,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f0c14495ce598e446b2c8dad2416d210
     Name: Bumper Front Cage Smooth
@@ -3441,6 +3589,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f9e1e5832befdca4db42bdb6f10b659a
     Name: Bumper Front LeMans
@@ -3464,6 +3613,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_58a11b8983124444db51e190eb991168
     Name: Bumper Front Rumpler Aero
@@ -3487,6 +3637,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f04f91309900a6746bfbb7de897425dd
     Name: Bumper Front Headlight Angry
@@ -3510,6 +3661,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_335c8e2f105e7434ea1b9b53ee85219f
     Name: Bumper Front Headlight Armor 3
@@ -3533,6 +3685,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1537d535752a4f245936c057a06f6343
     Name: Bumper Front Headlight Armor High
@@ -3556,6 +3709,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f2d068c87680fe748922d20c6fe2674a
     Name: Bumper Front Headlight Armor Low
@@ -3579,6 +3733,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a88dfb3bab3263a4292365dee5153431
     Name: Bumper Front Headlight Frame High
@@ -3602,6 +3757,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b5bc9ff7ddedf924e8611e8ee8261896
     Name: Bumper Front Headlight Grid
@@ -3625,6 +3781,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_da0f8324d6c333849a408f66839df56c
     Name: Bumper Front Headlight Grid Single
@@ -3648,6 +3805,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_05e54115787be9748b20e81f226e4aa3
     Name: Bumper Front Headlight LeMans
@@ -3671,6 +3829,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7bb39b06afc672d47a1781a7d240d486
     Name: Bumper Front Headlight Oldtimer
@@ -3694,6 +3853,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d4442fb7f795ced429d60ee17f7407d0
     Name: Bumper Front Headlight Oldtimer 2
@@ -3717,6 +3877,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_abfedba9254235940974b5b4d65c24fc
     Name: Bumper Front Headlight Racer
@@ -3740,6 +3901,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9c494380e62b6e546a12a062cfe8cd79
     Name: Bumper Front Headlight Row
@@ -3763,6 +3925,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6e026a2948e6d4847b7adfe173bd5531
     Name: Bumper Front Headlight Single
@@ -3786,6 +3949,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7a67e66deeafae54cbca9fb3f69b2e1c
     Name: Bumper Front Headlight Snail
@@ -3809,6 +3973,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8b6144550a04813489b9f19e379aaea0
     Name: Bumper Front Headlight Snail High
@@ -3832,6 +3997,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1e4a5835f2166774b8ae2301706fe54c
     Name: Bumper Front Headlight Snail Single
@@ -3855,6 +4021,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_215fa69b56b86174a80ed1794fe82ba7
     Name: Bumper Front Headlight Spider
@@ -3878,6 +4045,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3a144d902249b554ab3c45ecfae14ad6
     Name: Bumper Front Headlight Triangle
@@ -3901,6 +4069,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_09f93bf1915eae144b7d7dcf998cbd8f
     Name: Bumper Front Headlight Worker
@@ -3924,6 +4093,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_59ad88c80659a7f4d8443f0218490a36
     Name: Bumper Front Headlight Worker High
@@ -3947,6 +4117,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9a8adaf6ce2256c4987508ac52ca560e
     Name: Bumper Front Headlights Modern
@@ -3970,6 +4141,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a98d1803c172c714882a5bc0b85867c2
     Name: Bumper Martian Front
@@ -3993,6 +4165,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_55e6188122516f74385460e1820886e4
     Name: Bumper Rear Antenna 2
@@ -4016,6 +4189,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0e934e187c4b7f0458d1f5585f5ab0fb
     Name: Bumper Rear Exhaust
@@ -4039,6 +4213,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a6db3abb11361324db510784c52f4e25
     Name: Bumper Rear Exhaust Bulldog
@@ -4062,6 +4237,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_41e602e5212e02042be6c09b5df4f22a
     Name: Bumper Rear Exhaust LeMans
@@ -4085,6 +4261,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fba333a5b358a7740a9acb2d5878dd4d
     Name: Bumper Rear Numberplate
@@ -4108,6 +4285,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_cc542f488eae0bd4d91bbe3e5f162bf8
     Name: Bumper GT Front
@@ -4135,6 +4313,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e090183b26e946a4a9303aa4b2c40afc
     Name: Bumper GT Rear
@@ -4158,6 +4337,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7bfe66134eb97d84e983ea174a559708
     Name: Bumper Plate Lvl1 Front
@@ -4185,6 +4365,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ec493cdc070a5474fbcbf6925661a807
     Name: Bumper Plate Lvl2 Front
@@ -4212,6 +4393,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e9161ca0b96f15d4fa8806a7150a3aff
     Name: Bumper Plate Lvl2 Rear
@@ -4235,6 +4417,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_471a11caf163b27498b0ace93b53f301
     Name: Bumper Plate Lvl3 Front
@@ -4262,6 +4445,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d6a0dd95efa213d4cab374014d26804d
     Name: Bumper Plate Lvl3 Rear
@@ -4285,6 +4469,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_265019ed923cdaf418629ce6e4894584
     Name: Bumper Plow Lvl0 Front
@@ -4312,6 +4497,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b3aa6c5bbc137164aa47ea345b74a56b
     Name: Bumper Plow Lvl0 Rear
@@ -4335,6 +4521,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a80f76aec1e8c8c41a154ab662f770ed
     Name: Bumper Plow Lvl1 Front
@@ -4362,6 +4549,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c4ffecaa6b3841747a09b8947506ed32
     Name: Bumper Plow Lvl1 Rear
@@ -4385,6 +4573,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_5cb4325d037e15f4f836a4855408f535
     Name: Bumper Plow Lvl2 Front
@@ -4412,6 +4601,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_eb73885464beacf4396c1b9661988467
     Name: Bumper Plow Lvl2 Rear
@@ -4435,6 +4625,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_12c57eb922ecb1d4bb09467a1d9f52d2
     Name: Bumper Plow Lvl3 Front
@@ -4462,6 +4653,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7b94e1748d1a4f4478cefd52e6293e5a
     Name: Bumper Plow Lvl3 Rear
@@ -4485,6 +4677,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e5b69efb0ca81024795e700ef29b158a
     Name: Bumper Shield Lvl1 Front
@@ -4512,6 +4705,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b92f616064a532440ade1540055c897d
     Name: Bumper Shield Lvl1 Rear
@@ -4535,6 +4729,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9e6f842ffeb7a6747ae9bc674199ef85
     Name: Bumper Shield Lvl2 Front
@@ -4562,6 +4757,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2294b0b7b74810d48abf96731f1c4883
     Name: Bumper Shield Lvl2 Rear
@@ -4585,6 +4781,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1b32b79d5c3faed439dfe2de4a0329d0
     Name: Bumper Shield Lvl3 Front
@@ -4612,6 +4809,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c4c7a590bde95e2428208e681b41e1b7
     Name: Bumper Shield Lvl3 Rear
@@ -4635,6 +4833,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f7041943cd3915c49900c07934af328a
     Name: Bumper Wood Lvl1 Front
@@ -4662,6 +4861,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3f8aac2ddf1d09f41a90109d0e2e38f3
     Name: Bumper Wood Lvl1 Rear
@@ -4685,6 +4885,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6acfd2fd30a0b074d879e3202c0195c4
     Name: Bumper Wood Lvl2 Front
@@ -4712,6 +4913,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_cee469153f929b44787c2c3da0d23a68
     Name: Bumper Wood Lvl2 Rear
@@ -4735,6 +4937,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1707136b3efd95f41b0eedad4a67773e
     Name: Bumper Wood Lvl3 Front
@@ -4762,6 +4965,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c4cd227dbe9bbf44fa1db665699fc321
     Name: Bumper Wood Lvl3 Rear
@@ -4785,6 +4989,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7a05309b74f169344a0ef38b9a066f09
     Name: Bumper Worker Lvl1 Front
@@ -4812,6 +5017,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_96601f5f1ab2d54458bfe3ea36345521
     Name: Bumper Worker Lvl1 Rear
@@ -4835,6 +5041,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f5087a0babaef454b82f4ca1d5a3585a
     Name: Bumper Worker Lvl2 Front
@@ -4862,6 +5069,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_24cbe8c8d4d983349822066af147721d
     Name: Bumper Worker Lvl2 Rear
@@ -4885,6 +5093,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4373d2631991b434cad9de8a8cdd70cf
     Name: Bumper Worker Lvl3 Front
@@ -4912,6 +5121,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_22634c5d4fba4274a94b71a65fdfc4d9
     Name: Bumper Worker Lvl3 Rear
@@ -4935,6 +5145,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_542abee1408eaa04db2b3274fa294575
     Name: Bumper Taxi Front
@@ -4958,6 +5169,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_cfa6bcc3f451e064ea77fd40474f8c54
     Name: Bumper Taxi Rear
@@ -4981,6 +5193,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_069bdf1af5e13734ba4845af77bc3d1e
     Name: Bumper Villager Front
@@ -5004,6 +5217,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3c8956c67fdd7ba46919ecf481ffc18a
     Name: Motor Bucket
@@ -5027,6 +5241,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_78aa1b74d33886c4c8b8b6d18fa594f2
     Name: Motor Carb High Tower
@@ -5050,6 +5265,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6fa4a2dc272bdf543a195372589a89ee
     Name: Motor Carb Side
@@ -5073,6 +5289,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_5ff4bbed6a3cfcb4f90589f346714abd
     Name: Motor Carb Tower
@@ -5096,6 +5313,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d777468b737ad4b49b4bf5072357f22b
     Name: Motor Carb Trombon
@@ -5119,6 +5337,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4ad4999d9a5e59346ad9987b3c40563e
     Name: Motor Exhaust Box
@@ -5142,6 +5361,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c47579fed0bc64a49b19f37976c742c1
     Name: Motor Exhaust Box Right
@@ -5165,6 +5385,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0d557d8a77134c641b4ea92065bc80e3
     Name: Motor Exhaust Modern Short
@@ -5188,6 +5409,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0d7e392335ff57f4e9c1b22b5c9ae606
     Name: Motor Exhaust Modern Short Right
@@ -5211,6 +5433,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2e794cb73f3e2444facc829709d79b6c
     Name: Motor Exhaust Side Bulldog
@@ -5234,6 +5457,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4518490f381da2b46a540b306930bf2b
     Name: Motor Exhaust Side Bulldog Right
@@ -5257,6 +5481,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e1cd08ff9b8a7fc46b71cb67e18968c4
     Name: Motor Exhaust T Belly
@@ -5280,6 +5505,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f22c6d83cd120a944970baa8ebe27b87
     Name: Motor Exhaust T Belly Right
@@ -5303,6 +5529,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_af929db7377d5fd4380cd2d7daa4daae
     Name: Motor Exhaust T Cone
@@ -5326,6 +5553,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8491f261ca29a6c489541bfa8dacff08
     Name: Motor Exhaust T Cone Right
@@ -5349,6 +5577,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_02a11ca5c02ae174c89d6618a7900377
     Name: Motor Exhaust T Long
@@ -5372,6 +5601,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c1b924e0c33462c4c98eb0f48e0e5efa
     Name: Motor Exhaust T Long Right
@@ -5395,6 +5625,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c2a66c6d8864ad34187efa850569e8be
     Name: Motor Exhaust T Plug
@@ -5418,6 +5649,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_65acfb46db39e55499de59923c275c77
     Name: Motor Exhaust T Plug Right
@@ -5441,6 +5673,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_057f36891ded8c74ea737cac5dfb1be1
     Name: Motor Exhaust Trucker
@@ -5464,6 +5697,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ccc4d47777defb547b09a8a1a807662a
     Name: Motor Exhaust Trucker Box
@@ -5487,6 +5721,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9b527a22478f418439b58bab3d73ccf2
     Name: Motor Exhaust Trucker Box Right
@@ -5510,6 +5745,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a6c19cb8fe2259b48a6befe9d1b7428c
     Name: Motor Exhaust Trucker Right
@@ -5533,6 +5769,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_92a51e9b48d59c9478207a4425669c8f
     Name: Motor Exhaust Trucker Short
@@ -5556,6 +5793,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_bfa674596da914346b6def90b7df781a
     Name: Motor Exhaust Trucker Short Right
@@ -5579,6 +5817,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c2b49a3a5f580564283a19614ccc2a7a
     Name: Wheel Armor Car
@@ -5608,6 +5847,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_706daf03faf2b854da1550930f800993
     Name: Wheel Armor Car Studs
@@ -5637,6 +5877,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3e3faa46ff6c48d4c90e9a42b20e23db
     Name: Wheel Buggy 4Spoke Lvl1
@@ -5666,6 +5907,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_010d40d3c65a4f246991771cd2f654d2
     Name: Wheel Buggy 4Spoke Lvl2
@@ -5695,6 +5937,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_bae898a8337c2874fbe46d804501ef9c
     Name: Wheel Buggy 4Spoke Lvl3
@@ -5724,6 +5967,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8f21fd08b70ee8b41a3386699a2a4798
     Name: Wheel Buggy Bowl lvl1
@@ -5753,6 +5997,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_39cfb9d1de4fa524d8248246731b447a
     Name: Wheel Buggy Bowl lvl2
@@ -5782,6 +6027,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7d4c892e08b8ac241b30d8a2c1543646
     Name: Wheel Buggy Bowl lvl3
@@ -5811,6 +6057,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f8cb1205339a7604fa26b52bb76b398d
     Name: Wheel Buggy Fat
@@ -5840,6 +6087,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_77838377d1ec6154abd22edaa7061b55
     Name: Wheel Buggy Fat Red
@@ -5869,6 +6117,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_439f407e47e6a464899380833db74fdc
     Name: Wheel Buggy Small
@@ -5898,6 +6147,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9173c1d2e9a8ce34c8162377b108ec28
     Name: Wheel Buggy Spike
@@ -5927,6 +6177,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_caf1306e0fd268a4b912c3eb3cc1c840
     Name: Wheel Bucket
@@ -5956,6 +6207,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4f8e33eab5032134a801b9b9e18f3c53
     Name: Wheel Bulldog
@@ -5985,6 +6237,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_55f0c3fdd001ee847bab0d5c64c4a8f8
     Name: Wheel Electron
@@ -6014,6 +6267,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1dcdfd0a645ba4546b5c7caacd614fff
     Name: Wheel Electron Chrome
@@ -6043,6 +6297,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8b605de9d0be6ac45b47b830f2522356
     Name: Wheel Electron Dish
@@ -6072,6 +6327,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b4e086cd33b6a0646904f22742aa6c6b
     Name: Wheel Lorry
@@ -6101,6 +6357,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9831c6344f37cd54797fb9b5507a67e6
     Name: Wheel Lorry Cast
@@ -6130,6 +6387,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d388d6ab8b724a44c8983649b3a80a9a
     Name: Wheel Prince
@@ -6159,6 +6417,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e217c33724063a74b8cf02d6a760cf61
     Name: Wheel Prince Dark
@@ -6188,6 +6447,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_680a0abe2b2fe064f8c5f45f38fb8248
     Name: Wheel Rumpler
@@ -6217,6 +6477,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_60eb36c110e225547af0261de0c29e82
     Name: Wheel Rumpler Wider
@@ -6246,6 +6507,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6657f228003b54e4f888d6c87bd23154
     Name: Wheel Spokes Speedster
@@ -6275,6 +6537,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_53277c4b9fe77d34ba973f6f15efca99
     Name: Wheel Spokes Speedster TanWall
@@ -6304,6 +6567,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_bc7d4d10ec9bd9f42aa370f08829144b
     Name: Wheel Taxi Spokes
@@ -6333,6 +6597,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e58af60d94eacbd44893a901aa8c7237
     Name: Wheel Taxi Stamp
@@ -6362,6 +6627,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0df15380a1b9af14d9a4fce8d1e85e17
     Name: Wheel Villager Spokes
@@ -6391,6 +6657,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_72b03d5d83d5b454c98d53da281ad045
     Name: Wheel Villager Stamp
@@ -6420,6 +6687,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2639a1fffd512554986ea1af81ef6b3a
     Name: Wheel HotRod Bowl
@@ -6449,6 +6717,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3f21f69b9d7ff4c41aec797813f9dc5e
     Name: Wheel HotRod Bowl Narrow
@@ -6478,6 +6747,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c00a0c6f44412cc43a6586edffaec39c
     Name: Wheel HotRod Bowl Red
@@ -6507,6 +6777,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8a227117028cfc3448827e8e7831a010
     Name: Wheel HotRod Bowl Red Narrow
@@ -6536,6 +6807,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_47023e67c8bc95245afbbe56cefbddc5
     Name: Wheel HotRod Bowl Red Wide
@@ -6565,6 +6837,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2c6735d7e497afd4dadd97c515ebcf3e
     Name: Wheel HotRod Bowl Wide
@@ -6594,6 +6867,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e51320bdd8af69143ae469d83cb8a25b
     Name: Wheel HotRod Cartoon Fat
@@ -6623,6 +6897,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_62938a6c11fa1d540a44f47078e4ed32
     Name: Wheel HotRod Cartoon Fat 2
@@ -6652,6 +6927,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_978e7753b72fbfe4292638220620da78
     Name: Wheel HotRod Cartoon Fat 3
@@ -6681,6 +6957,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_20517494c0f9e0c45baaa861a0385dfd
     Name: Wheel HotRod Cartoon Fat 4
@@ -6710,6 +6987,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_69ba8f4fd82337a4bbcdd7389d911e54
     Name: Wheel HotRod Cartoon Fat WhiteWall
@@ -6739,6 +7017,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1b56d7403decb4248af8f59b0dfbb9b6
     Name: Wheel HotRod Fat
@@ -6768,6 +7047,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a3f6967baabfe71418766131e20e9010
     Name: Wheel HotRod Fat Wider
@@ -6797,6 +7077,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6b74b1b397b98c94baf39c2bc5f98d6d
     Name: Wheel HotRod GoCart
@@ -6826,6 +7107,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_c1807f3fb7ff20f4182c01b271ce1c2c
     Name: Wheel HotRod GoCart Wider
@@ -6855,6 +7137,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b678e57ed6f035d40bd78778ad1a2582
     Name: Wheel HotRod GoCart Wider Deep
@@ -6884,6 +7167,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9e70eba1e74fce24887936504d71b77d
     Name: Wheel HotRod Stamp
@@ -6913,6 +7197,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e8885160051d9574db0ad7b56b9199a2
     Name: Wheel HotRod Stamp 2
@@ -6942,6 +7227,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a471a095963df1e44909c6f1d8db0fc9
     Name: Wheel HotRod Stamp Wider
@@ -6971,6 +7257,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e7b9558c0855f9c4789eef4298d14789
     Name: Wheel Futura
@@ -7000,6 +7287,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ab4dd2977fd84824dbee514fdc9edba7
     Name: Wheel Futura Wider
@@ -7029,6 +7317,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_5f7395aa26c6a82419b7b5de5db6bde2
     Name: Wheel GT
@@ -7058,6 +7347,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_19dcac52483a5a84d903c37ee6ab94cb
     Name: Wheel GT Red
@@ -7087,6 +7377,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7156bf3079d204c41b330c00e757cef5
     Name: Wheel GT Red Wide
@@ -7116,6 +7407,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_df2a664702811f345874c93c8292896b
     Name: Wheel GT Wide
@@ -7145,6 +7437,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b21f68dda7c1fb24982219d51502c9c6
     Name: Wheel LeMans
@@ -7174,6 +7467,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_fe5e7ab572b0ab9459abfddfef9b2b0d
     Name: Wheel LeMans Narrow
@@ -7203,6 +7497,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1010b8eeb52209e4ca888d130a30c01c
     Name: Wheel LeMans Wide
@@ -7232,6 +7527,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f8f62e82d683e6843b7e7e1bbdc069fe
     Name: Wheel Lowrider Chrome
@@ -7261,6 +7557,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_18693615707da0446ab7e940152226d7
     Name: Wheel Lowrider Gold
@@ -7290,6 +7587,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4271848ceb4511c4dafb6d0d8cc37b6a
     Name: Wheel Modern
@@ -7319,6 +7617,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6c0891779a3bea94d8df676ad803fc0a
     Name: Wheel Buggy Mud
@@ -7348,6 +7647,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_a219bc6af508db846b465cf8391903c4
     Name: Wheel Studs Metal
@@ -7377,6 +7677,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_eeada5e9d24421446b2aa3f85ec58591
     Name: Wheel Studs Wide
@@ -7406,6 +7707,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_796c1fa8b55471243a2498c5a490aa80
     Name: Wheel Truk Offroad
@@ -7435,6 +7737,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_235b49242aeb6eb41af963c5f1e62d04
     Name: Wheel Truk Offroad Monster
@@ -7464,6 +7767,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_acec0505730e799438b11430f7d4b093
     Name: Wheel Truk Offroad Monster Red
@@ -7493,6 +7797,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_10cb491e4ff98394587bfd11fefdca58
     Name: Wheel Truk Offroad Wider
@@ -7522,6 +7827,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_244283c7fad461440a0f23bee1db341b
     Name: Wheel Spike
@@ -7551,6 +7857,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_43fca230dac777b4cae9275d47c91939
     Name: Wheel Spike Red
@@ -7580,6 +7887,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6da90ae8e4cda344496754dc2eb3cb93
     Name: Wheel Spike Red Wide
@@ -7609,6 +7917,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9bb5b28950240a246ad56267aabe2806
     Name: Wheel Spike Wide
@@ -7638,6 +7947,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_980dd3d38b2b37740a99afaf56c7f033
     Name: Wheel Villager Stamp Wider
@@ -7667,6 +7977,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_54db90cd5da80d948ba849df636ca006
     Name: Fender Geep
@@ -7698,6 +8009,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_798c1b8ca0b0009489594b8a9b63628b
     Name: Fender Geep V2
@@ -7729,6 +8041,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d22ccfe5d4a8cee43a944b30d8d72fdf
     Name: Fender Pickup
@@ -7759,6 +8072,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1026fe5eeacc4dd4d8fc2676a24e16e2
     Name: Fender Pickup Step
@@ -7785,6 +8099,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2a62f8d99390b3d4582bbb885eb9c698
     Name: Fender Pickupster
@@ -7816,6 +8131,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7512395131c108d47be21d4e0d7c8752
     Name: Fender Pickupster Step
@@ -7843,6 +8159,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ded1a7be54efb6f4eac9a847a15cea0a
     Name: Fender Pickupster Step Tube
@@ -7870,6 +8187,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_5c0f9b5ff4c62be47bfb182944e38058
     Name: Fender Tractor
@@ -7900,6 +8218,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_17ba827fa3d2814488fbf03a9a2909c7
     Name: Fender Woodster Step
@@ -7926,6 +8245,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9665f51c354af0a4fa04532cd984226f
     Name: Fender Bucket
@@ -7956,6 +8276,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_74b55782f1ca3da4c8238cec2101b93f
     Name: Fender Bucket Short
@@ -7986,6 +8307,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e5813300fa55c0c4184de9b80d80f4a2
     Name: Fender Bucket Step
@@ -8012,6 +8334,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_58a685f1d336e774385778c6738f544d
     Name: Fender Bulldog Fat
@@ -8042,6 +8365,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_cec4b14ac851c524bb32cef0556d2df3
     Name: Fender Bulldog Fat Step Scale
@@ -8068,6 +8392,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_11ec5fae3ebb7fa4eb79b2da406049b5
     Name: Fender Bulldog
@@ -8098,6 +8423,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_5cea86e399a05b04ca6df99a55c022e5
     Name: Fender Bulldog Step
@@ -8124,6 +8450,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8225107810f34244aa385b774eed9d62
     Name: Fender Electron
@@ -8154,6 +8481,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_19d8e21fba9dec8478db706794b6ca20
     Name: Fender Electron Step
@@ -8180,6 +8508,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_feb4eaec4de796d42b0f3948628febf3
     Name: Fender Flap
@@ -8210,6 +8539,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_69fdf42db3255344080ca869f43f9223
     Name: Fender LeMans Flap
@@ -8236,6 +8566,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2b83c4844f7130045a006fb940ce5a4e
     Name: Fender LeMans
@@ -8266,6 +8597,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_3ad3b998e33130d41aad6a0e6266314c
     Name: Fender LeMans Mid
@@ -8292,6 +8624,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6ab9d114a430a2e4085479a8d06c4fe1
     Name: Fender LeMans Short
@@ -8318,6 +8651,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_e17241473872b6241879d66d62c1c21b
     Name: Fender LeMans Step Scale
@@ -8344,6 +8678,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ed4a2256d959c0741aa027792582dfa7
     Name: Fender Lorry
@@ -8374,6 +8709,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_21f31864d46c6304794b2d37d2e19862
     Name: Fender Lorry Step
@@ -8400,6 +8736,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_40c06ce1de019ff4cb3e6df63165d7ba
     Name: Fender Martian
@@ -8430,6 +8767,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4d4bb6e870f8f5943bfa8ffcf52c1385
     Name: Fender Prince
@@ -8460,6 +8798,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_cbff8e78884f9c04f8a251a9a2f6aba3
     Name: Fender Prince Step
@@ -8486,6 +8825,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4b9caf8849997e742a69c90615da9661
     Name: Fender Rumpler Aero Closed
@@ -8512,6 +8852,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_be3d176c5e1454f4d9f933269354e800
     Name: Fender Rumpler Aero Dark
@@ -8542,6 +8883,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ee9fedfa7f1f2384eb6bf701e56e04c4
     Name: Fender Rumpler Aero Dark Step Scale
@@ -8568,6 +8910,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6b084de11d68273418898430eaae6e99
     Name: Fender Rumpler Aero
@@ -8598,6 +8941,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_08808a76d40effc4c8ab6798e531ece9
     Name: Fender Rumpler Aero Step Scale
@@ -8624,6 +8968,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_38547b75b8bc3da468a36e932ffb0e08
     Name: Fender Rumpler
@@ -8654,6 +8999,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b1e2eb6abfedb8d4097410477612546c
     Name: Fender Rumpler Step
@@ -8680,6 +9026,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_8898b303eb893b743b92ba90eb0f19d7
     Name: Fender Spartan Short
@@ -8710,6 +9057,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7eeb3c65ce750aa4c97725aac402aaf8
     Name: Fender Spartan Step Scale
@@ -8736,6 +9084,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_2e0dd7e81fdd4574f812f2ae4e7f7739
     Name: Fender Spartan V1 Flap
@@ -8762,6 +9111,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_798ce988abc6b114bbc4730b7ae95bb6
     Name: Fender Spartan V1
@@ -8792,6 +9142,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_793b20c73c331fd43ab92dde184032c6
     Name: Fender Spartan V2
@@ -8822,6 +9173,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_26f4a10ef840dcf4bb210ec7ed78fdec
     Name: Fender Speedster
@@ -8852,6 +9204,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6e74e9294075a4e40841054882559b07
     Name: Fender Step Wood Lvl1
@@ -8878,6 +9231,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_6128627a6ddcb834da2d03b2daed3eb8
     Name: Fender Step Wood Lvl2
@@ -8904,6 +9258,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7971dd3df1f6acb46b300136fac90aa6
     Name: Fender Taxi
@@ -8934,6 +9289,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_0518a9fa79ceb2148a75d19f5f5f3e2c
     Name: Fender Taxi Step
@@ -8960,6 +9316,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_9a4cff706d6c5b84a95563b3574d0b86
     Name: Fender Villager
@@ -8990,6 +9347,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d56d686a1778e094fa47556ecd183f49
     Name: Fender Villager Low
@@ -9020,6 +9378,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_aff24294287f5ff47b64f0802bbf6950
     Name: Fender Villager Step
@@ -9046,6 +9405,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7a45584584ef56e46babbd80cfe32b74
     Name: Chassis Buggy Lvl3
@@ -9071,6 +9431,7 @@ MonoBehaviour:
     Track: 1.03
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_1816a41677c3c364a9c92198e3e89749
     Name: Chassis Offroad
@@ -9096,6 +9457,7 @@ MonoBehaviour:
     Track: 1.03
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_7c72168fcbfbe774183f3d6eb250a309
     Name: Chassis Wider
@@ -9121,6 +9483,7 @@ MonoBehaviour:
     Track: 1.03
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_4b0606c2382303946ab2ff7a87946ef8
     Name: Chassis Speedster
@@ -9146,6 +9509,7 @@ MonoBehaviour:
     Track: 1.03
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_35cac5283dc92e34290f77cd298c6698
     Name: Chassis Speedster Widest
@@ -9171,6 +9535,7 @@ MonoBehaviour:
     Track: 1.1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_f8be7aa9f92cce14495230d3a765a7e7
     Name: Chassis T Wider
@@ -9196,6 +9561,7 @@ MonoBehaviour:
     Track: 1.03
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_b7c6bc3ce6c57ff46a3f96946156c4c3
     Name: Chassis T Widest
@@ -9221,6 +9587,7 @@ MonoBehaviour:
     Track: 1.1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_ef783bde683001f41be88e81d9ed04b3
     Name: Chassis Truck Wider
@@ -9246,6 +9613,7 @@ MonoBehaviour:
     Track: 1.03
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: part_d2a139ef216132e4aa2db3f6121fbfed
     Name: Chassis Truck Widest
@@ -9271,6 +9639,7 @@ MonoBehaviour:
     Track: 1.1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: tires_allterrain
     Name: "Universale \xEEmbun\u0103t\u0103\u021Bite"
@@ -9299,6 +9668,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: tires_mud
     Name: Anvelope de noroi
@@ -9328,6 +9698,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: tires_sand
     Name: Anvelope late de nisip
@@ -9356,6 +9727,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: tires_winter
     Name: "Anvelope de iarn\u0103 cu crampoane"
@@ -9385,6 +9757,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: engine_2
     Name: Motor nivel 2
@@ -9406,6 +9779,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: engine_3
     Name: Motor nivel 3
@@ -9427,6 +9801,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: low_range
     Name: Reductor
@@ -9447,6 +9822,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: suspension_offroad
     Name: Suspensie de teren
@@ -9468,6 +9844,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: cable_26
     Name: "Cablu \xEEnt\u0103rit \xB7 26 kN"
@@ -9488,6 +9865,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 26000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: cable_36
     Name: "Cablu profesional \xB7 36 kN"
@@ -9508,13 +9886,14 @@ MonoBehaviour:
     Track: 1
     CableStrength: 36000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: -1
   - Id: winch_2
-    Name: "Troliu \xEEmbun\u0103t\u0103\u021Bit"
-    EnglishName: Improved winch
-    Description: "Scurtare cablu 1,8 m/s. For\u021Ba r\u0103m\xE2ne limitat\u0103
-      de aderen\u021B\u0103 \u0219i cablu."
-    EnglishDescription: Reels at 1.8 m/s. Force remains limited by grip and cable.
+    Name: "Troliu \xEEmbun\u0103t\u0103\u021Bit \xB7 14 kN"
+    EnglishName: "Improved winch \xB7 14 kN"
+    Description: "14 kN; p\xE2n\u0103 la 1,3 m/s. Un cablu mai slab se poate rupe.
+      Aderen\u021Ba conteaz\u0103."
+    EnglishDescription: 14 kN; up to 1.3 m/s. A weaker cable can break. Grip matters.
     Slot: 14
     Price: 2400
     Prefabs: []
@@ -9528,7 +9907,8 @@ MonoBehaviour:
     Lift: 0
     Track: 1
     CableStrength: 18000
-    WinchSpeed: 1.8
+    WinchSpeed: 1.3
+    WinchForce: 14000
     PaintIndex: -1
   - Id: paint_1
     Name: Crem
@@ -9549,6 +9929,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: 1
   - Id: paint_2
     Name: "M\u0103sliniu"
@@ -9569,6 +9950,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: 2
   - Id: paint_3
     Name: "Mu\u0219tar"
@@ -9589,6 +9971,7 @@ MonoBehaviour:
     Track: 1
     CableStrength: 18000
     WinchSpeed: 1.3
+    WinchForce: 8000
     PaintIndex: 3
   stockAssemblies:
   - {fileID: 9177108477959356699, guid: 8a832fb6d66a4455fadfc310ee257732, type: 3}

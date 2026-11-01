@@ -79,7 +79,7 @@ namespace TowTrouble.Editor
             }
             AddKits(entries,all,"Fender_",GarageSlot.Fenders);
             AddKits(entries,all,"Chassis_",GarageSlot.Chassis);
-            Functional(entries);ConfigureCableProgression(entries);
+            Functional(entries);ConfigureCableProgression(entries);ConfigureWinchPrototype(entries);
             var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(CatalogPath);if(catalog==null){catalog=ScriptableObject.CreateInstance<RecoveryGarageCatalog>();AssetDatabase.CreateAsset(catalog,CatalogPath);}
             foreach(var entry in entries)if(entry.Slot==GarageSlot.Paint&&entry.Price==0)entry.PaintIndex=0;
             catalog.Configure(entries.ToArray(),stock);catalog.TireShader=AssetDatabase.LoadAssetAtPath<Shader>("Assets/Living Mud/Shaders/Texture with Mud.shadergraph");
@@ -94,6 +94,31 @@ namespace TowTrouble.Editor
             return "Garage catalog: "+entries.Count+" entries; source audit: "+all.Length+" prefabs; tutorial wired; Mega/Desert untouched.";
         }
         private static void Audit(string path,string kind,string reason){audit.Add("\""+path+"\",\""+kind+"\",\""+reason+"\"");}
+        [MenuItem("Tow Trouble/Garage/Refresh Winch Prototype")]
+        public static void RefreshWinchPrototype()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Edit Mode only.");
+            var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(CatalogPath);
+            if(catalog==null)throw new InvalidOperationException("Missing garage catalog.");
+            Undo.RecordObject(catalog,"Configure winch prototype");
+            var entries=new List<GaragePart>(catalog.Parts);ConfigureWinchPrototype(entries);
+            var serialized=new SerializedObject(catalog);var saved=serialized.FindProperty("stockAssemblies");
+            var assemblies=new GameObject[saved.arraySize];for(int i=0;i<assemblies.Length;i++)assemblies[i]=(GameObject)saved.GetArrayElementAtIndex(i).objectReferenceValue;
+            catalog.Configure(entries.ToArray(),assemblies);EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssetIfDirty(catalog);
+        }
+        private static void ConfigureWinchPrototype(List<GaragePart> entries)
+        {
+            var stock=entries.Single(p=>p.Id=="stock_Winch");
+            stock.Name="Troliu stock · 8 kN";stock.EnglishName="Stock winch · 8 kN";
+            stock.WinchForce=RecoveryWinch.StockForce;stock.WinchSpeed=RecoveryWinch.StockSpeed;
+            stock.Description="8 kN; până la 1,0 m/s. Încetinește sub sarcină și se oprește la limită.";
+            stock.EnglishDescription="8 kN; up to 1.0 m/s. Slows under load and stalls at its limit.";
+            var improved=entries.Single(p=>p.Id=="winch_2");
+            improved.Name="Troliu îmbunătățit · 14 kN";improved.EnglishName="Improved winch · 14 kN";
+            improved.WinchForce=14000;improved.WinchSpeed=1.3f;
+            improved.Description="14 kN; până la 1,3 m/s. Un cablu mai slab se poate rupe. Aderența contează.";
+            improved.EnglishDescription="14 kN; up to 1.3 m/s. A weaker cable can break. Grip matters.";
+        }
         [MenuItem("Tow Trouble/Garage/Refresh Cable Progression")]
         public static void RefreshCableProgression()
         {
@@ -160,7 +185,7 @@ namespace TowTrouble.Editor
             var suspension=Add("suspension_offroad","Suspensie de teren","Off-road suspension",GarageSlot.Suspension,1800,"Gardă la sol +15 cm; susținere îmbunătățită pe denivelări.","Ride height +15 cm; improved support on uneven ground.");suspension.Lift=.15f;suspension.AddedMass=20;
             Add("cable_26","Cablu întărit · 26 kN","Reinforced cable · 26 kN",GarageSlot.Cable,1400,"Prag de rupere 26 kN.","Break threshold 26 kN.").CableStrength=26000;
             Add("cable_36","Cablu profesional · 36 kN","Professional cable · 36 kN",GarageSlot.Cable,3400,"Prag de rupere 36 kN.","Break threshold 36 kN.").CableStrength=36000;
-            Add("winch_2","Troliu îmbunătățit","Improved winch",GarageSlot.Winch,2400,"Scurtare cablu 1,8 m/s. Forța rămâne limitată de aderență și cablu.","Reels at 1.8 m/s. Force remains limited by grip and cable.").WinchSpeed=1.8f;
+            Add("winch_2","Troliu îmbunătățit","Improved winch",GarageSlot.Winch,2400,"",""); // Configured by ConfigureWinchPrototype.
             for(int i=1;i<=3;i++){var p=Add("paint_"+i,new[]{"","Crem","Măsliniu","Muștar"}[i],new[]{"","Cream","Olive","Mustard"}[i],GarageSlot.Paint,100,"Finisaj pentru caroserie.","Body paint finish.");p.PaintIndex=i;}
         }
         private static string InferFamily(string name)

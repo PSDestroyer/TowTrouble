@@ -205,6 +205,7 @@ namespace TowTrouble
             cableText=Text(cable,"",0,0,520,28,20,Paper,true);var track=Panel(cable,0,35,370,20,new Color(.08f,.09f,.08f,.75f));track.gameObject.AddComponent<UnityEngine.UI.Outline>().effectColor=Paper;
             var fill=Stretch("Cable tension",track);fill.offsetMin=new Vector2(3,3);fill.offsetMax=new Vector2(-3,-3);cableFill=fill.gameObject.AddComponent<UnityEngine.UI.Image>();
             actionText=Text(cable,"",0,66,650,52,17,Paper,true);
+            winchText=Text(gameplay.transform,"",35,620,850,76,18,Paper,true);
             var partner=Node("Partner cable",gameplay.transform,35,706,370,46);partnerGroup=partner.gameObject;partnerText=Text(partner,"",0,0,370,24,16,Paper,true);var pt=Panel(partner,0,28,280,10,new Color(.08f,.09f,.08f,.75f));partnerFill=Stretch("Partner tension",pt).gameObject.AddComponent<UnityEngine.UI.Image>();
             var s=Node("Speed",gameplay.transform,1260,800,310,70);speed=Text(s,"",0,0,310,70,44,Paper,true);speed.alignment=TextAlignmentOptions.Right;
             marker=Text(gameplay.transform,"",0,0,340,70,18,Amber,true);marker.alignment=TextAlignmentOptions.Center;
@@ -335,6 +336,7 @@ namespace TowTrouble
         {
             marker.color=Amber;
             var w=session.World;int slot=session.LocalSlot,other=1-slot;bool attached=w.Attached(slot);float load=w.Tension(slot);
+            RefreshWinchFeedback(w,slot,attached);
             if(w.Phase==RecoveryPhase.Explore)
             {objective.text=L("EXPLORARE LIBERĂ","FREE EXPLORATION");crew.text=P.credits+" CR";speed.text=Mathf.RoundToInt(w.Drivers[slot].Speed*3.6f)+" <size=27>km/h</size>";cableGroup.SetActive(false);partnerGroup.SetActive(false);mudFeedback.gameObject.SetActive(false);garagePrompt.text=w.AtGarage(slot)?L("G · Intră în garaj    |    TAB · Contracte","G · Enter garage    |    TAB · Contracts"):L("TAB · Contracte    |    Garaj: ","TAB · Contracts    |    Garage: ")+Mathf.RoundToInt(Vector3.Distance(w.Drivers[slot].transform.position,w.GaragePosition))+" m";PlaceMarker(marker,w.GaragePosition+Vector3.up*3,Camera.main);marker.text=L("GARAJ","GARAGE");foreach(var tag in hudPlates)tag.gameObject.SetActive(false);return;}
             garagePrompt.text=w.FreeRoam?L("TAB · Contracte","TAB · Contracts"):"";
@@ -347,7 +349,7 @@ namespace TowTrouble
             RefreshExtractionFeedback(w);
             bool near=Vector3.Distance(w.Drivers[slot].RearHitch,w.TowPoint)<RecoveryRules.AttachRange;
             cableGroup.SetActive(attached||near);cableFill.transform.parent.gameObject.SetActive(attached);
-            string level=load>=1?L("! LA LIMITĂ · RISC DE RUPERE","! AT LIMIT · BREAK RISK"):load>.82f?L("! REDU ACCELERAȚIA","! EASE OFF"):load>.6f?L("SUB SARCINĂ","UNDER LOAD"):L("SIGUR","SAFE");
+            string level=load>=1?L("! LA LIMITĂ · RISC DE RUPERE","! AT LIMIT · BREAK RISK"):load>.82f?L("! REDU SARCINA","! EASE THE LOAD"):load>.6f?L("SUB SARCINĂ","UNDER LOAD"):L("SIGUR","SAFE");
             cableText.text=attached?L("CABLU  ","CABLE  ")+(P.colorHelp?level:""):L("CÂRLIG DISPONIBIL","HITCH IN RANGE");
             cableFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(load),1);cableFill.color=load>=1?new Color(1,.12f,.05f):load>.82f?new Color(1,.43f,.05f):load>.6f?new Color(1,.72f,.05f):new Color(.16f,.9f,.27f);
             actionText.text=attached?(session.UsingGamepad?"A  "+L("Desprinde","Detach")+"   LB / RB  "+L("Troliu","Winch"):P.hookKey+"  "+L("Desprinde","Detach")+"   "+P.reelKey+" / "+P.extendKey+"  "+L("Scurtează / Alungește","Shorten / Lengthen")):(session.UsingGamepad?"A":P.hookKey)+"  "+L("Conectează cablul","Attach cable");

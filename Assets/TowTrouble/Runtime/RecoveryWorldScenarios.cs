@@ -5,6 +5,10 @@ namespace TowTrouble
     public sealed partial class RecoveryWorld
     {
         [SerializeField] private RecoveryTowObstacle[] siteObstacles=System.Array.Empty<RecoveryTowObstacle>();
+        [SerializeField] private RecoveryDistressVisuals distressVisuals;
+        public void ConfigureDistressVisuals(RecoveryDistressVisuals value){distressVisuals=value;}
+        private void PresentDistress()
+        {if(distressVisuals!=null)distressVisuals.Present(Contract.SituationKind,FreeRoam&&HasContract);}
         private readonly SyncVar<bool> obstaclePending=new SyncVar<bool>();
         private RecoveryTowObstacle activeObstacle;
         private Vector3 obstacleRemotePosition;

@@ -60,7 +60,7 @@ namespace TowTrouble
                     if(!vehicle.gameObject.activeInHierarchy||!vehicle.TryGetWheelContact(wheel,out var hit)||hit.collider.gameObject!=gameObject)
                     {touched[index]=false;continue;}
                     var position=hit.point;float travelled=touched[index]?Vector3.Distance(position,lastPosition[index]):0;
-                    if(wheelCoating[car]!=null)wheelCoating[car].TouchMud(wheel,position,travelled);
+                    // Wheel contact presentation is owned by RecoveryWheelMud on every peer.
                     if(touched[index]&&travelled<.12f)continue;
                     // Resets/teleports start a fresh mark, never draw a line across the map.
                     var forward=transform.InverseTransformDirection(travelled>.12f&&travelled<3f?position-lastPosition[index]:vehicle.transform.forward);float angle=Mathf.Atan2(forward.x,forward.z);

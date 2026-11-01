@@ -46,7 +46,7 @@ namespace TowTrouble
             Button(list,"‹",16,474,90,()=>{garagePage--;Show("Garage");});Text(list,(garagePage+1)+" / "+pages,126,487,270,30,18,Muted).alignment=TextAlignmentOptions.Center;Button(list,"›",418,474,106,()=>{garagePage++;Show("Garage");});
             var stats=GaragePerformance.Calculate(garageDraft,catalog);var original=GaragePerformance.Calculate(P.Build(P.vehicle),catalog);
             StatTile(306,650,222,RecoveryIcon.Wheel,L("TRACȚIUNE","PULLING FORCE"),(stats.Drive*4/1000).ToString("0.0")+" kN",L("Noroi: ","Mud: ")+stats.MudGrip.ToString("0.00")+"×"+(Mathf.Abs(stats.Drive-original.Drive)>1?"  ·  "+((stats.Drive-original.Drive)*4/1000).ToString("+0.0;-0.0")+" kN":""));
-            StatTile(540,650,222,RecoveryIcon.Hook,L("CABLU","CABLE"),(stats.Cable/1000).ToString("0")+" kN",L("Troliu: ","Winch: ")+stats.Winch.ToString("0.0")+" m/s");
+            StatTile(540,650,222,RecoveryIcon.Hook,L("CABLU","CABLE"),(stats.Cable/1000).ToString("0")+" kN",L("Troliu: ","Winch: ")+(stats.WinchForce/1000).ToString("0")+" kN · "+stats.Winch.ToString("0.0")+" m/s");
             StatTile(774,650,222,RecoveryIcon.Body,L("VEHICUL","VEHICLE"),stats.Mass.ToString("0")+" kg",L("Viteză: ","Top speed: ")+(stats.Speed*3.6f).ToString("0")+" km/h");
             if(!string.IsNullOrEmpty(garageMessage)){var message=Panel(pageRoot,370,592,562,40);Icon(message,RecoveryIcon.Check,12,10,20,Amber);Text(message,garageMessage,44,0,500,40,16,Paper);}
             if(selected!=null)

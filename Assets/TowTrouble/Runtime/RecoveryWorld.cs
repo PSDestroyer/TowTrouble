@@ -26,6 +26,7 @@ namespace TowTrouble
         public float Tension0, Tension1, Elapsed;
         public int Snaps, Resets0, Resets1;
         public float Pull0, Pull1;
+        public WinchFrame Winch0, Winch1;
         public byte ExtractionStage;
         public float ExtractionProgress, ExtractionAlignment, ExtractionStalled, ExtractionReleasedSeconds;
         public Vector3 ObstaclePosition;public Quaternion ObstacleRotation;
@@ -207,6 +208,7 @@ namespace TowTrouble
         {
             elapsed=0;snaps=0;deliveryHold=0;
             for(int i=0;i<2;i++){connected[i]=false;tensions[i]=0;winching[i]=false;extending[i]=false;resets[i]=0;pullSeconds[i]=0;cableStress[i]=0;}
+            ResetWinches();
         }
 
         [ServerRpc(RequireOwnership=false)]
@@ -279,7 +281,8 @@ namespace TowTrouble
             if (connected[slot]) { connected[slot] = false; tensions[slot] = 0; return; }
             float distance = Vector3.Distance(drivers[slot].RearHitch, TowPoint);
             if (distance > RecoveryRules.AttachRange) return;
-            connected[slot] = true; lengths[slot] = Mathf.Max(3.5f, distance - .3f);
+            connected[slot] = true; lengths[slot] = Mathf.Max(RecoveryWinch.MinimumLength, distance - .3f);
+            winchFrames[slot] = new WinchFrame { Length=lengths[slot], State=WinchState.Holding };
             if (Phase == RecoveryPhase.HookUp) phase.Value = (int)RecoveryPhase.Recover;
         }
 
@@ -296,6 +299,7 @@ namespace TowTrouble
             StopScenario();
             if(appliedContract!=contractId.Value)ApplyContract();
             elapsed = 0; snaps = 0; deliveryHold = 0;
+            ResetWinches();
             drivers[0].SetModel(vehicle0.Value);drivers[1].SetModel(vehicle1.Value);
             for (int i = 0; i < 2; i++)
             {
@@ -319,27 +323,29 @@ namespace TowTrouble
                 if (!connected[i])
                 {
                     tensions[i] = 0; loadedCableForces[i] = 0;
+                    winchFrames[i] = new WinchFrame { Length=lengths[i] };
                     cableStress[i]=RecoveryRules.CableStressAfter(cableStress[i],0,strength,Time.fixedDeltaTime);
                     continue;
                 }
                 var a = drivers[i].RearHitch; var b = TowPoint;
                 var delta = a - b; float distance = delta.magnitude;
                 var direction = distance > .01f ? delta / distance : Vector3.forward;
-                if (winching[i]) lengths[i] = Mathf.Max(3.5f, lengths[i] - Time.fixedDeltaTime * drivers[i].WinchSpeed);
-                if(extending[i])lengths[i]=Mathf.Min(20f,lengths[i]+Time.fixedDeltaTime*1.7f);
                 float speed = Vector3.Dot(drivers[i].Body.GetPointVelocity(a) - TowBody.GetPointVelocity(b), direction);
+                winchFrames[i] = RecoveryWinch.Step(lengths[i],distance,speed,winching[i],extending[i],
+                    drivers[i].WinchForce,drivers[i].WinchSpeed,winchFrames[i].Speed,Time.fixedDeltaTime);
+                lengths[i] = winchFrames[i].Length;
                 // Failure reads unsmoothed, uncapped demand. Taking-up-load smoothing
                 // and the physics force ceiling must not act as shock immunity.
                 float demand = RecoveryRules.CableDemand(distance, lengths[i], speed);
                 tensions[i] = Mathf.Clamp01(demand / strength);
                 cableStress[i]=RecoveryRules.CableStressAfter(cableStress[i],demand,strength,Time.fixedDeltaTime);
                 if (cableStress[i] >= 1 || distance > 25f)
-                { connected[i] = false; tensions[i] = 0; loadedCableForces[i]=0;cableStress[i]=0;snaps++;continue; }
+                { connected[i] = false; tensions[i] = 0; loadedCableForces[i]=0;cableStress[i]=0;winchFrames[i]=new WinchFrame{Length=lengths[i]};snaps++;continue; }
                 float force = Mathf.Min(demand, RecoveryRules.MaxCableForce);
                 if(UsesArcadeExtraction&&!ClearingObstacle)force=RecoveryExtraction.LoadedCableForce(loadedCableForces[i],force,strength,Time.fixedDeltaTime);
                 loadedCableForces[i]=force;
                 if(force>1000f)pullSeconds[i]+=Time.fixedDeltaTime;
-                drivers[i].SetTowForce(force);
+                drivers[i].SetTowForce(force,-direction*force);
                 TowBody.AddForceAtPosition(direction * force, b);totalPull+=direction*force;
                 drivers[i].Body.AddForceAtPosition(-direction * force, a);
             }
@@ -362,6 +368,8 @@ namespace TowTrouble
         {
             PresentObstacle();
             PresentExtraction();
+            PresentWinches();
+            PresentDistress();
             bool targetVisible=HasContract||Phase==RecoveryPhase.Complete;
             if(casualty.gameObject.activeSelf!=targetVisible)casualty.gameObject.SetActive(targetVisible);
             if(appliedContract!=contractId.Value)ApplyContract();
@@ -372,7 +380,7 @@ namespace TowTrouble
             {
                 nextSnapshot = Time.unscaledTime + 1f / 15f;
                 Snapshot(new RecoveryFrame { Driver0 = new VehicleFrame(drivers[0]), Driver1 = new VehicleFrame(drivers[1]), Casualty = new VehicleFrame(casualty),
-                    Cable0 = connected[0], Cable1 = connected[1], Tension0 = tensions[0], Tension1 = tensions[1], Elapsed = elapsed, Snaps = snaps,Resets0=resets[0],Resets1=resets[1],Pull0=pullSeconds[0],Pull1=pullSeconds[1],ObstaclePosition=activeObstacle!=null?activeObstacle.transform.position:Vector3.zero,ObstacleRotation=activeObstacle!=null?activeObstacle.transform.rotation:Quaternion.identity,
+                    Cable0 = connected[0], Cable1 = connected[1], Tension0 = tensions[0], Tension1 = tensions[1], Elapsed = elapsed, Snaps = snaps,Resets0=resets[0],Resets1=resets[1],Pull0=pullSeconds[0],Pull1=pullSeconds[1],Winch0=winchFrames[0],Winch1=winchFrames[1],ObstaclePosition=activeObstacle!=null?activeObstacle.transform.position:Vector3.zero,ObstacleRotation=activeObstacle!=null?activeObstacle.transform.rotation:Quaternion.identity,
                     ExtractionStage=(byte)ExtractionStage,ExtractionProgress=ExtractionProgress,ExtractionAlignment=ExtractionAlignment,ExtractionStalled=ExtractionStalled,ExtractionReleasedSeconds=ExtractionReleasedSeconds });
             }
         }
@@ -387,6 +395,8 @@ namespace TowTrouble
             drivers[1].Receive(frame.Driver1);
             casualty.Receive(frame.Casualty);
             connected[0] = frame.Cable0; connected[1] = frame.Cable1;
+            winchFrames[0]=frame.Winch0;winchFrames[1]=frame.Winch1;
+            lengths[0]=frame.Winch0.Length;lengths[1]=frame.Winch1.Length;
             tensions[0] = frame.Tension0; tensions[1] = frame.Tension1; elapsed = frame.Elapsed; snaps = frame.Snaps;resets[0]=frame.Resets0;resets[1]=frame.Resets1;pullSeconds[0]=frame.Pull0;pullSeconds[1]=frame.Pull1;
         }
 

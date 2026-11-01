@@ -36,13 +36,15 @@ namespace TowTrouble
         private int geometryVersion;
         public int GeometryVersion=>geometryVersion;
         public float CableStrength {get;private set;}=RecoveryRules.BreakForce;
-        public float WinchSpeed {get;private set;}=1.3f;
+        public float WinchSpeed {get;private set;}=RecoveryWinch.StockSpeed;
+        public float WinchForce {get;private set;}=RecoveryWinch.StockForce;
+        private Vector3 cableReaction;
         public RecoveryVehicleModel CurrentModel=>models[modelIndex];
         public void UseAssembly(RecoveryAssembly assembly,GaragePerformance performance)
         {
             foreach(var m in models)m.Root.SetActive(false);wheelVisuals=assembly.Wheels;radius=assembly.Radius;
             if(body==null)body=GetComponent<Rigidbody>();body.mass=performance.Mass;driveForce=performance.Drive;maxSpeed=performance.Speed;mudGripScale=performance.MudGrip;sandGripScale=performance.SandGrip;snowGripScale=performance.SnowGrip;mudResistanceScale=performance.MudResistance;suspensionLift=performance.Lift;
-            CableStrength=performance.Cable;WinchSpeed=performance.Winch;
+            CableStrength=performance.Cable;WinchSpeed=performance.Winch;WinchForce=performance.WinchForce;
             for(int i=0;i<4;i++){var anchor=assembly.Anchors[i];anchor.x*=performance.Track;anchor.y+=performance.Lift;wheels[i].transform.localPosition=anchor;wheels[i].radius=assembly.Radii!=null&&assembly.Radii.Length==4?assembly.Radii[i]:radius;wheelVisuals[i].position=transform.TransformPoint(anchor-Vector3.up*.12f);}
             ResetWheelPresentation();
             frontHitch.localPosition=assembly.FrontHitch;rearHitch.localPosition=assembly.RearHitch;
@@ -87,12 +89,12 @@ namespace TowTrouble
             var burst=new ParticleSystem.EmitParams{position=main.simulationSpace==ParticleSystemSimulationSpace.World?point:basis.InverseTransformPoint(point)};
             dust.Emit(burst,Mathf.RoundToInt(10*Mathf.Clamp01(EffectsGain)));
         }
-        public void SetTowForce(float force){towLoad=Mathf.Clamp01(force/Mathf.Max(1,driveForce*4));}
+        public void SetTowForce(float force,Vector3 reaction=default){towLoad=Mathf.Clamp01(force/Mathf.Max(1,driveForce*4));cableReaction=reaction;}
         private void ClearWheelFeedback()
         {
             System.Array.Clear(wheelRates,0,4);System.Array.Clear(wheelSlips,0,4);System.Array.Clear(wheelAngles,0,4);
             for(int i=0;i<4;i++)wheelLoads[i]=(body!=null?body.mass:1350)*Physics.gravity.magnitude*.25f;
-            mudFraction=engineEffort=towLoad=remoteMud=remoteEffort=0;remoteRates=remoteSlip=Vector4.zero;remoteControls=Vector2.zero;remoteBrakeLights=remoteEngine=false;
+            mudFraction=engineEffort=towLoad=remoteMud=remoteEffort=0;cableReaction=Vector3.zero;remoteRates=remoteSlip=Vector4.zero;remoteControls=Vector2.zero;remoteBrakeLights=remoteEngine=false;
         }
 
         public static float EffectsGain=.8f;
@@ -116,7 +118,7 @@ namespace TowTrouble
             if(models==null||models.Length==0)return;
             modelIndex=Mathf.Clamp(index,0,models.Length-1);var m=models[modelIndex];
             for(int i=0;i<models.Length;i++)models[i].Root.SetActive(i==modelIndex);
-            wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=13;mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=1.3f;geometryVersion++;driveForce=m.Drive;steering=m.Steering;
+            wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=13;mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=RecoveryWinch.StockSpeed;WinchForce=RecoveryWinch.StockForce;geometryVersion++;driveForce=m.Drive;steering=m.Steering;
             for(int i=0;i<wheels.Length;i++){wheels[i].transform.localPosition=m.Anchors[i];wheels[i].radius=radius;}
             if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?950f:m.Mass;
             ResetWheelPresentation();
@@ -226,11 +228,14 @@ namespace TowTrouble
                 float drive=casualty||brake?0:input.y*driveForce*Mathf.Clamp01((maxSpeed-Mathf.Abs(forwardSpeed))/3);
                 float rolling=casualty?100:Mathf.Abs(input.y)<.05f?240:35;
                 float braking=Mathf.Clamp(-longitudinal*(brake?1300:rolling),-5500,5500);
-                float surfaceGrip=1.25f,surfaceSideGrip=1.3f;
-                if(hit.collider.TryGetComponent<RecoveryGroundSurface>(out var surface)){var kind=surface.KindAt(hit.point);surfaceGrip=kind==RecoveryGroundKind.Snow?.52f*snowGripScale:kind==RecoveryGroundKind.Sand?.68f*sandGripScale:1.25f;surfaceSideGrip=surfaceGrip;}
+                float surfaceGrip=1.25f,surfaceSideGrip=1.3f,looseDrag=0;
+                if(hit.collider.TryGetComponent<RecoveryGroundSurface>(out var surface)){var kind=surface.KindAt(hit.point);surfaceGrip=kind==RecoveryGroundKind.Snow?.52f*snowGripScale:kind==RecoveryGroundKind.Sand?.68f*sandGripScale:1.25f;surfaceSideGrip=surfaceGrip;looseDrag=RecoveryTraction.SoftGroundDrag(kind,surface.Softness,kind==RecoveryGroundKind.Snow?snowGripScale:sandGripScale);}
                 float grip=RecoveryTraction.Grip(muddy?mud.LongitudinalGrip*mudGripScale:surfaceGrip,brake?0:input.y,muddy?mud.AggressiveThrottleLoss:0);
                 float forwardLimit=wheelLoads[i]*grip,sideLimit=wheelLoads[i]*(muddy?mud.LateralGrip*mudGripScale:surfaceSideGrip);
-                var tire=RecoveryTraction.LimitForces(new Vector2(drive+braking,-lateral*1400),forwardLimit,sideLimit);
+                // Static cable support shares the existing tire grip budget. It cannot
+                // anchor an airborne wheel or hold more force than the ground permits.
+                var hold=brake&&!casualty?RecoveryTraction.CableBrake(cableReaction,forward,right,wheels.Length):Vector2.zero;
+                var tire=RecoveryTraction.LimitForces(new Vector2(drive+braking,-lateral*1400)+hold,forwardLimit,sideLimit);
                 body.AddForceAtPosition(forward*tire.x+right*tire.y,hit.point);
                 if(muddy)
                 {
@@ -240,6 +245,7 @@ namespace TowTrouble
                     if(casualty&&resistanceNeedsMud)resistance=Mathf.Max(resistance,mudDrag/wheels.Length/(body.mass/1350f));
                     body.AddForceAtPosition(RecoveryTraction.MudResistance(pointVelocity,hit.normal,resistance,body.mass),hit.point);
                 }
+                else if(looseDrag>0)body.AddForceAtPosition(RecoveryTraction.MudResistance(pointVelocity,hit.normal,looseDrag,body.mass),hit.point);
                 float slip=casualty||brake?0:RecoveryTraction.Slip(drive,forwardLimit);
                 wheelSlips[i]=Mathf.Lerp(wheelSlips[i],slip,blend);
                 wheelRates[i]=longitudinal/w.radius+(casualty||brake?0:Mathf.Sign(input.y)*wheelSlips[i]*18);
