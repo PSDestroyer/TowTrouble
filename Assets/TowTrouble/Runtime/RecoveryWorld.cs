@@ -227,6 +227,10 @@ namespace TowTrouble
         private void ApplyContract()
         {
             var c=Contract;
+            // Contract identity already replicates to every peer, including late joiners.
+            // Resolve the target before activation/spawn so wheel geometry agrees with its pose.
+            casualty.SetModel(c.TargetModel);casualty.SetPaint(c.TargetPaint);
+            casualty.SetRecoveryMass(c.IsOpenWorld&&c.Load!=null?c.Load.Mass+c.Load.RetainedWater:0,c.Load!=null?c.Load.LockedWheels:0);
             if(map!=null){appliedContract=contractId.Value;return;}
             float offset=c.Delivery.z-(appliedContract<0?108f:RecoveryContract.Get(appliedContract).Delivery.z);
             if(environment!=null)foreach(var t in environment.GetComponentsInChildren<Transform>(true))

@@ -186,7 +186,33 @@ namespace TowTrouble.Editor
             Add("cable_26","Cablu întărit · 26 kN","Reinforced cable · 26 kN",GarageSlot.Cable,1400,"Prag de rupere 26 kN.","Break threshold 26 kN.").CableStrength=26000;
             Add("cable_36","Cablu profesional · 36 kN","Professional cable · 36 kN",GarageSlot.Cable,3400,"Prag de rupere 36 kN.","Break threshold 36 kN.").CableStrength=36000;
             Add("winch_2","Troliu îmbunătățit","Improved winch",GarageSlot.Winch,2400,"",""); // Configured by ConfigureWinchPrototype.
+            ConfigureSpecialistRecoveryEquipment(parts);
             for(int i=1;i<=3;i++){var p=Add("paint_"+i,new[]{"","Crem","Măsliniu","Muștar"}[i],new[]{"","Cream","Olive","Mustard"}[i],GarageSlot.Paint,100,"Finisaj pentru caroserie.","Body paint finish.");p.PaintIndex=i;}
+        }
+        [MenuItem("Tow Trouble/Garage/Refresh Specialist Recovery Equipment")]
+        public static void RefreshSpecialistRecoveryEquipment()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Edit Mode only");
+            var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(CatalogPath);
+            Undo.RecordObject(catalog,"Expert recovery equipment");var entries=new List<GaragePart>(catalog.Parts);ConfigureSpecialistRecoveryEquipment(entries);
+            var serialized=new SerializedObject(catalog);var saved=serialized.FindProperty("stockAssemblies");
+            var assemblies=new GameObject[saved.arraySize];for(int i=0;i<assemblies.Length;i++)assemblies[i]=(GameObject)saved.GetArrayElementAtIndex(i).objectReferenceValue;
+            catalog.Configure(entries.ToArray(),assemblies);EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssetIfDirty(catalog);
+        }
+        private static void ConfigureSpecialistRecoveryEquipment(List<GaragePart> entries)
+        {
+            var source=entries.Single(p=>p.Id=="tires_winter");
+            var alpine=entries.FirstOrDefault(p=>p.Id=="tires_winter_pro");
+            if(alpine==null){alpine=new GaragePart{Id="tires_winter_pro",Slot=GarageSlot.Wheels};entries.Add(alpine);}
+            alpine.Name="Anvelope alpine ranforsate";alpine.EnglishName="Heavy alpine tires";alpine.Price=3000;
+            alpine.Description="Zăpadă: aderență +135%; +35 kg. Noroi: aderență -20%. Pentru recuperări grele pe zăpadă.";
+            alpine.EnglishDescription="Snow grip +135%; +35 kg. Mud grip -20%. For heavy recoveries on snow.";
+            alpine.Prefabs=source.Prefabs;alpine.Sockets=source.Sockets;alpine.Families=source.Families;alpine.MudGrip=.80f;alpine.AddedMass=35;
+            var winch=entries.FirstOrDefault(p=>p.Id=="winch_3");
+            if(winch==null){winch=new GaragePart{Id="winch_3",Slot=GarageSlot.Winch};entries.Add(winch);}
+            winch.Name="Troliu profesional · 22 kN";winch.EnglishName="Professional winch · 22 kN";winch.Price=4800;winch.WinchForce=22000;winch.WinchSpeed=.85f;
+            winch.Description="22 kN; până la 0,85 m/s. Recomandat cablu de 26 kN și teren cu aderență bună.";
+            winch.EnglishDescription="22 kN; up to 0.85 m/s. Recommended: 26 kN cable and firm footing.";
         }
         private static string InferFamily(string name)
         {foreach(string family in new[]{"Taxi","Villager","Bulldog","Bucket","Electron","Lorry","Martian","Midget","Midjet","Prince","Rumpler","Spartan","Speedster","Geep","Goblin","Pickupster"})if(name.Contains(family))return family;return name.Split('_')[0];}

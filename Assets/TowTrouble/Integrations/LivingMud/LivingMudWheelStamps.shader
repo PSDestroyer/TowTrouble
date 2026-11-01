@@ -28,8 +28,13 @@ Shader "Hidden/TowTrouble/LivingMudWheelStamps"
                     float4 tread=tex2Dlod(_Tread,float4(local,0,0));
                     // Fade only the perimeter of each authored normal/alpha stamp.
                     float mask=saturate((.5-max(abs(local.x-.5),abs(local.y-.5)))*24);
-                    float alpha=tread.a*mask;
-                    result.rgb=lerp(result.rgb,tread.rgb,alpha);result.a=saturate(result.a+alpha);
+                    float across=(local.x-.5)*2;
+                    float channel=(1-smoothstep(.62,.98,abs(across)))*mask;
+                    float wall=sign(across)*smoothstep(.15,.48,abs(across))*(1-smoothstep(.65,.98,abs(across)));
+                    float3 groove=normalize(float3(-wall*1.5,0,1));
+                    float3 normal=normalize(lerp(groove,tread.rgb*2-1,tread.a*.4));
+                    float alpha=max(tread.a*mask,channel*.82);
+                    result.rgb=lerp(result.rgb,normal*.5+.5,alpha);result.a=max(result.a,alpha);
                 }
                 return result;
             }

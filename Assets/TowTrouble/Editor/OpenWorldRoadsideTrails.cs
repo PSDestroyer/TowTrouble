@@ -6,9 +6,9 @@ namespace TowTrouble.Editor
 {
     public static partial class OpenWorldAuthoring
     {
-        private static void DressRoadsideAccidentTrail(Transform group,RecoverySite site,Vector3 road)
+        private static void DressRoadsideAccidentTrail(Transform group,RecoverySite site,Vector3 road,bool physical=true)
         {
-            bool snow=site.Id=="R12",sand=site.Id=="R23";int layer=snow?4:sand?5:1;
+            bool snow=site.Id=="R12"||site.Biome==3,sand=site.Id=="R23"||site.Biome>=4;int layer=snow?4:sand?5:1;
             var tint=snow?new Color(.61f,.72f,.80f,.96f):sand?new Color(.77f,.57f,.36f,.93f):new Color(.54f,.40f,.27f,.85f);
             var material=SituationMaterial("Roadside skid "+layer,tint,layer);
             material.SetFloat("_Compaction",snow?.85f:.76f);material.enableInstancing=true;EditorUtility.SetDirty(material);
@@ -29,12 +29,15 @@ namespace TowTrouble.Editor
                     {
                         float u=c/6f;float offset=(lane==0?-.81f:.81f)+(u*2-1)*halfWidth;
                         var p=Ground(points[i]+across*offset);float bank=(snow?.11f:sand?.08f:.045f)*(site.Tier/4f)*churn*Mathf.Pow(Mathf.Abs(u*2-1),2);
-                        p.y+=.026f+bank;vs.Add(root.transform.InverseTransformPoint(p));uv.Add(new Vector2(p.x,p.z)*.35f);rut.Add(new Vector2(u,length+.05f));ends.Add(new Vector2((1-t)*Vector3.Distance(p0,p3)/.7f,1));colors.Add(new Color(1,1,1,Mathf.Lerp(.72f,1,churn)));
+                        float cover=ProgressionCoverHeight(site,p);
+                        if(!physical&&site.Kind!=RecoverySituationKind.Water&&site.Kind!=RecoverySituationKind.EngineFailure){var local=Quaternion.Inverse(Quaternion.LookRotation(site.ExitDirection))*(p-site.Position);cover=.08f+BroadCoverHeight(snow,sand,local.x/(snow?12:sand?15:14),local.z/(snow?16:sand?19:18));}
+                        p.y+=.026f+bank+cover;vs.Add(root.transform.InverseTransformPoint(p));uv.Add(new Vector2(p.x,p.z)*.35f);rut.Add(new Vector2(u,length+.05f));ends.Add(new Vector2((1-t)*Vector3.Distance(p0,p3)/.7f,1));colors.Add(new Color(1,1,1,Mathf.Lerp(.72f,1,churn)));
                         if(i<rows&&c<6){int a=i*7+c;ts.AddRange(new[]{a,a+7,a+1,a+1,a+7,a+8});}
                     }
                 }
-                var mesh=new Mesh{name=site.Id+" accident skid "+lane};mesh.SetVertices(vs);mesh.SetUVs(0,uv);mesh.SetUVs(1,rut);mesh.SetUVs(2,ends);mesh.SetColors(colors);mesh.SetTriangles(ts,0);mesh.RecalculateNormals();mesh.RecalculateBounds();
+                var mesh=new Mesh{name=site.Id+(physical?" accident skid ":" visual incident skid ")+lane};mesh.SetVertices(vs);mesh.SetUVs(0,uv);mesh.SetUVs(1,rut);mesh.SetUVs(2,ends);mesh.SetColors(colors);mesh.SetTriangles(ts,0);mesh.RecalculateNormals();mesh.RecalculateBounds();
                 root.GetComponent<MeshFilter>().sharedMesh=VisualAsset(mesh,"RecoverySituations/"+mesh.name+".asset");root.GetComponent<MeshRenderer>().sharedMaterial=material;root.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;
+                if(!physical){UnityEngine.Object.DestroyImmediate(root.GetComponent<MeshCollider>());continue;}
                 root.GetComponent<MeshCollider>().sharedMesh=root.GetComponent<MeshFilter>().sharedMesh;
                 root.AddComponent<RecoveryTrackSurface>().Configure(snow?RecoveryTrackKind.Snow:sand?RecoveryTrackKind.Sand:RecoveryTrackKind.Dirt);
                 if(!snow&&!sand){var mud=root.AddComponent<RecoveryMudTerrain>();mud.ConfigureTracks(false);}

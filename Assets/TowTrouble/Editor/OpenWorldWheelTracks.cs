@@ -36,6 +36,7 @@ namespace TowTrouble.Editor
                 mats[i]=ScenicMaterial("Dynamic wheel tracks "+i,tint,shader);
                 mats[i].SetTexture("_BaseMap",i>=4?Texture2D.whiteTexture:layer.diffuseTexture);
                 mats[i].SetFloat("_Compaction",i==3?.86f:i>=4?1:.82f);
+                mats[i].renderQueue=3005;mats[i].SetFloat("_RutDepth",i>=4?0:i==2?.115f:i==1?.085f:.06f);
                 mats[i].SetFloat("_HardSurface",i>=4?1:0);EditorUtility.SetDirty(mats[i]);
             }
             // Explicit material response on the real deck/ramp colliders, not a volume exclusion.

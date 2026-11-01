@@ -28,7 +28,11 @@ namespace TowTrouble
         private int paintIndex;
         public void ConfigurePaints(RecoveryPaintSlot[] value){paintSlots=value;}
         public void SetPaint(int index){paintIndex=Mathf.Clamp(index,0,3);if(paintSlots==null)return;foreach(var slot in paintSlots){var values=slot.Renderer.sharedMaterials;values[slot.Slot]=slot.Colors[paintIndex];slot.Renderer.sharedMaterials=values;}}
-        private float mudDrag, mudLimit=27f;
+        private float mudDrag, mudLimit=27f, recoveryMass, recoveryLockedWheels;
+        private bool recoveryJammed;
+        public void SetRecoveryJammed(bool value){recoveryJammed=value;}
+        public void SetRecoveryMass(float value,float lockedWheels=0)
+        {recoveryLockedWheels=Mathf.Clamp01(lockedWheels);recoveryMass=Mathf.Max(0,value);if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?(recoveryMass>0?recoveryMass:950f):CurrentModel.Mass;}
         private Vector3 safePosition;
         private Quaternion safeRotation;
         private float radius=.47f, driveForce=3100f, steering=30f;
@@ -40,6 +44,8 @@ namespace TowTrouble
         public float WinchForce {get;private set;}=RecoveryWinch.StockForce;
         private Vector3 cableReaction;
         public RecoveryVehicleModel CurrentModel=>models[modelIndex];
+        public int ModelCount=>models==null?0:models.Length;
+        public RecoveryVehicleModel ModelAt(int index)=>models[Mathf.Clamp(index,0,models.Length-1)];
         public void UseAssembly(RecoveryAssembly assembly,GaragePerformance performance)
         {
             foreach(var m in models)m.Root.SetActive(false);wheelVisuals=assembly.Wheels;radius=assembly.Radius;
@@ -120,7 +126,7 @@ namespace TowTrouble
             for(int i=0;i<models.Length;i++)models[i].Root.SetActive(i==modelIndex);
             wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=13;mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=RecoveryWinch.StockSpeed;WinchForce=RecoveryWinch.StockForce;geometryVersion++;driveForce=m.Drive;steering=m.Steering;
             for(int i=0;i<wheels.Length;i++){wheels[i].transform.localPosition=m.Anchors[i];wheels[i].radius=radius;}
-            if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?950f:m.Mass;
+            if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?(recoveryMass>0?recoveryMass:950f):m.Mass;
             ResetWheelPresentation();
         }
         public void SetSpawn(Vector3 position,Quaternion rotation,float drag=0f,float mudEnd=27f,bool mudOnly=false)
@@ -248,7 +254,7 @@ namespace TowTrouble
                 else if(looseDrag>0)body.AddForceAtPosition(RecoveryTraction.MudResistance(pointVelocity,hit.normal,looseDrag,body.mass),hit.point);
                 float slip=casualty||brake?0:RecoveryTraction.Slip(drive,forwardLimit);
                 wheelSlips[i]=Mathf.Lerp(wheelSlips[i],slip,blend);
-                wheelRates[i]=longitudinal/w.radius+(casualty||brake?0:Mathf.Sign(input.y)*wheelSlips[i]*18);
+                wheelRates[i]=casualty&&recoveryJammed&&i>=4-Mathf.CeilToInt(recoveryLockedWheels*4)?0:longitudinal/w.radius+(casualty||brake?0:Mathf.Sign(input.y)*wheelSlips[i]*18);
                 suspensionOffsets[i]=RecoveryWheelPose.SuspensionOffset(hit.distance,w.radius,w.suspensionDistance);
             }
             mudFraction=mudWheels/(float)wheels.Length;

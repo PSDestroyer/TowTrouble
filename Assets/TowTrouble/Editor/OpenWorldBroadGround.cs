@@ -74,6 +74,7 @@ namespace TowTrouble.Editor
                     var surface=filter.gameObject.AddComponent<RecoveryGroundSurface>();surface.Configure(snow?RecoveryGroundKind.Snow:RecoveryGroundKind.Sand);surface.ConfigureSoftness(1);
                     var track=filter.gameObject.AddComponent<RecoveryTrackSurface>();track.Configure(snow?RecoveryTrackKind.Snow:RecoveryTrackKind.Sand);
                 }
+                filter.GetComponent<RecoveryTrackSurface>().ConfigureVisualCover(filter.sharedMesh,collider.sharedMesh);
                 ClearBroadVegetation(site,width,length);
                 reports.Add(new{site.Id,kind=muddy?"Mud":snow?"Snow":"Sand",widthMeters=width*2,lengthMeters=length*2,dynamicMud=dynamic});
             }

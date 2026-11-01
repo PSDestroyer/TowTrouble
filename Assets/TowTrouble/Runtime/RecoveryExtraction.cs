@@ -9,6 +9,7 @@ namespace TowTrouble
     public sealed class RecoveryExtractionSettings
     {
         public bool Enabled;
+        public bool TerrainAware;
         [Range(0, 3)] public int BlockedWheel;
         [Min(.5f)] public float Travel = 2.2f;
         [Min(0)] public float BreakawayForce = 5600f;
@@ -43,7 +44,7 @@ namespace TowTrouble
         }
 
         public Vector3 Step(Vector3 bodyPosition, Vector3 wheelPosition, Vector3 velocity, Vector3 pull,
-            float mass, bool supported, bool canRecover, float deltaTime)
+            float mass, bool supported, bool canRecover, float deltaTime, Vector3 groundNormal = default)
         {
             if (deltaTime <= 0) return Vector3.zero;
             if (IsFree) { ReleasedSeconds += deltaTime; return Vector3.zero; }
@@ -60,7 +61,10 @@ namespace TowTrouble
             // A sideways detour or a jump cannot satisfy the exit plane/contact test.
             bool clear = canRecover && loaded && Progress >= 1 && supported;
             clearHold = clear ? clearHold + deltaTime : 0;
-            float positionResistance = Mathf.Lerp(1f, .6f, Mathf.SmoothStep(0, 1, Progress));
+            // Deep pockets retain their load until the last part of the actual exit.
+            float positionResistance = settings.TerrainAware
+                ? Mathf.Lerp(1f,.82f,Mathf.SmoothStep(0,1,Mathf.InverseLerp(.65f,1,Progress)))
+                : Mathf.Lerp(1f, .6f, Mathf.SmoothStep(0, 1, Progress));
             float angleResistance = Mathf.Lerp(1f, 1.9f, Mathf.InverseLerp(.9f, 0, Alignment));
             float breakaway = Mathf.Max(0, settings.BreakawayForce) * positionResistance * angleResistance;
             float sliding = Mathf.Min(Mathf.Max(0, settings.MovingForce), Mathf.Max(0, settings.BreakawayForce)) * positionResistance * angleResistance;
@@ -69,7 +73,7 @@ namespace TowTrouble
             if (Stage != ExtractionStage.Releasing)
             {
                 float forwardSpeed = Vector3.Dot(planarVelocity, exit);
-                if (canRecover && effort > 100 && (effort > breakaway || forwardSpeed > .18f)) moving = true;
+                if (canRecover && effort > 100 && (settings.TerrainAware ? forwardSpeed > .18f : effort > breakaway || forwardSpeed > .18f)) moving = true;
                 else if (planarVelocity.magnitude < .04f) moving = false;
                 Stage = !canRecover || effort <= 100 ? ExtractionStage.Blocked
                     : forwardSpeed > .05f || Progress - previousProgress > .01f * deltaTime
@@ -97,6 +101,16 @@ namespace TowTrouble
             // Ground resistance never acts in the air or invents a launch impulse.
             // Cancel at most this step's pull + momentum; never reverse it at rest.
             if (!supported) return Vector3.zero;
+            if(settings.TerrainAware)
+            {
+                var normal=groundNormal.sqrMagnitude>.1f?groundNormal.normalized:Vector3.up;
+                var tangentPull=Vector3.ProjectOnPlane(pull+Physics.gravity*Mathf.Max(1,mass),normal);
+                var tangentVelocity=Vector3.ProjectOnPlane(velocity,normal);
+                // The same ground contact supports the static weight and the cable.
+                // No resistance is invented while airborne; slope gravity is not added twice.
+                capacity*=Mathf.Clamp(Vector3.Dot(normal,Vector3.up),.25f,1);
+                return -Vector3.ClampMagnitude(tangentPull+tangentVelocity*Mathf.Max(1,mass)/deltaTime,capacity);
+            }
             return -Vector3.ClampMagnitude(planarPull + planarVelocity * Mathf.Max(1, mass) / deltaTime, capacity);
         }
 

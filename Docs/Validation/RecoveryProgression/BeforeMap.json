@@ -1,0 +1,2986 @@
+{
+    "sites": [
+        {
+            "Id": "R01",
+            "Name": "Poiana atelierului",
+            "English": "Workshop meadow",
+            "DeliveryName": "Curtea atelierului",
+            "DeliveryEnglish": "Workshop yard",
+            "Biome": 0,
+            "Tier": 0,
+            "Position": {
+                "x": -117.7790756225586,
+                "y": 21.80013656616211,
+                "z": 82.61090850830078
+            },
+            "Delivery": {
+                "x": 36.00001907348633,
+                "y": 22.072622299194337,
+                "z": -26.99997329711914
+            },
+            "Heading": 81.25382995605469,
+            "TargetModel": 0,
+            "TargetPaint": 0,
+            "CrossRegion": false,
+            "Depth": 0.2199999988079071,
+            "Pitch": 2.0,
+            "Roll": 3.0,
+            "Resistance": 350.0,
+            "ExitDirection": {
+                "x": 0.9883716702461243,
+                "y": 0.0,
+                "z": 0.1520574688911438
+            },
+            "Extraction": {
+                "Enabled": true,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Roata din față-stânga este prinsă într-un șanț. Trage progresiv spre potecă.",
+            "EnglishSituation": "The front-left wheel is caught in a rut. Pull progressively toward the trail.",
+            "Kind": 1
+        },
+        {
+            "Id": "R02",
+            "Name": "Șleaurile din pădure",
+            "English": "Forest ruts",
+            "DeliveryName": "Depozitul forestier",
+            "DeliveryEnglish": "Forest depot",
+            "Biome": 0,
+            "Tier": 1,
+            "Position": {
+                "x": -299.86920166015627,
+                "y": 19.530773162841798,
+                "z": 48.163482666015628
+            },
+            "Delivery": {
+                "x": -166.5,
+                "y": 22.075361251831056,
+                "z": -45.0000114440918
+            },
+            "Heading": 38.659793853759769,
+            "TargetModel": 2,
+            "TargetPaint": 2,
+            "CrossRegion": false,
+            "Depth": 0.061328887939453128,
+            "Pitch": 0.2010156512260437,
+            "Roll": 0.01497582159936428,
+            "Resistance": 740.0,
+            "ExitDirection": {
+                "x": 0.62469482421875,
+                "y": 0.0,
+                "z": 0.7808689475059509
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Roțile au săpat două șleauri adânci în noroi. Eliberează mai întâi copacul, apoi trage drept din făgașe.",
+            "EnglishSituation": "The wheels dug two deep muddy ruts. Clear the tree first, then pull straight out of the tracks.",
+            "Kind": 2
+        },
+        {
+            "Id": "R03",
+            "Name": "Groapa cu noroi",
+            "English": "The mud pit",
+            "DeliveryName": "Depozitul forestier",
+            "DeliveryEnglish": "Forest depot",
+            "Biome": 0,
+            "Tier": 2,
+            "Position": {
+                "x": -360.0,
+                "y": 17.316768646240236,
+                "z": -72.00000762939453
+            },
+            "Delivery": {
+                "x": -166.5,
+                "y": 22.075361251831056,
+                "z": -45.0000114440918
+            },
+            "Heading": 0.0,
+            "TargetModel": 1,
+            "TargetPaint": 1,
+            "CrossRegion": false,
+            "Depth": -0.043331146240234378,
+            "Pitch": 1.2257755994796754,
+            "Roll": -0.7148897647857666,
+            "Resistance": 1130.0,
+            "ExitDirection": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina stă cu burta pe o creastă de noroi; roțile sunt îngropate în mâl. Caută sprijin ferm pentru troliu.",
+            "EnglishSituation": "The car is bellied on a mud ridge, with its wheels sunk in silt. Find firm footing for the winch.",
+            "Kind": 2
+        },
+        {
+            "Id": "R04",
+            "Name": "Râpa pădurarului",
+            "English": "Forester ravine",
+            "DeliveryName": "Debarcaderul lacului",
+            "DeliveryEnglish": "Lakeside landing",
+            "Biome": 0,
+            "Tier": 3,
+            "Position": {
+                "x": -297.0,
+                "y": 37.43539047241211,
+                "z": 135.0
+            },
+            "Delivery": {
+                "x": -99.00001525878906,
+                "y": 18.09908103942871,
+                "z": -279.0
+            },
+            "Heading": 0.0,
+            "TargetModel": 3,
+            "TargetPaint": 3,
+            "CrossRegion": true,
+            "Depth": -0.12245941162109375,
+            "Pitch": 0.47588446736335757,
+            "Roll": 1.512206792831421,
+            "Resistance": 1520.0,
+            "ExitDirection": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Roțile din stânga au căzut în șanțul pădurarului. Mută copacul și scoate mașina pe rampa din față.",
+            "EnglishSituation": "The left wheels fell into the forest ditch. Move the tree and recover along the forward ramp.",
+            "Kind": 1
+        },
+        {
+            "Id": "R05",
+            "Name": "Malul de pescuit",
+            "English": "Fishing shore",
+            "DeliveryName": "Debarcaderul lacului",
+            "DeliveryEnglish": "Lakeside landing",
+            "Biome": 1,
+            "Tier": 0,
+            "Position": {
+                "x": -229.14437866210938,
+                "y": 10.352229118347168,
+                "z": -189.5226593017578
+            },
+            "Delivery": {
+                "x": -99.00001525878906,
+                "y": 18.09908103942871,
+                "z": -279.0
+            },
+            "Heading": 16.08196449279785,
+            "TargetModel": 2,
+            "TargetPaint": 3,
+            "CrossRegion": false,
+            "Depth": 0.1060638427734375,
+            "Pitch": -8.706564903259278,
+            "Roll": 3.5509228706359865,
+            "Resistance": 700.0,
+            "ExitDirection": {
+                "x": 0.2770122289657593,
+                "y": 0.0,
+                "z": 0.960866391658783
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a intrat cu spatele în lac; roțile sunt în apă. Trage spre malul uscat din fața ei.",
+            "EnglishSituation": "The car reversed into the lake; its wheels are underwater. Pull toward the dry bank ahead.",
+            "Kind": 3
+        },
+        {
+            "Id": "R06",
+            "Name": "Mâlul de lângă stuf",
+            "English": "Reed bank",
+            "DeliveryName": "Depozitul forestier",
+            "DeliveryEnglish": "Forest depot",
+            "Biome": 1,
+            "Tier": 1,
+            "Position": {
+                "x": -185.8764190673828,
+                "y": 12.170226097106934,
+                "z": -215.2584991455078
+            },
+            "Delivery": {
+                "x": -166.5,
+                "y": 22.075361251831056,
+                "z": -45.0000114440918
+            },
+            "Heading": 189.4623260498047,
+            "TargetModel": 0,
+            "TargetPaint": 1,
+            "CrossRegion": true,
+            "Depth": 0.03651618957519531,
+            "Pitch": 0.4406590461730957,
+            "Roll": 0.14503581821918488,
+            "Resistance": 1090.0,
+            "ExitDirection": {
+                "x": -0.16439898312091828,
+                "y": 0.0,
+                "z": -0.9863938689231873
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mâlul de lângă stuf a înghițit roțile din spate. Eliberează copacul și trage dinspre terenul tare.",
+            "EnglishSituation": "Silt beside the reeds swallowed the rear wheels. Clear the tree and pull from firm ground.",
+            "Kind": 2
+        },
+        {
+            "Id": "R07",
+            "Name": "Bolovanii de pe mal",
+            "English": "Shore boulders",
+            "DeliveryName": "Debarcaderul lacului",
+            "DeliveryEnglish": "Lakeside landing",
+            "Biome": 1,
+            "Tier": 2,
+            "Position": {
+                "x": -317.1910400390625,
+                "y": 11.794882774353028,
+                "z": -316.5392761230469
+            },
+            "Delivery": {
+                "x": -99.00001525878906,
+                "y": 18.09908103942871,
+                "z": -279.0
+            },
+            "Heading": 303.6900634765625,
+            "TargetModel": 3,
+            "TargetPaint": 0,
+            "CrossRegion": false,
+            "Depth": -0.13981151580810548,
+            "Pitch": 0.4232390224933624,
+            "Roll": 0.5276467204093933,
+            "Resistance": 1480.0,
+            "ExitDirection": {
+                "x": -0.8320502638816834,
+                "y": 0.0,
+                "z": 0.5547001957893372
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a alunecat pe muchia malului; roțile din stânga sunt mai jos. Trage spre rampa dintre bolovani.",
+            "EnglishSituation": "The car slid onto the bank edge, with its left wheels lower. Pull up the ramp between the rocks.",
+            "Kind": 6
+        },
+        {
+            "Id": "R08",
+            "Name": "Golful izolat",
+            "English": "Hidden bay",
+            "DeliveryName": "Curtea atelierului",
+            "DeliveryEnglish": "Workshop yard",
+            "Biome": 1,
+            "Tier": 3,
+            "Position": {
+                "x": -364.3823547363281,
+                "y": 10.347014427185059,
+                "z": -194.36965942382813
+            },
+            "Delivery": {
+                "x": 36.00001907348633,
+                "y": 22.072622299194337,
+                "z": -26.99997329711914
+            },
+            "Heading": 296.88690185546877,
+            "TargetModel": 1,
+            "TargetPaint": 2,
+            "CrossRegion": true,
+            "Depth": 0.0960540771484375,
+            "Pitch": -9.29973316192627,
+            "Roll": 5.528420448303223,
+            "Resistance": 1870.0,
+            "ExitDirection": {
+                "x": -0.8919009566307068,
+                "y": 0.0,
+                "z": 0.45223093032836916
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a rămas în apa golfului, cu partea de jos inundată. Folosește troliul de pe malul uscat.",
+            "EnglishSituation": "The car is stranded in the cove with its lower body flooded. Winch it from the dry bank.",
+            "Kind": 3
+        },
+        {
+            "Id": "R09",
+            "Name": "Curba cu pietriș",
+            "English": "Gravel bend",
+            "DeliveryName": "Refugiul montan",
+            "DeliveryEnglish": "Mountain refuge",
+            "Biome": 2,
+            "Tier": 1,
+            "Position": {
+                "x": -97.46070098876953,
+                "y": 50.87600326538086,
+                "z": 213.80894470214845
+            },
+            "Delivery": {
+                "x": 54.000003814697269,
+                "y": 66.08439636230469,
+                "z": 144.0
+            },
+            "Heading": 213.69009399414063,
+            "TargetModel": 0,
+            "TargetPaint": 2,
+            "CrossRegion": false,
+            "Depth": 0.11150741577148438,
+            "Pitch": 0.0,
+            "Roll": 0.0,
+            "Resistance": 0.0,
+            "ExitDirection": {
+                "x": -0.5547005534172058,
+                "y": 0.0,
+                "z": -0.832050085067749
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Motor defect; fumul iese de sub capotă. Mașina nu se poate deplasa singură: remorcheaz-o la atelier.",
+            "EnglishSituation": "Engine failure; smoke rises from under the hood. The car cannot drive itself: tow it to the workshop.",
+            "Kind": 4
+        },
+        {
+            "Id": "R10",
+            "Name": "Alunecare sub drumul de munte",
+            "English": "Below the mountain road",
+            "DeliveryName": "Refugiul montan",
+            "DeliveryEnglish": "Mountain refuge",
+            "Biome": 2,
+            "Tier": 2,
+            "Position": {
+                "x": 187.8662872314453,
+                "y": 72.21858978271485,
+                "z": 209.1042022705078
+            },
+            "Delivery": {
+                "x": 54.000003814697269,
+                "y": 66.08439636230469,
+                "z": 144.0
+            },
+            "Heading": 340.0,
+            "TargetModel": 3,
+            "TargetPaint": 1,
+            "CrossRegion": false,
+            "Depth": -0.03450775146484375,
+            "Pitch": -21.15117645263672,
+            "Roll": 0.4806991219520569,
+            "Resistance": 1130.0,
+            "ExitDirection": {
+                "x": -0.7071067690849304,
+                "y": 0.0,
+                "z": 0.7071067690849304
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a alunecat sub marginea drumului și stă înclinată pe taluz. Poziționează-te sus pe drum și trage înapoi pe pantă.",
+            "EnglishSituation": "The car slipped below the road and sits tilted on the bank. Set up on the road above and pull it back uphill.",
+            "Kind": 6
+        },
+        {
+            "Id": "R11",
+            "Name": "Râpa de sub drum",
+            "English": "Below the road",
+            "DeliveryName": "Depozitul forestier",
+            "DeliveryEnglish": "Forest depot",
+            "Biome": 2,
+            "Tier": 3,
+            "Position": {
+                "x": -207.9343719482422,
+                "y": 73.36994934082031,
+                "z": 268.422119140625
+            },
+            "Delivery": {
+                "x": -166.5,
+                "y": 22.075361251831056,
+                "z": -45.0000114440918
+            },
+            "Heading": 85.2363052368164,
+            "TargetModel": 2,
+            "TargetPaint": 0,
+            "CrossRegion": true,
+            "Depth": -0.00617218017578125,
+            "Pitch": 0.7695633172988892,
+            "Roll": -0.7703315019607544,
+            "Resistance": 1520.0,
+            "ExitDirection": {
+                "x": 0.996545672416687,
+                "y": 0.0,
+                "z": 0.08304634690284729
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a alunecat cu o latură sub nivelul drumului. Scoate-o pe rampa de pământ, fără tragere laterală.",
+            "EnglishSituation": "One side slid below the road. Recover along the dirt ramp without pulling sideways.",
+            "Kind": 6
+        },
+        {
+            "Id": "R12",
+            "Name": "Ieșire de pe serpentină",
+            "English": "Slipped off the switchback",
+            "DeliveryName": "Depozitul canionului",
+            "DeliveryEnglish": "Canyon depot",
+            "Biome": 2,
+            "Tier": 4,
+            "Position": {
+                "x": 178.5313720703125,
+                "y": 134.19764709472657,
+                "z": 312.3895263671875
+            },
+            "Delivery": {
+                "x": 342.0,
+                "y": 32.09044647216797,
+                "z": -261.0000305175781
+            },
+            "Heading": 160.0000457763672,
+            "TargetModel": 1,
+            "TargetPaint": 3,
+            "CrossRegion": true,
+            "Depth": 0.1539459228515625,
+            "Pitch": -20.854969024658204,
+            "Roll": -24.122756958007814,
+            "Resistance": 1910.0,
+            "ExitDirection": {
+                "x": 0.7071062326431274,
+                "y": 0.0,
+                "z": -0.7071073055267334
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a alunecat sub marginea drumului și stă înclinată pe taluz. Poziționează-te sus pe drum și trage înapoi pe pantă.",
+            "EnglishSituation": "The car slipped below the road and sits tilted on the bank. Set up on the road above and pull it back uphill.",
+            "Kind": 6
+        },
+        {
+            "Id": "R13",
+            "Name": "Prima limbă de zăpadă",
+            "English": "First snow",
+            "DeliveryName": "Cabana de altitudine",
+            "DeliveryEnglish": "High cabin",
+            "Biome": 3,
+            "Tier": 2,
+            "Position": {
+                "x": 6.149526596069336,
+                "y": 149.3618621826172,
+                "z": 336.07476806640627
+            },
+            "Delivery": {
+                "x": -11.0,
+                "y": 114.07774353027344,
+                "z": 254.0
+            },
+            "Heading": 243.4349365234375,
+            "TargetModel": 3,
+            "TargetPaint": 2,
+            "CrossRegion": false,
+            "Depth": -0.01727294921875,
+            "Pitch": 3.8233349323272707,
+            "Roll": 20.608016967773439,
+            "Resistance": 1130.0,
+            "ExitDirection": {
+                "x": -0.8944271802902222,
+                "y": 0.0,
+                "z": -0.4472135901451111
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Un sul de zăpadă blochează puntea din față. Urmele roților arată direcția de ieșire.",
+            "EnglishSituation": "A snow bank blocks the front axle. The tire tracks show the escape direction.",
+            "Kind": 7
+        },
+        {
+            "Id": "R14",
+            "Name": "Serpentina înghețată",
+            "English": "Frozen hairpin",
+            "DeliveryName": "Refugiul montan",
+            "DeliveryEnglish": "Mountain refuge",
+            "Biome": 3,
+            "Tier": 3,
+            "Position": {
+                "x": 58.79082107543945,
+                "y": 146.9587860107422,
+                "z": 352.47943115234377
+            },
+            "Delivery": {
+                "x": 54.000003814697269,
+                "y": 66.08439636230469,
+                "z": 144.0
+            },
+            "Heading": 105.0685806274414,
+            "TargetModel": 0,
+            "TargetPaint": 3,
+            "CrossRegion": false,
+            "Depth": 0.126861572265625,
+            "Pitch": 11.070404052734375,
+            "Roll": -7.0673346519470219,
+            "Resistance": 1520.0,
+            "ExitDirection": {
+                "x": 0.9656153321266174,
+                "y": 0.0,
+                "z": -0.25997522473335268
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Roțile au căzut într-un șanț înghețat. Îndepărtează copacul și ține cablul aliniat cu șanțul.",
+            "EnglishSituation": "The wheels slid into an icy ditch. Clear the fallen tree and keep the cable aligned with the ditch.",
+            "Kind": 1
+        },
+        {
+            "Id": "R15",
+            "Name": "Șanțul din viscol",
+            "English": "Blizzard ditch",
+            "DeliveryName": "Cabana de altitudine",
+            "DeliveryEnglish": "High cabin",
+            "Biome": 3,
+            "Tier": 4,
+            "Position": {
+                "x": -80.49406433105469,
+                "y": 154.6395263671875,
+                "z": 377.3387756347656
+            },
+            "Delivery": {
+                "x": -11.0,
+                "y": 114.07774353027344,
+                "z": 254.0
+            },
+            "Heading": 227.48953247070313,
+            "TargetModel": 1,
+            "TargetPaint": 0,
+            "CrossRegion": false,
+            "Depth": 0.095306396484375,
+            "Pitch": 1.4539234638214112,
+            "Roll": -5.233410835266113,
+            "Resistance": 1910.0,
+            "ExitDirection": {
+                "x": -0.737153947353363,
+                "y": 0.0,
+                "z": -0.6757249236106873
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Viscolul a strâns zăpadă sub șasiu și în jurul roților. Trage progresiv pe culoarul tasat.",
+            "EnglishSituation": "The blizzard packed snow under the chassis and around the wheels. Pull steadily along the packed tracks.",
+            "Kind": 7
+        },
+        {
+            "Id": "R16",
+            "Name": "Platoul de sub vârf",
+            "English": "Summit plateau",
+            "DeliveryName": "Curtea atelierului",
+            "DeliveryEnglish": "Workshop yard",
+            "Biome": 3,
+            "Tier": 4,
+            "Position": {
+                "x": 3.002290725708008,
+                "y": 170.98220825195313,
+                "z": 403.16485595703127
+            },
+            "Delivery": {
+                "x": 36.00001907348633,
+                "y": 22.072622299194337,
+                "z": -26.99997329711914
+            },
+            "Heading": 127.87495422363281,
+            "TargetModel": 2,
+            "TargetPaint": 1,
+            "CrossRegion": true,
+            "Depth": 0.101287841796875,
+            "Pitch": 0.0,
+            "Roll": 0.0,
+            "Resistance": 0.0,
+            "ExitDirection": {
+                "x": 0.7893525958061218,
+                "y": 0.0,
+                "z": -0.6139401197433472
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Motor oprit pe platou; aburul de sub capotă indică defecțiunea. Remorcheaz-o spre zona sigură.",
+            "EnglishSituation": "Engine failure on the plateau; vapor under the hood marks the fault. Tow it to the safe zone.",
+            "Kind": 4
+        },
+        {
+            "Id": "R17",
+            "Name": "Intrarea în nisip",
+            "English": "Sandy entrance",
+            "DeliveryName": "Parcarea de pe plajă",
+            "DeliveryEnglish": "Beach parking",
+            "Biome": 4,
+            "Tier": 0,
+            "Position": {
+                "x": -112.95867156982422,
+                "y": 12.613726615905762,
+                "z": -370.3780822753906
+            },
+            "Delivery": {
+                "x": 17.999982833862306,
+                "y": 18.073957443237306,
+                "z": -346.5
+            },
+            "Heading": 86.5650405883789,
+            "TargetModel": 0,
+            "TargetPaint": 0,
+            "CrossRegion": false,
+            "Depth": 0.06881427764892578,
+            "Pitch": 0.49436482787132265,
+            "Roll": -1.3446763753890992,
+            "Resistance": 350.0,
+            "ExitDirection": {
+                "x": 0.998203456401825,
+                "y": 0.0,
+                "z": 0.059915293008089069
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Roțile din spate au săpat două gropi în nisip. Trage dinspre terenul compact, fără smucituri.",
+            "EnglishSituation": "The rear wheels dug two pits in the sand. Pull from compact ground without jerking the cable.",
+            "Kind": 8
+        },
+        {
+            "Id": "R18",
+            "Name": "Faleza joasă",
+            "English": "Low bluff",
+            "DeliveryName": "Parcarea de pe plajă",
+            "DeliveryEnglish": "Beach parking",
+            "Biome": 4,
+            "Tier": 1,
+            "Position": {
+                "x": -17.856075286865236,
+                "y": 12.537375450134278,
+                "z": -389.50689697265627
+            },
+            "Delivery": {
+                "x": 17.999982833862306,
+                "y": 18.073957443237306,
+                "z": -346.5
+            },
+            "Heading": 109.98306274414063,
+            "TargetModel": 2,
+            "TargetPaint": 2,
+            "CrossRegion": false,
+            "Depth": 0.052824974060058597,
+            "Pitch": 0.35423320531845095,
+            "Roll": -1.4196467399597169,
+            "Resistance": 740.0,
+            "ExitDirection": {
+                "x": 0.9397937059402466,
+                "y": 0.0,
+                "z": -0.3417423665523529
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a căzut cu o latură în șanțul falezei. Eliberează trunchiul și folosește rampa din față.",
+            "EnglishSituation": "One side fell into the beach ditch. Clear the fallen trunk and use the forward ramp.",
+            "Kind": 1
+        },
+        {
+            "Id": "R19",
+            "Name": "Nisipul umed",
+            "English": "Wet sand",
+            "DeliveryName": "Debarcaderul lacului",
+            "DeliveryEnglish": "Lakeside landing",
+            "Biome": 4,
+            "Tier": 2,
+            "Position": {
+                "x": -227.93536376953126,
+                "y": 12.331721305847168,
+                "z": -395.475830078125
+            },
+            "Delivery": {
+                "x": -99.00001525878906,
+                "y": 18.09908103942871,
+                "z": -279.0
+            },
+            "Heading": 114.4623031616211,
+            "TargetModel": 3,
+            "TargetPaint": 3,
+            "CrossRegion": false,
+            "Depth": -0.15011024475097657,
+            "Pitch": 0.5590613484382629,
+            "Roll": -0.15555928647518159,
+            "Resistance": 1130.0,
+            "ExitDirection": {
+                "x": 0.9102339744567871,
+                "y": 0.0,
+                "z": -0.41409438848495486
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Nisipul umed s-a adunat sub punte; roțile au lăsat făgașe lucioase. Poziționează-te pe nisip tare.",
+            "EnglishSituation": "Wet sand piled beneath the axle; the wheels left glossy ruts. Position on firmer sand.",
+            "Kind": 8
+        },
+        {
+            "Id": "R20",
+            "Name": "Duna de pe mal",
+            "English": "Lakeside dune",
+            "DeliveryName": "Curtea atelierului",
+            "DeliveryEnglish": "Workshop yard",
+            "Biome": 4,
+            "Tier": 3,
+            "Position": {
+                "x": 89.4566421508789,
+                "y": 23.410877227783204,
+                "z": -346.8969421386719
+            },
+            "Delivery": {
+                "x": 36.00001907348633,
+                "y": 22.072622299194337,
+                "z": -26.99997329711914
+            },
+            "Heading": 317.0054016113281,
+            "TargetModel": 1,
+            "TargetPaint": 1,
+            "CrossRegion": true,
+            "Depth": -0.03240394592285156,
+            "Pitch": 0.8723968267440796,
+            "Roll": 0.29789474606513979,
+            "Resistance": 1520.0,
+            "ExitDirection": {
+                "x": -0.6819295883178711,
+                "y": 0.0,
+                "z": 0.7314178347587586
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina stă cu burta pe creasta dunei. Scoate-o pe rampa lată din față.",
+            "EnglishSituation": "The car is bellied on the dune crest. Pull down the broad forward ramp.",
+            "Kind": 8
+        },
+        {
+            "Id": "R21",
+            "Name": "Vadul uscat",
+            "English": "Dry wash",
+            "DeliveryName": "Popasul deșertului",
+            "DeliveryEnglish": "Desert stop",
+            "Biome": 5,
+            "Tier": 1,
+            "Position": {
+                "x": 297.0,
+                "y": 34.5460090637207,
+                "z": 31.999988555908204
+            },
+            "Delivery": {
+                "x": 261.0000305175781,
+                "y": 22.098257064819337,
+                "z": -116.99999237060547
+            },
+            "Heading": 180.0,
+            "TargetModel": 2,
+            "TargetPaint": 3,
+            "CrossRegion": false,
+            "Depth": 0.07753372192382813,
+            "Pitch": 0.2599632441997528,
+            "Roll": 1.2316054105758668,
+            "Resistance": 740.0,
+            "ExitDirection": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -1.0
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a alunecat în albia uscată; marginile vadului sunt deasupra roților. Ieși pe rampa din față.",
+            "EnglishSituation": "The car slid into a dry wash; its banks rise above the wheels. Use the forward escape ramp.",
+            "Kind": 9
+        },
+        {
+            "Id": "R22",
+            "Name": "Dunele adânci",
+            "English": "Deep dunes",
+            "DeliveryName": "Depozitul canionului",
+            "DeliveryEnglish": "Canyon depot",
+            "Biome": 5,
+            "Tier": 2,
+            "Position": {
+                "x": 378.5029602050781,
+                "y": 19.437000274658204,
+                "z": -97.99409484863281
+            },
+            "Delivery": {
+                "x": 342.0,
+                "y": 32.09044647216797,
+                "z": -261.0000305175781
+            },
+            "Heading": 26.56500244140625,
+            "TargetModel": 3,
+            "TargetPaint": 0,
+            "CrossRegion": false,
+            "Depth": -0.10516357421875,
+            "Pitch": 0.6682032942771912,
+            "Roll": 0.06597454100847244,
+            "Resistance": 1130.0,
+            "ExitDirection": {
+                "x": 0.4472127854824066,
+                "y": 0.0,
+                "z": 0.8944275975227356
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Puntea din spate este îngropată în nisip. Urmele de patinare și nisipul ridicat arată blocajul.",
+            "EnglishSituation": "The rear axle is buried in sand. Wheelspin marks and piled sand reveal the blockage.",
+            "Kind": 8
+        },
+        {
+            "Id": "R23",
+            "Name": "Taluzul canionului",
+            "English": "Canyon roadside bank",
+            "DeliveryName": "Popasul deșertului",
+            "DeliveryEnglish": "Desert stop",
+            "Biome": 5,
+            "Tier": 3,
+            "Position": {
+                "x": 396.3384704589844,
+                "y": 23.370647430419923,
+                "z": -172.10536193847657
+            },
+            "Delivery": {
+                "x": 261.0000305175781,
+                "y": 22.098257064819337,
+                "z": -116.99999237060547
+            },
+            "Heading": 279.9999694824219,
+            "TargetModel": 0,
+            "TargetPaint": 1,
+            "CrossRegion": false,
+            "Depth": 0.0013065338134765626,
+            "Pitch": -5.795170783996582,
+            "Roll": -11.775840759277344,
+            "Resistance": 1520.0,
+            "ExitDirection": {
+                "x": -0.9659256935119629,
+                "y": 0.0,
+                "z": -0.25881949067115786
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Mașina a alunecat sub marginea drumului și stă înclinată pe taluz. Poziționează-te sus pe drum și trage înapoi pe pantă.",
+            "EnglishSituation": "The car slipped below the road and sits tilted on the bank. Set up on the road above and pull it back uphill.",
+            "Kind": 6
+        },
+        {
+            "Id": "R24",
+            "Name": "Versantul de nisip",
+            "English": "Sand slope",
+            "DeliveryName": "Parcarea de pe plajă",
+            "DeliveryEnglish": "Beach parking",
+            "Biome": 5,
+            "Tier": 4,
+            "Position": {
+                "x": 243.5735321044922,
+                "y": 44.97964859008789,
+                "z": -335.9118347167969
+            },
+            "Delivery": {
+                "x": 17.999982833862306,
+                "y": 18.073957443237306,
+                "z": -346.5
+            },
+            "Heading": 329.74359130859377,
+            "TargetModel": 1,
+            "TargetPaint": 2,
+            "CrossRegion": true,
+            "Depth": 0.09316253662109375,
+            "Pitch": 0.0,
+            "Roll": 0.0,
+            "Resistance": 0.0,
+            "ExitDirection": {
+                "x": -0.5038707852363586,
+                "y": 0.0,
+                "z": 0.8637790083885193
+            },
+            "Extraction": {
+                "Enabled": false,
+                "BlockedWheel": 0,
+                "Travel": 2.200000047683716,
+                "BreakawayForce": 5600.0,
+                "MovingForce": 3600.0,
+                "MovingDrag": 4200.0,
+                "ReleaseDuration": 0.4000000059604645,
+                "ClearHold": 0.20000000298023225
+            },
+            "Situation": "Motor supraîncălzit; fum vizibil de sub capotă. Mașina este pe teren liber și trebuie remorcată.",
+            "EnglishSituation": "Overheated engine; smoke rises from under the hood. The car is on clear ground and needs towing.",
+            "Kind": 4
+        }
+    ],
+    "deliveries": [
+        {
+            "Id": "A",
+            "Name": "Curtea atelierului",
+            "English": "Workshop yard",
+            "Position": {
+                "x": 36.00001907348633,
+                "y": 22.072622299194337,
+                "z": -26.99997329711914
+            }
+        },
+        {
+            "Id": "B",
+            "Name": "Depozitul forestier",
+            "English": "Forest depot",
+            "Position": {
+                "x": -166.5,
+                "y": 22.075361251831056,
+                "z": -45.0000114440918
+            }
+        },
+        {
+            "Id": "C",
+            "Name": "Refugiul montan",
+            "English": "Mountain refuge",
+            "Position": {
+                "x": 54.000003814697269,
+                "y": 66.08439636230469,
+                "z": 144.0
+            }
+        },
+        {
+            "Id": "D",
+            "Name": "Cabana de altitudine",
+            "English": "High cabin",
+            "Position": {
+                "x": -11.0,
+                "y": 114.07774353027344,
+                "z": 254.0
+            }
+        },
+        {
+            "Id": "E",
+            "Name": "Debarcaderul lacului",
+            "English": "Lakeside landing",
+            "Position": {
+                "x": -99.00001525878906,
+                "y": 18.09908103942871,
+                "z": -279.0
+            }
+        },
+        {
+            "Id": "F",
+            "Name": "Parcarea de pe plajă",
+            "English": "Beach parking",
+            "Position": {
+                "x": 17.999982833862306,
+                "y": 18.073957443237306,
+                "z": -346.5
+            }
+        },
+        {
+            "Id": "G",
+            "Name": "Popasul deșertului",
+            "English": "Desert stop",
+            "Position": {
+                "x": 261.0000305175781,
+                "y": 22.098257064819337,
+                "z": -116.99999237060547
+            }
+        },
+        {
+            "Id": "H",
+            "Name": "Depozitul canionului",
+            "English": "Canyon depot",
+            "Position": {
+                "x": 342.0,
+                "y": 32.09044647216797,
+                "z": -261.0000305175781
+            }
+        }
+    ],
+    "roadCheckpoints": [
+        {
+            "x": -170.99996948242188,
+            "y": 22.136474609375,
+            "z": 0.0
+        },
+        {
+            "x": -172.0335693359375,
+            "y": 22.89417266845703,
+            "z": 6.203399658203125
+        },
+        {
+            "x": -172.60476684570313,
+            "y": 23.70990753173828,
+            "z": 13.02001953125
+        },
+        {
+            "x": -172.96090698242188,
+            "y": 24.577545166015626,
+            "z": 20.28753662109375
+        },
+        {
+            "x": -173.45782470703126,
+            "y": 25.478485107421876,
+            "z": 27.8189697265625
+        },
+        {
+            "x": -174.43960571289063,
+            "y": 26.40106201171875,
+            "z": 35.43060302734375
+        },
+        {
+            "x": -176.12200927734376,
+            "y": 27.326988220214845,
+            "z": 42.96685791015625
+        },
+        {
+            "x": -178.51217651367188,
+            "y": 28.24504852294922,
+            "z": 50.318359375
+        },
+        {
+            "x": -181.38809204101563,
+            "y": 29.244829177856447,
+            "z": 57.42711639404297
+        },
+        {
+            "x": -184.34304809570313,
+            "y": 30.158470153808595,
+            "z": 64.27584075927735
+        },
+        {
+            "x": -186.88320922851563,
+            "y": 30.999834060668947,
+            "z": 70.8667221069336
+        },
+        {
+            "x": -188.54953002929688,
+            "y": 31.78155517578125,
+            "z": 77.19418334960938
+        },
+        {
+            "x": -189.0,
+            "y": 32.233150482177737,
+            "z": 81.0
+        },
+        {
+            "x": -189.0,
+            "y": 32.233150482177737,
+            "z": 81.0
+        },
+        {
+            "x": -189.54873657226563,
+            "y": 33.12049865722656,
+            "z": 87.33458709716797
+        },
+        {
+            "x": -190.4581298828125,
+            "y": 35.05091857910156,
+            "z": 94.23565673828125
+        },
+        {
+            "x": -191.447021484375,
+            "y": 37.133216857910159,
+            "z": 101.56121826171875
+        },
+        {
+            "x": -192.12136840820313,
+            "y": 38.967926025390628,
+            "z": 109.15679931640625
+        },
+        {
+            "x": -192.10879516601563,
+            "y": 40.82991027832031,
+            "z": 116.8701171875
+        },
+        {
+            "x": -191.18649291992188,
+            "y": 42.69908142089844,
+            "z": 124.56573486328125
+        },
+        {
+            "x": -189.36453247070313,
+            "y": 44.57731628417969,
+            "z": 132.1339111328125
+        },
+        {
+            "x": -186.9000244140625,
+            "y": 46.44658660888672,
+            "z": 139.49249267578126
+        },
+        {
+            "x": -184.23788452148438,
+            "y": 48.27143096923828,
+            "z": 146.5802001953125
+        },
+        {
+            "x": -181.89556884765626,
+            "y": 50.00074768066406,
+            "z": 153.34381103515626
+        },
+        {
+            "x": -180.32623291015626,
+            "y": 51.58573913574219,
+            "z": 159.72265625
+        },
+        {
+            "x": -179.99996948242188,
+            "y": 52.09142303466797,
+            "z": 162.00006103515626
+        },
+        {
+            "x": -179.99996948242188,
+            "y": 52.09142303466797,
+            "z": 162.00006103515626
+        },
+        {
+            "x": -173.79592895507813,
+            "y": 52.01543426513672,
+            "z": 162.7735595703125
+        },
+        {
+            "x": -167.05035400390626,
+            "y": 51.885459899902347,
+            "z": 163.0067138671875
+        },
+        {
+            "x": -159.869384765625,
+            "y": 51.73150634765625,
+            "z": 162.8770751953125
+        },
+        {
+            "x": -152.37452697753907,
+            "y": 51.68041229248047,
+            "z": 162.646728515625
+        },
+        {
+            "x": -144.69288635253907,
+            "y": 51.54515075683594,
+            "z": 162.60809326171876
+        },
+        {
+            "x": -136.9459991455078,
+            "y": 51.39282989501953,
+            "z": 163.0233917236328
+        },
+        {
+            "x": -129.24000549316407,
+            "y": 51.24024200439453,
+            "z": 164.07000732421876
+        },
+        {
+            "x": -121.65877532958985,
+            "y": 51.05738067626953,
+            "z": 165.80288696289063
+        },
+        {
+            "x": -114.261474609375,
+            "y": 50.83556365966797,
+            "z": 168.14111328125
+        },
+        {
+            "x": -107.08502197265625,
+            "y": 50.684326171875,
+            "z": 170.8812255859375
+        },
+        {
+            "x": -100.15093994140625,
+            "y": 50.53944396972656,
+            "z": 173.73504638671876
+        },
+        {
+            "x": -93.47515869140625,
+            "y": 50.397491455078128,
+            "z": 176.38409423828126
+        },
+        {
+            "x": -87.07919311523438,
+            "y": 50.26416015625,
+            "z": 178.5401611328125
+        },
+        {
+            "x": -80.99996948242188,
+            "y": 50.153648376464847,
+            "z": 180.0
+        },
+        {
+            "x": -80.99996948242188,
+            "y": 50.153648376464847,
+            "z": 180.0
+        },
+        {
+            "x": -75.09423828125,
+            "y": 51.00828552246094,
+            "z": 180.32684326171876
+        },
+        {
+            "x": -68.63375854492188,
+            "y": 51.961822509765628,
+            "z": 181.25067138671876
+        },
+        {
+            "x": -61.7039794921875,
+            "y": 52.99937438964844,
+            "z": 182.61187744140626
+        },
+        {
+            "x": -54.390228271484378,
+            "y": 54.09257507324219,
+            "z": 184.17510986328126
+        },
+        {
+            "x": -46.777740478515628,
+            "y": 55.224090576171878,
+            "z": 185.6700439453125
+        },
+        {
+            "x": -38.95196533203125,
+            "y": 56.38246154785156,
+            "z": 186.83807373046876
+        },
+        {
+            "x": -30.998199462890626,
+            "y": 57.55205535888672,
+            "z": 187.47747802734376
+        },
+        {
+            "x": -23.001800537109376,
+            "y": 58.723419189453128,
+            "z": 187.47747802734376
+        },
+        {
+            "x": -15.0479736328125,
+            "y": 59.891563415527347,
+            "z": 186.83807373046876
+        },
+        {
+            "x": -7.222198486328125,
+            "y": 61.05564880371094,
+            "z": 185.6700439453125
+        },
+        {
+            "x": 0.390228271484375,
+            "y": 62.185813903808597,
+            "z": 184.17510986328126
+        },
+        {
+            "x": 7.704010009765625,
+            "y": 63.2877197265625,
+            "z": 182.6119384765625
+        },
+        {
+            "x": 14.6337890625,
+            "y": 64.31767272949219,
+            "z": 181.25067138671876
+        },
+        {
+            "x": 21.09417724609375,
+            "y": 65.27009582519531,
+            "z": 180.32684326171876
+        },
+        {
+            "x": 27.0,
+            "y": 66.14131927490235,
+            "z": 180.0
+        },
+        {
+            "x": 27.0,
+            "y": 66.14131927490235,
+            "z": 180.0
+        },
+        {
+            "x": 32.03839111328125,
+            "y": 66.14439392089844,
+            "z": 179.00128173828126
+        },
+        {
+            "x": 37.72747802734375,
+            "y": 66.14439392089844,
+            "z": 177.38616943359376
+        },
+        {
+            "x": 43.9893798828125,
+            "y": 66.14439392089844,
+            "z": 175.2652587890625
+        },
+        {
+            "x": 50.753173828125,
+            "y": 66.14439392089844,
+            "z": 172.80084228515626
+        },
+        {
+            "x": 57.9532470703125,
+            "y": 66.14439392089844,
+            "z": 170.18798828125
+        },
+        {
+            "x": 65.52496337890625,
+            "y": 66.14439392089844,
+            "z": 167.6324462890625
+        },
+        {
+            "x": 73.4019775390625,
+            "y": 66.14439392089844,
+            "z": 165.32647705078126
+        },
+        {
+            "x": 81.51300048828125,
+            "y": 66.14439392089844,
+            "z": 163.42657470703126
+        },
+        {
+            "x": 89.77880859375,
+            "y": 66.14439392089844,
+            "z": 162.03607177734376
+        },
+        {
+            "x": 98.11114501953125,
+            "y": 66.14439392089844,
+            "z": 161.193359375
+        },
+        {
+            "x": 106.412109375,
+            "y": 66.14439392089844,
+            "z": 160.86962890625
+        },
+        {
+            "x": 114.57470703125,
+            "y": 66.14439392089844,
+            "z": 160.97308349609376
+        },
+        {
+            "x": 122.485107421875,
+            "y": 66.14439392089844,
+            "z": 161.362548828125
+        },
+        {
+            "x": 130.0247802734375,
+            "y": 66.14439392089844,
+            "z": 161.86651611328126
+        },
+        {
+            "x": 137.07452392578126,
+            "y": 66.14439392089844,
+            "z": 162.30615234375
+        },
+        {
+            "x": 143.51727294921876,
+            "y": 66.14439392089844,
+            "z": 162.51849365234376
+        },
+        {
+            "x": 149.2413330078125,
+            "y": 66.14439392089844,
+            "z": 162.37933349609376
+        },
+        {
+            "x": 153.00006103515626,
+            "y": 66.15516662597656,
+            "z": 162.00006103515626
+        },
+        {
+            "x": 153.00006103515626,
+            "y": 66.15516662597656,
+            "z": 162.00006103515626
+        },
+        {
+            "x": 155.63330078125,
+            "y": 65.81607818603516,
+            "z": 156.2503662109375
+        },
+        {
+            "x": 159.14697265625,
+            "y": 65.45679473876953,
+            "z": 150.27545166015626
+        },
+        {
+            "x": 163.12860107421876,
+            "y": 65.07548522949219,
+            "z": 144.0477294921875
+        },
+        {
+            "x": 167.057373046875,
+            "y": 64.681640625,
+            "z": 137.49871826171876
+        },
+        {
+            "x": 170.462890625,
+            "y": 64.29063415527344,
+            "z": 130.5789794921875
+        },
+        {
+            "x": 173.0673828125,
+            "y": 63.88958740234375,
+            "z": 123.31121826171875
+        },
+        {
+            "x": 174.8643798828125,
+            "y": 63.49464416503906,
+            "z": 115.820068359375
+        },
+        {
+            "x": 176.10675048828126,
+            "y": 63.103302001953128,
+            "z": 108.32708740234375
+        },
+        {
+            "x": 177.208984375,
+            "y": 62.72883605957031,
+            "z": 101.11474609375
+        },
+        {
+            "x": 178.59576416015626,
+            "y": 62.38227081298828,
+            "z": 94.46923828125
+        },
+        {
+            "x": 180.0,
+            "y": 62.06694030761719,
+            "z": 90.00006103515625
+        },
+        {
+            "x": 180.0,
+            "y": 62.06694030761719,
+            "z": 90.00006103515625
+        },
+        {
+            "x": 182.728515625,
+            "y": 60.525306701660159,
+            "z": 84.30908203125
+        },
+        {
+            "x": 185.09259033203126,
+            "y": 58.77527618408203,
+            "z": 77.897216796875
+        },
+        {
+            "x": 187.265380859375,
+            "y": 56.91352844238281,
+            "z": 70.955810546875
+        },
+        {
+            "x": 189.50689697265626,
+            "y": 54.97344207763672,
+            "z": 63.72479248046875
+        },
+        {
+            "x": 192.09332275390626,
+            "y": 52.99981689453125,
+            "z": 56.45306396484375
+        },
+        {
+            "x": 195.24346923828126,
+            "y": 51.009979248046878,
+            "z": 49.357421875
+        },
+        {
+            "x": 199.0582275390625,
+            "y": 49.023590087890628,
+            "z": 42.58917236328125
+        },
+        {
+            "x": 203.48736572265626,
+            "y": 47.03520202636719,
+            "z": 36.2159423828125
+        },
+        {
+            "x": 208.33184814453126,
+            "y": 45.05939483642578,
+            "z": 30.222412109375
+        },
+        {
+            "x": 213.28094482421876,
+            "y": 43.133323669433597,
+            "z": 24.531494140625
+        },
+        {
+            "x": 217.97528076171876,
+            "y": 41.28053283691406,
+            "z": 19.0386962890625
+        },
+        {
+            "x": 222.08123779296876,
+            "y": 39.54979705810547,
+            "z": 13.654052734375
+        },
+        {
+            "x": 225.0,
+            "y": 38.12174987792969,
+            "z": 9.0
+        },
+        {
+            "x": 225.0,
+            "y": 38.12174987792969,
+            "z": 9.0
+        },
+        {
+            "x": 227.153564453125,
+            "y": 37.08038330078125,
+            "z": 3.10821533203125
+        },
+        {
+            "x": 230.06317138671876,
+            "y": 35.942771911621097,
+            "z": -3.0201416015625
+        },
+        {
+            "x": 233.48516845703126,
+            "y": 34.72804260253906,
+            "z": -9.3748779296875
+        },
+        {
+            "x": 237.08380126953126,
+            "y": 33.46436309814453,
+            "z": -15.973388671875
+        },
+        {
+            "x": 240.5023193359375,
+            "y": 32.17256164550781,
+            "z": -22.839385986328126
+        },
+        {
+            "x": 243.43743896484376,
+            "y": 30.870925903320314,
+            "z": -29.980560302734376
+        },
+        {
+            "x": 245.702880859375,
+            "y": 29.565673828125,
+            "z": -37.369537353515628
+        },
+        {
+            "x": 247.26544189453126,
+            "y": 28.271316528320314,
+            "z": -44.932891845703128
+        },
+        {
+            "x": 248.2481689453125,
+            "y": 26.978614807128908,
+            "z": -52.550537109375
+        },
+        {
+            "x": 248.89654541015626,
+            "y": 25.708702087402345,
+            "z": -60.06536865234375
+        },
+        {
+            "x": 249.51904296875,
+            "y": 24.48785400390625,
+            "z": -67.30154418945313
+        },
+        {
+            "x": 250.41217041015626,
+            "y": 23.333648681640626,
+            "z": -74.08697509765625
+        },
+        {
+            "x": 251.78851318359376,
+            "y": 22.270591735839845,
+            "z": -80.27438354492188
+        },
+        {
+            "x": 252.00006103515626,
+            "y": 22.137672424316408,
+            "z": -80.99993896484375
+        },
+        {
+            "x": 252.00006103515626,
+            "y": 22.137672424316408,
+            "z": -80.99993896484375
+        },
+        {
+            "x": 252.7772216796875,
+            "y": 22.135360717773439,
+            "z": -87.50723266601563
+        },
+        {
+            "x": 253.16412353515626,
+            "y": 22.135360717773439,
+            "z": -94.936767578125
+        },
+        {
+            "x": 254.79803466796876,
+            "y": 22.135360717773439,
+            "z": -102.37173461914063
+        },
+        {
+            "x": 257.8282470703125,
+            "y": 22.135360717773439,
+            "z": -109.267333984375
+        },
+        {
+            "x": 260.57464599609377,
+            "y": 22.135360717773439,
+            "z": -115.53604125976563
+        },
+        {
+            "x": 261.00006103515627,
+            "y": 22.13843536376953,
+            "z": -116.99996948242188
+        },
+        {
+            "x": 261.00006103515627,
+            "y": 22.13843536376953,
+            "z": -116.99996948242188
+        },
+        {
+            "x": 257.49017333984377,
+            "y": 22.135360717773439,
+            "z": -122.21548461914063
+        },
+        {
+            "x": 254.2843017578125,
+            "y": 22.135360717773439,
+            "z": -128.30813598632813
+        },
+        {
+            "x": 251.1585693359375,
+            "y": 22.135360717773439,
+            "z": -134.96353149414063
+        },
+        {
+            "x": 247.7998046875,
+            "y": 22.135360717773439,
+            "z": -141.79727172851563
+        },
+        {
+            "x": 243.9158935546875,
+            "y": 22.135360717773439,
+            "z": -148.44146728515626
+        },
+        {
+            "x": 239.34039306640626,
+            "y": 22.135360717773439,
+            "z": -154.6268310546875
+        },
+        {
+            "x": 234.09796142578126,
+            "y": 22.135360717773439,
+            "z": -160.23443603515626
+        },
+        {
+            "x": 228.41265869140626,
+            "y": 22.135360717773439,
+            "z": -165.30184936523438
+        },
+        {
+            "x": 222.655029296875,
+            "y": 22.135360717773439,
+            "z": -169.9818115234375
+        },
+        {
+            "x": 217.24481201171876,
+            "y": 22.135360717773439,
+            "z": -174.46566772460938
+        },
+        {
+            "x": 212.53863525390626,
+            "y": 22.135360717773439,
+            "z": -178.89535522460938
+        },
+        {
+            "x": 211.50006103515626,
+            "y": 22.125106811523439,
+            "z": -179.99996948242188
+        },
+        {
+            "x": 211.50006103515626,
+            "y": 22.125106811523439,
+            "z": -179.99996948242188
+        },
+        {
+            "x": 207.1490478515625,
+            "y": 21.91345977783203,
+            "z": -184.14822387695313
+        },
+        {
+            "x": 201.93524169921876,
+            "y": 21.66596221923828,
+            "z": -188.12930297851563
+        },
+        {
+            "x": 196.0433349609375,
+            "y": 21.398162841796876,
+            "z": -192.02114868164063
+        },
+        {
+            "x": 189.71234130859376,
+            "y": 21.114952087402345,
+            "z": -195.95913696289063
+        },
+        {
+            "x": 183.2047119140625,
+            "y": 20.831100463867189,
+            "z": -200.10342407226563
+        },
+        {
+            "x": 176.7701416015625,
+            "y": 20.533248901367189,
+            "z": -204.60107421875
+        },
+        {
+            "x": 170.61328125,
+            "y": 20.233612060546876,
+            "z": -209.55093383789063
+        },
+        {
+            "x": 164.86834716796876,
+            "y": 19.93707275390625,
+            "z": -214.97708129882813
+        },
+        {
+            "x": 159.58709716796876,
+            "y": 19.641029357910158,
+            "z": -220.81591796875
+        },
+        {
+            "x": 154.74127197265626,
+            "y": 19.345420837402345,
+            "z": -226.91928100585938
+        },
+        {
+            "x": 150.24102783203126,
+            "y": 19.05573272705078,
+            "z": -233.07266235351563
+        },
+        {
+            "x": 145.9620361328125,
+            "y": 18.777450561523439,
+            "z": -239.02606201171876
+        },
+        {
+            "x": 141.7818603515625,
+            "y": 18.52032470703125,
+            "z": -244.53041076660157
+        },
+        {
+            "x": 137.6131591796875,
+            "y": 18.27953338623047,
+            "z": -249.3746337890625
+        },
+        {
+            "x": 135.00006103515626,
+            "y": 18.145492553710939,
+            "z": -251.9999542236328
+        },
+        {
+            "x": 135.00006103515626,
+            "y": 18.145492553710939,
+            "z": -251.9999542236328
+        },
+        {
+            "x": 130.05242919921876,
+            "y": 18.140365600585939,
+            "z": -254.38406372070313
+        },
+        {
+            "x": 124.71893310546875,
+            "y": 18.140365600585939,
+            "z": -257.5272216796875
+        },
+        {
+            "x": 119.03509521484375,
+            "y": 18.140365600585939,
+            "z": -261.2806396484375
+        },
+        {
+            "x": 113.01275634765625,
+            "y": 18.140365600585939,
+            "z": -265.43798828125
+        },
+        {
+            "x": 106.6500244140625,
+            "y": 18.140365600585939,
+            "z": -269.76043701171877
+        },
+        {
+            "x": 99.94384765625,
+            "y": 18.140365600585939,
+            "z": -274.0060729980469
+        },
+        {
+            "x": 92.90264892578125,
+            "y": 18.140365600585939,
+            "z": -277.96038818359377
+        },
+        {
+            "x": 85.55694580078125,
+            "y": 18.140365600585939,
+            "z": -281.4622802734375
+        },
+        {
+            "x": 77.96697998046875,
+            "y": 18.140365600585939,
+            "z": -284.42236328125
+        },
+        {
+            "x": 70.226806640625,
+            "y": 18.140365600585939,
+            "z": -286.8310241699219
+        },
+        {
+            "x": 62.4615478515625,
+            "y": 18.140365600585939,
+            "z": -288.7547607421875
+        },
+        {
+            "x": 54.8223876953125,
+            "y": 18.140365600585939,
+            "z": -290.32135009765627
+        },
+        {
+            "x": 47.4759521484375,
+            "y": 18.140365600585939,
+            "z": -291.696533203125
+        },
+        {
+            "x": 40.59246826171875,
+            "y": 18.140365600585939,
+            "z": -293.0545654296875
+        },
+        {
+            "x": 34.33331298828125,
+            "y": 18.140365600585939,
+            "z": -294.5476989746094
+        },
+        {
+            "x": 28.839111328125,
+            "y": 18.140365600585939,
+            "z": -296.279541015625
+        },
+        {
+            "x": 27.0,
+            "y": 18.140365600585939,
+            "z": -297.0
+        },
+        {
+            "x": 27.0,
+            "y": 18.140365600585939,
+            "z": -297.0
+        },
+        {
+            "x": 20.7437744140625,
+            "y": 18.140365600585939,
+            "z": -297.8614501953125
+        },
+        {
+            "x": 13.9073486328125,
+            "y": 18.140365600585939,
+            "z": -298.15203857421877
+        },
+        {
+            "x": 6.623382568359375,
+            "y": 18.140365600585939,
+            "z": -298.10162353515627
+        },
+        {
+            "x": -0.955810546875,
+            "y": 18.140365600585939,
+            "z": -298.0382080078125
+        },
+        {
+            "x": -8.674591064453125,
+            "y": 18.140365600585939,
+            "z": -298.306640625
+        },
+        {
+            "x": -16.39117431640625,
+            "y": 18.140365600585939,
+            "z": -299.1820068359375
+        },
+        {
+            "x": -23.99163818359375,
+            "y": 18.140365600585939,
+            "z": -300.8005065917969
+        },
+        {
+            "x": -31.39715576171875,
+            "y": 18.140365600585939,
+            "z": -303.1229248046875
+        },
+        {
+            "x": -38.56280517578125,
+            "y": 18.140365600585939,
+            "z": -305.9400634765625
+        },
+        {
+            "x": -45.468597412109378,
+            "y": 18.140365600585939,
+            "z": -308.9185791015625
+        },
+        {
+            "x": -52.104278564453128,
+            "y": 18.140365600585939,
+            "z": -311.6763000488281
+        },
+        {
+            "x": -58.45184326171875,
+            "y": 18.140365600585939,
+            "z": -313.86920166015627
+        },
+        {
+            "x": -63.0,
+            "y": 18.12396240234375,
+            "z": -315.0000305175781
+        },
+        {
+            "x": -63.0,
+            "y": 18.12396240234375,
+            "z": -315.0000305175781
+        },
+        {
+            "x": -68.064697265625,
+            "y": 18.140365600585939,
+            "z": -310.9542236328125
+        },
+        {
+            "x": -74.27395629882813,
+            "y": 18.140365600585939,
+            "z": -307.06695556640627
+        },
+        {
+            "x": -80.62530517578125,
+            "y": 18.140365600585939,
+            "z": -302.72265625
+        },
+        {
+            "x": -86.24435424804688,
+            "y": 18.140365600585939,
+            "z": -297.43426513671877
+        },
+        {
+            "x": -90.84500122070313,
+            "y": 18.140365600585939,
+            "z": -291.3025817871094
+        },
+        {
+            "x": -94.76077270507813,
+            "y": 18.140365600585939,
+            "z": -285.04815673828127
+        },
+        {
+            "x": -98.52481079101563,
+            "y": 18.140365600585939,
+            "z": -279.5914001464844
+        },
+        {
+            "x": -98.99996948242188,
+            "y": 18.157371520996095,
+            "z": -279.0
+        },
+        {
+            "x": -98.99996948242188,
+            "y": 18.157371520996095,
+            "z": -279.0
+        },
+        {
+            "x": -102.15603637695313,
+            "y": 18.9405517578125,
+            "z": -273.29290771484377
+        },
+        {
+            "x": -105.1832275390625,
+            "y": 19.846435546875,
+            "z": -266.4864501953125
+        },
+        {
+            "x": -109.53692626953125,
+            "y": 20.774940490722658,
+            "z": -260.3172607421875
+        },
+        {
+            "x": -114.52667236328125,
+            "y": 21.65699005126953,
+            "z": -255.0916748046875
+        },
+        {
+            "x": -116.99996948242188,
+            "y": 22.107337951660158,
+            "z": -251.9999542236328
+        },
+        {
+            "x": -116.99996948242188,
+            "y": 22.107337951660158,
+            "z": -251.9999542236328
+        },
+        {
+            "x": -119.38424682617188,
+            "y": 22.135360717773439,
+            "z": -246.13925170898438
+        },
+        {
+            "x": -122.59078979492188,
+            "y": 22.135360717773439,
+            "z": -240.0430908203125
+        },
+        {
+            "x": -126.29934692382813,
+            "y": 22.135360717773439,
+            "z": -233.70806884765626
+        },
+        {
+            "x": -130.08609008789063,
+            "y": 22.135360717773439,
+            "z": -227.09588623046876
+        },
+        {
+            "x": -133.53042602539063,
+            "y": 22.135360717773439,
+            "z": -220.16964721679688
+        },
+        {
+            "x": -136.32186889648438,
+            "y": 22.135360717773439,
+            "z": -212.92904663085938
+        },
+        {
+            "x": -138.3365478515625,
+            "y": 22.135360717773439,
+            "z": -205.43597412109376
+        },
+        {
+            "x": -139.6622314453125,
+            "y": 22.135360717773439,
+            "z": -197.8228759765625
+        },
+        {
+            "x": -140.56640625,
+            "y": 22.135360717773439,
+            "z": -190.28207397460938
+        },
+        {
+            "x": -141.41421508789063,
+            "y": 22.135360717773439,
+            "z": -183.03854370117188
+        },
+        {
+            "x": -142.56033325195313,
+            "y": 22.135360717773439,
+            "z": -176.31365966796876
+        },
+        {
+            "x": -144.0,
+            "y": 22.10527801513672,
+            "z": -170.99996948242188
+        },
+        {
+            "x": -144.0,
+            "y": 22.10527801513672,
+            "z": -170.99996948242188
+        },
+        {
+            "x": -144.98434448242188,
+            "y": 22.135360717773439,
+            "z": -164.7913818359375
+        },
+        {
+            "x": -145.42623901367188,
+            "y": 22.135360717773439,
+            "z": -157.96087646484376
+        },
+        {
+            "x": -145.60098266601563,
+            "y": 22.135360717773439,
+            "z": -150.67398071289063
+        },
+        {
+            "x": -145.89215087890626,
+            "y": 22.135360717773439,
+            "z": -143.12045288085938
+        },
+        {
+            "x": -146.671630859375,
+            "y": 22.135360717773439,
+            "z": -135.48721313476563
+        },
+        {
+            "x": -148.18301391601563,
+            "y": 22.135360717773439,
+            "z": -127.93276977539063
+        },
+        {
+            "x": -150.4613037109375,
+            "y": 22.135360717773439,
+            "z": -120.5692138671875
+        },
+        {
+            "x": -153.312255859375,
+            "y": 22.135360717773439,
+            "z": -113.457763671875
+        },
+        {
+            "x": -156.35711669921876,
+            "y": 22.135360717773439,
+            "z": -106.61868286132813
+        },
+        {
+            "x": -159.12966918945313,
+            "y": 22.135360717773439,
+            "z": -100.05264282226563
+        },
+        {
+            "x": -161.19882202148438,
+            "y": 22.135360717773439,
+            "z": -93.768310546875
+        },
+        {
+            "x": -161.99996948242188,
+            "y": 22.135360717773439,
+            "z": -90.0
+        },
+        {
+            "x": -161.99996948242188,
+            "y": 22.135360717773439,
+            "z": -90.0
+        },
+        {
+            "x": -163.59542846679688,
+            "y": 22.135360717773439,
+            "z": -83.69769287109375
+        },
+        {
+            "x": -165.87405395507813,
+            "y": 22.135360717773439,
+            "z": -76.72183227539063
+        },
+        {
+            "x": -167.52584838867188,
+            "y": 22.135360717773439,
+            "z": -69.27981567382813
+        },
+        {
+            "x": -167.73300170898438,
+            "y": 22.135360717773439,
+            "z": -61.62823486328125
+        },
+        {
+            "x": -166.91851806640626,
+            "y": 22.135360717773439,
+            "z": -54.147735595703128
+        },
+        {
+            "x": -166.38409423828126,
+            "y": 22.135360717773439,
+            "z": -47.306915283203128
+        },
+        {
+            "x": -166.49996948242188,
+            "y": 22.135360717773439,
+            "z": -45.0
+        },
+        {
+            "x": -166.49996948242188,
+            "y": 22.135360717773439,
+            "z": -45.0
+        },
+        {
+            "x": -166.43548583984376,
+            "y": 22.135360717773439,
+            "z": -38.524169921875
+        },
+        {
+            "x": -165.66510009765626,
+            "y": 22.135360717773439,
+            "z": -31.240966796875
+        },
+        {
+            "x": -165.48388671875,
+            "y": 22.135360717773439,
+            "z": -23.61669921875
+        },
+        {
+            "x": -166.69500732421876,
+            "y": 22.135360717773439,
+            "z": -16.068511962890626
+        },
+        {
+            "x": -168.860595703125,
+            "y": 22.135360717773439,
+            "z": -8.88946533203125
+        },
+        {
+            "x": -170.66409301757813,
+            "y": 22.135360717773439,
+            "z": -2.28466796875
+        },
+        {
+            "x": -170.99996948242188,
+            "y": 22.136474609375,
+            "z": 0.0
+        },
+        {
+            "x": -170.99996948242188,
+            "y": 22.136474609375,
+            "z": 0.0
+        },
+        {
+            "x": -165.1392822265625,
+            "y": 22.135360717773439,
+            "z": 2.384307861328125
+        },
+        {
+            "x": -159.04312133789063,
+            "y": 22.135360717773439,
+            "z": 5.590789794921875
+        },
+        {
+            "x": -152.70806884765626,
+            "y": 22.135360717773439,
+            "z": 9.299407958984375
+        },
+        {
+            "x": -146.09588623046876,
+            "y": 22.135360717773439,
+            "z": 13.08612060546875
+        },
+        {
+            "x": -139.169677734375,
+            "y": 22.135360717773439,
+            "z": 16.53045654296875
+        },
+        {
+            "x": -131.92904663085938,
+            "y": 22.135360717773439,
+            "z": 19.3218994140625
+        },
+        {
+            "x": -124.43597412109375,
+            "y": 22.135360717773439,
+            "z": 21.3365478515625
+        },
+        {
+            "x": -116.8228759765625,
+            "y": 22.135360717773439,
+            "z": 22.662353515625
+        },
+        {
+            "x": -109.28207397460938,
+            "y": 22.135360717773439,
+            "z": 23.56646728515625
+        },
+        {
+            "x": -102.03857421875,
+            "y": 22.135360717773439,
+            "z": 24.41424560546875
+        },
+        {
+            "x": -95.31362915039063,
+            "y": 22.135360717773439,
+            "z": 25.56036376953125
+        },
+        {
+            "x": -89.99996948242188,
+            "y": 22.135360717773439,
+            "z": 27.0
+        },
+        {
+            "x": -89.99996948242188,
+            "y": 22.135360717773439,
+            "z": 27.0
+        },
+        {
+            "x": -83.9656982421875,
+            "y": 22.135360717773439,
+            "z": 25.2349853515625
+        },
+        {
+            "x": -77.60897827148438,
+            "y": 22.135360717773439,
+            "z": 22.67108154296875
+        },
+        {
+            "x": -70.95932006835938,
+            "y": 22.135360717773439,
+            "z": 19.64306640625
+        },
+        {
+            "x": -64.02218627929688,
+            "y": 22.135360717773439,
+            "z": 16.5941162109375
+        },
+        {
+            "x": -56.805511474609378,
+            "y": 22.135360717773439,
+            "z": 13.95574951171875
+        },
+        {
+            "x": -49.345855712890628,
+            "y": 22.135360717773439,
+            "z": 12.031005859375
+        },
+        {
+            "x": -41.726104736328128,
+            "y": 22.135360717773439,
+            "z": 10.91448974609375
+        },
+        {
+            "x": -34.079986572265628,
+            "y": 22.135360717773439,
+            "z": 10.471466064453125
+        },
+        {
+            "x": -26.58245849609375,
+            "y": 22.135360717773439,
+            "z": 10.382781982421875
+        },
+        {
+            "x": -19.4276123046875,
+            "y": 22.135360717773439,
+            "z": 10.24169921875
+        },
+        {
+            "x": -12.801971435546875,
+            "y": 22.135360717773439,
+            "z": 9.6767578125
+        },
+        {
+            "x": -8.999991416931153,
+            "y": 22.183475494384767,
+            "z": 8.999991416931153
+        },
+        {
+            "x": -8.999991416931153,
+            "y": 22.183475494384767,
+            "z": 8.999991416931153
+        },
+        {
+            "x": -2.94439697265625,
+            "y": 22.890457153320314,
+            "z": 10.695343017578125
+        },
+        {
+            "x": 3.468048095703125,
+            "y": 23.706375122070314,
+            "z": 13.076416015625
+        },
+        {
+            "x": 10.1959228515625,
+            "y": 24.57666015625,
+            "z": 15.84783935546875
+        },
+        {
+            "x": 17.2218017578125,
+            "y": 25.480850219726564,
+            "z": 18.605712890625
+        },
+        {
+            "x": 24.52569580078125,
+            "y": 26.399314880371095,
+            "z": 20.9580078125
+        },
+        {
+            "x": 32.0592041015625,
+            "y": 27.321197509765626,
+            "z": 22.640869140625
+        },
+        {
+            "x": 39.72723388671875,
+            "y": 28.24164581298828,
+            "z": 23.59918212890625
+        },
+        {
+            "x": 47.384033203125,
+            "y": 29.161148071289064,
+            "z": 24.0069580078125
+        },
+        {
+            "x": 54.8428955078125,
+            "y": 30.05480194091797,
+            "z": 24.2227783203125
+        },
+        {
+            "x": 61.89739990234375,
+            "y": 30.899757385253908,
+            "z": 24.69256591796875
+        },
+        {
+            "x": 68.3492431640625,
+            "y": 31.682540893554689,
+            "z": 25.8272705078125
+        },
+        {
+            "x": 72.0,
+            "y": 32.1705322265625,
+            "z": 27.0
+        },
+        {
+            "x": 72.0,
+            "y": 32.1705322265625,
+            "z": 27.0
+        },
+        {
+            "x": 76.94635009765625,
+            "y": 33.3836669921875,
+            "z": 28.791748046875
+        },
+        {
+            "x": 82.71435546875,
+            "y": 34.81346893310547,
+            "z": 30.63116455078125
+        },
+        {
+            "x": 89.1763916015625,
+            "y": 36.40227508544922,
+            "z": 32.54852294921875
+        },
+        {
+            "x": 96.17742919921875,
+            "y": 38.12507629394531,
+            "z": 34.6212158203125
+        },
+        {
+            "x": 103.54473876953125,
+            "y": 39.94757080078125,
+            "z": 36.95635986328125
+        },
+        {
+            "x": 111.101318359375,
+            "y": 41.84674072265625,
+            "z": 39.6689453125
+        },
+        {
+            "x": 118.67901611328125,
+            "y": 43.787437438964847,
+            "z": 42.85882568359375
+        },
+        {
+            "x": 126.130126953125,
+            "y": 45.753631591796878,
+            "z": 46.590576171875
+        },
+        {
+            "x": 133.33734130859376,
+            "y": 47.73798370361328,
+            "z": 50.8765869140625
+        },
+        {
+            "x": 140.2191162109375,
+            "y": 49.715660095214847,
+            "z": 55.66815185546875
+        },
+        {
+            "x": 146.73046875,
+            "y": 51.6778564453125,
+            "z": 60.853759765625
+        },
+        {
+            "x": 152.859375,
+            "y": 53.608558654785159,
+            "z": 66.2655029296875
+        },
+        {
+            "x": 158.61859130859376,
+            "y": 55.47955322265625,
+            "z": 71.693115234375
+        },
+        {
+            "x": 164.033935546875,
+            "y": 57.254661560058597,
+            "z": 76.90338134765625
+        },
+        {
+            "x": 169.1322021484375,
+            "y": 58.899688720703128,
+            "z": 81.6622314453125
+        },
+        {
+            "x": 173.9268798828125,
+            "y": 60.390350341796878,
+            "z": 85.75750732421875
+        },
+        {
+            "x": 178.40802001953126,
+            "y": 61.698692321777347,
+            "z": 89.01806640625
+        },
+        {
+            "x": 180.0,
+            "y": 62.06694030761719,
+            "z": 90.00006103515625
+        },
+        {
+            "x": -8.999991416931153,
+            "y": 22.183475494384767,
+            "z": 8.999991416931153
+        },
+        {
+            "x": -3.505767822265625,
+            "y": 22.135360717773439,
+            "z": 5.642486572265625
+        },
+        {
+            "x": 3.25811767578125,
+            "y": 22.135360717773439,
+            "z": 2.75677490234375
+        },
+        {
+            "x": 10.4808349609375,
+            "y": 22.135360717773439,
+            "z": -0.279632568359375
+        },
+        {
+            "x": 17.341552734375,
+            "y": 22.135360717773439,
+            "z": -4.101531982421875
+        },
+        {
+            "x": 23.29730224609375,
+            "y": 22.135360717773439,
+            "z": -8.99676513671875
+        },
+        {
+            "x": 28.21209716796875,
+            "y": 22.135360717773439,
+            "z": -14.743988037109375
+        },
+        {
+            "x": 32.255126953125,
+            "y": 22.135360717773439,
+            "z": -20.74072265625
+        },
+        {
+            "x": 35.62506103515625,
+            "y": 22.135360717773439,
+            "z": -26.347442626953126
+        },
+        {
+            "x": 36.0,
+            "y": 22.12989044189453,
+            "z": -26.99993896484375
+        },
+        {
+            "x": 36.0,
+            "y": 22.12989044189453,
+            "z": -26.99993896484375
+        },
+        {
+            "x": 37.9473876953125,
+            "y": 21.945770263671876,
+            "z": -32.842132568359378
+        },
+        {
+            "x": 38.21533203125,
+            "y": 21.729690551757814,
+            "z": -39.7064208984375
+        },
+        {
+            "x": 37.6649169921875,
+            "y": 21.502944946289064,
+            "z": -47.25286865234375
+        },
+        {
+            "x": 37.2354736328125,
+            "y": 21.255599975585939,
+            "z": -55.130523681640628
+        },
+        {
+            "x": 37.59930419921875,
+            "y": 21.007179260253908,
+            "z": -63.0264892578125
+        },
+        {
+            "x": 38.943115234375,
+            "y": 20.76744842529297,
+            "z": -70.69723510742188
+        },
+        {
+            "x": 40.98431396484375,
+            "y": 20.53656005859375,
+            "z": -77.96636962890625
+        },
+        {
+            "x": 43.2120361328125,
+            "y": 20.31500244140625,
+            "z": -84.68991088867188
+        },
+        {
+            "x": 45.0,
+            "y": 20.144271850585939,
+            "z": -90.0
+        },
+        {
+            "x": 45.0,
+            "y": 20.144271850585939,
+            "z": -90.0
+        },
+        {
+            "x": 46.42791748046875,
+            "y": 20.09905242919922,
+            "z": -93.39202880859375
+        },
+        {
+            "x": 48.59735107421875,
+            "y": 20.052406311035158,
+            "z": -97.3485107421875
+        },
+        {
+            "x": 51.44622802734375,
+            "y": 19.99616241455078,
+            "z": -101.82192993164063
+        },
+        {
+            "x": 54.8990478515625,
+            "y": 19.92901611328125,
+            "z": -106.77227783203125
+        },
+        {
+            "x": 58.86871337890625,
+            "y": 19.85865020751953,
+            "z": -112.16583251953125
+        },
+        {
+            "x": 63.259521484375,
+            "y": 19.779136657714845,
+            "z": -117.9737548828125
+        },
+        {
+            "x": 67.97076416015625,
+            "y": 19.69830322265625,
+            "z": -124.1700439453125
+        },
+        {
+            "x": 72.8997802734375,
+            "y": 19.60894012451172,
+            "z": -130.72958374023438
+        },
+        {
+            "x": 77.94610595703125,
+            "y": 19.51831817626953,
+            "z": -137.62619018554688
+        },
+        {
+            "x": 83.01519775390625,
+            "y": 19.418907165527345,
+            "z": -144.83053588867188
+        },
+        {
+            "x": 88.02117919921875,
+            "y": 19.32500457763672,
+            "z": -152.30807495117188
+        },
+        {
+            "x": 92.8900146484375,
+            "y": 19.230148315429689,
+            "z": -160.01806640625
+        },
+        {
+            "x": 97.5615234375,
+            "y": 19.12474822998047,
+            "z": -167.91183471679688
+        },
+        {
+            "x": 101.99041748046875,
+            "y": 19.03130340576172,
+            "z": -175.93252563476563
+        },
+        {
+            "x": 106.14666748046875,
+            "y": 18.930816650390626,
+            "z": -184.01483154296876
+        },
+        {
+            "x": 110.0152587890625,
+            "y": 18.83794403076172,
+            "z": -192.08505249023438
+        },
+        {
+            "x": 113.59429931640625,
+            "y": 18.740005493164064,
+            "z": -200.06228637695313
+        },
+        {
+            "x": 116.89300537109375,
+            "y": 18.65471649169922,
+            "z": -207.85931396484376
+        },
+        {
+            "x": 119.92877197265625,
+            "y": 18.56378173828125,
+            "z": -215.38436889648438
+        },
+        {
+            "x": 122.72406005859375,
+            "y": 18.483421325683595,
+            "z": -222.5430908203125
+        },
+        {
+            "x": 125.3021240234375,
+            "y": 18.4068603515625,
+            "z": -229.24041748046876
+        },
+        {
+            "x": 127.68408203125,
+            "y": 18.334991455078126,
+            "z": -235.3826904296875
+        },
+        {
+            "x": 129.88446044921876,
+            "y": 18.272171020507814,
+            "z": -240.8797607421875
+        },
+        {
+            "x": 131.9088134765625,
+            "y": 18.21923828125,
+            "z": -245.6465606689453
+        },
+        {
+            "x": 133.75048828125,
+            "y": 18.166473388671876,
+            "z": -249.60476684570313
+        },
+        {
+            "x": 135.00006103515626,
+            "y": 18.145492553710939,
+            "z": -251.9999542236328
+        },
+        {
+            "x": 27.0,
+            "y": 66.14131927490235,
+            "z": 180.0
+        },
+        {
+            "x": 30.27923583984375,
+            "y": 66.14439392089844,
+            "z": 174.45269775390626
+        },
+        {
+            "x": 33.3729248046875,
+            "y": 66.14439392089844,
+            "z": 167.85455322265626
+        },
+        {
+            "x": 37.14404296875,
+            "y": 66.14439392089844,
+            "z": 161.269287109375
+        },
+        {
+            "x": 42.0615234375,
+            "y": 66.14439392089844,
+            "z": 155.4656982421875
+        },
+        {
+            "x": 47.6015625,
+            "y": 66.14439392089844,
+            "z": 150.46783447265626
+        },
+        {
+            "x": 52.5377197265625,
+            "y": 66.14439392089844,
+            "z": 145.77252197265626
+        },
+        {
+            "x": 54.0,
+            "y": 66.14439392089844,
+            "z": 144.00006103515626
+        },
+        {
+            "x": 27.0,
+            "y": 18.140365600585939,
+            "z": -297.0
+        },
+        {
+            "x": 26.4925537109375,
+            "y": 18.140365600585939,
+            "z": -303.49725341796877
+        },
+        {
+            "x": 26.6724853515625,
+            "y": 18.140365600585939,
+            "z": -310.835205078125
+        },
+        {
+            "x": 26.48663330078125,
+            "y": 18.140365600585939,
+            "z": -318.5360107421875
+        },
+        {
+            "x": 25.10015869140625,
+            "y": 18.140365600585939,
+            "z": -326.16162109375
+        },
+        {
+            "x": 22.56353759765625,
+            "y": 18.140365600585939,
+            "z": -333.4349365234375
+        },
+        {
+            "x": 19.8121337890625,
+            "y": 18.140365600585939,
+            "z": -340.2398681640625
+        },
+        {
+            "x": 18.0,
+            "y": 18.135406494140626,
+            "z": -346.5
+        }
+    ],
+    "mapImage": {
+        "instanceID": 0
+    }
+}

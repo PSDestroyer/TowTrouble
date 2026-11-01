@@ -172,7 +172,7 @@ namespace TowTrouble.Editor
         }
         private static void FitSituationCar(RecoverySite site,RecoveryVehicle vehicle)
         {
-            var model=vehicle.CurrentModel;
+            var model=vehicle.ModelAt(site.TargetModel);
             var yaw=Quaternion.Euler(0,site.Heading,0);var ground=new float[4];for(int i=0;i<4;i++)ground[i]=Ground(site.Position+yaw*model.Anchors[i]).y;
             site.Pitch=-Mathf.Atan2((ground[0]+ground[1]-ground[2]-ground[3])*.5f,3.4f)*Mathf.Rad2Deg;
             site.Roll=Mathf.Atan2((ground[1]+ground[3]-ground[0]-ground[2])*.5f,1.62f)*Mathf.Rad2Deg;
@@ -185,7 +185,7 @@ namespace TowTrouble.Editor
             for(int attempt=0;attempt<10;attempt++)
             {
                 int contacts=0;var root=new Vector3(site.Position.x,rootY,site.Position.z);var up=rotation*Vector3.up;
-                for(int i=0;i<4;i++){var wheel=(WheelCollider)wheelFields.GetArrayElementAtIndex(i).objectReferenceValue;var anchor=root+rotation*model.Anchors[i];if(Physics.Raycast(anchor+up*RecoveryWheelPose.ProbeLift,-up,out _,wheel.radius+wheel.suspensionDistance+RecoveryWheelPose.ProbeLift,1<<8,QueryTriggerInteraction.Ignore))contacts++;}
+                for(int i=0;i<4;i++){var wheel=(WheelCollider)wheelFields.GetArrayElementAtIndex(i).objectReferenceValue;var anchor=root+rotation*model.Anchors[i];if(Physics.Raycast(anchor+up*RecoveryWheelPose.ProbeLift,-up,out _,model.Radius+wheel.suspensionDistance+RecoveryWheelPose.ProbeLift,1<<8,QueryTriggerInteraction.Ignore))contacts++;}
                 if(contacts==4)break;rootY-=.025f;
             }
             var p=site.Position;p.y=Ground(p).y+.12f;site.Position=p;site.Depth=p.y-rootY;
@@ -280,14 +280,14 @@ namespace TowTrouble.Editor
 
         private static void PoseSituationPhoto(GameObject car,RecoveryVehicle source,RecoverySite site)
         {
-            var model=source.CurrentModel;var serialized=new SerializedObject(source).FindProperty("wheels");
+            var model=source.ModelAt(site.TargetModel);var serialized=new SerializedObject(source).FindProperty("wheels");
             for(int i=0;i<4;i++)
             {
                 var wheel=(WheelCollider)serialized.GetArrayElementAtIndex(i).objectReferenceValue;
                 var anchor=car.transform.position+car.transform.rotation*model.Anchors[i];var up=car.transform.up;
                 var path=AnimationUtility.CalculateTransformPath(model.Wheels[i],model.Root.transform);var visual=car.transform.Find(path);
-                if(visual!=null&&Physics.Raycast(anchor+up*RecoveryWheelPose.ProbeLift,-up,out var hit,wheel.radius+wheel.suspensionDistance+RecoveryWheelPose.ProbeLift,1<<8,QueryTriggerInteraction.Ignore))
-                    visual.position=RecoveryWheelPose.Position(anchor,up,RecoveryWheelPose.SuspensionOffset(hit.distance,wheel.radius,wheel.suspensionDistance));
+                if(visual!=null&&Physics.Raycast(anchor+up*RecoveryWheelPose.ProbeLift,-up,out var hit,model.Radius+wheel.suspensionDistance+RecoveryWheelPose.ProbeLift,1<<8,QueryTriggerInteraction.Ignore))
+                    visual.position=RecoveryWheelPose.Position(anchor,up,RecoveryWheelPose.SuspensionOffset(hit.distance,model.Radius,wheel.suspensionDistance));
             }
         }
         private static void PoseSituationSmoke(GameObject car,RecoverySite site,Camera camera)

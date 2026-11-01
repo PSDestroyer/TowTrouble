@@ -125,7 +125,7 @@ namespace TowTrouble
                 return Mathf.Abs(point.y-hint.y)<.65f;
             }
             if(surface.Raycast(new Ray(hint+normal*.6f,-normal),out var hit,1.2f))
-            {point=hit.point;up=hit.normal;return Vector3.Dot(up,normal)>.35f;}
+            {point=hit.point;up=hit.normal;if(surface.TryGetComponent<RecoveryTrackSurface>(out var skin))point=skin.VisualPoint(point);return Vector3.Dot(up,normal)>.35f;}
             return false;
         }
         private Chunk GetChunk(int kind)

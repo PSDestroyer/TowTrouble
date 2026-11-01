@@ -1,0 +1,366 @@
+[
+  {
+    "name": "RecoveryLoadTests.TwiceTheMassRequiresTwiceTheGroundForce",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.BurialLipChassisDamageAndRetainedWaterEachAddLoad",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.LargerWheelsReduceTheSameRutAndLipLoad",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.ActualSlopeHelpsDownhillAndCostsForceUphill",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.EnginePowerCannotExceedGroundGripAndSlopeConsumesDrawbar",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.TerrainAwareLoadHoldsGravityWithoutInventingAnUpwardLaunch",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.TerrainAwarePocketDoesNotLoseItsLoadAfterATinyJerk",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.SoftGroundTracksFollowTheVisibleSkinAboveTheirSupportBed",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.MapCarriesMassAndSoilSettingsWhileTutorialMassStaysLegacy",
+    "passed": true
+  },
+  {
+    "name": "RecoveryLoadTests.StockCableShocksCannotBuildHardMissionLoadThroughLoadSmoothing",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.ReleaseParticlesRespectDisabledEffectsAndTheParticleBudget",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.HoldingThrottleWithoutDisplacementNeverReleasesTheCar",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.SidewaysReverseAndVerticalTravelDoNotClearTheExit",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.RotatingTheWheelAcrossTheExitWithoutMovingTheBodyDoesNotRelease",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.BodyCrossingBeforeTheBlockedWheelDoesNotRelease",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.AirborneExitDoesNotReleaseOrApplyGroundResistance",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.ForwardExitRequiresContactHoldThenSmoothlyRemovesResistance",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.LostSupportRestartsTheContactHold",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.BeforeConnectionCrossingThePlaneCannotCompleteRecovery",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.ResistanceAtRestNeverPullsTheCarBackOrExceedsTheAppliedPull",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.PoorAngleNeedsMoreForceThanAnAlignedPull",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.AStrongPullWithoutMovementDoesNotClaimTheCarIsMoving",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.AReleasedCarStaysFreeWhenTurningOrReversingAndANewRunResets",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.PartialProgressIsPositionBasedAndSurvivesDetaching",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.CableTakesLoadGraduallyButSlackDropsForceImmediately",
+    "passed": true
+  },
+  {
+    "name": "RecoveryExtractionTests.ReleaseAndAngleFeedbackAreLocalizedAndExpire",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWheelTracksTests.WheelImpressionsBlendSurfacesButBreakAtTeleports",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWheelTracksTests.StationaryWheelsDoNotAllocateRepeatedGeometry",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTrackSurfaceTests.PaintProducesDistinctTracksWithoutChangingGrip",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTrackSurfaceTests.VisualBoundaryBlendsContinuouslyAndPreservesTraction",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTrackSurfaceTests.HardAndWoodHaveNoRutRelief",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTrackSurfaceTests.TracksStayOnTiltedDeckAndStopAtItsEdge",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTrackSurfaceTests.WoodUsesOverrideAndLivingMudIsNotDoubleStamped",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTrackSurfaceTests.TerrainHolesAndOutsideBoundsRejectProjection",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.RatedAndGentleLoadsDoNotBreakAnyCableTier",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.AShortMajorShockBreaksTheStarterInTheSameStep",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.LoadRampCannotHideTheRuptureDemand",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.PhysicsForceCeilingDoesNotCapTheBreakingDemand",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.GreaterExcessFailsFasterThanAMinorOverload",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.TheSameShockRewardsStrongerEquipment",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.RepeatedShortPulsesAccumulateInsteadOfResettingTolerance",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.UnloadingRelaxesStressGraduallyIncludingWhileDetached",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.SlackCableAtSpeedDoesNotAccumulateStress",
+    "passed": true
+  },
+  {
+    "name": "CableStressTests.ContinuousFailureTimingIsStableAcrossPhysicsSteps",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.TakesUpSlackWithoutPullingTheTarget",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.SlowsUnderLoadComparedWithAnUnloadedDrum",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.ImmovableTargetStallsStockInsteadOfBreakingStarterCable",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.AReleasedTargetRestartsTheMotorGradually",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.ReleasingTheButtonHoldsLengthAndDoesNotEraseTension",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.PayingOutRelievesLoadAndRespectsMaximumLength",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.MinimumLengthStopsTheMotorAndBothCommandsCancel",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.ExternalShockStillBreaksBeforeAnyMotorForceCap",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.ExistingOverloadIsNeverReleasedAutomatically",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.ClosingSpeedCannotHideExcessiveMotorStretch",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.StrongerWinchRequiresAMatchingCable",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.TransitionFromSlackCannotWindPastTheForceBudget",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.ZeroTimeDoesNotWindOrPayOut",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.BrakeSupportUsesTheExistingSharedTireGripLimit",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.WinchCatalogKeepsTwoStableTiersAndExistingOwnership",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.UnownedWinchDoesNotGrantFreePerformance",
+    "passed": true
+  },
+  {
+    "name": "RecoveryWinchTests.HudDistinguishesStalledMotorFromCableFailureInBothLanguages",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTargetVehicleTests.ExistingSitesDefaultToTheOriginalVehicle",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTargetVehicleTests.TutorialContractsKeepTheirOriginalVehicle",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTargetVehicleTests.MapContractsCarryTargetModelAndPaintWithoutChangingProgression",
+    "passed": true
+  },
+  {
+    "name": "RecoveryTargetVehicleTests.ReconfiguredMapRefreshesTheTargetAppearance",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.FirmGroundDoesNotGainSoftDrag",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.SnowResistsTravelAndDeepFieldsAreHeavier",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.SandResistsTravelAndDeepFieldsAreHeavier",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.SurfaceDepthIsClamped",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.AppropriateTiresHelpWithoutRemovingResistance",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.ResistanceOpposesGroundMotionWithoutDownwardSuction",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.StoppedVehicleHasNoArtificialHoldingForce",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.CoatingCleansGraduallyAndNeverGoesNegative",
+    "passed": true
+  },
+  {
+    "name": "RecoverySoftGroundTests.PausedCoatingDoesNotDecay",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.NewProfileHasStockBuildAndNoDebt",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.FirstCableUpgradeIsEarnedAfterOneStarterRecovery",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.CableTiersIncreaseInStrengthAndCostWithoutGivingFreeUpgrades",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.PurchasedStrongerCablesRemainEquippedAfterSaveRoundTrip",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.PurchaseIsAffordableAndCannotBeChargedTwice",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.FailedPurchaseDoesNotChangeInventoryOrBalance",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.MountedAndPresetPartsCannotBeSold",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.SalePaysSeventyPercentOnlyOnce",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.CompletionPaysOnceEvenAfterSerialization",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.LegacyProfileMigratesOnceAndPreservesProgressAndPaint",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.PresetsAndInventorySurviveSaveRoundTrip",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.PreviewIsIndependentAndUnownedEquipmentIsRemovedBeforeCommit",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.InvalidAndIncompatibleItemsAreNormalized",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.EngineUpgradeTradesInOldEngineWithoutLeavingDanglingPresets",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.LowRangeAndEngineRespectTheApprovedTradeoff",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.CatalogIdsAreUniqueAndAssembliesHaveFourValidWheelAnchors",
+    "passed": true
+  },
+  {
+    "name": "RecoveryGarageTests.UnsupportedSaveVersionIsRejected",
+    "passed": true
+  }
+]

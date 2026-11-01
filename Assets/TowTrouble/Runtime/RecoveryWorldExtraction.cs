@@ -42,10 +42,18 @@ namespace TowTrouble
             int wheel = Mathf.Clamp(Contract.ExtractionProfile.BlockedWheel, 0, 3);
             bool contact = casualty.TryGetWheelContact(wheel, out var hit);
             bool supported = contact && Vector3.Dot(casualty.transform.up, Vector3.up) > .55f;
+            var normal=contact?hit.normal:Vector3.up;var forcePoint=contact?hit.point:casualty.transform.position;
+            if(Contract.ExtractionProfile.TerrainAware)
+            {
+                normal=Vector3.zero;forcePoint=Vector3.zero;int contacts=0;
+                for(int i=0;i<4;i++)if(casualty.TryGetWheelContact(i,out var h)){contacts++;normal+=h.normal;forcePoint+=h.point;}
+                supported=contacts>0&&Vector3.Dot(casualty.transform.up,Vector3.up)>.4f;
+                if(contacts>0){normal.Normalize();forcePoint/=contacts;}
+            }
             var force = extraction.Step(casualty.transform.position, casualty.WheelAnchor(wheel),
                 casualty.Body.linearVelocity, totalPull, casualty.Body.mass, supported,
-                Phase == RecoveryPhase.Recover || Phase == RecoveryPhase.Deliver, Time.fixedDeltaTime);
-            if (contact) casualty.Body.AddForceAtPosition(force, hit.point);
+                Phase == RecoveryPhase.Recover || Phase == RecoveryPhase.Deliver, Time.fixedDeltaTime,normal);
+            if (supported) casualty.Body.AddForceAtPosition(force, forcePoint);
             ExtractionStage = extraction.Stage;
             ExtractionProgress = extraction.Progress;
             ExtractionAlignment = extraction.Alignment;
@@ -55,6 +63,7 @@ namespace TowTrouble
 
         private void PresentExtraction()
         {
+            casualty.SetRecoveryJammed(HasContract&&UsesArcadeExtraction&&ExtractionStage<ExtractionStage.Releasing);
             if (!HasContract || !UsesArcadeExtraction || ClearingObstacle)
             {
                 if (presentedExtractionRun != null && extractionVisuals != null) extractionVisuals.Clear();

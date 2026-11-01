@@ -10,6 +10,8 @@ namespace TowTrouble
         public readonly float Extraction, MudDrag;
         public bool IsOpenWorld;
         public int Tier,ProgressId=-1;
+        public int TargetModel,TargetPaint;
+        public RecoveryLoadSettings Load;
         public float Heading,Pitch,Roll,BreakoutResistance;public Vector3 ExitDirection;
         public string EnglishTitle,EnglishDescription,DeliveryName,DeliveryEnglish;
         public RecoveryExtractionSettings ExtractionProfile;

@@ -85,6 +85,7 @@ namespace TowTrouble
             if(build.Items!=null)foreach(var id in build.Items)
             {
                 var p=catalog.Find(id);if(p==null)continue;
+                if(id=="tires_winter_pro")value.SnowGrip=2.35f;
                 if(id=="tires_sand")value.SandGrip=1.45f;if(id=="tires_winter")value.SnowGrip=1.65f;
                 value.Mass+=p.AddedMass;value.Drive*=p.DriveMultiplier;value.Speed*=p.SpeedMultiplier;
                 value.MudGrip*=p.MudGrip;value.MudResistance*=p.MudResistance;value.Lift+=p.Lift;value.Track*=p.Track;
