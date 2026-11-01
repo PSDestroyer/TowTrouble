@@ -308,3 +308,9 @@ User prefers cliffs to boulders and a fuller garage foreground. New RefineMounta
 ### Garage catalogue ascending price order (2026-11-01)
 
 - All16 garage slot grids sort by actual RecoveryEconomy.Price(profile,part) ascending, then displayed part name, then stable part ID. Replaces the old stock/specialist/import grouping. Stock0 first; trade-in pricing uses the same helper as the cards and Buy button. Validated actual rendered grid children across16slots in Edit Mode; evidence Docs/Validation/GarageSorting. No catalogue, save or scene data changed.
+
+
+### Garage thumbnail exposed-face views (2026-11-01)
+
+- User reported inside wheel faces and rear/body/bonnet/bumper perspectives. Fixed GarageThumbnailAuthoring's universal(+X,+Y,-Z) camera. Native fronts point+Z and wheel rim details-X. ViewDirection now uses category recipes: wheel-X; body/bonnet front-left(-X,+Z); front bumper+Z; rear bumper-Z; fender/exhaust named left/right side; elevated roof/chassis/intake. Camera-relative key/fill lights illuminate the selected side. Prefab transform scale/reflection respected.
+- Re-baked350unique views/355visual entries into the same4atlasPNG files. All10categories visually inspected as contact sheets;16static garage grids pass, sorted prices retained, zero text overflow. Catalog/scene byte-identical, atlasGUIDs/UVs unchanged. No runtime code/geometry/physics/economy changes. Evidence Docs/Validation/GarageThumbnailViews including before-direction surveys, every new category sheet, Views.json and static UI captures. Backup Desktop/TowTrublw/Backups/GarageThumbnailViews-20261101. No Play entry, simulation, TestRunner or build.
