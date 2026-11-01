@@ -5,7 +5,7 @@ using UnityEngine;
 namespace TowTrouble
 {
     // Rebuilds only when a configuration changes. Source prefabs/materials stay immutable.
-    public sealed class RecoveryCustomization : MonoBehaviour
+    public sealed partial class RecoveryCustomization : MonoBehaviour
     {
         [SerializeField] private RecoveryGarageCatalog catalog;
         [SerializeField] private RecoveryVehicle vehicle;

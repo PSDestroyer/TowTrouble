@@ -19,6 +19,9 @@ namespace TowTrouble
         private string participatingRun;
         public RecoveryGarageCatalog GarageCatalog=>world.Drivers[0].GetComponent<RecoveryCustomization>()?.Catalog;
         public bool GarageOpen=>View=="Garage";
+        public GarageSlot GarageFocusSlot {get;private set;}=GarageSlot.Assembly;
+        public string GarageFocusPart {get;private set;}
+        public void FocusGarage(GarageSlot slot,string partId){GarageFocusSlot=slot;GarageFocusPart=partId;}
         public bool BoardOpen=>View=="Board";
         public int LastReward=>Profile.lastPayout;
         private bool identitySent, recorded;

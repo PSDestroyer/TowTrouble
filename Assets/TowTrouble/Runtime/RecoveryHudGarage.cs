@@ -29,6 +29,7 @@ namespace TowTrouble
             for(int i=0;i<slots.Length;i++)
             {var choice=slots[i];var tab=Button(categories,SlotName(choice),12,101+i*46,GarageCategoryWidth-24,()=>{garageSlot=choice;garageScrollY=0;garageSelected=garageDraft.Item(choice,catalog);Show("Garage");},garageSlot==choice,42);ButtonIcon(tab,SlotIcon(choice),garageSlot==choice);tab.GetComponentInChildren<TMP_Text>().fontSize=16*P.textScale;}
             if(slots.Length<=5){Icon(categories,garageSection==1?RecoveryIcon.Gears:RecoveryIcon.Hook,16,411,23,Amber);Text(categories,L("SFAT DE ATELIER","WORKSHOP TIP"),48,409,236,30,14,Paper,true);Panel(categories,16,445,268,2,Amber);Text(categories,garageSection==1?L("Mai multă putere ajută doar dacă ai aderență.","More power helps when your tires can grip."):L("Trage lin. Poziționează mașina înainte să forțezi cablul.","Pull steadily. Position your car before loading the cable."),16,460,268,69,14,Muted);}
+            session.FocusGarage(garageSlot,garageSelected);
             var selected=catalog.Find(garageSelected);var summary=Panel(pageRoot,GaragePreviewX,212,GaragePreviewWidth,garageSlot==GarageSlot.Wheels?164:136);
             Text(summary,selected==null?SlotName(garageSlot):PartName(selected),22,12,GaragePreviewWidth-44,43,27,Paper,true);
             Text(summary,selected==null?"":L(selected.Description??"",selected.EnglishDescription??""),22,58,GaragePreviewWidth-44,garageSlot==GarageSlot.Wheels?88:60,17,Muted);

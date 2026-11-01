@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace TowTrouble
 {
-    public sealed class RecoveryCamera : MonoBehaviour
+    public sealed partial class RecoveryCamera : MonoBehaviour
     {
         [Header("Player Follow")]
         [Tooltip("Distance behind the player car when it is framed alone. Smaller values bring the camera closer; recovery framing keeps its wider view.")]
@@ -17,6 +17,7 @@ namespace TowTrouble
         private void LateUpdate()
         {
             if(session==null)return;
+            if(!session.GarageOpen)garageCameraActive=false;
             var p=session.Profile;bool lobby=!session.Connected||session.World.Phase==RecoveryPhase.Lobby;
             bool frameWheel=session.World.HasContract&&!session.World.ClearingObstacle&&(session.World.UsesArcadeExtraction||(session.World.FreeRoam&&(session.World.Contract.SituationKind==RecoverySituationKind.Ditch||session.World.Contract.SituationKind==RecoverySituationKind.Embankment)));
             extractionFraming=Mathf.MoveTowards(extractionFraming,frameWheel?1:0,Time.unscaledDeltaTime*2);
@@ -26,15 +27,12 @@ namespace TowTrouble
                 var car=session.World.Drivers[Mathf.Max(0,session.LocalSlot)].transform;var center=car.position;
                 if(session.View=="Vehicles"||session.GarageOpen)
                 {
-                    if(Mouse.current!=null&&Mouse.current.leftButton.isPressed&&(UnityEngine.EventSystems.EventSystem.current==null||!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))orbit+=Mouse.current.delta.x.ReadValue()*.16f*p.cameraSensitivity;
-                    if(Gamepad.current!=null)orbit+=Gamepad.current.rightStick.x.ReadValue()*Time.unscaledDeltaTime*80*p.cameraSensitivity;
+                    float rotationInput=0;
+                    if(Mouse.current!=null&&Mouse.current.leftButton.isPressed&&(UnityEngine.EventSystems.EventSystem.current==null||!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))rotationInput+=Mouse.current.delta.x.ReadValue()*.16f*p.cameraSensitivity;
+                    if(Gamepad.current!=null)rotationInput+=Gamepad.current.rightStick.x.ReadValue()*Time.unscaledDeltaTime*80*p.cameraSensitivity;
                     if(session.GarageOpen)
-                    {
-                        var box=car.GetComponent<BoxCollider>();var focus=box==null?center+Vector3.up:box.bounds.center;
-                        var offset=Quaternion.Euler(0,orbit,0)*new Vector3(9,3.4f,-12);var right=Vector3.Cross(Vector3.up,-offset).normalized;
-                        position=focus+offset;look=focus+right*1.7f+Vector3.up*.45f;if(Physics.Linecast(focus,position,out var obstruction,1<<8,QueryTriggerInteraction.Ignore))position=obstruction.point+obstruction.normal*.7f;
-                    }
-                    else {position=center+Quaternion.Euler(0,orbit,0)*new Vector3(7,3.8f,9);look=center+new Vector3(2.2f,1,-2.2f);}
+                        GarageCameraPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],rotationInput,p.reducedMotion,Time.unscaledDeltaTime,out position,out look);
+                    else {orbit+=rotationInput;position=center+Quaternion.Euler(0,orbit,0)*new Vector3(7,3.8f,9);look=center+new Vector3(2.2f,1,-2.2f);}
                 }
                 else if(session.View=="Lobby") {position=session.World.Map!=null?center+new Vector3(10,6,11):new Vector3(10,6,41);look=session.World.Map!=null?center+Vector3.up:new Vector3(0,1,30);}
                 else {position=center+new Vector3(12,4.4f,5);look=center+new Vector3(1.5f,1,-3.5f);if(!p.reducedMotion)position.x+=Mathf.Sin(Time.unscaledTime*.12f)*.15f;}
@@ -68,7 +66,9 @@ namespace TowTrouble
                 position=center+rotation*followOffset;look=center+Vector3.up*1.2f+car.forward;
                 if(Physics.Linecast(look,position,out var hit,1<<8))position=hit.point+hit.normal*.5f;
             }
-            transform.position=Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
+            // Garage already smooths its focus, distance and circular path. A second
+            // position lerp could cut through the car during a front/rear transition.
+            transform.position=session.GarageOpen?position:Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
             transform.rotation=Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(look-transform.position),1-Mathf.Exp(-7*Time.unscaledDeltaTime));
         }
     }
