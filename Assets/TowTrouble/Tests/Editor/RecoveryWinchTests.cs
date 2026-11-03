@@ -145,8 +145,8 @@ namespace TowTrouble.Tests
         }
         [Test] public void HudDistinguishesStalledMotorFromCableFailureInBothLanguages()
         {
-            Assert.That(RecoveryHud.WinchLabel(WinchState.Stalled,false),Is.EqualTo("LIMITA TROLIULUI"));
-            Assert.That(RecoveryHud.WinchLabel(WinchState.Stalled,true),Is.EqualTo("AT WINCH LIMIT"));
+            Assert.That(RecoveryHud.WinchLabel(WinchState.Stalled,false),Is.EqualTo("Troliu la limită"));
+            Assert.That(RecoveryHud.WinchLabel(WinchState.Stalled,true),Is.EqualTo("Winch at limit"));
             Assert.That(RecoveryHud.WinchLabel(WinchState.Pulling,false),Is.Not.EqualTo(RecoveryHud.WinchLabel(WinchState.TakingUp,false)));
         }
     }

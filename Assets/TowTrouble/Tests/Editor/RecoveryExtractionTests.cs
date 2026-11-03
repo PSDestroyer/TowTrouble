@@ -134,12 +134,12 @@ namespace TowTrouble.Tests
             Assert.That(RecoveryExtraction.LoadedCableForce(force, 0, 31000, .02f), Is.Zero);
             Assert.That(RecoveryExtraction.LoadedCableForce(0, 20000, 31000, 0), Is.Zero);
         }
-        [Test] public void ReleaseAndAngleFeedbackAreLocalizedAndExpire()
+        [Test] public void AdviceAppearsOnlyWhenThePlayerCanCorrectThePull()
         {
-            Assert.That(RecoveryHud.ExtractionMessage(ExtractionStage.Free, 1, 0, .5f, false), Does.Contain("ELIBERATĂ"));
-            Assert.That(RecoveryHud.ExtractionMessage(ExtractionStage.Free, 1, 0, 3, true), Is.Empty);
-            Assert.That(RecoveryHud.ExtractionMessage(ExtractionStage.TakingLoad, 0, 2, 0, true), Does.Contain("ANGLE"));
-            Assert.That(RecoveryHud.ExtractionMessage(ExtractionStage.TakingLoad, 1, 2, 0, false), Does.Contain("FĂRĂ PROGRES"));
+            Assert.That(RecoveryHud.ExtractionAdvice(ExtractionStage.Free, 0, 3, false), Is.Null);
+            Assert.That(RecoveryHud.ExtractionAdvice(ExtractionStage.TakingLoad, 1, 0, true), Is.Null);
+            Assert.That(RecoveryHud.ExtractionAdvice(ExtractionStage.TakingLoad, 0, 2, true), Is.EqualTo("Pull toward the exit"));
+            Assert.That(RecoveryHud.ExtractionAdvice(ExtractionStage.TakingLoad, 1, 2, false), Is.EqualTo("Caută teren mai ferm"));
         }
     }
 }

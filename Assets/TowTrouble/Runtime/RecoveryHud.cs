@@ -24,9 +24,11 @@ namespace TowTrouble
         private bool wasOnline, wasComplete, firstSetup;
         private RecoveryPhase previousPhase;
         private float refreshAt;
-        private TMP_Text objective, mudFeedback, crew, speed, cableText, actionText, marker, partnerText, status, slots, readyText, summary, prompt;
-        private UnityEngine.UI.Image cableFill, partnerFill;
-        private GameObject cableGroup, partnerGroup;
+        private bool exploreHintSeen;
+        private float exploreHintUntil;
+        private int displayedSpeed = -1;
+        private RectTransform exploreHintPlate;
+        private TMP_Text objective, crew, speed, marker, status, slots, readyText, summary, prompt;
         private UnityEngine.UI.Button startButton;
         private TMP_InputField address;
         private AudioSource uiAudio;
@@ -84,6 +86,12 @@ namespace TowTrouble
         public void Show(string target)
         {
             if (target != "Gameplay") HideRoadTrail();
+            if (target == "Board")
+            {
+                exploreHintSeen = true;
+                exploreHintUntil = 0f;
+            }
+            if (target == "Lobby") exploreHintSeen = false;
             focusName=page==target?EventSystem.current?.currentSelectedGameObject?.name:null;
             if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);pageRoot=null;}
             if(target=="Garage"&&page!="Garage")PrepareGarage();
@@ -199,19 +207,25 @@ namespace TowTrouble
         {
             gameplay=Stretch("Mission HUD",root).gameObject;
             objective=Text(gameplay.transform,"",30,25,800,82,24,Paper,true);objective.GetComponent<TextMeshProUGUI>().outlineWidth=.12f;
-            mudFeedback=Text(gameplay.transform,"",30,116,980,48,18,Amber,true);
-            garagePrompt=Text(gameplay.transform,"",440,842,720,42,19,Amber,true);garagePrompt.alignment=TextAlignmentOptions.Center;
+            exploreHintPlate = Node("Nearby workshop action", gameplay.transform, 800, 857, 260, 33);
+            exploreHintPlate.pivot = new Vector2(.5f, .5f);
+            var hintBackground = exploreHintPlate.gameObject.AddComponent<UnityEngine.UI.Image>();
+            hintBackground.color = new Color(.10f, .12f, .11f, .88f);
+            hintBackground.raycastTarget = false;
+            garagePrompt = Text(exploreHintPlate, "", 9, 0, 242, 33, 16, Paper);
+            garagePrompt.alignment = TextAlignmentOptions.Center;
+            exploreHintPlate.gameObject.SetActive(false);
             crew=Text(gameplay.transform,"",1140,25,430,90,20,Paper,true);crew.alignment=TextAlignmentOptions.Right;
-            var cable=Node("Cable HUD",gameplay.transform,35,762,520,110);cableGroup=cable.gameObject;
-            cableText=Text(cable,"",0,0,520,28,20,Paper,true);var track=Panel(cable,0,35,370,20,new Color(.08f,.09f,.08f,.75f));track.gameObject.AddComponent<UnityEngine.UI.Outline>().effectColor=Paper;
-            var fill=Stretch("Cable tension",track);fill.offsetMin=new Vector2(3,3);fill.offsetMax=new Vector2(-3,-3);cableFill=fill.gameObject.AddComponent<UnityEngine.UI.Image>();
-            actionText=Text(cable,"",0,66,650,52,17,Paper,true);
-            winchText=Text(gameplay.transform,"",35,620,850,76,18,Paper,true);
-            var partner=Node("Partner cable",gameplay.transform,35,706,370,46);partnerGroup=partner.gameObject;partnerText=Text(partner,"",0,0,370,24,16,Paper,true);var pt=Panel(partner,0,28,280,10,new Color(.08f,.09f,.08f,.75f));partnerFill=Stretch("Partner tension",pt).gameObject.AddComponent<UnityEngine.UI.Image>();
-            var s=Node("Speed",gameplay.transform,1260,800,310,70);speed=Text(s,"",0,0,310,70,44,Paper,true);speed.alignment=TextAlignmentOptions.Right;
+            BuildCableHud();
+            speed = Text(gameplay.transform, "", 1330, 819, 238, 51, 28, Paper, true);
+            speed.name = "Rolling speed";
+            speed.alignment = TextAlignmentOptions.MidlineRight;
+            speed.GetComponent<TextMeshProUGUI>().outlineWidth = .13f;
+            speed.gameObject.SetActive(false);
             marker=Text(gameplay.transform,"",0,0,340,70,18,Amber,true);marker.alignment=TextAlignmentOptions.Center;
             marker.GetComponent<TextMeshProUGUI>().outlineWidth=.12f;
             BuildWaypoint();
+            BuildHitchPrompt();
             BuildRoadTrail();
             for(int i=0;i<2;i++)
             {
@@ -233,6 +247,7 @@ namespace TowTrouble
             Button(card,L("SETĂRI","SETTINGS"),32,417,496,()=>{returnPage="Pause";Show("Settings");});
             if(session.World.FreeRoam)Button(card,L("INTERVENȚII","RECOVERIES"),32,487,496,()=>{session.CloseOverlay();session.ToggleBoard();Show("Board");});
             else Button(card,L("ÎNAPOI LA CONTRACTE","BACK TO CONTRACTS"),32,487,496,()=>Confirm(L("Părăsești misiunea curentă?","Leave the current mission?"),()=>{if(session.World.FreeRoam){session.CloseOverlay();session.ToggleBoard();Show("Board");}else if(session.IsHost){session.Replay();session.ToggleMenu();Show("Contracts");}else session.Leave();},"Pause"));
+            BuildCableDetails(card);
         }
         private void Confirm(string question,Action yes,string back)
         {
@@ -277,9 +292,9 @@ namespace TowTrouble
                     Button(body,Screen.fullScreen?L("MOD: ECRAN COMPLET","MODE: FULLSCREEN"):L("MOD: FEREASTRĂ","MODE: WINDOWED"),30,240,750,()=>{Screen.fullScreen=!Screen.fullScreen;StartCoroutine(RefreshSettings());});
                     Button(body,L("REZOLUȚIE: ","RESOLUTION: ")+Screen.width+" × "+Screen.height,30,320,750,()=>{var values=Screen.resolutions;if(values.Length==0)return;int index=Array.FindIndex(values,r=>r.width==Screen.width&&r.height==Screen.height);var r=values[(index+1)%values.Length];Screen.SetResolution(r.width,r.height,Screen.fullScreenMode);StartCoroutine(RefreshSettings());});break;
                 case "Comenzi":
-                    string[] bindings={"hookKey","reelKey","extendKey","resetKey","forwardKey","reverseKey","leftKey","rightKey","brakeKey"};string[] labels={L("Conectează / desprinde","Attach / detach"),L("Scurtează cablul","Shorten cable"),L("Alungește cablul","Lengthen cable"),L("Punct sigur","Safe checkpoint"),L("Accelerație","Accelerate"),L("Marșarier","Reverse"),L("Stânga","Left"),L("Dreapta","Right"),L("Frână","Brake")};
-                    for(int i=0;i<bindings.Length;i++){string binding=bindings[i];var field=typeof(RecoveryProfile).GetField(binding);int col=i<4?0:1,row=i<4?i:i-4;Button(body,labels[i]+"   [ "+field.GetValue(P)+" ]",30+col*710,24+row*60,680,()=>{pendingBinding=binding;status.text=L("Apasă o tastă. ESC anulează.","Press a key. ESC cancels.");},false,48);}
-                    status=Text(body,L("Controller: RT/LT conducere, B frână, A cablu, LB/RB troliu, Y cameră.","Controller: RT/LT drive, B brake, A cable, LB/RB winch, Y camera."),30,333,1350,40,18,Muted);Slider(body,L("Sensibilitate cameră","Camera sensitivity"),P.cameraSensitivity,.3f,2,390,v=>P.cameraSensitivity=v);break;
+                    string[] bindings={"hookKey","reelKey","extendKey","resetKey","boardKey","garageKey","forwardKey","reverseKey","leftKey","rightKey","brakeKey"};string[] labels={L("Conectează / desprinde","Attach / detach"),L("Scurtează cablul","Shorten cable"),L("Alungește cablul","Lengthen cable"),L("Punct sigur","Safe checkpoint"),L("Contracte","Contracts"),L("Garaj","Garage"),L("Accelerație","Accelerate"),L("Marșarier","Reverse"),L("Stânga","Left"),L("Dreapta","Right"),L("Frână","Brake")};
+                    for(int i=0;i<bindings.Length;i++){string binding=bindings[i];var field=typeof(RecoveryProfile).GetField(binding);int col=i<6?0:1,row=i<6?i:i-6;Button(body,labels[i]+"   [ "+field.GetValue(P)+" ]",30+col*710,24+row*50,680,()=>{pendingBinding=binding;status.text=L("Apasă o tastă. ESC anulează.","Press a key. ESC cancels.");},false,44);}
+                    status=Text(body,L("Controller: RT/LT conducere, B frână, A cablu, LB/RB troliu, Y cameră, L3 contracte, X garaj.","Controller: RT/LT drive, B brake, A cable, LB/RB winch, Y camera, L3 contracts, X garage."),30,333,1350,40,18,Muted);Slider(body,L("Sensibilitate cameră","Camera sensitivity"),P.cameraSensitivity,.3f,2,390,v=>P.cameraSensitivity=v);break;
                 case "Accesibilitate":
                     Slider(body,L("Dimensiune text / HUD","Text / HUD size"),P.textScale,.85f,1.3f,30,v=>P.textScale=v);
                     Button(body,L("MIȘCARE CAMERĂ REDUSĂ: ","REDUCED CAMERA MOTION: ")+(P.reducedMotion?"ON":"OFF"),30,170,750,()=>{P.reducedMotion=!P.reducedMotion;P.Save();Show("Settings");});
@@ -327,11 +342,13 @@ namespace TowTrouble
             if(back&&page=="Confirm"){Show(confirmationReturn);return;}
             if(back&&page=="Lobby")Confirm(L("Părăsești sesiunea?","Leave this session?"),()=>session.Leave(),"Lobby");
             else if(back&&page!="Gameplay"&&page!="Pause"&&page!="Confirm"&&page!="Results"&&page!="Lobby"&&page!="Garage"&&page!="Board")Show(page=="Settings"||page=="Vehicles"?returnPage:"Main");
+            if (page == "Gameplay" && online) RefreshCableHud(w, session.LocalSlot);
             if(Time.unscaledTime<refreshAt)return;refreshAt=Time.unscaledTime+.08f;
+            if (page == "Pause" && online) RefreshCableDetails(w, session.LocalSlot);
             if(status!=null&&pendingBinding==null&&page=="Coop")status.text=session.Status;
             if(page=="Lobby"&&online)
             {
-                summary.text=w.Map!=null?L("EXPLORARE LIBERĂ\nAlegeți intervenția cu TAB după pornire.","FREE EXPLORATION\nChoose a job with TAB after deployment."):w.Contract.TitleFor(P)+"\n"+w.Contract.TerrainFor(P)+"\nSOLO / CO-OP";slots.text=w.Occupied+" / 2\n"+(session.IsHost?L("GAZDĂ • IP / LAN","HOST • IP / LAN"):L("CONECTAT LA GAZDĂ","CONNECTED TO HOST"))+"\nUDP 7777";
+                summary.text=w.Map!=null?L("EXPLORARE LIBERĂ\nAlege o intervenție după plecare cu ","FREE EXPLORATION\nChoose a recovery after deployment with ")+ContractControl():w.Contract.TitleFor(P)+"\n"+w.Contract.TerrainFor(P)+"\nSOLO / CO-OP";slots.text=w.Occupied+" / 2\n"+(session.IsHost?L("GAZDĂ • IP / LAN","HOST • IP / LAN"):L("CONECTAT LA GAZDĂ","CONNECTED TO HOST"))+"\nUDP 7777";
                 for(int i=0;i<2;i++)if(worldNames[i]!=null)worldNames[i].text=w.OccupiedSlot(i)?w.DriverName(i)+" • "+RecoveryVehicle.ModelNames[w.VehicleIndex(i)]+"\n"+(w.Ready(i)?L("PREGĂTIT","READY"):L("SE PREGĂTEȘTE","GETTING READY")):L("AȘTEPTĂM UN PRIETEN…","WAITING FOR A FRIEND…");
                 readyText.text=w.Ready(session.LocalSlot)?L("NU SUNT GATA","NOT READY"):L("PREGĂTIT","READY");startButton.interactable=session.IsHost&&w.CanStart;
             }
@@ -340,29 +357,66 @@ namespace TowTrouble
         }
         private void RefreshGameplay()
         {
-            var w=session.World;int slot=session.LocalSlot,other=1-slot;bool attached=w.Attached(slot);float load=w.Tension(slot);
-            RefreshWinchFeedback(w,slot,attached);
-            if(w.Phase==RecoveryPhase.Explore)
-            {ClearRecoveryGuidance();marker.color=Amber;objective.text=L("EXPLORARE LIBERĂ","FREE EXPLORATION");crew.text=P.credits+" CR";speed.text=Mathf.RoundToInt(w.Drivers[slot].Speed*3.6f)+" <size=27>km/h</size>";cableGroup.SetActive(false);partnerGroup.SetActive(false);mudFeedback.gameObject.SetActive(false);garagePrompt.text=w.AtGarage(slot)?L("G · Intră în garaj    |    TAB · Contracte","G · Enter garage    |    TAB · Contracts"):L("TAB · Contracte    |    Garaj: ","TAB · Contracts    |    Garage: ")+Mathf.RoundToInt(Vector3.Distance(w.Drivers[slot].transform.position,w.GaragePosition))+" m";PlaceMarker(marker,w.GaragePosition+Vector3.up*3,Camera.main);marker.text=L("GARAJ","GARAGE");foreach(var tag in hudPlates)tag.gameObject.SetActive(false);return;}
-            garagePrompt.text=w.FreeRoam?L("TAB · Contracte","TAB · Contracts"):"";
-            crew.text=w.Cooperative?"CO-OP  "+w.Occupied+"/2"+(w.Occupied<2?"\n"+L("COECHIPIER DECONECTAT","CREWMATE DISCONNECTED")+"\n"+(session.UsingGamepad?"START":"ESC")+"  "+L("Meniu / Lobby","Menu / Lobby"):""):"";speed.text=Mathf.RoundToInt(w.Drivers[slot].Speed*3.6f)+" <size=27>km/h</size>";
-            var wheelSlip=w.Drivers[slot].WheelSlip;float slip=Mathf.Max(wheelSlip.x,wheelSlip.y,wheelSlip.z,wheelSlip.w);
-            mudFeedback.gameObject.SetActive(P.tutorial&&w.Drivers[slot].InMud);
-            mudFeedback.text=slip>.25f?L("PATINARE · Redu accelerația pentru mai multă tracțiune.","WHEELSPIN · Ease off for better traction."):L("NOROI · Accelerează progresiv și păstrează cablul întins.","MUD · Build throttle gently and keep the cable taut.");
+            var w=session.World;int slot=session.LocalSlot;
+            RefreshRollingSpeed(w.Drivers[slot].Speed);
+            crew.text = w.Cooperative && w.Occupied < 2 ? L("Coechipier deconectat", "Crewmate disconnected") : "";
+            if (w.Phase == RecoveryPhase.Explore)
+            {
+                ClearRecoveryGuidance();
+                objective.text = "";
+                marker.gameObject.SetActive(false);
+                cableGroup.SetActive(false);
+                partnerGroup.SetActive(false);
+                RefreshExploreHint(w, slot);
+                foreach (var tag in hudPlates) tag.gameObject.SetActive(false);
+                return;
+            }
+            if (exploreHintPlate.gameObject.activeSelf) exploreHintPlate.gameObject.SetActive(false);
             bool workingAtSite = UpdateApproach(w, slot);
-            if (workingAtSite && w.Phase != RecoveryPhase.Deliver) RefreshExtractionFeedback(w);
-            bool near=Vector3.Distance(w.Drivers[slot].RearHitch,w.TowPoint)<RecoveryRules.AttachRange;
-            cableGroup.SetActive(attached||near);cableFill.transform.parent.gameObject.SetActive(attached);
-            string level=load>=1?L("! LA LIMITĂ · RISC DE RUPERE","! AT LIMIT · BREAK RISK"):load>.82f?L("! REDU SARCINA","! EASE THE LOAD"):load>.6f?L("SUB SARCINĂ","UNDER LOAD"):L("SIGUR","SAFE");
-            cableText.text=attached?L("CABLU  ","CABLE  ")+(P.colorHelp?level:""):L("CÂRLIG DISPONIBIL","HITCH IN RANGE");
-            cableFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(load),1);cableFill.color=load>=1?new Color(1,.12f,.05f):load>.82f?new Color(1,.43f,.05f):load>.6f?new Color(1,.72f,.05f):new Color(.16f,.9f,.27f);
-            actionText.text=attached?(session.UsingGamepad?"A  "+L("Desprinde","Detach")+"   LB / RB  "+L("Troliu","Winch"):P.hookKey+"  "+L("Desprinde","Detach")+"   "+P.reelKey+" / "+P.extendKey+"  "+L("Scurtează / Alungește","Shorten / Lengthen")):(session.UsingGamepad?"A":P.hookKey)+"  "+L("Conectează cablul","Attach cable");
-            if(P.tutorial&&w.ContractIndex==0&&!attached)actionText.text+="\n"+L("Cârlig spate → cârlig față. Accelerează lin.","Rear hitch → front hitch. Pull gently.");
-            partnerGroup.SetActive(w.Cooperative&&w.Attached(other));partnerText.text=w.DriverName(other)+"  /  "+L("CABLU","CABLE");partnerFill.rectTransform.anchorMax=new Vector2(w.Tension(other),1);partnerFill.color=other==0?Blue:Orange;
             var camera=Camera.main;if(camera==null){ClearRecoveryGuidance();marker.gameObject.SetActive(false);return;}
             RefreshCrewTagText(w);
             RefreshRecoveryGuidance(w, slot, camera, workingAtSite);
         }
+        private string ContractControl()=>session.UsingGamepad ? "L3" : P.ReadKey(P.boardKey, Key.Tab).ToString();
+
+        private void RefreshExploreHint(RecoveryWorld world, int slot)
+        {
+            if (!exploreHintSeen)
+            {
+                exploreHintSeen = true;
+                exploreHintUntil = Time.unscaledTime + 6f;
+            }
+            string caption = null;
+            if (P.tutorial && Time.unscaledTime < exploreHintUntil)
+                caption = ContractControl() + L("  Contracte", "  Contracts");
+            else if (world.AtGarage(slot))
+            {
+                string binding = session.UsingGamepad ? "X" : P.ReadKey(P.garageKey, Key.G).ToString();
+                caption = binding + L("  Intră în garaj", "  Enter garage");
+            }
+            bool visible = caption != null;
+            if (exploreHintPlate.gameObject.activeSelf != visible) exploreHintPlate.gameObject.SetActive(visible);
+            if (visible && garagePrompt.text != caption)
+            {
+                garagePrompt.text = caption;
+                float width = Mathf.Clamp(garagePrompt.GetPreferredValues(caption).x + 24f, 80f, 320f);
+                exploreHintPlate.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+                garagePrompt.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width - 18f);
+            }
+        }
+
+        private void RefreshRollingSpeed(float metersPerSecond)
+        {
+            float kmh = Mathf.Abs(metersPerSecond) * 3.6f;
+            bool visible = kmh >= (speed.gameObject.activeSelf ? .55f : 1.1f);
+            if (visible != speed.gameObject.activeSelf) speed.gameObject.SetActive(visible);
+            if (!visible) return;
+            int value = Mathf.RoundToInt(kmh);
+            if (value == displayedSpeed) return;
+            displayedSpeed = value;
+            speed.text = value + " <size=65%>km/h</size>";
+        }
+
         private void RefreshCrewTagText(RecoveryWorld world)
         {
             if (!world.Cooperative) return;
@@ -398,7 +452,8 @@ namespace TowTrouble
             {
                 var tag = hudPlates[i];
                 if (tag == null) continue;
-                bool visible = showCrew && world.OccupiedSlot(i) && !string.IsNullOrEmpty(hudNames[i].text);
+                bool visible = showCrew && world.OccupiedSlot(i) && !string.IsNullOrEmpty(hudNames[i].text)
+                    && (i != session.LocalSlot || world.Signal(i) != 0);
                 if (visible)
                 {
                     var point = camera.WorldToViewportPoint(world.Drivers[i].transform.position + Vector3.up * 3.2f);
@@ -413,7 +468,6 @@ namespace TowTrouble
             }
         }
 
-        private static void PlaceMarker(TMP_Text text,Vector3 position,Camera camera)
-        {if(camera==null){text.gameObject.SetActive(false);return;}var p=camera.WorldToViewportPoint(position);text.gameObject.SetActive(p.z>0&&p.x>.06f&&p.x<.94f&&p.y>.12f&&p.y<.88f);text.rectTransform.anchorMin=text.rectTransform.anchorMax=new Vector2(p.x,p.y);text.rectTransform.pivot=new Vector2(.5f,0);text.rectTransform.anchoredPosition=Vector2.zero;}
+
     }
 }

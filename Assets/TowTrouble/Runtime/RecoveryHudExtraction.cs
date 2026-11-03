@@ -65,35 +65,19 @@ namespace TowTrouble
             return true;
         }
 
-        private void RefreshExtractionFeedback(RecoveryWorld world)
+        private static string ExtractionAdvice(RecoveryWorld world, bool english)
         {
-            if (!world.UsesArcadeExtraction || world.ClearingObstacle) return;
-            string message = ExtractionMessage(world.ExtractionStage, world.ExtractionAlignment,
-                world.ExtractionStalled, world.ExtractionReleasedSeconds, P.language == "en",world.Contract.ExtractionProfile.TerrainAware);
-            if (string.IsNullOrEmpty(message)) return;
-            mudFeedback.gameObject.SetActive(true);
-            mudFeedback.text = message;
+            if (world.Phase != RecoveryPhase.Recover || !world.UsesArcadeExtraction || world.ClearingObstacle)
+                return null;
+            return ExtractionAdvice(world.ExtractionStage, world.ExtractionAlignment, world.ExtractionStalled, english);
         }
 
-        public static string ExtractionMessage(ExtractionStage stage, float alignment, float stalled, float releasedSeconds, bool english,bool terrainAware=false)
+        public static string ExtractionAdvice(ExtractionStage stage, float alignment, float stalled, bool english)
         {
-            if (stage == ExtractionStage.Free)
-                return releasedSeconds < 2 ? (english ? "CAR FREED · Ready to tow." : "MAȘINĂ ELIBERATĂ · Poți continua tractarea.") : "";
-            if (stage == ExtractionStage.Releasing)
-                return terrainAware?(english?"THE CAR IS CLEARING THE OBSTRUCTION":"MAȘINA IESE DIN BLOCAJ"):english ? "THE WHEEL IS CLEARING THE RUT" : "ROATA IESE DIN ȘANȚ";
-            if (stage != ExtractionStage.Blocked && alignment < .65f)
-                return terrainAware?(english?"POOR ANGLE · Pull toward the recovery exit.":"UNGHI NEFAVORABIL · Trage spre ieșirea din blocaj."):english ? "POOR ANGLE · Pull toward the rut exit." : "UNGHI NEFAVORABIL · Trage spre ieșirea din șanț.";
-            if (stalled > 1.5f)
-                return english ? "NO PROGRESS · Find firm footing and build a steady pull." : "FĂRĂ PROGRES · Caută sprijin ferm și trage constant.";
-            switch (stage)
-            {
-                case ExtractionStage.TakingLoad:
-                    return english ? "TAKING LOAD · Build the pull gradually." : "CABLU SUB SARCINĂ · Trage progresiv.";
-                case ExtractionStage.Moving:
-                    return english ? "THE CAR IS MOVING · Keep a steady pull." : "MAȘINA SE MIȘCĂ · Păstrează tragerea constantă.";
-                default:
-                    return terrainAware?(english?"CAR STUCK · Connect the cable and pull toward the exit.":"MAȘINĂ BLOCATĂ · Conectează cablul și trage spre ieșire."):english ? "WHEEL IN A RUT · Connect the cable and pull toward the trail." : "ROATĂ ÎN ȘANȚ · Conectează cablul și trage spre potecă.";
-            }
+            if (stage == ExtractionStage.Blocked || stage >= ExtractionStage.Releasing) return null;
+            if (alignment < .65f) return english ? "Pull toward the exit" : "Trage spre ieșire";
+            if (stalled > 1.5f) return english ? "Find firmer ground" : "Caută teren mai ferm";
+            return null;
         }
     }
 }

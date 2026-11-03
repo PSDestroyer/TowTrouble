@@ -8,6 +8,13 @@ namespace TowTrouble
         private readonly List<Vector3> guidanceRoad = new List<Vector3>();
         private string guidanceRun;
         private float acceptedUntil;
+        private float releaseCueUntil;
+        private float wheelCueUntil;
+        private float obstacleCueUntil;
+        private bool showedDelivery;
+        private bool showedSite;
+        private bool pullingObstacle;
+        private bool awayFromRoad;
         private bool atRecoverySite;
         private bool routeSampled;
         private bool routingToDelivery;
@@ -18,6 +25,7 @@ namespace TowTrouble
         private float sampledRoadLength;
         private RecoveryWorld waypointWorld;
         private Camera waypointCamera;
+        private int waypointSlot;
         private bool waypointAtHitch;
         private bool waypointDelivery;
         private bool hasExtractionCaption;
@@ -30,16 +38,17 @@ namespace TowTrouble
         private void OnDisable()
         {
             Canvas.preWillRenderCanvases -= PositionTrackedWaypoint;
-            HideRoadTrail();
+            ClearRecoveryGuidance();
         }
 
-        private void TrackWaypoint(RecoveryWorld world, Camera camera, bool atHitch, bool delivery, string caption)
+        private void TrackWaypoint(RecoveryWorld world, Camera camera, int slot, bool atHitch, bool delivery, string place, string distance, bool showHeight)
         {
             waypointWorld = world;
             waypointCamera = camera;
+            waypointSlot = slot;
             waypointAtHitch = atHitch;
             waypointDelivery = delivery;
-            SetWaypointContent(caption, delivery);
+            SetWaypointContent(place, distance, delivery, showHeight);
         }
 
         // Project after the follow camera has moved. Captions and routing stay on the slower HUD clock.
@@ -50,6 +59,17 @@ namespace TowTrouble
             if (waypointCamera == null || !waypointWorld.HasContract)
             {
                 ClearRecoveryGuidance();
+                return;
+            }
+
+            bool prompting = RefreshHitchPrompt(waypointWorld, waypointCamera, waypointSlot);
+            bool workingCable = !waypointDelivery && waypointWorld.Attached(waypointSlot);
+            if (prompting || workingCable)
+            {
+                if (marker.gameObject.activeSelf) marker.gameObject.SetActive(false);
+                localCaptionVisible = false;
+                if (prompting) HideGuidanceNote();
+                HideWaypoint();
                 return;
             }
 
@@ -73,7 +93,7 @@ namespace TowTrouble
 
         private void ClearRecoveryGuidance()
         {
-            if (waypointWorld != null && marker.gameObject.activeSelf) marker.gameObject.SetActive(false);
+            if (waypointWorld != null && marker != null && marker.gameObject.activeSelf) marker.gameObject.SetActive(false);
             waypointWorld = null;
             waypointCamera = null;
             hasExtractionCaption = false;
@@ -81,7 +101,14 @@ namespace TowTrouble
             guidanceRun = null;
             routeSampled = false;
             atRecoverySite = false;
+            showedDelivery = false;
+            showedSite = false;
+            pullingObstacle = false;
+            awayFromRoad = false;
+            releaseCueUntil = wheelCueUntil = obstacleCueUntil = 0f;
             guidanceRoad.Clear();
+            HideHitchPrompt();
+            HideGuidanceNote();
             HideRoadTrail();
             HideWaypoint();
         }
@@ -92,7 +119,10 @@ namespace TowTrouble
             if (guidanceRun != world.RunId)
             {
                 guidanceRun = world.RunId;
-                acceptedUntil = Time.unscaledTime + 3f;
+                acceptedUntil = Time.unscaledTime + 2.4f;
+                releaseCueUntil = wheelCueUntil = obstacleCueUntil = 0f;
+                showedDelivery = world.Phase == RecoveryPhase.Deliver;
+                showedSite = pullingObstacle = awayFromRoad = false;
                 routeSampled = false;
                 atRecoverySite = false;
             }
@@ -129,39 +159,53 @@ namespace TowTrouble
             var contract = world.Contract;
             var driver = world.Drivers[slot].transform;
             Vector3 target = delivery ? contract.Delivery : world.TowTargetPosition;
-            string title = delivery && contract.IsOpenWorld
-                ? L("Livrează la " + contract.DeliveryName, "Deliver to " + contract.DeliveryEnglish)
+            string place = delivery
+                ? (contract.IsOpenWorld ? L(contract.DeliveryName, contract.DeliveryEnglish) : L("Zona de predare", "Drop-off area"))
                 : contract.TitleFor(P);
-            string instruction = delivery ? L("Livrează mașina", "Deliver the car") : L("Recuperează mașina", "Recover the car");
-            if (!delivery && Time.unscaledTime < acceptedUntil)
-                instruction = L("Intervenție acceptată", "Recovery accepted");
+            float now = Time.unscaledTime;
+            bool attached = world.Attached(slot);
+            if (delivery && !showedDelivery) releaseCueUntil = now + 1.8f;
+            if (workingAtSite && !showedSite) wheelCueUntil = now + 2.4f;
+            bool onObstacle = workingAtSite && world.ClearingObstacle && attached;
+            if (onObstacle && !pullingObstacle) obstacleCueUntil = now + 2.4f;
+            showedDelivery = delivery;
+            showedSite = workingAtSite;
+            pullingObstacle = onObstacle;
 
-            hasExtractionCaption = workingAtSite && RefreshExtractionCaption(world);
+            // A specific caught wheel can be pointed out once on arrival. At the hitch
+            // the interaction itself takes over, and a connected cable owns the feedback.
+            hasExtractionCaption = workingAtSite && !attached && now < wheelCueUntil &&
+                world.UsesArcadeExtraction && !contract.ExtractionProfile.TerrainAware && RefreshExtractionCaption(world);
             if (!hasExtractionCaption) localCaptionVisible = false;
+
+            string note = null;
             if (workingAtSite)
             {
+                awayFromRoad = false;
                 HideRoadTrail();
-                if (world.ClearingObstacle)
-                    instruction = L("1/2 · Trage copacul în lateral", "1/2 · Pull the log aside");
+                if (onObstacle && now < obstacleCueUntil && world.Tension(slot) < .82f)
+                    note = L("Trage copacul în lateral", "Pull the log aside");
             }
             else
             {
-                string directions = FollowRoad(world, camera, driver, target, delivery);
-                if (!string.IsNullOrEmpty(directions) && (delivery || Time.unscaledTime >= acceptedUntil))
-                    instruction = directions;
+                note = FollowRoad(world, camera, driver, target, delivery);
+                if (delivery && now < releaseCueUntil) note = L("Mașină eliberată", "Vehicle freed");
+                else if (!delivery && now < acceptedUntil) note = L("Intervenție acceptată", "Recovery accepted");
             }
+            SetGuidanceNote(note);
 
-            objective.text = title + "\n" + instruction;
             Vector3 delta = target - driver.position;
-            string caption = Mathf.RoundToInt(delta.magnitude) + " m";
-            if (workingAtSite && world.ClearingObstacle)
-                caption = L("COPAC", "FALLEN TREE") + " · " + caption;
-            if (Mathf.Abs(delta.y) >= 8f)
+            float distance = delta.magnitude;
+            // Keep the height cue on nearby cliff faces, with a dead band around its threshold.
+            bool showHeight = !workingAtSite && Mathf.Abs(delta.y) >= (waypointHasHeight ? 6f : 9f);
+            string metric = Mathf.RoundToInt(distance) + " m";
+            if (showHeight)
             {
-                string level = delta.y > 0 ? L("mai sus", "higher") : L("mai jos", "lower");
-                caption += "\n" + Mathf.RoundToInt(Mathf.Abs(delta.y)) + " m " + level;
+                string level = delta.y > 0f ? L("mai sus", "higher") : L("mai jos", "lower");
+                metric += "  <size=75%>·  " + Mathf.RoundToInt(Mathf.Abs(delta.y)) + " m " + level + "</size>";
             }
-            TrackWaypoint(world, camera, workingAtSite, delivery, caption);
+            if (workingAtSite && world.ClearingObstacle) place = L("Copac căzut", "Fallen tree");
+            TrackWaypoint(world, camera, slot, workingAtSite, delivery, place, metric, showHeight);
         }
 
         private void SampleRoad(RecoveryWorld world, Vector3 position, Vector3 target, bool delivery)
@@ -196,6 +240,7 @@ namespace TowTrouble
 
             if (guidanceRoad.Count == 0)
             {
+                awayFromRoad = false;
                 HideRoadTrail();
                 return null;
             }
@@ -208,28 +253,22 @@ namespace TowTrouble
             if (sampledRoadLength < 45f && (atAccess || beyondAccess))
             {
                 HideRoadTrail();
-                return delivery ? L("Intră în zona de predare", "Enter the drop-off area") :
-                    L("De aici, mergi spre mașina marcată", "Head for the marked vehicle from here");
+                awayFromRoad = false;
+                return null;
             }
 
             ShowRoadTrail(camera, position, guidanceRoad);
-            bool rejoin = (position - guidanceRoad[0]).sqrMagnitude > 12f * 12f;
-            Vector3 next = guidanceRoad[0];
-            if (!rejoin)
-            {
-                foreach (var point in guidanceRoad)
-                {
-                    next = point;
-                    if ((point - position).sqrMagnitude >= 16f * 16f) break;
-                }
-            }
-            Vector3 direction = Vector3.ProjectOnPlane(next - position, Vector3.up);
-            float angle = Vector3.SignedAngle(Vector3.ProjectOnPlane(driver.forward, Vector3.up), direction, Vector3.up);
-            string lead = rejoin ? L("Revino la drum", "Rejoin the road") : L("Urmează drumul", "Follow the road");
-            if (Mathf.Abs(angle) > 130f) return lead + L(" · întoarce", " · turn around");
-            if (angle > 25f) return lead + L(" · spre dreapta", " · bear right");
-            if (angle < -25f) return lead + L(" · spre stânga", " · bear left");
-            return lead + L(" · înainte", " · straight ahead");
+            Vector3 toRoad = guidanceRoad[0] - position;
+            float limit = awayFromRoad ? 10f : 18f;
+            awayFromRoad = toRoad.sqrMagnitude > limit * limit;
+            if (!awayFromRoad) return null;
+
+            var flat = Vector3.ProjectOnPlane(toRoad, Vector3.up);
+            float angle = Vector3.SignedAngle(Vector3.ProjectOnPlane(driver.forward, Vector3.up), flat, Vector3.up);
+            if (Mathf.Abs(angle) > 130f) return L("Întoarce spre drum", "Turn back toward the road");
+            if (angle > 25f) return L("Revino la drum · dreapta", "Rejoin the road · right");
+            if (angle < -25f) return L("Revino la drum · stânga", "Rejoin the road · left");
+            return L("Revino la drum", "Rejoin the road");
         }
     }
 }
