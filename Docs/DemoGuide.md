@@ -148,7 +148,7 @@ Compilare fără erori, 27 verificări statice de pagini RO/EN inclusiv text 130
 
 Deschide `Assets/TowTrouble/Scenes/OpenWorldRecovery.unity` (lăsată activă în Editor), pornește tu Play Mode și alege **Explorează**. Din tutorial, Explorează încarcă aceeași hartă. Butonul Tutorial / Contracte din meniul hărții revine la scena tutorialului. Registrul EditorBuildSettings conține ambele scene pentru această trecere; nu s-au creat builduri.
 
-Harta are 24 de recuperări, 8 predări A–H, garaj central G, șase biomuri, râu/poduri și acces la vârf pe serpentine. Tab deschide contractele; filtrele aleg biomul, săgețile schimbă paginile. G deschide garajul lângă marcaj, cu mașina oprită. Nu sunt teleportate mașinile jucătorilor la acceptarea unui contract. Ținta este activată la amplasamentul său.
+Harta are 24 de recuperări, 8 predări A–H, garaj central G, șase biomuri, râu/poduri și acces la vârf pe serpentine. Tab deschide contractele. Available afișează următoarele trei recuperări nefinalizate, fără pagini; după finalizare apare următoarea. Completed păstrează toate recuperările finalizate într-o listă cu derulare verticală și permite rejucarea lor. G deschide garajul lângă marcaj, cu mașina oprită. Nu sunt teleportate mașinile jucătorilor la acceptarea unui contract. Ținta este activată la amplasamentul său.
 
 Începe cu R01 și predarea A. Apoi verifică R03 în noroi, R17 pe nisip și R13 pe zăpadă, după montarea anvelopelor potrivite. Verifică remorcarea la altitudine, intrarea în predare și R pe drum/pod. Nu toate contractele Expert sunt potrivite configurației inițiale; nu există blocări artificiale de regiune. La finalizare, continuă explorarea.
 

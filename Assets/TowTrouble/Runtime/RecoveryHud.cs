@@ -329,7 +329,7 @@ namespace TowTrouble
                 for(int i=0;i<2;i++)if(worldNames[i]!=null)worldNames[i].text=w.OccupiedSlot(i)?w.DriverName(i)+" • "+RecoveryVehicle.ModelNames[w.VehicleIndex(i)]+"\n"+(w.Ready(i)?L("PREGĂTIT","READY"):L("SE PREGĂTEȘTE","GETTING READY")):L("AȘTEPTĂM UN PRIETEN…","WAITING FOR A FRIEND…");
                 readyText.text=w.Ready(session.LocalSlot)?L("NU SUNT GATA","NOT READY"):L("PREGĂTIT","READY");startButton.interactable=session.IsHost&&w.CanStart;
             }
-            if(page=="Board"&&online&&startButton!=null)startButton.interactable=session.IsHost&&w.Phase==RecoveryPhase.Explore&&!w.CrewInGarage;
+            if(page=="Board"&&online){if(boardRenderedCompletedMask!=P.completedMask)Show("Board");if(startButton!=null)startButton.interactable=boardIndex>=0&&boardIndex<w.AvailableContracts.Length&&session.IsHost&&w.Phase==RecoveryPhase.Explore&&!w.CrewInGarage;}
             if(page=="Gameplay"&&online)RefreshGameplay();
         }
         private void RefreshGameplay()

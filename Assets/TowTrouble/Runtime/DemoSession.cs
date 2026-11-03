@@ -165,7 +165,7 @@ namespace TowTrouble
             menuOpen=false;View="Gameplay";Time.timeScale=1;
         }
         public void AcceptBoardContract(int index)
-        {if(!BoardOpen||!IsHost||world.Phase!=RecoveryPhase.Explore)return;CloseOverlay();world.AcceptContract(index);}
+        {if(!BoardOpen||!IsHost||world.Phase!=RecoveryPhase.Explore||index<0||index>=world.AvailableContracts.Length)return;CloseOverlay();world.AcceptContract(index);}
         public void RecordCompletion()
         {
             if(!Connected||world.Phase!=RecoveryPhase.Complete||recorded)return;

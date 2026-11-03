@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-02",
+  "pureTestsPassed": 5,
+  "testMethods": [
+    "NewProfileGetsOnlyTheFirstThreeJobsInAuthoredOrder",
+    "CompletionMovesTheJobIntoHistoryAndFillsTheAvailableSlot",
+    "TutorialCompletionDoesNotCompleteWorldJobs",
+    "FinalAvailableSlotsShrinkAndHistoryContainsEveryCompletedJob",
+    "ReplayingACompletedJobStillPaysWithoutChangingTheAvailableQueue"
+  ],
+  "staticAssertionsPassed": 425,
+  "staticLayouts": 24,
+  "playModeEntered": false,
+  "testRunnerUsed": false,
+  "profileSaved": false
+}
