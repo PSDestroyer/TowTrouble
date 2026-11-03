@@ -20,12 +20,17 @@ namespace TowTrouble.Editor
             float distance=Corridor(new Vector3(wx,0,wz),out _);float road=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(4,10,distance));for(int k=0;k<6;k++)alpha[z,x,k]*=1-road;alpha[z,x,snow>.5f?4:desert>.5f?5:beach>.5f?2:1]+=road;}
             data.SetAlphamaps(0,0,alpha);
         }
-        [MenuItem("Tow Trouble/Align Recovery Signs Outside Tow Lanes")]
-        public static void AlignRecoverySigns()
+        [MenuItem("Tow Trouble/Align Recovery Headings With Road Access")]
+        public static void AlignRecoveryHeadings()
         {
             var scene=SceneManager.GetActiveScene();if(EditorApplication.isPlaying||scene.path!=ScenePath)throw new InvalidOperationException("Open map in Edit Mode.");
             plan=JsonUtility.FromJson<Plan>(File.ReadAllText("Assets/TowTrouble/Editor/OpenWorldPlan.json"));nodes=plan.Nodes.ToDictionary(n=>n.Id);terrain=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Terrain>()).Single();environment=terrain.transform.parent;var map=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<RecoveryMap>()).Single();
-            foreach(var site in map.Sites){var access=plan.Edges.First(e=>e.A==site.Id||e.B==site.Id);var toward=nodes[access.A==site.Id?access.B:access.A].Point-site.Position;toward.y=0;toward.Normalize();site.Heading=Quaternion.LookRotation(toward).eulerAngles.y;var side=Vector3.Cross(Vector3.up,toward);var p=Ground(site.Position+side*7);var marker=environment.GetComponentsInChildren<Transform>().First(t=>t.name==site.Id+" - "+site.Name);marker.Find("Site marker post").position=p+Vector3.up*1.1f;var sign=marker.Find("Recovery sign");sign.position=p+Vector3.up*2.4f;sign.rotation=Quaternion.LookRotation(-toward);var text=marker.GetComponentInChildren<TextMeshPro>();text.transform.position=sign.position+toward*.11f;text.transform.rotation=sign.rotation;}
+            foreach(var site in map.Sites)
+            {
+                var access=plan.Edges.First(e=>e.A==site.Id||e.B==site.Id);
+                var toward=nodes[access.A==site.Id?access.B:access.A].Point-site.Position;
+                toward.y=0;site.Heading=Quaternion.LookRotation(toward.normalized).eulerAngles.y;
+            }
             map.Configure(map.Sites,map.Deliveries,plan.Edges.Where(e=>!e.Trail).SelectMany(e=>{var a=nodes[e.A].Point;var b=nodes[e.B].Point;int steps=Mathf.CeilToInt(Vector3.Distance(a,b)/8);return Enumerable.Range(0,steps+1).Select(i=>Vector3.Lerp(a,b,i/(float)steps)+Vector3.up*.14f);}).ToArray());
             EditorUtility.SetDirty(map);EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);Physics.SyncTransforms();
         }
@@ -50,9 +55,9 @@ namespace TowTrouble.Editor
             map.Configure(map.Sites,map.Deliveries,plan.Edges.Where(e=>!e.Trail).SelectMany(e=>{var a=nodes[e.A].Point;var b=nodes[e.B].Point;int steps=Mathf.CeilToInt(Vector3.Distance(a,b)/8);return Enumerable.Range(0,steps+1).Select(i=>Vector3.Lerp(a,b,i/(float)steps)+Vector3.up*.14f);}).ToArray());
             foreach(var t in environment.GetComponentsInChildren<TextMeshPro>(true)){if(t.text.StartsWith("PREDARE")||t.text.StartsWith("GARAJ  [G]"))t.transform.rotation=Quaternion.Euler(90,0,0);}
             // Keep roadside sign boards outside the tow lane.
-            foreach(var t in environment.GetComponentsInChildren<Transform>().Where(t=>t.name=="Destination sign")){t.position=t.parent.position+new Vector3(14,3,9);var text=t.parent.GetComponentsInChildren<TextMeshPro>().First(v=>v.text.Contains(" · "));text.transform.position=t.parent.position+new Vector3(14,3,8.8f);}
+            foreach(var t in environment.GetComponentsInChildren<Transform>().Where(t=>t.name=="Destination sign")){t.position=t.parent.position+new Vector3(14,3,9);var text=DestinationCaption(t.parent);text.transform.position=t.parent.position+new Vector3(14,3,8.8f);}
             RenderSettings.fog=true;RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=140;RenderSettings.fogEndDistance=1050;RenderSettings.fogColor=new Color(.63f,.77f,.82f);
-            EditorUtility.SetDirty(map);EditorUtility.SetDirty(data);EditorUtility.SetDirty(world);EditorSceneManager.MarkSceneDirty(scene);AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene);Physics.SyncTransforms();AlignRecoverySigns();
+            EditorUtility.SetDirty(map);EditorUtility.SetDirty(data);EditorUtility.SetDirty(world);EditorSceneManager.MarkSceneDirty(scene);AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene);Physics.SyncTransforms();AlignRecoveryHeadings();
         }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace TowTrouble
 {
-    public enum RecoveryIcon { Hook, Garage, Wheel, Engine, Spring, Paint, Body, Bonnet, Bumper, Roof, Exhaust, Chassis, Gears, Winch, Coins, Flag, Crew, Settings, Back, Check, Tree, Mountain, Sand, Save, Play }
+    public enum RecoveryIcon { Hook, Garage, Wheel, Engine, Spring, Paint, Body, Bonnet, Bumper, Roof, Exhaust, Chassis, Gears, Winch, Coins, Flag, Crew, Settings, Back, Check, Tree, Mountain, Sand, Save, Play, WaypointCar, FinishFlag, DirectionArrow }
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class RecoveryIconGraphic : MaskableGraphic
     {
@@ -39,9 +39,58 @@ namespace TowTrouble
                 case RecoveryIcon.Mountain:L(-14,-10,-3,10);L(-3,10,2,1);L(2,1,7,8);L(7,8,14,-10);L(-14,-10,14,-10);L(-6,4,-2,1);L(-2,1,0,5);break;
                 case RecoveryIcon.Sand:for(int i=0;i<3;i++)Arc(-1,-10+i*7,12,20,140);break;
                 case RecoveryIcon.Save:Box(-11,-12,22,24);Box(-6,4,12,8);Box(-6,-12,12,9);break;
+                case RecoveryIcon.WaypointCar: DrawWaypointCar(); break;
+                case RecoveryIcon.FinishFlag: DrawFinishFlag(); break;
+                case RecoveryIcon.DirectionArrow:
+                    SolidRect(-13, -3, 2, 3, color);
+                    Triangle(new Vector2(1, 10), new Vector2(14, 0), new Vector2(1, -10));
+                    break;
                 default:L(-7,-11,11,0);L(11,0,-7,11);L(-7,11,-7,-11);break;
             }
         }
+        private void DrawWaypointCar()
+        {
+            L(-11, 1, -7, 10);
+            L(-7, 10, 7, 10);
+            L(7, 10, 11, 1);
+            SolidRect(-12, -7, 12, 2, color);
+            SolidRect(-11, -10, -7, -7, color);
+            SolidRect(7, -10, 11, -7, color);
+            var cutout = new Color32(33, 35, 39, 255);
+            SolidRect(-10, -3, -5, -1, cutout);
+            SolidRect(5, -3, 10, -1, cutout);
+        }
+
+        private void DrawFinishFlag()
+        {
+            SolidRect(-11, -13, -8, 12, color);
+            SolidRect(-8, 0, 13, 12, color);
+            var ink = new Color32(33, 35, 39, 255);
+            SolidRect(-8, 6, -1, 12, ink);
+            SolidRect(-1, 0, 6, 6, ink);
+            SolidRect(6, 6, 13, 12, ink);
+        }
+
+        private void SolidRect(float left, float bottom, float right, float top, Color32 tint)
+        {
+            int first = mesh.currentVertCount;
+            mesh.AddVert(center + new Vector2(left, bottom) * scale, tint, Vector2.zero);
+            mesh.AddVert(center + new Vector2(left, top) * scale, tint, Vector2.zero);
+            mesh.AddVert(center + new Vector2(right, top) * scale, tint, Vector2.zero);
+            mesh.AddVert(center + new Vector2(right, bottom) * scale, tint, Vector2.zero);
+            mesh.AddTriangle(first, first + 1, first + 2);
+            mesh.AddTriangle(first, first + 2, first + 3);
+        }
+
+        private void Triangle(Vector2 a, Vector2 b, Vector2 c)
+        {
+            int first = mesh.currentVertCount;
+            mesh.AddVert(center + a * scale, color, Vector2.zero);
+            mesh.AddVert(center + b * scale, color, Vector2.zero);
+            mesh.AddVert(center + c * scale, color, Vector2.zero);
+            mesh.AddTriangle(first, first + 1, first + 2);
+        }
+
         private void L(float ax,float ay,float bx,float by)
         {
             Vector2 a=center+new Vector2(ax,ay)*scale,b=center+new Vector2(bx,by)*scale;var v=(b-a).normalized;var p=new Vector2(-v.y,v.x)*1.25f*scale;int n=mesh.currentVertCount;

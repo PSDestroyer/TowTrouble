@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 namespace TowTrouble
 {
@@ -27,6 +28,12 @@ namespace TowTrouble
         [SerializeField] private Vector3[] roadCheckpoints=Array.Empty<Vector3>();
         [SerializeField] private Texture2D mapImage;
         private RecoveryContract[] contracts;
+        private RecoveryRoadNetwork roadNetwork;
+        public bool TryGetRoadRoute(Vector3 from, Vector3 destination, List<Vector3> route)
+        {
+            if (roadNetwork == null) roadNetwork = RecoveryRoadNetwork.FromScene(gameObject.scene);
+            return roadNetwork.TryRoute(from, destination, route);
+        }
         public RecoverySite[] Sites=>sites;
         public RecoveryDropoff[] Deliveries=>deliveries;
         public Texture2D Image=>mapImage;

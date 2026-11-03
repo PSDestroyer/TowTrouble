@@ -49,7 +49,7 @@ namespace TowTrouble.Editor
                 foreach(Transform child in group.Cast<Transform>().ToArray())Undo.DestroyObjectImmediate(child.gameObject);
                 group.name=site.Id+" - Roadside bank";group.SetPositionAndRotation(site.Position,Quaternion.LookRotation(site.ExitDirection));
                 var setting=environment.Find("Recovery situations - 24 authored surrounds")?.Find(site.Id+" recovery setting");
-                if(setting!=null)foreach(Transform child in setting)if(child.name!="Recovery boundary stake"&&child.name!="Reflective warning cap")child.gameObject.SetActive(false);
+                if(setting!=null)foreach(Transform child in setting)child.gameObject.SetActive(false);
                 DressRoadsideAccidentTrail(group,site,bestRoad);
             }
         }

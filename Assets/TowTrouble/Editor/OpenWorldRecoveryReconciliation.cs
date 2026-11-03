@@ -50,41 +50,22 @@ namespace TowTrouble.Editor
                     else if(f.name.Contains("bank"))
                     {f.GetComponent<MeshRenderer>().sharedMaterial=material;}
                 }
-                // Existing settings belong to these same jobs: move only stale markers, retain natural props.
                 var setting=surrounds==null?null:surrounds.Find(site.Id+" recovery setting");
-                if(setting!=null)
+                if(setting!=null&&site.Kind==RecoverySituationKind.Water)
                 {
-                    
-                    int stake=0,cap=0;
+                    // Retain reeds at the old shore; they no longer imply a second recovery bay.
                     foreach(Transform child in setting)
                     {
-                        if(child.name=="Recovery boundary stake"||child.name=="Reflective warning cap")
-                        {
-                            bool isCap=child.name=="Reflective warning cap";int index=isCap?cap++:stake++;
-                            var point=Ground(site.Position+forward*(site.Kind==RecoverySituationKind.Water?12:7)+side*(index==0?-4.5f:4.5f));
-                            Undo.RecordObject(child,"Align existing recovery approach markers");child.position=point+Vector3.up*(isCap?1.1f:.65f);
-                        }
-                        else if(site.Kind==RecoverySituationKind.Water)
-                        {
-                            // Retain reeds at the old shore; they no longer imply a second recovery bay.
-                            var renderers=child.GetComponentsInChildren<Renderer>();if(renderers.Length==0)continue;
-                            var bounds=ScenarioBounds(child.gameObject);var center=bounds.center;
-                            if(Flat(center-site.Position).magnitude<3.8f)center=site.Position+side*(child.GetSiblingIndex()%2==0?-5:5)+forward*(3+child.GetSiblingIndex()*.6f);
-                            var point=Ground(center);
-                            Undo.RecordObject(child,"Seat old shore props");child.position+=new Vector3(point.x-bounds.center.x,point.y-bounds.min.y-.06f,point.z-bounds.center.z);
-                        }
+                        var renderers=child.GetComponentsInChildren<Renderer>();if(renderers.Length==0)continue;
+                        var bounds=ScenarioBounds(child.gameObject);var center=bounds.center;
+                        if(Flat(center-site.Position).magnitude<3.8f)center=site.Position+side*(child.GetSiblingIndex()%2==0?-5:5)+forward*(3+child.GetSiblingIndex()*.6f);
+                        var point=Ground(center);
+                        Undo.RecordObject(child,"Seat old shore props");child.position+=new Vector3(point.x-bounds.center.x,point.y-bounds.min.y-.06f,point.z-bounds.center.z);
                     }
                 }
                 var marker=signs.Cast<Transform>().First(t=>t.name.StartsWith(site.Id+" -"));
-                var signPoint=Ground(site.Position+forward*(site.Kind==RecoverySituationKind.Water?13:6)+side*5.5f);
-                var sign=marker.Find("Recovery sign");var post=marker.Find("Site marker post");var text=marker.GetComponentInChildren<TMPro.TextMeshPro>();
-                Undo.RecordObjects(new UnityEngine.Object[]{marker,sign,post,text.transform},"Align site sign with recovery approach");
-                // Set children in world space; changing the empty marker root does not move old child offsets twice.
-                marker.position=site.Position;post.position=signPoint+Vector3.up*1.1f;sign.position=signPoint+Vector3.up*2.4f;sign.rotation=Quaternion.LookRotation(-forward);
-                text.transform.SetPositionAndRotation(sign.position+forward*.11f,sign.rotation);
-                var reverse=marker.Find("Recovery sign reverse label");
-                if(reverse==null){reverse=UnityEngine.Object.Instantiate(text.gameObject,marker).transform;reverse.name="Recovery sign reverse label";Undo.RegisterCreatedObjectUndo(reverse.gameObject,"Readable sign reverse");}
-                reverse.SetPositionAndRotation(sign.position-forward*.11f,sign.rotation*Quaternion.Euler(0,180,0));
+                Undo.RecordObject(marker,"Align recovery anchor");
+                marker.position=site.Position;
                 var spur=environment.Find("Road network - 24 recovery spurs").GetComponentsInChildren<MeshFilter>().FirstOrDefault(f=>f.name.EndsWith("-"+site.Id));
                 var approach=spur!=null?spur.sharedMesh.vertices.Select(spur.transform.TransformPoint).OrderBy(p=>Flat(p-site.Position).sqrMagnitude).First():map.NearestRoad(site.Position);
                 if(!RoadsideRecovery(site))ReconcileApproachTracks(group,site,material,approach);

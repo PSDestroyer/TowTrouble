@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Dinopunch.LivingMud;
 using UnityEditor;
+using UnityEditor.SceneManagement;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -85,14 +87,108 @@ namespace TowTrouble.Editor
             {
                 var p=Ground(nodes[bay.Node].Point);var go=new GameObject("Dropoff "+bay.Id+" - "+bay.Name);go.transform.SetParent(parent,false);go.transform.position=p;
                 foreach(float x in new[]{-7f,7f})Cube("Bay side",p+new Vector3(x,.1f,0),new Vector3(.18f,.12f,14),amber,go.transform,false);foreach(float z in new[]{-7f,7f})Cube("Bay edge",p+new Vector3(0,.1f,z),new Vector3(14,.12f,.18f),amber,go.transform,false);
-                Cube("Destination sign",p+new Vector3(0,3,9),new Vector3(13,2,.3f),ink,go.transform);Text(bay.Id+" · "+bay.Name,p+new Vector3(0,3,8.8f),0,1.35f,go.transform);Text("PREDARE "+bay.Id,p+new Vector3(0,.16f,0),90,2,go.transform);
+                Cube("Destination sign",p+new Vector3(0,3,9),new Vector3(13,2,.3f),ink,go.transform);Text(bay.Name,p+new Vector3(0,3,8.8f),0,1.35f,go.transform);Text("PREDARE",p+new Vector3(0,.16f,0),90,2,go.transform);
+                FitDestinationCaption(DestinationCaption(go.transform), go.transform.Find("Destination sign"));
             }
             foreach(var site in plan.Sites)
             {
                 var p=Ground(RecoveryPoint(site));var go=new GameObject(site.Id+" - "+site.Name);go.transform.SetParent(parent,false);go.transform.position=p;
-                Cube("Site marker post",p+new Vector3(5,1.1f,0),new Vector3(.18f,2.2f,.18f),wood,go.transform);Cube("Recovery sign",p+new Vector3(5,2.4f,0),new Vector3(3.5f,1,.15f),ink,go.transform);Text(site.Id+"  →  "+site.Delivery,p+new Vector3(5,2.4f,-.1f),0,.7f,go.transform);
             }
         }
+        // The destination displays have separate ground paint and a freestanding name board.
+        private static TextMeshPro DestinationCaption(Transform bay)
+        {
+            return bay.GetComponentsInChildren<TextMeshPro>(true)
+                .Single(label => !label.text.StartsWith("PREDARE", StringComparison.Ordinal));
+        }
+
+        private static bool FitDestinationCaption(TextMeshPro label, Transform board)
+        {
+            var size = new Vector2(board.localScale.x - .3f, board.localScale.y * .88f);
+            float max = board.localScale.y * 4.5f;
+            if (label.enableAutoSizing && label.rectTransform.sizeDelta == size &&
+                Mathf.Approximately(label.fontSizeMin, .5f) && Mathf.Approximately(label.fontSizeMax, max) &&
+                label.textWrappingMode == TextWrappingModes.NoWrap) return false;
+
+            Undo.RecordObjects(new UnityEngine.Object[] {label, label.rectTransform}, "Fit destination name to sign");
+            label.rectTransform.sizeDelta = size;
+            label.textWrappingMode = TextWrappingModes.NoWrap;
+            label.enableAutoSizing = true;
+            label.fontSizeMin = .5f;
+            label.fontSizeMax = max;
+            return true;
+        }
+
+        // Migration for the authored scene. Keep site anchors used by dressing tools and delivery geometry.
+        public static int NaturalizeRecoverySigns()
+        {
+            var scene = SceneManager.GetActiveScene();
+            if (EditorApplication.isPlayingOrWillChangePlaymode || scene.path != ScenePath)
+                throw new InvalidOperationException("Open OpenWorldRecovery in Edit Mode.");
+            var roots = scene.GetRootGameObjects();
+            var map = roots.SelectMany(root => root.GetComponentsInChildren<RecoveryMap>(true)).Single();
+            var locations = roots.SelectMany(root => root.GetComponentsInChildren<Transform>(true))
+                .Single(t => t.name == "24 recoveries and 8 delivery bays");
+            var siteAnchors = map.Sites.Select(site => new {
+                site.Id, Anchor = locations.Cast<Transform>().Single(t => t.name.StartsWith(site.Id + " - "))
+            }).ToArray();
+            var surroundings = locations.parent.Find("Recovery situations - 24 authored surrounds");
+
+            int changed = 0;
+            foreach (var site in siteAnchors)
+            {
+                foreach (Transform child in site.Anchor.Cast<Transform>().ToArray())
+                {
+                    var text = child.GetComponent<TextMeshPro>();
+                    if (child.name != "Recovery sign" && child.name != "Site marker post" &&
+                        child.name != "Recovery sign reverse label" &&
+                        !(text != null && text.text.StartsWith(site.Id + " ") && text.text.Contains("→"))) continue;
+                    Undo.DestroyObjectImmediate(child.gameObject);
+                    changed++;
+                }
+                var setting = surroundings != null ? surroundings.Find(site.Id + " recovery setting") : null;
+                if (setting == null) continue;
+                foreach (Transform child in setting.Cast<Transform>().ToArray())
+                {
+                    if (child.name != "Recovery boundary stake" && child.name != "Reflective warning cap") continue;
+                    Undo.DestroyObjectImmediate(child.gameObject);
+                    changed++;
+                }
+            }
+
+            foreach (var label in roots.SelectMany(root => root.GetComponentsInChildren<TextMeshPro>(true)))
+            {
+                foreach (var bay in map.Deliveries)
+                {
+                    string old = label.text;
+                    string prefix = bay.Id + " · ";
+                    string replacement = null;
+                    if (old == "PREDARE " + bay.Id || old == "PREDARE · " + bay.Id) replacement = "PREDARE";
+                    else if (old.StartsWith(prefix, StringComparison.Ordinal))
+                    {
+                        string name = old.Substring(prefix.Length);
+                        replacement = name == "PREDARE" ? bay.Name : name;
+                    }
+                    if (replacement == null) continue;
+                    Undo.RecordObject(label, "Replace delivery code with the place name");
+                    label.text = replacement;
+                    changed++;
+                    break;
+                }
+            }
+            foreach (var bay in map.Deliveries)
+            {
+                var group = locations.Cast<Transform>().Single(t => t.name.StartsWith("Dropoff " + bay.Id + " -"));
+                if (FitDestinationCaption(DestinationCaption(group), group.Find("Destination sign"))) changed++;
+            }
+            if (changed > 0)
+            {
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save recovery signage.");
+            }
+            return changed;
+        }
+
         private static void CreateMud(GameObject template,RecoveryWorld world)
         {
             var parent=new GameObject("Living Mud - forest and lake recoveries").transform;parent.SetParent(environment,false);

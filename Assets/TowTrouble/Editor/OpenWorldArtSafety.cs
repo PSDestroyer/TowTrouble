@@ -32,22 +32,12 @@ namespace TowTrouble.Editor
         {
             VisualContext();ScenicPaths();
             var timber=AssetDatabase.LoadAssetAtPath<Material>(VisualRoot+"/Workshop aged timber.mat");
-            foreach(var site in plan.Sites)
-            {
-                var marker=environment.GetComponentsInChildren<Transform>().First(t=>t.name==site.Id+" - "+site.Name);
-                var edge=plan.Edges.First(e=>e.A==site.Node||e.B==site.Node);var origin=RecoveryPoint(site);
-                var approach=Flat(nodes[edge.A==site.Node?edge.B:edge.A].Point-origin).normalized;
-                var p=RecoverySignPoint(site);var facing=Flat(origin-p).normalized;
-                marker.Find("Site marker post").position=p+Vector3.up*1.1f;
-                var sign=marker.Find("Recovery sign");sign.position=p+Vector3.up*2.4f;sign.rotation=Quaternion.LookRotation(-facing);
-                var text=marker.GetComponentInChildren<TMPro.TextMeshPro>();text.transform.position=sign.position+facing*.11f;text.transform.rotation=sign.rotation;
-            }
             foreach(var bay in plan.Deliveries)
             {
                 var group=environment.GetComponentsInChildren<Transform>().First(t=>t.name.StartsWith("Dropoff "+bay.Id+" -"));var origin=nodes[bay.Node].Point;
                 var p=SafeSignPoint(origin,Vector3.back,19,3);var facing=Flat(origin-p).normalized;var right=Vector3.Cross(Vector3.up,facing);
                 var board=group.Find("Destination sign");board.position=p+Vector3.up*2.5f;board.rotation=Quaternion.LookRotation(-facing);board.localScale=new Vector3(5.7f,1.35f,.2f);
-                var text=group.GetComponentsInChildren<TMPro.TextMeshPro>().First(t=>t.text.Contains(" · "));text.transform.position=board.position+facing*.13f;text.transform.rotation=board.rotation;text.fontSize=5.7f;
+                var text=DestinationCaption(group);text.transform.position=board.position+facing*.13f;text.transform.rotation=board.rotation;FitDestinationCaption(text, board);
                 foreach(var old in group.Cast<Transform>().Where(t=>t.name=="Destination timber post").ToArray())UnityEngine.Object.DestroyImmediate(old.gameObject);
                 foreach(int side in new[]{-1,1}){var foot=Ground(p+right*side*2.2f);float height=board.position.y+.6f-foot.y;Cube("Destination timber post",foot+Vector3.up*height*.5f,new Vector3(.14f,height,.14f),timber,group);}
             }

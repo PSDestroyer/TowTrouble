@@ -60,22 +60,6 @@ namespace TowTrouble.Editor
             }
             data.SetHeights(0,0,heights);EditorUtility.SetDirty(data);
         }
-        private static Vector3 RecoverySignPoint(Site site)
-        {
-            var origin=RecoveryPoint(site);var approach=Flat(nodes[site.Node].Point-origin).normalized;
-            Vector3 best=origin;float bestScore=float.MinValue;
-            foreach(float radius in new[]{10f,13f,16f})foreach(float angle in new[]{90f,-90f,120f,-120f,160f,-160f})
-            {
-                var p=Ground(origin+Quaternion.Euler(0,angle,0)*approach*radius);
-                float roadClear=ScenicDistance(p,out _,out var road)-road.Width;
-                float accessClear=Distance(new Vector2(p.x,p.z),new Vector2(origin.x,origin.z),new Vector2(nodes[site.Node].Point.x,nodes[site.Node].Point.z),out _);
-                if(roadClear<5||accessClear<8||p.y<10.6f||RiverDistance(p)<8)continue;
-                float score=-Mathf.Abs(p.y-Ground(origin).y)-radius*.15f;
-                if(score>bestScore){best=p;bestScore=score;}
-            }
-            if(bestScore==float.MinValue)throw new InvalidOperationException("No off-road sign position for "+site.Id);
-            return best;
-        }
         private static void UpdateRecoveryPullouts()
         {
             var map=UnityEngine.Object.FindFirstObjectByType<RecoveryMap>();

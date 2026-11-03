@@ -11,7 +11,7 @@ namespace TowTrouble
             var card=Button(parent,contract.TitleFor(P),x,y,580,()=>{if(scroll!=null)boardCompletedScrollY=scroll.content.anchoredPosition.y;boardIndex=id;Show("Board");},active,142);
             card.gameObject.name="board_recovery_"+id;
             var title=card.GetComponentInChildren<TMP_Text>();title.rectTransform.anchoredPosition=new Vector2(216,-12);title.rectTransform.sizeDelta=new Vector2(344,50);title.font=displayFont!=null?displayFont:font;title.fontSize=24*P.textScale;
-            ContractPhoto(card.transform,id,14,14,184,112);var number=Panel(card.transform,23,22,38,28,Amber);Text(number,contract.Id.ToString("00"),0,0,38,28,16,Ink,true).alignment=TextAlignmentOptions.Center;
+            ContractPhoto(card.transform,id,14,14,184,112);
             Text(card.transform,contract.Difficulty(P)+"  ·  "+Mathf.RoundToInt(distance)+" m",218,65,340,25,16,active?Ink:Muted);Icon(card.transform,RecoveryIcon.Coins,218,103,22,active?Ink:Amber);Text(card.transform,contract.Reward.ToString("N0")+" CR",250,94,300,36,23,active?Ink:Amber,true);
             if(scroll!=null)card.gameObject.AddComponent<RecoveryGarageCardFocus>().Configure(scroll);
         }

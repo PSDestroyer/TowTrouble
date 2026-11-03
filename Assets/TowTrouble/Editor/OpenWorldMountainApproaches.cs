@@ -107,8 +107,8 @@ namespace TowTrouble.Editor
             var shaded=GorgeRockMaterial("Approaches shaded alpine rock",new Color(.65f,.71f,.65f),false,false);
             BuildApproachEscarpment(parent,stone,shaded);
             DressMountainApproaches(parent,stone);
-            BuildApproachRefuge(parent,AlpineShelter,"D · POSTUL ALPIN",-12);
-            BuildApproachRefuge(parent,MeadowShelter,"C · REFUGIUL MONTAN",0);
+            BuildApproachRefuge(parent,AlpineShelter,"POSTUL ALPIN",-12);
+            BuildApproachRefuge(parent,MeadowShelter,"REFUGIUL MONTAN",0);
             FitApproachDelivery("D",AlpineDelivery,AlpineShelter,parent);
             FitApproachDelivery("C",nodes["C"].Point,MeadowShelter,parent);
             PaintMountainApproaches(); RefitApproachWear();

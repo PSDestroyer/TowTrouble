@@ -112,7 +112,7 @@ namespace TowTrouble.Editor
                     if (ClearForArt(p, .7f)) ArtPrefab(DesertAt(p) ? "P_RockDesert_Rock05" : "P_BoulderClassic2", p, Pick(.3f, .9f), verge, true);
                 }
             }
-            DressShoreline(); DressRecoveryVignettes(); AlignArtSigns(); RefreshArtHorizon(); GradeSceneMaterials();
+            DressShoreline(); DressRecoveryVignettes(); RefreshArtHorizon(); GradeSceneMaterials();
             terrain.detailObjectDensity = .8f; terrain.detailObjectDistance = 95;
             EditorUtility.SetDirty(terrain.terrainData); SaveVisualScene();
             Debug.Log("[TowTrouble] Composed biome groves: " + trees + " trees/cacti; authored 24 recovery surrounds.");
@@ -135,9 +135,6 @@ namespace TowTrouble.Editor
         private static void DressRecoveryVignettes()
         {
             var parent = ReplaceArtGroup("Recovery situations - 24 authored surrounds");
-            var timber = AssetDatabase.LoadAssetAtPath<Material>(VisualRoot+"/Workshop aged timber.mat");
-            var amber = ScenicMaterial("Recovery ochre warning",new Color(.91f,.53f,.13f));
-            var cream = ScenicMaterial("Recovery ivory marker",new Color(.91f,.84f,.66f));
             foreach(var site in plan.Sites)
             {
                 var group=new GameObject(site.Id+" recovery setting").transform;group.SetParent(parent,false);
@@ -152,33 +149,11 @@ namespace TowTrouble.Editor
                     string name=site.Biome==3?"P_SnowDrift03":site.Biome==5?"P_RockDesert_Rock05":site.Biome==1?"P_Marshtail03":site.Biome==4?"P_GrassDesert1_Paintable":"P_BoulderClassic2";
                     ArtPrefab(name,p,site.Biome==3?Pick(.5f,1.2f):site.Biome==1?Pick(.65f,1.2f):Pick(.45f,1.6f),group,site.Biome==0||site.Biome==2||site.Biome==5);
                 }
-                // Warning stakes mark the safe approach, outside the pull-out and cable corridor.
-                foreach(int s in new[]{-1,1})
-                {
-                    var p=Ground(origin+forward*8+side*s*6.7f);
-                    if(ScenicDistance(p,out _,out var road)<road.Width+1)continue;
-                    Cube("Recovery boundary stake",p+Vector3.up*.65f,new Vector3(.10f,1.3f,.10f),timber,group,false);
-                    var cap=Cube("Reflective warning cap",p+Vector3.up*1.1f,new Vector3(.14f,.28f,.14f),jitterColor(site.Tier,amber,cream),group,false);
-                }
                 if(site.Biome==0)
                 {
                     var p=Ground(origin-forward*12+side*10);
                     if(ClearForArt(p,2))ArtPrefab("P_FirFallen1",p,1.1f,group,true);
                 }
-            }
-        }
-        private static Material jitterColor(int tier,Material a,Material b)=>tier>=3?a:b;
-        private static void AlignArtSigns()
-        {
-            foreach(var site in plan.Sites)
-            {
-                var marker=environment.GetComponentsInChildren<Transform>().First(t=>t.name==site.Id+" - "+site.Name);
-                var edge=plan.Edges.First(e=>e.A==site.Node||e.B==site.Node);
-                var forward=Flat(nodes[edge.A==site.Node?edge.B:edge.A].Point-nodes[site.Node].Point).normalized;
-                var p=Ground(nodes[site.Node].Point+Vector3.Cross(Vector3.up,forward)*8.3f);
-                marker.Find("Site marker post").position=p+Vector3.up*1.1f;
-                var sign=marker.Find("Recovery sign");sign.position=p+Vector3.up*2.4f;sign.rotation=Quaternion.LookRotation(-forward);
-                var text=marker.GetComponentInChildren<TMPro.TextMeshPro>();text.transform.position=sign.position+forward*.11f;text.transform.rotation=sign.rotation;
             }
         }
         private static void RefreshArtHorizon()

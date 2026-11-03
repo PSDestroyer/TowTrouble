@@ -84,15 +84,18 @@ namespace TowTrouble.Editor
                 Cube("Painted delivery corner",p+new Vector3(-sx*1.1f,.015f,0),new Vector3(2.2f,.025f,.12f),trim,marker,false);
                 Cube("Painted delivery corner",p+new Vector3(0,.015f,-sz*1.1f),new Vector3(.12f,.025f,2.2f),trim,marker,false);
             }
-            Text("PREDARE · "+id,center+Vector3.up*.04f,90,.75f,marker);
+            Text("PREDARE",center+Vector3.up*.04f,90,.75f,marker);
             var sign=Ground(center+new Vector3(12,0,7.5f));
             foreach(float dx in new[]{-1.7f,1.7f}){var foot=Ground(sign+Vector3.right*dx);float top=sign.y+2.35f;Cube("Destination timber post",foot+Vector3.up*(top-foot.y)*.5f,new Vector3(.14f,top-foot.y,.14f),wood,marker);}
             Cube("Destination sign",sign+Vector3.up*1.95f,new Vector3(4.1f,1.05f,.18f),ink,marker,false);
-            Text(id+" · PREDARE",sign+new Vector3(0,2,-.11f),0,.39f,marker);
+            var map=UnityEngine.Object.FindFirstObjectByType<RecoveryMap>();
+            var delivery=map.Deliveries.Single(b=>b.Id==id);
+            Text(delivery.Name,sign+new Vector3(0,2,-.11f),0,.39f,marker);
+            FitDestinationCaption(DestinationCaption(marker), marker.Find("Destination sign"));
             foreach(var child in marker.Cast<Transform>())Undo.RegisterCreatedObjectUndo(child.gameObject,"Create mountain delivery markings");
             // Logical delivery and visible markings share exactly the same off-road location.
-            var map=UnityEngine.Object.FindFirstObjectByType<RecoveryMap>();Undo.RecordObject(map,"Fit mountain delivery bay");
-            var delivery=map.Deliveries.Single(b=>b.Id==id);delivery.Position=center;
+            Undo.RecordObject(map,"Fit mountain delivery bay");
+            delivery.Position=center;
             foreach(var site in plan.Sites.Where(s=>s.Delivery==id))map.Sites.Single(s=>s.Id==site.Id).Delivery=center;
             var serialized=new SerializedObject(map);var checkpoints=serialized.FindProperty("roadCheckpoints");var values=new Vector3[checkpoints.arraySize];for(int i=0;i<values.Length;i++)values[i]=checkpoints.GetArrayElementAtIndex(i).vector3Value;
             map.Configure(map.Sites,map.Deliveries,values);EditorUtility.SetDirty(map);
