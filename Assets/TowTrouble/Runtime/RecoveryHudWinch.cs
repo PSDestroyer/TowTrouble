@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace TowTrouble
 {
@@ -9,8 +10,11 @@ namespace TowTrouble
         private static readonly Color CableWarningTint = new Color(1f, .55f, .43f);
         private GameObject cableGroup, partnerGroup;
         private TMP_Text cableText, actionText, partnerText, cableDetails;
+        private TMP_Text reelHint, payoutHint;
+        private string lastReelBinding, lastPayoutBinding;
+        private float hintScale;
         private UnityEngine.UI.Image cableFill, partnerFill;
-        private RecoveryIconGraphic cableIcon;
+        private RecoveryIconGraphic cableIcon, reelIcon, payoutIcon;
         private bool cableWarning;
 
         private void BuildCableHud()
@@ -19,11 +23,17 @@ namespace TowTrouble
             cable.name = "Cable load";
             AnchorCableHud(cable, 26f);
             cableGroup = cable.gameObject;
-            cableIcon = Icon(cable, RecoveryIcon.Winch, 12, 10, 22, Amber);
-            cableText = Text(cable, "", 44, 5, 230, 30, 18, Paper, true);
+            cableIcon = Icon(cable, RecoveryIcon.Winch, 12, 6, 22, Amber);
+            cableText = Text(cable, "", 44, 3, 230, 26, 18, Paper, true);
             cableText.alignment = TextAlignmentOptions.MidlineLeft;
             cableFill = CableMeter(cable, 38, 262);
-            actionText = Text(cable, "", 12, 48, 262, 28, 16, Paper);
+            reelHint = Text(cable, "", 12, 29, 94, 21, 14, Paper);
+            reelHint.alignment = TextAlignmentOptions.MidlineLeft;
+            payoutHint = Text(cable, "", 180, 29, 94, 21, 14, Paper);
+            payoutHint.alignment = TextAlignmentOptions.MidlineRight;
+            reelIcon = Icon(cable, RecoveryIcon.ReelIn, 0, 29, 21, Paper);
+            payoutIcon = Icon(cable, RecoveryIcon.PayOut, 0, 29, 21, Paper);
+            actionText = Text(cable, "", 12, 50, 262, 26, 16, Paper);
             actionText.alignment = TextAlignmentOptions.MidlineLeft;
             cableGroup.SetActive(false);
 
@@ -66,6 +76,7 @@ namespace TowTrouble
 
             if (visible)
             {
+                RefreshCableControlHints();
                 string label = WinchLabel(frame.State, P.language == "en");
                 string hint = null;
                 if (cableWarning)
@@ -73,7 +84,7 @@ namespace TowTrouble
                     label = L("Cablu la limită", "Cable at risk");
                     hint = frame.Length >= RecoveryWinch.MaximumLength - .01f
                         ? L("Oprește tragerea", "Ease off the throttle")
-                        : (session.UsingGamepad ? "RB" : P.extendKey) + L("  Slăbește cablul", "  Pay out cable");
+                        : L("Slăbește cablul", "Pay out cable");
                 }
                 else if (frame.State == WinchState.Stalled)
                     hint = L("Repoziționează mașina", "Reposition your vehicle");
@@ -89,10 +100,46 @@ namespace TowTrouble
                 if (showHint && actionText.text != hint) actionText.text = hint;
                 var tint = cableWarning ? CableWarningTint : Amber;
                 cableIcon.color = cableFill.color = tint;
+                payoutIcon.color = payoutHint.color = cableWarning && frame.Length < RecoveryWinch.MaximumLength - .01f ? CableWarningTint : Paper;
                 actionText.color = cableWarning ? CableWarningTint : Paper;
                 cableFill.rectTransform.anchorMax = new Vector2(tension, 1);
             }
             RefreshPartnerCable(world, slot == 0 ? 1 : 0);
+        }
+
+        private void RefreshCableControlHints()
+        {
+            bool gamepad = session.UsingGamepad;
+            string reel = gamepad ? "LB" : P.reelKey;
+            string payout = gamepad ? "RB" : P.extendKey;
+            if (lastReelBinding == reel && lastPayoutBinding == payout && hintScale == P.textScale) return;
+            lastReelBinding = reel;
+            lastPayoutBinding = payout;
+            hintScale = P.textScale;
+
+            string reelKey = gamepad ? reel : P.ReadKey(reel, Key.Q).ToString();
+            string payoutKey = gamepad ? payout : P.ReadKey(payout, Key.F).ToString();
+            reelHint.text = "[" + reelKey + "]";
+            payoutHint.text = "[" + payoutKey + "]";
+            float leftWidth = Mathf.Ceil(reelHint.GetPreferredValues(reelHint.text, 1000, 40).x) + 2f;
+            float rightWidth = Mathf.Ceil(payoutHint.GetPreferredValues(payoutHint.text, 1000, 40).x) + 2f;
+            const float padding = 12f, iconGap = 3f, trackGap = 8f, minTrackWidth = 132f;
+            float iconSize = Mathf.Clamp(21f * hintScale, 19f, 24f);
+            float trackLeft = padding + leftWidth + iconGap + iconSize + trackGap;
+            float rightInset = padding + rightWidth + iconGap + iconSize + trackGap;
+            float width = Mathf.Max(286f, trackLeft + minTrackWidth + rightInset);
+            ((RectTransform)cableGroup.transform).SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+            reelHint.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, leftWidth);
+            payoutHint.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, rightWidth);
+            float payoutLeft = width - padding - rightWidth;
+            payoutHint.rectTransform.anchoredPosition = new Vector2(payoutLeft, payoutHint.rectTransform.anchoredPosition.y);
+            reelIcon.rectTransform.sizeDelta = payoutIcon.rectTransform.sizeDelta = new Vector2(iconSize, iconSize);
+            float iconTop = -39.5f + iconSize * .5f;
+            reelIcon.rectTransform.anchoredPosition = new Vector2(padding + leftWidth + iconGap, iconTop);
+            payoutIcon.rectTransform.anchoredPosition = new Vector2(payoutLeft - iconGap - iconSize, iconTop);
+            var track = (RectTransform)cableFill.rectTransform.parent;
+            track.anchoredPosition = new Vector2(trackLeft, -38);
+            track.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width - trackLeft - rightInset);
         }
 
         private void RefreshPartnerCable(RecoveryWorld world,int partnerSlot)

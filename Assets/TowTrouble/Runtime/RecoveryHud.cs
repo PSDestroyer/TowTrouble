@@ -27,7 +27,9 @@ namespace TowTrouble
         private bool exploreHintSeen;
         private float exploreHintUntil;
         private int displayedSpeed = -1;
-        private RectTransform exploreHintPlate;
+        private RectTransform exploreHintPlate, exploreHintKeycap;
+        private TMP_Text exploreHintBinding;
+        private float exploreHintTextScale;
         private TMP_Text objective, crew, speed, marker, status, slots, readyText, summary, prompt;
         private UnityEngine.UI.Button startButton;
         private TMP_InputField address;
@@ -207,14 +209,7 @@ namespace TowTrouble
         {
             gameplay=Stretch("Mission HUD",root).gameObject;
             objective=Text(gameplay.transform,"",30,25,800,82,24,Paper,true);objective.GetComponent<TextMeshProUGUI>().outlineWidth=.12f;
-            exploreHintPlate = Node("Nearby workshop action", gameplay.transform, 800, 857, 260, 33);
-            exploreHintPlate.pivot = new Vector2(.5f, .5f);
-            var hintBackground = exploreHintPlate.gameObject.AddComponent<UnityEngine.UI.Image>();
-            hintBackground.color = new Color(.10f, .12f, .11f, .88f);
-            hintBackground.raycastTarget = false;
-            garagePrompt = Text(exploreHintPlate, "", 9, 0, 242, 33, 16, Paper);
-            garagePrompt.alignment = TextAlignmentOptions.Center;
-            exploreHintPlate.gameObject.SetActive(false);
+            BuildExploreHint();
             crew=Text(gameplay.transform,"",1140,25,430,90,20,Paper,true);crew.alignment=TextAlignmentOptions.Right;
             BuildCableHud();
             speed = Text(gameplay.transform, "", 1330, 819, 238, 51, 28, Paper, true);
@@ -329,6 +324,8 @@ namespace TowTrouble
             if(!online&&wasOnline)Show("Coop");
             if(online)
             {
+                if (w.Phase == RecoveryPhase.Explore && previousPhase == RecoveryPhase.Complete)
+                    exploreHintSeen = false;
                 if(w.Phase==RecoveryPhase.Complete&&!wasComplete)Show("Results");
                 else if(w.Phase!=previousPhase&&w.Phase!=RecoveryPhase.Complete){if(w.Phase!=RecoveryPhase.Lobby||(page!="Contracts"&&page!="Vehicles"))Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");}
                 if(session.MenuOpen&&page=="Gameplay"&&session.View!="Garage"&&session.View!="Board")Show("Pause");
@@ -379,6 +376,24 @@ namespace TowTrouble
         }
         private string ContractControl()=>session.UsingGamepad ? "L3" : P.ReadKey(P.boardKey, Key.Tab).ToString();
 
+        private void BuildExploreHint()
+        {
+            exploreHintPlate = Node("Exploration action", gameplay.transform, 0, 0, 180, 38);
+            exploreHintPlate.anchorMin = exploreHintPlate.anchorMax = new Vector2(.5f, 0f);
+            exploreHintPlate.pivot = new Vector2(.5f, 0f);
+            exploreHintPlate.anchoredPosition = new Vector2(0f, 24f);
+            var background = exploreHintPlate.gameObject.AddComponent<UnityEngine.UI.Image>();
+            background.color = Ink;
+            background.raycastTarget = false;
+
+            exploreHintKeycap = Panel(exploreHintPlate, 8, 6, 26, 26, Paper);
+            exploreHintBinding = Text(exploreHintKeycap, "", 0, 0, 26, 26, 16, Ink, true);
+            exploreHintBinding.alignment = TextAlignmentOptions.Center;
+            garagePrompt = Text(exploreHintPlate, "", 42, 0, 132, 38, 17, Paper, true);
+            garagePrompt.alignment = TextAlignmentOptions.MidlineLeft;
+            exploreHintPlate.gameObject.SetActive(false);
+        }
+
         private void RefreshExploreHint(RecoveryWorld world, int slot)
         {
             if (!exploreHintSeen)
@@ -386,23 +401,37 @@ namespace TowTrouble
                 exploreHintSeen = true;
                 exploreHintUntil = Time.unscaledTime + 6f;
             }
-            string caption = null;
+
             if (P.tutorial && Time.unscaledTime < exploreHintUntil)
-                caption = ContractControl() + L("  Contracte", "  Contracts");
+                ShowExploreHint(ContractControl(), L("Vezi contractele", "View contracts"));
             else if (world.AtGarage(slot))
             {
-                string binding = session.UsingGamepad ? "X" : P.ReadKey(P.garageKey, Key.G).ToString();
-                caption = binding + L("  Intră în garaj", "  Enter garage");
+                string key = session.UsingGamepad ? "X" : P.ReadKey(P.garageKey, Key.G).ToString();
+                ShowExploreHint(key, L("Intră în garaj", "Enter garage"));
             }
-            bool visible = caption != null;
-            if (exploreHintPlate.gameObject.activeSelf != visible) exploreHintPlate.gameObject.SetActive(visible);
-            if (visible && garagePrompt.text != caption)
-            {
-                garagePrompt.text = caption;
-                float width = Mathf.Clamp(garagePrompt.GetPreferredValues(caption).x + 24f, 80f, 320f);
-                exploreHintPlate.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
-                garagePrompt.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width - 18f);
-            }
+            else if (exploreHintPlate.gameObject.activeSelf)
+                exploreHintPlate.gameObject.SetActive(false);
+        }
+
+        private void ShowExploreHint(string key, string action)
+        {
+            if (!exploreHintPlate.gameObject.activeSelf) exploreHintPlate.gameObject.SetActive(true);
+            if (key == exploreHintBinding.text && action == garagePrompt.text && exploreHintTextScale == P.textScale)
+                return;
+
+            exploreHintTextScale = P.textScale;
+            exploreHintBinding.text = key;
+            garagePrompt.text = action;
+            float pad = 8f * exploreHintTextScale;
+            float keyHeight = 26f * exploreHintTextScale;
+            float height = 38f * exploreHintTextScale;
+            float keyWidth = Mathf.Max(keyHeight, Mathf.Ceil(exploreHintBinding.GetPreferredValues(key, 500f, height).x) + pad);
+            float labelWidth = Mathf.Ceil(garagePrompt.GetPreferredValues(action, 500f, height).x) + 3f;
+            exploreHintKeycap.anchoredPosition = new Vector2(pad, (keyHeight - height) * .5f);
+            exploreHintKeycap.sizeDelta = exploreHintBinding.rectTransform.sizeDelta = new Vector2(keyWidth, keyHeight);
+            garagePrompt.rectTransform.anchoredPosition = new Vector2(pad * 2f + keyWidth, 0f);
+            garagePrompt.rectTransform.sizeDelta = new Vector2(labelWidth, height);
+            exploreHintPlate.sizeDelta = new Vector2(pad * 3f + keyWidth + labelWidth, height);
         }
 
         private void RefreshRollingSpeed(float metersPerSecond)

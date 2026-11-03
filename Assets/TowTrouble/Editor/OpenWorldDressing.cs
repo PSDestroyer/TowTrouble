@@ -87,7 +87,7 @@ namespace TowTrouble.Editor
             {
                 var p=Ground(nodes[bay.Node].Point);var go=new GameObject("Dropoff "+bay.Id+" - "+bay.Name);go.transform.SetParent(parent,false);go.transform.position=p;
                 foreach(float x in new[]{-7f,7f})Cube("Bay side",p+new Vector3(x,.1f,0),new Vector3(.18f,.12f,14),amber,go.transform,false);foreach(float z in new[]{-7f,7f})Cube("Bay edge",p+new Vector3(0,.1f,z),new Vector3(14,.12f,.18f),amber,go.transform,false);
-                Cube("Destination sign",p+new Vector3(0,3,9),new Vector3(13,2,.3f),ink,go.transform);Text(bay.Name,p+new Vector3(0,3,8.8f),0,1.35f,go.transform);Text("PREDARE",p+new Vector3(0,.16f,0),90,2,go.transform);
+                Cube("Destination sign",p+new Vector3(0,3,9),new Vector3(13,2,.3f),ink,go.transform);Text(bay.Name,p+new Vector3(0,3,8.8f),0,1.35f,go.transform,BayEnglish(bay.Id));Text("PREDARE",p+new Vector3(0,.16f,0),90,2,go.transform);
                 FitDestinationCaption(DestinationCaption(go.transform), go.transform.Find("Destination sign"));
             }
             foreach(var site in plan.Sites)
@@ -95,11 +95,29 @@ namespace TowTrouble.Editor
                 var p=Ground(RecoveryPoint(site));var go=new GameObject(site.Id+" - "+site.Name);go.transform.SetParent(parent,false);go.transform.position=p;
             }
         }
+        // Keep authored object names stable while printing English on the signs.
+        private const string DropoffMark = "DROP-OFF";
+        private static string WorldSignCaption(string text)
+        {
+            switch (text)
+            {
+                case "PREDARE": return DropoffMark;
+                case "GARAJ  [G]": return "GARAGE  [G]";
+                case "TOW TROUBLE\nATELIER": return "TOW TROUBLE\nWORKSHOP";
+                case "PĂDURE  ←    MUNTE  ↑    DEȘERT  →": return "FOREST  ←    MOUNTAIN  ↑    DESERT  →";
+                case "POSTUL ALPIN": return "ALPINE POST";
+                case "REFUGIUL MONTAN": return "MOUNTAIN REFUGE";
+                default: return text;
+            }
+        }
+        private static bool IsDropoffMark(string text) =>
+            text.StartsWith("PREDARE", StringComparison.Ordinal) || text.StartsWith(DropoffMark, StringComparison.Ordinal);
+
         // The destination displays have separate ground paint and a freestanding name board.
         private static TextMeshPro DestinationCaption(Transform bay)
         {
             return bay.GetComponentsInChildren<TextMeshPro>(true)
-                .Single(label => !label.text.StartsWith("PREDARE", StringComparison.Ordinal));
+                .Single(label => !IsDropoffMark(label.text));
         }
 
         private static bool FitDestinationCaption(TextMeshPro label, Transform board)
@@ -158,23 +176,26 @@ namespace TowTrouble.Editor
 
             foreach (var label in roots.SelectMany(root => root.GetComponentsInChildren<TextMeshPro>(true)))
             {
+                string old = label.text;
+                string replacement = WorldSignCaption(old);
                 foreach (var bay in map.Deliveries)
                 {
-                    string old = label.text;
                     string prefix = bay.Id + " · ";
-                    string replacement = null;
-                    if (old == "PREDARE " + bay.Id || old == "PREDARE · " + bay.Id) replacement = "PREDARE";
+                    if (old == bay.Name) replacement = bay.English;
+                    else if (old == "PREDARE " + bay.Id || old == "PREDARE · " + bay.Id ||
+                             old == DropoffMark + " " + bay.Id || old == DropoffMark + " · " + bay.Id) replacement = DropoffMark;
                     else if (old.StartsWith(prefix, StringComparison.Ordinal))
                     {
                         string name = old.Substring(prefix.Length);
-                        replacement = name == "PREDARE" ? bay.Name : name;
+                        replacement = name == bay.Name || IsDropoffMark(name) ? bay.English : name;
                     }
-                    if (replacement == null) continue;
-                    Undo.RecordObject(label, "Replace delivery code with the place name");
-                    label.text = replacement;
-                    changed++;
+                    else continue;
                     break;
                 }
+                if (replacement == old) continue;
+                Undo.RecordObject(label, "Update recovery sign caption");
+                label.text = replacement;
+                changed++;
             }
             foreach (var bay in map.Deliveries)
             {

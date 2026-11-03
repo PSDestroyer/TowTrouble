@@ -13,7 +13,7 @@ namespace TowTrouble
         public float master=.8f, effects=.8f, ui=.7f, brightness=1f, textScale=1f, cameraSensitivity=1f;
         public int quality=1;
         public string forwardKey="W",reverseKey="S",leftKey="A",rightKey="D",brakeKey="Space";
-        public string language="ro", name="Driver", hookKey="E", resetKey="R", reelKey="Q", extendKey="F";
+        public string language="en", name="Driver", hookKey="E", resetKey="R", reelKey="Q", extendKey="F";
         public int credits,lastPayout;
         public List<string> ownedParts=new List<string>();
         public List<string> paidRuns=new List<string>();
@@ -43,6 +43,7 @@ namespace TowTrouble
                 if(p.paint>0)p.builds[Mathf.Clamp(p.vehicle,0,3)].Items=new[]{"paint_"+p.paint};
                 p.version=2;
             }
+            p.language = string.Equals(p.language, "ro", StringComparison.OrdinalIgnoreCase) ? "ro" : "en";
             p.EnsureGarage();p.Clamp();return p;
         }
         private const string Key="TowTrouble.Profile.v1";

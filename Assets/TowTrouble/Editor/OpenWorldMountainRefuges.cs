@@ -90,7 +90,7 @@ namespace TowTrouble.Editor
             Cube("Destination sign",sign+Vector3.up*1.95f,new Vector3(4.1f,1.05f,.18f),ink,marker,false);
             var map=UnityEngine.Object.FindFirstObjectByType<RecoveryMap>();
             var delivery=map.Deliveries.Single(b=>b.Id==id);
-            Text(delivery.Name,sign+new Vector3(0,2,-.11f),0,.39f,marker);
+            Text(delivery.Name,sign+new Vector3(0,2,-.11f),0,.39f,marker,delivery.English);
             FitDestinationCaption(DestinationCaption(marker), marker.Find("Destination sign"));
             foreach(var child in marker.Cast<Transform>())Undo.RegisterCreatedObjectUndo(child.gameObject,"Create mountain delivery markings");
             // Logical delivery and visible markings share exactly the same off-road location.

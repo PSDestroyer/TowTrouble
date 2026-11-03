@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace TowTrouble
 {
-    public enum RecoveryIcon { Hook, Garage, Wheel, Engine, Spring, Paint, Body, Bonnet, Bumper, Roof, Exhaust, Chassis, Gears, Winch, Coins, Flag, Crew, Settings, Back, Check, Tree, Mountain, Sand, Save, Play, WaypointCar, FinishFlag, DirectionArrow }
+    public enum RecoveryIcon { Hook, Garage, Wheel, Engine, Spring, Paint, Body, Bonnet, Bumper, Roof, Exhaust, Chassis, Gears, Winch, Coins, Flag, Crew, Settings, Back, Check, Tree, Mountain, Sand, Save, Play, WaypointCar, FinishFlag, DirectionArrow, ReelIn, PayOut }
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class RecoveryIconGraphic : MaskableGraphic
     {
@@ -45,9 +45,28 @@ namespace TowTrouble
                     SolidRect(-13, -3, 2, 3, color);
                     Triangle(new Vector2(1, 10), new Vector2(14, 0), new Vector2(1, -10));
                     break;
+                case RecoveryIcon.ReelIn: DrawWinchDirection(true); break;
+                case RecoveryIcon.PayOut: DrawWinchDirection(false); break;
                 default:L(-7,-11,11,0);L(11,0,-7,11);L(-7,11,-7,-11);break;
             }
         }
+        private void DrawWinchDirection(bool reelIn)
+        {
+            SolidRect(-15, -11, -12, 11, color);
+            SolidRect(-12, -6, -9, 6, color);
+            SolidRect(-9, -11, -6, 11, color);
+            if (reelIn)
+            {
+                SolidRect(6, -3, 15, 3, color);
+                Triangle(new Vector2(6, -9), new Vector2(-3, 0), new Vector2(6, 9));
+            }
+            else
+            {
+                SolidRect(-3, -3, 6, 3, color);
+                Triangle(new Vector2(6, 9), new Vector2(15, 0), new Vector2(6, -9));
+            }
+        }
+
         private void DrawWaypointCar()
         {
             L(-11, 1, -7, 10);
