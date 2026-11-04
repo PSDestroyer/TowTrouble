@@ -22,7 +22,7 @@ namespace TowTrouble.Editor
             if (world == null || world.Map == null) throw new InvalidOperationException("Recovery world is missing.");
             RefineIncidentGroundMaterials();
             var roads = CompositionStoryRoads();
-            ComposeWorkshopCourtyard(root, world, roads);
+            // The connected workshop base is composed last, after county scenery.
             var stories = PolishGroup(root, "Road to recovery incident stories");
             int authored = 0;
             foreach (var site in world.Map.Sites)
@@ -247,72 +247,6 @@ namespace TowTrouble.Editor
                     go.transform.position += Vector3.up * (Ground(p).y - ScenicBounds(go).min.y - .03f);
                 }
             }
-        }
-
-        private static void ComposeWorkshopCourtyard(Transform root, RecoveryWorld world, List<CompositionStoryRoad> roads)
-        {
-            var parent = PolishGroup(root, "Workshop connected service court");
-            var yard = environment.Find("Mountain cliffs and garage grounds/Garage working yard");
-            if (yard == null) throw new InvalidOperationException("Existing garage working yard is missing.");
-            var material = CompositionCourtyardMaterial();
-            var entrance = Ground(yard.TransformPoint(new Vector3(2.5f, 0, 8)));
-            CompositionClosestRoad(roads, entrance, out var road, out _);
-            ComposeCourtSurface(parent, "Salvage yard open entrance", Ground(road), entrance, 3.8f, material);
-            // Broaden the receiving surface at the real delivery position, without moving its trigger.
-            var delivery = world.Map.Deliveries.FirstOrDefault(d => d.Id == "A");
-            if (delivery != null)
-            {
-                CompositionClosestRoad(roads, delivery.Position, out _, out var tangent);
-                ComposeCourtSurface(parent, "Workshop receiving apron", Ground(delivery.Position - tangent * 12), Ground(delivery.Position + tangent * 12), 7.2f, material);
-            }
-
-            var storage = yard.Find("Workshop storage and work area");
-            var wood = AssetDatabase.LoadAssetAtPath<Material>(PolishFolder + "/Weathered wood.mat");
-            var metal = AssetDatabase.LoadAssetAtPath<Material>(PolishFolder + "/Oxidised metal.mat");
-            var trim = AssetDatabase.LoadAssetAtPath<Material>(PolishFolder + "/Faded parking paint.mat");
-            if (wood == null || metal == null || trim == null) throw new InvalidOperationException("Existing yard materials are missing.");
-            if (storage != null)
-            {
-                // Reuse the original equipment and parking, instead of adding another supply yard.
-                int leg = 0;
-                foreach (Transform item in storage)
-                {
-                    Vector3 p = item.localPosition;
-                    if (item.name == "Outdoor workbench") p.x = -6;
-                    else if (item.name == "Bench legs") p.x = -7.2f + leg++ * 2.4f;
-                    else continue;
-                    Undo.RecordObject(item, "Organize workshop service station");
-                    item.localPosition = p;
-                }
-            }
-            var canopy = PolishGroup(parent, "Open equipment shelter");
-            canopy.position = Ground(yard.TransformPoint(new Vector3(-6, 0, 5)));
-            foreach (float x in new[] { -4.3f, 4.3f }) foreach (float z in new[] { -1.7f, 1.7f })
-            {
-                var footing = Ground(canopy.TransformPoint(new Vector3(x, 0, z)));
-                float h = Mathf.Max(2.1f, canopy.position.y + 2.6f - footing.y);
-                PolishBox(canopy, "Timber shelter upright", canopy.InverseTransformPoint(footing) + Vector3.up * h * .5f, new Vector3(.16f, h, .16f), wood);
-            }
-            PolishBox(canopy, "Shallow service canopy", new Vector3(0, 2.68f, 0), new Vector3(9.2f, .13f, 4.2f), metal, new Vector3(5, 0, 0));
-            foreach (float z in new[] { -1.65f, 1.65f }) PolishBox(canopy, "Shelter cross beam", new Vector3(0, 2.48f, z), new Vector3(8.9f, .18f, .18f), wood);
-            ConfigureDetailLod(canopy.gameObject, 230);
-
-            // A pair of guide marks describes the opening; it does not close the towing turn.
-            foreach (float x in new[] { -1.5f, 6.5f })
-            {
-                var p = Ground(yard.TransformPoint(new Vector3(x, 0, 9)));
-                PolishBox(parent, "Low yard entrance paint", parent.InverseTransformPoint(p) + Vector3.up * .025f, new Vector3(.12f, .015f, 1.6f), trim);
-            }
-            ConfigureDetailLod(parent.gameObject, 240);
-        }
-
-        private static Material CompositionCourtyardMaterial()
-        {
-            var source = AssetDatabase.LoadAssetAtPath<Material>(CliffYardFolder + "/Garage weathered gravel.mat");
-            if (source == null) throw new InvalidOperationException("Existing workshop ground blend is missing.");
-            var material = new Material(source) { name = "Connected workshop gravel", enableInstancing = true };
-            material.SetColor("_CoverTint", new Color(.82f, .79f, .68f));
-            return VisualAsset(material, "LandscapeComposition/Connected workshop gravel.mat");
         }
 
         private static void ComposeCourtSurface(Transform parent, string name, Vector3 start, Vector3 end, float halfWidth, Material material)

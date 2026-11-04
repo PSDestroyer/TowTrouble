@@ -76,6 +76,7 @@ namespace TowTrouble.Editor
                 ComposeLandscapeWaterAndSand(root);
                 ComposeLandscapeWorkshopAndStories(root);
                 ComposeLandscapeSuntail(root);
+                BuildGarageServiceBase(UnityEngine.Object.FindFirstObjectByType<RecoveryWorld>());
                 Physics.SyncTransforms();
                 AssetDatabase.SaveAssets();
                 EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());

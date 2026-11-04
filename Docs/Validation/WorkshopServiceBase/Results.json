@@ -1,0 +1,187 @@
+{
+  "scene": {
+    "passed": true,
+    "errors": [],
+    "sites": 24,
+    "deliveries": 8,
+    "updatedSites": [
+      "R01",
+      "R08",
+      "R16",
+      "R20"
+    ],
+    "delivery": [
+      -30.9999924,
+      22.0753613,
+      -9.000009
+    ],
+    "routePoints": 32,
+    "routeEnd": "(-31.00, 22.00, -9.00)",
+    "renderers": 110,
+    "colliders": 22,
+    "lodGroups": 21,
+    "lights": 0,
+    "sceneDirty": true
+  },
+  "focusedEditorTests": {
+    "passed": 8,
+    "failed": 0,
+    "profileUnchanged": true,
+    "sceneStateUnchanged": true,
+    "results": [
+      {
+        "test": "TowTrouble.Tests.RecoveryDeliveryHighlightTests.WorkshopHighlightOnlyAppearsDuringDeliveryToThatBay",
+        "passed": true,
+        "error": null
+      },
+      {
+        "test": "TowTrouble.Tests.RecoveryDeliveryHighlightTests.ConfiguringAndDisablingOnlyHideTheHighlightRenderers",
+        "passed": true,
+        "error": null
+      },
+      {
+        "test": "TowTrouble.Tests.RecoveryRoadNetworkTests.ReconfiguringTheMapRebuildsRoutesAfterAnAuthoredApproachChanges",
+        "passed": true,
+        "error": null
+      },
+      {
+        "test": "TowTrouble.Tests.RecoveryRoadNetworkTests.SwitchbackKeepsDriversOnConnectedRoadsInEitherDirection",
+        "passed": true,
+        "error": null
+      },
+      {
+        "test": "TowTrouble.Tests.RecoveryRoadNetworkTests.OneRoadProjectsToAccessPointsWithoutOvershooting",
+        "passed": true,
+        "error": null
+      },
+      {
+        "test": "TowTrouble.Tests.RecoveryRoadNetworkTests.CrossingsWithoutAJunctionDoNotCreateShortcuts",
+        "passed": true,
+        "error": null
+      },
+      {
+        "test": "TowTrouble.Tests.RecoveryGarageCameraTests.EffectBoundsCannotResizeBodyOrAnyGarageSlot",
+        "passed": true,
+        "error": null
+      },
+      {
+        "test": "TowTrouble.Tests.RecoveryGarageCameraTests.BodyAndBumperReplacementsKeepTheMovingCameraNearTheCar",
+        "passed": true,
+        "error": null
+      }
+    ]
+  },
+  "drive": {
+    "name": "Workshop pull through loop-towing",
+    "reason": "route-complete",
+    "error": null,
+    "tow": true,
+    "frames": 2219,
+    "drivenMeters": 99.23606,
+    "maxSpeedMetersPerSecond": 3.28406787,
+    "maxRollDegrees": 0.676953256,
+    "maxCrossTrackMeters": 1.92214274,
+    "snaps": 0,
+    "hiddenTrees": 0,
+    "restoredTrees": 0,
+    "profileUnchanged": true
+  },
+  "garageCamera": {
+    "reason": "all-views-checked",
+    "error": null,
+    "categories": 4,
+    "spawnPlaced": true,
+    "maxCameraStepMeters": 2.78193545,
+    "profileUnchanged": true,
+    "phase": "Explore",
+    "garageClosed": true,
+    "brakeHeld": true,
+    "results": [
+      {
+        "slot": "Assembly",
+        "partId": "part_4cec1c5680c8d47438781f0bf4b217a8",
+        "part": "Historic Speedster Electron",
+        "actualDistance": 13.1995411,
+        "expectedDistance": 13.2009764,
+        "focusViewport": [
+          0.432433784,
+          0.4546343,
+          13.0730762
+        ],
+        "staticSightlineClear": true,
+        "blockers": [],
+        "treeSightlines": [],
+        "screenshot": "/private/tmp/TowGaragePlaytest/GarageCamera-Assembly.png",
+        "speed": 0.03634074,
+        "focusedFrames": 92
+      },
+      {
+        "slot": "FrontBumper",
+        "partId": "stock_FrontBumper",
+        "part": "Stock",
+        "actualDistance": 4.01421928,
+        "expectedDistance": 4.01059151,
+        "focusViewport": [
+          0.431736529,
+          0.456443876,
+          3.975441
+        ],
+        "staticSightlineClear": true,
+        "blockers": [],
+        "treeSightlines": [],
+        "screenshot": "/private/tmp/TowGaragePlaytest/GarageCamera-FrontBumper.png",
+        "speed": 0.03634074,
+        "focusedFrames": 97
+      },
+      {
+        "slot": "RearBumper",
+        "partId": "part_022d9bdec0ad34a4880cead22ded81ef",
+        "part": "Bumper A Exhaust 3 Rear",
+        "actualDistance": 3.198839,
+        "expectedDistance": 3.2,
+        "focusViewport": [
+          0.43051967,
+          0.456518561,
+          3.1669786
+        ],
+        "staticSightlineClear": true,
+        "blockers": [],
+        "treeSightlines": [],
+        "screenshot": "/private/tmp/TowGaragePlaytest/GarageCamera-RearBumper.png",
+        "speed": 0.03634074,
+        "focusedFrames": 99
+      },
+      {
+        "slot": "Wheels",
+        "partId": "stock_Wheels",
+        "part": "Stock",
+        "actualDistance": 4.06392765,
+        "expectedDistance": 4.064617,
+        "focusViewport": [
+          0.4320179,
+          0.4566446,
+          4.024993
+        ],
+        "staticSightlineClear": true,
+        "blockers": [],
+        "treeSightlines": [],
+        "screenshot": "/private/tmp/TowGaragePlaytest/GarageCamera-Wheels.png",
+        "speed": 0.03634074,
+        "focusedFrames": 90
+      }
+    ]
+  },
+  "profileAfter": {
+    "keysIdentical": true,
+    "keysRestored": 0,
+    "diskHashUnchanged": false,
+    "diskHash": "kKLeSgnExjkqSeC2ucQYjSOdnclpeqSbsaIXJkyqqkE="
+  },
+  "finalEditor": {
+    "playing": false,
+    "compiling": false,
+    "compilationFailed": false,
+    "consoleErrors": 0,
+    "sceneDirty": false
+  }
+}

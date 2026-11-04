@@ -1,11 +1,50 @@
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace TowTrouble.Tests
 {
     public class RecoveryRoadNetworkTests
     {
+        [Test]
+        public void ReconfiguringTheMapRebuildsRoutesAfterAnAuthoredApproachChanges()
+        {
+            var scene = EditorSceneManager.NewPreviewScene();
+            Mesh mesh = null;
+            try
+            {
+                var root = new GameObject("Disposable road environment", typeof(RecoveryMap));
+                SceneManager.MoveGameObjectToScene(root, scene);
+                var group = new GameObject("Road network - 24 recovery spurs");
+                group.transform.SetParent(root.transform);
+                var map = root.GetComponent<RecoveryMap>();
+                var route = new List<Vector3>();
+                Assert.That(map.TryGetRoadRoute(Vector3.zero, Vector3.forward * 20, route), Is.False);
+
+                var road = new GameObject("Road-0-garage-yard", typeof(MeshCollider));
+                road.transform.SetParent(group.transform);
+                mesh = new Mesh
+                {
+                    vertices = new[] { Vector3.left, Vector3.right,
+                        Vector3.forward * 20 + Vector3.left, Vector3.forward * 20 + Vector3.right },
+                    triangles = new[] { 0, 2, 1, 1, 2, 3 }
+                };
+                road.GetComponent<MeshCollider>().sharedMesh = mesh;
+                map.Configure(System.Array.Empty<RecoverySite>(), System.Array.Empty<RecoveryDropoff>(),
+                    new[] { Vector3.zero, Vector3.forward * 20 });
+
+                Assert.That(map.TryGetRoadRoute(Vector3.zero, Vector3.forward * 20, route), Is.True);
+                Assert.That(route, Is.EqualTo(new[] { Vector3.zero, Vector3.forward * 20 }));
+            }
+            finally
+            {
+                EditorSceneManager.ClosePreviewScene(scene);
+                if (mesh != null) Object.DestroyImmediate(mesh);
+            }
+        }
+
         [Test]
         public void SwitchbackKeepsDriversOnConnectedRoadsInEitherDirection()
         {

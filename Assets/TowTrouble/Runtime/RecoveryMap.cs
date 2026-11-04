@@ -47,7 +47,7 @@ namespace TowTrouble
                 return contracts;
             }
         }
-        public void Configure(RecoverySite[] values,RecoveryDropoff[] bays,Vector3[] roads){sites=values;deliveries=bays;roadCheckpoints=roads;contracts=null;}
+        public void Configure(RecoverySite[] values,RecoveryDropoff[] bays,Vector3[] roads){sites=values;deliveries=bays;roadCheckpoints=roads;contracts=null;roadNetwork=null;}
         public void SetImage(Texture2D value){mapImage=value;}
         public Vector3 NearestRoad(Vector3 position)
         {var best=position;float distance=float.MaxValue;foreach(var p in roadCheckpoints){float d=(p-position).sqrMagnitude;if(d<distance){distance=d;best=p;}}return best;}
