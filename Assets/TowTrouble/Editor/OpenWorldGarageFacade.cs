@@ -21,7 +21,12 @@ namespace TowTrouble.Editor
                 "Rolling tool cabinet", "Tool drawer handle", "Tire rack", "Hot Rod spare wheel",
                 "Ceiling work light", "Workshop task spot", "Workshop warm task light",
                 "Service bay floor stripe", "Service sign post", "Service information board",
-                "SERVICE\nTOW COUNTY", "Visible roof cross beam", "Roof brace", "GARAJ  [G]"
+                "SERVICE\nTOW COUNTY", "Visible roof cross beam", "Roof brace", "GARAJ  [G]",
+                "Rear wall", "Side wall", "Rear timber batten", "Siding batten",
+                "Pitched corrugated roof", "Roof seam", "Ridge cap", "Open bay pillar",
+                "Pillar safety base", "Front timber fascia", "Service canopy", "Canopy post",
+                "Tow Trouble enamel logo", "SERVICE  /  RECOVERY", "Bay lamp bracket", "Bay lamp lens",
+                "Workshop side window", "Window mullion", "Window surround", "Workshop brick foundation"
             };
             foreach (var child in workshop.Cast<Transform>().ToArray())
                 if (interior.Contains(child.name) ||
@@ -33,6 +38,13 @@ namespace TowTrouble.Editor
             var facade = PolishGroup(root, "Workshop exterior service frontage");
             facade.position = garage + Vector3.down * .075f;
             Undo.RegisterCreatedObjectUndo(facade.gameObject, "Build workshop exterior frontage");
+            var slab = workshop.Find("Workshop slab");
+            if (slab != null)
+            {
+                var renderer = slab.GetComponent<MeshRenderer>();
+                Undo.RecordObject(renderer, "Match workshop apron finish");
+                renderer.sharedMaterial = WorkshopFinish("Foundation");
+            }
 
             var blue = GarageFacadeMaterial("Workshop faded petrol blue");
             var metal = GarageFacadeMaterial("Workshop roof metal");
@@ -42,35 +54,10 @@ namespace TowTrouble.Editor
             var glass = GarageFacadeMaterial("Workshop blue window glass");
             var rubber = GarageFacadeMaterial("Workshop black rubber");
 
-            // Large simple doors read from the road. Smaller seams and handles are
-            // merged per material instead of submitting every strip independently.
-            var doors = PolishGroup(facade, "Closed exterior service bays");
-            using (var shapes = new GarageFacadeShapes())
-            {
-                foreach (float side in new[] { -1f, 1f })
-                {
-                    float x = side * 4.4f;
-                    shapes.Box(blue, new Vector3(x, 2.35f, 14.91f), new Vector3(8.4f, 4.7f, .18f));
-                    shapes.Box(metal, new Vector3(x, .23f, 14.78f), new Vector3(8.2f, .42f, .08f));
-                    for (int rib = 1; rib <= 7; rib++)
-                        shapes.Box(metal, new Vector3(x, .48f + rib * .5f, 14.8f), new Vector3(8.18f, .035f, .04f));
-                    foreach (float dx in new[] { -4.23f, 4.23f })
-                        shapes.Box(cream, new Vector3(x + dx, 2.4f, 14.71f), new Vector3(.14f, 4.8f, .24f));
-                    shapes.Box(cream, new Vector3(x, 4.77f, 14.71f), new Vector3(8.6f, .18f, .24f));
-                    // Opaque blue panes imply exterior windows without transparent
-                    // glass, indoor geometry or real-time interior lighting.
-                    for (int pane = 0; pane < 4; pane++)
-                    {
-                        float px = x - 2.85f + pane * 1.9f;
-                        shapes.Box(metal, new Vector3(px, 3.66f, 14.70f), new Vector3(1.55f, .68f, .08f));
-                        shapes.Box(glass, new Vector3(px, 3.66f, 14.65f), new Vector3(1.39f, .52f, .035f));
-                    }
-                    shapes.Box(cream, new Vector3(x, 1.05f, 14.69f), new Vector3(.72f, .075f, .07f));
-                    GarageFacadeCollider(doors, "Closed service door", new Vector3(x, 2.35f, 14.91f), new Vector3(8.4f, 4.7f, .2f));
-                }
-                shapes.Finish(doors, "Service doors");
-            }
-            ConfigureDetailLod(doors.gameObject, 900);
+            BuildPolishedWorkshopShell(facade);
+            BuildPolishedWorkshopDoors(facade);
+            BuildWorkshopIdentity(facade);
+            BuildWorkshopApronDetails(facade);
 
             // Supplies sit beyond both corners of the open apron, leaving a clear
             // silhouette around the customised car and all front/rear camera views.
@@ -188,6 +175,58 @@ namespace TowTrouble.Editor
             internal void Box(Material material, Vector3 center, Vector3 size)
             {
                 Add(material, cube, Matrix4x4.TRS(center, Quaternion.identity, size));
+            }
+
+            internal void Box(Material material, Vector3 center, Vector3 size, Quaternion rotation)
+            {
+                Add(material, cube, Matrix4x4.TRS(center, rotation, size));
+            }
+
+            internal void Beam(Material material, Vector3 start, Vector3 end, float width)
+            {
+                var delta=end-start;
+                if(delta.sqrMagnitude<.00001f)return;
+                Box(material,(start+end)*.5f,new Vector3(width,delta.magnitude,width),Quaternion.FromToRotation(Vector3.up,delta));
+            }
+
+            internal void BevelBox(Material material, Vector3 center, Vector3 size, float bevel)
+            {
+                var h=size*.5f;
+                float b=Mathf.Min(bevel,Mathf.Min(h.x,Mathf.Min(h.y,h.z))*.8f);
+                var inner=h-Vector3.one*b;
+                var vs=new List<Vector3>();var uv=new List<Vector2>();var tris=new List<int>();
+                void Face(params Vector3[] polygon)
+                {
+                    var normal=Vector3.Cross(polygon[1]-polygon[0],polygon[2]-polygon[0]);
+                    var midpoint=polygon.Aggregate(Vector3.zero,(a,p)=>a+p)/polygon.Length;
+                    if(Vector3.Dot(normal,midpoint)<0){Array.Reverse(polygon);normal=-normal;}
+                    int offset=vs.Count;
+                    int axis=Mathf.Abs(normal.x)>Mathf.Abs(normal.y)?0:1;
+                    if(Mathf.Abs(normal.z)>Mathf.Abs(normal[axis]))axis=2;
+                    int u=(axis+1)%3,v=(axis+2)%3;
+                    foreach(var p in polygon){vs.Add(p);uv.Add(new Vector2(p[u]/size[u]+.5f,p[v]/size[v]+.5f));}
+                    for(int i=1;i<polygon.Length-1;i++)tris.AddRange(new[]{offset,offset+i,offset+i+1});
+                }
+                foreach(int axis in new[]{0,1,2})foreach(int sign in new[]{-1,1})
+                {
+                    int u=(axis+1)%3,v=(axis+2)%3;
+                    var face=new Vector3[4];int i=0;
+                    foreach(var corner in new[]{new Vector2(-1,-1),new Vector2(1,-1),new Vector2(1,1),new Vector2(-1,1)})
+                    {var p=Vector3.zero;p[axis]=sign*h[axis];p[u]=corner.x*inner[u];p[v]=corner.y*inner[v];face[i++]=p;}
+                    Face(face);
+                }
+                for(int a=0;a<3;a++)for(int d=a+1;d<3;d++)foreach(int sa in new[]{-1,1})foreach(int sd in new[]{-1,1})
+                {
+                    int c=3-a-d;
+                    var p=Vector3.zero;p[a]=sa*h[a];p[d]=sd*inner[d];p[c]=-inner[c];
+                    var q=Vector3.zero;q[a]=sa*inner[a];q[d]=sd*h[d];q[c]=-inner[c];
+                    var r=q;r[c]=inner[c];var s=p;s[c]=inner[c];Face(p,q,r,s);
+                }
+                foreach(int x in new[]{-1,1})foreach(int y in new[]{-1,1})foreach(int z in new[]{-1,1})
+                    Face(new Vector3(x*h.x,y*inner.y,z*inner.z),new Vector3(x*inner.x,y*h.y,z*inner.z),new Vector3(x*inner.x,y*inner.y,z*h.z));
+                var mesh=new Mesh{name="Bevelled workshop detail"};
+                mesh.SetVertices(vs);mesh.SetUVs(0,uv);mesh.SetTriangles(tris,0);mesh.RecalculateNormals();mesh.RecalculateBounds();
+                temporary.Add(mesh);Add(material,mesh,Matrix4x4.TRS(center,Quaternion.identity,Vector3.one));
             }
 
             private void Add(Material material, Mesh mesh, Matrix4x4 matrix)
