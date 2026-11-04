@@ -46,7 +46,7 @@ namespace TowTrouble
             var local=RecoveryGarageView.OutsideBody(garageFocus+RecoveryGarageView.Direction(garageYaw,garageElevation)*garageDistance,garageBody);
             var focus=car.transform.TransformPoint(garageFocus);position=car.transform.TransformPoint(local);
             // Environment clipping uses the actual workpiece, independently of the UI look offset.
-            if(Physics.Linecast(focus,position,out var hit,1<<8,QueryTriggerInteraction.Ignore))position=hit.point+hit.normal*.45f;
+            if(CameraObstruction(focus,position,out var hit,QueryTriggerInteraction.Ignore))position=hit.point+hit.normal*.45f;
             RecoveryGarageView.Pose(focus,(position-focus).normalized,Vector3.Distance(position,focus),fov,aspect,out position,out look);
         }
     }

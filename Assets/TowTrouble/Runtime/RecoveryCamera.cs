@@ -13,7 +13,11 @@ namespace TowTrouble
         private Vector3 velocity;
         private float orbit, elevation=8f;
         private float extractionFraming;
-        public void Bind(DemoSession owner){session=owner;}
+        public void Bind(DemoSession owner)
+        {
+            session = owner;
+            if (isActiveAndEnabled) IndexCameraTrees();
+        }
         private void LateUpdate()
         {
             if(session==null)return;
@@ -64,12 +68,13 @@ namespace TowTrouble
                     followOffset=Vector3.Lerp(followOffset,wheelView,extractionFraming);
                 }
                 position=center+rotation*followOffset;look=center+Vector3.up*1.2f+car.forward;
-                if(Physics.Linecast(look,position,out var hit,1<<8))position=hit.point+hit.normal*.5f;
+                if(CameraObstruction(look,position,out var hit,QueryTriggerInteraction.UseGlobal))position=hit.point+hit.normal*.5f;
             }
             // Garage already smooths its focus, distance and circular path. A second
             // position lerp could cut through the car during a front/rear transition.
             transform.position=session.GarageOpen?position:Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
             transform.rotation=Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(look-transform.position),1-Mathf.Exp(-7*Time.unscaledDeltaTime));
+            UpdateTreeVisibility(lobby);
         }
     }
 }
