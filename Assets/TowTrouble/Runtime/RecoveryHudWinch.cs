@@ -70,7 +70,8 @@ namespace TowTrouble
             float tension = attached ? Mathf.Clamp01(world.Tension(slot)) : 0;
             var frame = attached ? world.Winch(slot) : default;
             bool operating = frame.State != WinchState.Holding && frame.State != WinchState.Disconnected;
-            bool visible = attached && (operating || tension > (cableGroup.activeSelf ? .01f : .025f));
+            bool quietDetach = attached && world.Drivers[slot].Speed < .45f;
+            bool visible = attached && (IntroduceWinch || quietDetach || operating || tension > (cableGroup.activeSelf ? .01f : .025f));
             if (visible != cableGroup.activeSelf) cableGroup.SetActive(visible);
             cableWarning = visible && tension >= (cableWarning ? CableWarningLoad - .035f : CableWarningLoad);
 
@@ -86,15 +87,20 @@ namespace TowTrouble
                         ? L("Oprește tragerea", "Ease off the throttle")
                         : L("Slăbește cablul", "Pay out cable");
                 }
-                else if (frame.State == WinchState.Stalled)
-                    hint = L("Repoziționează mașina", "Reposition your vehicle");
-                else if (tension > .025f && frame.State != WinchState.Minimum && frame.State != WinchState.Maximum)
-                    hint = ExtractionAdvice(world, P.language == "en");
+                else if (pullAdvice != null) hint = pullAdvice;
+                else if (IntroduceWinch)
+                { label = "Cable attached"; hint = "Hold " + (session.UsingGamepad ? "LB" : P.ReadKey(P.reelKey, Key.Q).ToString()) + " to reel in"; }
+                if (hint == null && quietDetach && !IntroduceWinch)
+                    hint = (session.UsingGamepad ? "A" : P.ReadKey(P.hookKey, Key.E).ToString()) + " · Detach cable";
+                if (UrgentAssistance) hint = null;
 
                 bool showHint = !string.IsNullOrEmpty(hint);
                 var panel = (RectTransform)cableGroup.transform;
                 float height = showHint ? 80f : 52f;
                 if (panel.sizeDelta.y != height) panel.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
+                float panelWidth = panel.rect.width;
+                cableText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, panelWidth - 56f);
+                actionText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, panelWidth - 24f);
                 if (cableText.text != label) cableText.text = label;
                 if (actionText.gameObject.activeSelf != showHint) actionText.gameObject.SetActive(showHint);
                 if (showHint && actionText.text != hint) actionText.text = hint;

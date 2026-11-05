@@ -92,6 +92,8 @@ namespace TowTrouble
             {
                 exploreHintSeen = true;
                 exploreHintUntil = 0f;
+                nextBoardReminder = Time.unscaledTime + 60f;
+                newRecoveryAvailable = false;
             }
             if (target == "Lobby") exploreHintSeen = false;
             focusName=page==target?EventSystem.current?.currentSelectedGameObject?.name:null;
@@ -256,6 +258,7 @@ namespace TowTrouble
             string data=L("Timp   ","Time   ")+TimeSpan.FromSeconds(w.Elapsed).ToString(@"mm\:ss")+"\n"+L("Resetări   ","Resets   ")+(w.Resets(0)+w.Resets(1))+"   •   "+L("Cabluri rupte   ","Broken cables   ")+w.Snaps;
             data+="\n"+L("Recompensă: ","Reward: ")+session.LastReward+" CR   •   "+L("Sold: ","Balance: ")+P.credits+" CR";
             data+="\n"+(w.Resets(0)+w.Resets(1)==0?"+ ":"— ")+L("Fără resetări","No resets")+"    "+(w.Snaps==0?"+ ":"— ")+L("Fără cablu rupt","No cable breaks");
+            if(w.FreeRoam && newRecoveryAvailable)data+="\nNew recovery available";
             if(w.Cooperative)data+="\n"+w.DriverName(0)+" / "+w.DriverName(1)+"  •  "+Mathf.RoundToInt(w.PullSeconds(0))+"s / "+Mathf.RoundToInt(w.PullSeconds(1))+"s "+L("în tracțiune","pulling");
             Text(card,data,36,270,648,160,21,Paper);
             if(w.FreeRoam)
@@ -312,6 +315,9 @@ namespace TowTrouble
         private void Update()
         {
             if(root==null)return;bool online=session.Connected&&session.LocalSlot>=0;var w=session.World;
+            if (online) ObserveAssistance(w, session.LocalSlot);
+            else { assistanceWorld = null; exploreHintWanted = hitchWanted = false; }
+            UpdateHintFades();
             if(pendingBinding!=null&&Keyboard.current!=null)
             {foreach(var key in Keyboard.current.allKeys)if(key.wasPressedThisFrame){if(key.keyCode!=Key.Escape)typeof(RecoveryProfile).GetField(pendingBinding).SetValue(P,key.keyCode.ToString());P.Save();pendingBinding=null;Show("Settings");return;}}
             if(page=="Title"&&!online)
@@ -325,7 +331,7 @@ namespace TowTrouble
             if(online)
             {
                 if (w.Phase == RecoveryPhase.Explore && previousPhase == RecoveryPhase.Complete)
-                    exploreHintSeen = false;
+                    { exploreHintSeen = false; recoveryIdleSince = Time.unscaledTime; }
                 if(w.Phase==RecoveryPhase.Complete&&!wasComplete)Show("Results");
                 else if(w.Phase!=previousPhase&&w.Phase!=RecoveryPhase.Complete){if(w.Phase!=RecoveryPhase.Lobby||(page!="Contracts"&&page!="Vehicles"))Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");}
                 if(session.MenuOpen&&page=="Gameplay"&&session.View!="Garage"&&session.View!="Board")Show("Pause");
@@ -364,16 +370,19 @@ namespace TowTrouble
                 marker.gameObject.SetActive(false);
                 cableGroup.SetActive(false);
                 partnerGroup.SetActive(false);
-                RefreshGarageGuidance(w, slot, Camera.main);
-                RefreshExploreHint(w, slot);
+                if (UrgentAssistance) ClearRecoveryGuidance();
+                else RefreshGarageGuidance(w, slot, Camera.main);
+                if (!RefreshUrgentHint(w, slot)) RefreshExploreHint(w, slot);
                 foreach (var tag in hudPlates) tag.gameObject.SetActive(false);
                 return;
             }
-            if (exploreHintPlate.gameObject.activeSelf) exploreHintPlate.gameObject.SetActive(false);
+            exploreHintWanted = false;
+            RefreshUrgentHint(w, slot);
             bool workingAtSite = UpdateApproach(w, slot);
             var camera=Camera.main;if(camera==null){ClearRecoveryGuidance();marker.gameObject.SetActive(false);return;}
             RefreshCrewTagText(w);
             RefreshRecoveryGuidance(w, slot, camera, workingAtSite);
+            if (UrgentAssistance) HideGuidanceNote();
         }
         private string ContractControl()=>session.UsingGamepad ? "L3" : P.ReadKey(P.boardKey, Key.Tab).ToString();
 
@@ -382,6 +391,8 @@ namespace TowTrouble
             exploreHintPlate = Node("Exploration action", gameplay.transform, 0, 0, 180, 38);
             exploreHintPlate.anchorMin = exploreHintPlate.anchorMax = new Vector2(.5f, 0f);
             exploreHintPlate.pivot = new Vector2(.5f, 0f);
+            exploreHintFade = exploreHintPlate.gameObject.AddComponent<CanvasGroup>();
+            exploreHintFade.alpha = 0f; exploreHintFade.blocksRaycasts = false;
             exploreHintPlate.anchoredPosition = new Vector2(0f, 24f);
             var background = exploreHintPlate.gameObject.AddComponent<UnityEngine.UI.Image>();
             background.color = Ink;
@@ -392,6 +403,8 @@ namespace TowTrouble
             exploreHintBinding.alignment = TextAlignmentOptions.Center;
             garagePrompt = Text(exploreHintPlate, "", 42, 0, 132, 38, 17, Paper, true);
             garagePrompt.alignment = TextAlignmentOptions.MidlineLeft;
+            exploreHintDetail = Text(exploreHintPlate, "", 8, 36, 420, 25, 13, Muted);
+            exploreHintDetail.alignment = TextAlignmentOptions.MidlineLeft;
             exploreHintPlate.gameObject.SetActive(false);
         }
 
@@ -401,7 +414,7 @@ namespace TowTrouble
             // attention at spawn. Its timer starts once the player drives away.
             if (waypointGarage)
             {
-                exploreHintPlate.gameObject.SetActive(false);
+                exploreHintWanted = false;
                 return;
             }
             if (!exploreHintSeen)
@@ -417,31 +430,42 @@ namespace TowTrouble
                 string key = session.UsingGamepad ? "X" : P.ReadKey(P.garageKey, Key.G).ToString();
                 ShowExploreHint(key, "Customize");
             }
-            else if (P.tutorial && Time.unscaledTime < exploreHintUntil)
-                ShowExploreHint(ContractControl(), L("Vezi contractele", "View contracts"));
-            else if (exploreHintPlate.gameObject.activeSelf)
-                exploreHintPlate.gameObject.SetActive(false);
+            else if (P.tutorial && (Time.unscaledTime < exploreHintUntil ||
+                Time.unscaledTime >= nextBoardReminder && Time.unscaledTime - recoveryIdleSince > 35f))
+            {
+                if (Time.unscaledTime >= nextBoardReminder)
+                { exploreHintUntil = Time.unscaledTime + 6f; nextBoardReminder = Time.unscaledTime + 60f; }
+                ShowExploreHint(ContractControl(), newRecoveryAvailable ? "New recovery available" : "Recoveries");
+            }
+            else exploreHintWanted = false;
         }
 
-        private void ShowExploreHint(string key, string action)
+        private void ShowExploreHint(string key, string action, string detail = null)
         {
-            if (!exploreHintPlate.gameObject.activeSelf) exploreHintPlate.gameObject.SetActive(true);
-            if (key == exploreHintBinding.text && action == garagePrompt.text && exploreHintTextScale == P.textScale)
-                return;
-
+            exploreHintWanted = true;
+            if (key == exploreHintBinding.text && action == garagePrompt.text &&
+                (detail ?? "") == exploreHintDetail.text && exploreHintTextScale == P.textScale) return;
             exploreHintTextScale = P.textScale;
             exploreHintBinding.text = key;
             garagePrompt.text = action;
-            float pad = 8f * exploreHintTextScale;
-            float keyHeight = 26f * exploreHintTextScale;
-            float height = 38f * exploreHintTextScale;
-            float keyWidth = Mathf.Max(keyHeight, Mathf.Ceil(exploreHintBinding.GetPreferredValues(key, 500f, height).x) + pad);
-            float labelWidth = Mathf.Ceil(garagePrompt.GetPreferredValues(action, 500f, height).x) + 3f;
-            exploreHintKeycap.anchoredPosition = new Vector2(pad, (keyHeight - height) * .5f);
+            exploreHintDetail.text = detail ?? "";
+            bool hasKey = !string.IsNullOrEmpty(key), hasDetail = !string.IsNullOrEmpty(detail);
+            exploreHintKeycap.gameObject.SetActive(hasKey);
+            exploreHintDetail.gameObject.SetActive(hasDetail);
+            float scale = Mathf.Max(1f, P.textScale), pad = 8f * scale;
+            float keyHeight = 26f * scale, lineHeight = 38f * scale;
+            float keyWidth = hasKey ? Mathf.Max(keyHeight, Mathf.Ceil(exploreHintBinding.GetPreferredValues(key).x) + pad) : 0f;
+            float labelWidth = Mathf.Ceil(garagePrompt.GetPreferredValues(action).x) + 3f;
+            float labelLeft = hasKey ? pad * 2 + keyWidth : pad;
+            float width = Mathf.Max(labelLeft + labelWidth + pad,
+                hasDetail ? exploreHintDetail.GetPreferredValues(detail).x + pad * 2 : 0f);
+            exploreHintKeycap.anchoredPosition = new Vector2(pad, -(lineHeight - keyHeight) * .5f);
             exploreHintKeycap.sizeDelta = exploreHintBinding.rectTransform.sizeDelta = new Vector2(keyWidth, keyHeight);
-            garagePrompt.rectTransform.anchoredPosition = new Vector2(pad * 2f + keyWidth, 0f);
-            garagePrompt.rectTransform.sizeDelta = new Vector2(labelWidth, height);
-            exploreHintPlate.sizeDelta = new Vector2(pad * 3f + keyWidth + labelWidth, height);
+            garagePrompt.rectTransform.anchoredPosition = new Vector2(labelLeft, 0f);
+            garagePrompt.rectTransform.sizeDelta = new Vector2(width - labelLeft - pad, lineHeight);
+            exploreHintDetail.rectTransform.anchoredPosition = new Vector2(pad, -lineHeight);
+            exploreHintDetail.rectTransform.sizeDelta = new Vector2(width - pad * 2, 25f * scale);
+            exploreHintPlate.sizeDelta = new Vector2(width, lineHeight + (hasDetail ? 27f * scale : 0f));
         }
 
         private void RefreshRollingSpeed(float metersPerSecond)

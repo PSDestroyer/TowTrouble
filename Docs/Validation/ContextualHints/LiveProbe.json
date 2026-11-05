@@ -1,0 +1,49 @@
+{
+  "complete": true,
+  "error": null,
+  "frames": 1151,
+  "controlledPlacements": true,
+  "actualKeyboardInput": true,
+  "checks": [
+    {
+      "label": "Before range: Move closer, no actionable E",
+      "pass": true,
+      "frame": 10200
+    },
+    {
+      "label": "Inside range: E attach at real hitch",
+      "pass": true,
+      "frame": 10281
+    },
+    {
+      "label": "Actual E connects and introduces Q/F",
+      "pass": true,
+      "frame": 10321
+    },
+    {
+      "label": "Actual Q teaches winch, intro is dismissed",
+      "pass": true,
+      "frame": 10403
+    },
+    {
+      "label": "Stationary attached vehicle offers E detach",
+      "pass": true,
+      "frame": 10446
+    },
+    {
+      "label": "Real overload identifies cable snap",
+      "pass": true,
+      "frame": 10489
+    },
+    {
+      "label": "Overturned car offers R with bonus explanation",
+      "pass": true,
+      "frame": 11147
+    },
+    {
+      "label": "Actual R resets and clears safe-point hint",
+      "pass": true,
+      "frame": 11229
+    }
+  ]
+}

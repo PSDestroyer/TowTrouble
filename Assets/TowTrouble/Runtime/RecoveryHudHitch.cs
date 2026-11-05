@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace TowTrouble
 {
@@ -10,15 +11,19 @@ namespace TowTrouble
         private TMP_Text hitchBinding;
         private TMP_Text hitchAction;
         private float hitchTextScale;
+        private RecoveryIconGraphic hitchPointIcon;
 
         private void BuildHitchPrompt()
         {
             hitchPrompt = Node("Hitch action", gameplay.transform, 0, 0, 180, 38);
             hitchPrompt.anchorMin = hitchPrompt.anchorMax = Vector2.zero;
             hitchPrompt.pivot = new Vector2(.5f, 0f);
+            hitchFade = hitchPrompt.gameObject.AddComponent<CanvasGroup>();
+            hitchFade.alpha = 0f; hitchFade.blocksRaycasts = false;
             var background = hitchPrompt.gameObject.AddComponent<UnityEngine.UI.Image>();
             background.color = Ink;
             background.raycastTarget = false;
+            hitchPointIcon = Icon(hitchPrompt, RecoveryIcon.Hook, 8, 6, 26, Amber);
             hitchKeycap = Panel(hitchPrompt, 8, 6, 26, 26, Paper);
             hitchBinding = Text(hitchKeycap, "", 0, 0, 26, 26, 16, Ink, true);
             hitchBinding.alignment = TextAlignmentOptions.Center;
@@ -29,21 +34,22 @@ namespace TowTrouble
 
         private void HideHitchPrompt()
         {
-            if (hitchPrompt != null && hitchPrompt.gameObject.activeSelf)
-                hitchPrompt.gameObject.SetActive(false);
+            hitchWanted = false;
         }
 
         private bool RefreshHitchPrompt(RecoveryWorld world, Camera camera, int slot)
         {
             if (camera == null || world == null || !world.HasContract || slot < 0 ||
-                slot >= world.Drivers.Length || world.Attached(slot))
+                slot >= world.Drivers.Length || world.Attached(slot) || UrgentAssistance)
             {
                 HideHitchPrompt();
                 return false;
             }
 
             Vector3 hitch = world.TowPoint;
-            if ((world.Drivers[slot].RearHitch - hitch).sqrMagnitude > RecoveryRules.AttachRange * RecoveryRules.AttachRange)
+            float distance = Vector3.Distance(world.Drivers[slot].RearHitch, hitch);
+            bool canAttach = distance <= RecoveryRules.AttachRange;
+            if (distance > 26f)
             {
                 HideHitchPrompt();
                 return false;
@@ -56,26 +62,29 @@ namespace TowTrouble
                 return false;
             }
 
-            string key = session.UsingGamepad ? "A" : P.hookKey;
-            string action = L("Prinde cablul", "Attach cable");
+            string key = canAttach ? session.UsingGamepad ? "A" : P.ReadKey(P.hookKey, Key.E).ToString() : "";
+            string action = canAttach ? "Attach cable" : "Move closer to attach";
+            hitchKeycap.gameObject.SetActive(canAttach);
+            hitchPointIcon.gameObject.SetActive(!canAttach);
             if (key != hitchBinding.text || action != hitchAction.text || hitchTextScale != P.textScale)
             {
                 hitchTextScale = P.textScale;
                 hitchBinding.text = key;
                 hitchAction.text = action;
-                float keyWidth = Mathf.Max(26f, hitchBinding.GetPreferredValues(key, 300, 50).x + 10f);
+                float keyWidth = Mathf.Max(26f * P.textScale, hitchBinding.GetPreferredValues(key, 300, 50).x + 10f);
                 float labelWidth = hitchAction.GetPreferredValues(action, 350, 50).x + 3f;
-                hitchKeycap.sizeDelta = hitchBinding.rectTransform.sizeDelta = new Vector2(keyWidth, 26);
+                float height = 38f * Mathf.Max(1, P.textScale);
+                hitchKeycap.sizeDelta = hitchBinding.rectTransform.sizeDelta = new Vector2(keyWidth, height - 12f);
                 hitchAction.rectTransform.anchoredPosition = new Vector2(16 + keyWidth, 0);
-                hitchAction.rectTransform.sizeDelta = new Vector2(labelWidth, 38);
-                hitchPrompt.sizeDelta = new Vector2(25 + keyWidth + labelWidth, 38);
+                hitchAction.rectTransform.sizeDelta = new Vector2(labelWidth, height);
+                hitchPrompt.sizeDelta = new Vector2(25 + keyWidth + labelWidth, height);
             }
 
             Vector2 size = ((RectTransform)gameplay.transform).rect.size;
             float margin = hitchPrompt.rect.width * .5f + 8f;
             hitchPrompt.anchoredPosition = new Vector2(Mathf.Clamp(viewport.x * size.x, margin, size.x - margin),
                 Mathf.Clamp(viewport.y * size.y + 8f, 10f, size.y - hitchPrompt.rect.height - 10f));
-            if (!hitchPrompt.gameObject.activeSelf) hitchPrompt.gameObject.SetActive(true);
+            hitchWanted = true;
             return true;
         }
     }

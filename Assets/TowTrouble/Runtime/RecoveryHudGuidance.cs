@@ -72,8 +72,8 @@ namespace TowTrouble
 
             bool insideDelivery = waypointDelivery && waypointWorld.Contract.ContainsDelivery(waypointWorld.Casualty.transform.position);
             // Once the recovered car is in place, delivery feedback takes priority over reattaching it.
-            bool prompting = !insideDelivery && RefreshHitchPrompt(waypointWorld, waypointCamera, waypointSlot);
-            if (insideDelivery) HideHitchPrompt();
+            bool prompting = !insideDelivery && !UrgentAssistance && RefreshHitchPrompt(waypointWorld, waypointCamera, waypointSlot);
+            if (insideDelivery || UrgentAssistance) HideHitchPrompt();
             bool workingCable = !waypointDelivery && waypointWorld.Attached(waypointSlot);
             if ((!waypointDelivery && prompting) || workingCable)
             {

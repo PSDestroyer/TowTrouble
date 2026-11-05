@@ -100,10 +100,17 @@ namespace TowTrouble
             else for(int row=0;row<visible.Count;row++)BuildBoardCard(pageRoot,contracts,visible[row],76,232+row*158,car.transform.position,null);
             if(visible.Count==0)Text(pageRoot,boardCompleted?L("Nicio recuperare finalizată încă.","No completed recoveries yet."):L("Toate recuperările sunt finalizate. Le poți rejuca în Finalizate.","All recoveries are completed. Replay them in Completed."),76,300,580,140,23,Muted,true);
             var detail=Panel(pageRoot,690,232,834,458);detail.name="Recovery details";
+            TMP_Text boardDescription = null;
             if(boardIndex>=0)
             {
             var selected=contracts[boardIndex];Text(detail,selected.TitleFor(P),30,17,774,50,33,Paper,true);ContractPhoto(detail,boardIndex,30,80,774,178);
-            Text(detail,selected.DescriptionFor(P)+"\n"+L("Teren: ","Terrain: ")+selected.TerrainFor(P)+"\n"+(selected.IsOpenWorld?RecoveryMap.Preparation(selected.Zone,P.language=="en"):L(new[]{"Echipamentul inițial este suficient.","Caută sprijin pe teren tare și trage spre drum.","Anvelope de noroi. Accelerează treptat."}[boardIndex],new[]{"Stock equipment is enough.","Find firm ground and pull towards the road.","Mud tires. Build throttle gently."}[boardIndex])),30,277,482,115,19,Paper);
+            boardDescription = Text(detail,selected.DescriptionFor(P)+"\n"+L("Teren: ","Terrain: ")+selected.TerrainFor(P),30,274,482,93,18,Paper);
+            var catalog = session.GarageCatalog;
+            if (catalog != null)
+            {
+                var equipment = GaragePerformance.Calculate(P.Build(P.vehicle), catalog);
+                Text(detail,RecoveryAssistance.Preparation(selected,equipment),30,369,482,40,14,Amber).name="Equipment recommendation";
+            }
             var reward=Panel(detail,542,277,262,111);reward.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Paper;Icon(reward,RecoveryIcon.Coins,15,17,26,Ink);Text(reward,L("RECOMPENSĂ","REWARD"),50,12,196,27,14,Ink,true);Text(reward,selected.Reward.ToString("N0")+" CR",17,45,228,50,35,Ink,true).alignment=TextAlignmentOptions.Center;
             Text(detail,L("BONUSURI  ·  +10% fără resetări  ·  +10% fără cablu rupt  ·  +5% prima recuperare","BONUSES  ·  +10% no resets  ·  +10% no cable breaks  ·  +5% first recovery"),30,411,774,30,14,Muted);
             }
@@ -114,6 +121,7 @@ namespace TowTrouble
             if(w.HasContract)Button(pageRoot,L("ABANDONEAZĂ","ABANDON"),690,805,290,()=>Confirm(L("Abandonezi intervenția fără recompensă?","Abandon this job without payment?"),()=>{session.FinishExplorationContract();Show("Gameplay");},"Board"),false,62).interactable=session.IsHost;
             Button(pageRoot,L("ÎNAPOI ÎN JOC","BACK TO DRIVING"),76,805,340,()=>{session.CloseOverlay();Show("Gameplay");},false,62);
             if(!session.IsHost)Text(pageRoot,L("Gazda acceptă intervenția pentru echipă.","The host accepts the recovery for the crew."),690,874,834,24,14,Muted);FitNewPanelText();
+            if (boardDescription != null) boardDescription.fontSizeMin = 14f;
         }
         private void ContractPhoto(Transform parent,int index,float x,float y,float width,float height)
         {
