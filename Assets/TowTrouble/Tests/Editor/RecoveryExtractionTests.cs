@@ -25,15 +25,29 @@ namespace TowTrouble.Tests
             Assert.That(model.Stage, Is.EqualTo(ExtractionStage.TakingLoad));
             Assert.That(model.StalledSeconds, Is.GreaterThan(1.5f));
         }
-        [Test] public void SidewaysReverseAndVerticalTravelDoNotClearTheExit()
+        [Test] public void AlternateGroundRoutesReleaseBothStandardAndTerrainAwareRecoveries()
         {
-            foreach (var displacement in new[] { Vector3.right * 20, Vector3.back * 20, Vector3.up * 20 })
+            foreach(bool terrainAware in new[]{false,true})
+            foreach(var direction in new[]{Vector3.forward,Vector3.back,Vector3.right,Vector3.left,new Vector3(-1,0,-1).normalized})
             {
-                var model = Model();
-                for (int i = 0; i < 100; i++) model.Step(displacement, Vector3.forward + displacement, Vector3.zero, displacement.normalized * 8000, 950, true, true, .02f);
-                Assert.That(model.Progress, Is.Zero);
-                Assert.That(model.IsFree, Is.False);
+                var config=Config();config.TerrainAware=terrainAware;var model=Model(config);
+                var displacement=direction*3;var pull=direction*8000;
+                for(int i=0;i<100;i++)model.Step(displacement,Vector3.forward+displacement,direction,pull,950,true,true,.02f);
+                Assert.That(model.Progress,Is.EqualTo(1));Assert.That(model.IsFree,Is.True);
+                Assert.That(model.Step(displacement,Vector3.forward+displacement,direction,pull,950,true,true,.02f),Is.EqualTo(Vector3.zero));
             }
+        }
+        [Test] public void VerticalTravelCannotReleaseTheCar()
+        {
+            var model=Model();var displacement=Vector3.up*20;
+            for(int i=0;i<100;i++)model.Step(displacement,Vector3.forward+displacement,Vector3.up,Vector3.forward*8000,950,true,true,.02f);
+            Assert.That(model.Progress,Is.Zero);Assert.That(model.IsFree,Is.False);
+        }
+        [Test] public void AlternateMotionIsReportedAsMovingRatherThanStalled()
+        {
+            var model=Model();var offset=Vector3.back*.2f;
+            model.Step(offset,Vector3.forward+offset,Vector3.back,Vector3.back*8000,950,true,true,.02f);
+            Assert.That(model.Stage,Is.EqualTo(ExtractionStage.Moving));Assert.That(model.StalledSeconds,Is.Zero);
         }
         [Test] public void RotatingTheWheelAcrossTheExitWithoutMovingTheBodyDoesNotRelease()
         {

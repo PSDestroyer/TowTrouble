@@ -52,13 +52,18 @@ namespace TowTrouble
             var planarPull = Flat(pull);
             var planarVelocity = Flat(velocity);
             float previousProgress = Progress;
-            float travel = Mathf.Min(Vector3.Dot(bodyPosition - origin, exit), Vector3.Dot(wheelPosition - wheelOrigin, exit));
+            var bodyTravel = Flat(bodyPosition - origin);
+            var wheelTravel = Flat(wheelPosition - wheelOrigin);
+            // The preferred exit affects effort, not whether an alternate route can succeed.
+            float travel = Mathf.Min(bodyTravel.magnitude, wheelTravel.magnitude);
+            var outward = bodyTravel.sqrMagnitude > .001f ? bodyTravel.normalized
+                : planarPull.sqrMagnitude > .001f ? planarPull.normalized : exit;
             Progress = Mathf.Clamp01(travel / Mathf.Max(.5f, settings.Travel));
             float effort = planarPull.magnitude;
             Alignment = effort > 100 ? Vector3.Dot(planarPull / effort, exit) : 1;
             loaded |= canRecover && effort > 100;
 
-            // A sideways detour or a jump cannot satisfy the exit plane/contact test.
+            // Real movement of both chassis and wheel plus supported contact is required.
             bool clear = canRecover && loaded && Progress >= 1 && supported;
             clearHold = clear ? clearHold + deltaTime : 0;
             // Deep pockets retain their load until the last part of the actual exit.
@@ -72,13 +77,13 @@ namespace TowTrouble
 
             if (Stage != ExtractionStage.Releasing)
             {
-                float forwardSpeed = Vector3.Dot(planarVelocity, exit);
-                if (canRecover && effort > 100 && (settings.TerrainAware ? forwardSpeed > .18f : effort > breakaway || forwardSpeed > .18f)) moving = true;
+                float outwardSpeed = Vector3.Dot(planarVelocity, outward);
+                if (canRecover && effort > 100 && (settings.TerrainAware ? outwardSpeed > .18f : effort > breakaway || outwardSpeed > .18f)) moving = true;
                 else if (planarVelocity.magnitude < .04f) moving = false;
                 Stage = !canRecover || effort <= 100 ? ExtractionStage.Blocked
-                    : forwardSpeed > .05f || Progress - previousProgress > .01f * deltaTime
+                    : outwardSpeed > .05f || Progress - previousProgress > .01f * deltaTime
                         ? ExtractionStage.Moving : ExtractionStage.TakingLoad;
-                StalledSeconds = canRecover && effort > 100 && forwardSpeed < .05f
+                StalledSeconds = canRecover && effort > 100 && outwardSpeed < .05f
                     ? StalledSeconds + deltaTime : 0;
                 if (clear && clearHold >= Mathf.Max(0, settings.ClearHold))
                 {

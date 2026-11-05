@@ -84,6 +84,8 @@ namespace TowTrouble.Editor
             BuildGarageCourtWear(root, world.GaragePosition);
             BuildGarageLivedIn(root, world.GaragePosition);
             RefreshGarageTrackSurfaces(world.GaragePosition);
+            BuildNaturalReceivingPlaces(world);
+            BuildNaturalGarageParking(root, world.GaragePosition);
         }
 
         private static void GradeGarageEastApproach(Vector3 garage)

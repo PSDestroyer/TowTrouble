@@ -54,7 +54,8 @@ namespace TowTrouble
         public Vector3 GaragePosition=>garagePosition;
         public bool HasContract=>Phase==RecoveryPhase.HookUp||Phase==RecoveryPhase.Recover||Phase==RecoveryPhase.Deliver;
         public void ConfigureGarage(Vector3 position){garagePosition=position;}
-        public bool AtGarage(int slot)=>slot>=0&&slot<2&&Vector3.Distance(new Vector3(drivers[slot].transform.position.x,0,drivers[slot].transform.position.z),new Vector3(garagePosition.x,0,garagePosition.z))<8&&drivers[slot].Speed<1.2f&&Mathf.Abs(drivers[slot].transform.position.y-garagePosition.y)<3&&!Attached(slot)&&Phase==RecoveryPhase.Explore;
+        public bool InGarageArea(int slot)=>slot>=0&&slot<2&&Vector3.Distance(new Vector3(drivers[slot].transform.position.x,0,drivers[slot].transform.position.z),new Vector3(garagePosition.x,0,garagePosition.z))<8&&Mathf.Abs(drivers[slot].transform.position.y-garagePosition.y)<3;
+        public bool AtGarage(int slot)=>InGarageArea(slot)&&drivers[slot].Speed<1.2f&&!Attached(slot)&&Phase==RecoveryPhase.Explore;
         private readonly SyncVar<int> contractId=new SyncVar<int>();
         private readonly SyncVar<int> paint0=new SyncVar<int>();
         private readonly SyncVar<int> paint1=new SyncVar<int>();

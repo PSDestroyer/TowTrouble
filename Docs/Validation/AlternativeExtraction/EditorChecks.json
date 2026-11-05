@@ -1,0 +1,230 @@
+{
+  "tests": [
+    {
+      "test": "ReleaseParticlesRespectDisabledEffectsAndTheParticleBudget",
+      "pass": true
+    },
+    {
+      "test": "HoldingThrottleWithoutDisplacementNeverReleasesTheCar",
+      "pass": true
+    },
+    {
+      "test": "AlternateGroundRoutesReleaseBothStandardAndTerrainAwareRecoveries",
+      "pass": true
+    },
+    {
+      "test": "VerticalTravelCannotReleaseTheCar",
+      "pass": true
+    },
+    {
+      "test": "AlternateMotionIsReportedAsMovingRatherThanStalled",
+      "pass": true
+    },
+    {
+      "test": "RotatingTheWheelAcrossTheExitWithoutMovingTheBodyDoesNotRelease",
+      "pass": true
+    },
+    {
+      "test": "BodyCrossingBeforeTheBlockedWheelDoesNotRelease",
+      "pass": true
+    },
+    {
+      "test": "AirborneExitDoesNotReleaseOrApplyGroundResistance",
+      "pass": true
+    },
+    {
+      "test": "ForwardExitRequiresContactHoldThenSmoothlyRemovesResistance",
+      "pass": true
+    },
+    {
+      "test": "LostSupportRestartsTheContactHold",
+      "pass": true
+    },
+    {
+      "test": "BeforeConnectionCrossingThePlaneCannotCompleteRecovery",
+      "pass": true
+    },
+    {
+      "test": "ResistanceAtRestNeverPullsTheCarBackOrExceedsTheAppliedPull",
+      "pass": true
+    },
+    {
+      "test": "PoorAngleNeedsMoreForceThanAnAlignedPull",
+      "pass": true
+    },
+    {
+      "test": "AStrongPullWithoutMovementDoesNotClaimTheCarIsMoving",
+      "pass": true
+    },
+    {
+      "test": "AReleasedCarStaysFreeWhenTurningOrReversingAndANewRunResets",
+      "pass": true
+    },
+    {
+      "test": "PartialProgressIsPositionBasedAndSurvivesDetaching",
+      "pass": true
+    },
+    {
+      "test": "CableTakesLoadGraduallyButSlackDropsForceImmediately",
+      "pass": true
+    },
+    {
+      "test": "AdviceAppearsOnlyWhenThePlayerCanCorrectThePull",
+      "pass": true
+    },
+    {
+      "test": "FallenTreeMustMoveAsideBeforeCarRecovery",
+      "pass": true
+    },
+    {
+      "test": "OpenWorldExtractionAcceptsAlternativeGroundRoutes",
+      "pass": true
+    },
+    {
+      "test": "FallenTreeResetRestoresItsAuthoredPoseWithoutSimulation",
+      "pass": true
+    },
+    {
+      "test": "ExtractionWorksAcrossTheWorldAxes",
+      "pass": true
+    },
+    {
+      "test": "DeliveryRejectsWrongAltitudeAndAllowsElevatedBays",
+      "pass": true
+    },
+    {
+      "test": "WorldPayoutPreservesTutorialProgressAndDeduplicates",
+      "pass": true
+    },
+    {
+      "test": "TierControlsRewardIndependentlyOfMapIndex",
+      "pass": true
+    },
+    {
+      "test": "SpecializedTiresKeepTheirTradeoffs",
+      "pass": true
+    }
+  ],
+  "jobs": [
+    {
+      "Title": "Poiana atelierului",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Șleaurile din pădure",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Groapa cu noroi",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Râpa pădurarului",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Malul de pescuit",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Mâlul de lângă stuf",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Bolovanii de pe mal",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Golful izolat",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Curba cu pietriș",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Alunecare sub drumul de munte",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Râpa de sub drum",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Ieșire de pe serpentină",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Prima limbă de zăpadă",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Serpentina înghețată",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Șanțul din viscol",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Platoul de sub vârf",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Intrarea în nisip",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Faleza joasă",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Nisipul umed",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Duna de pe mal",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Vadul uscat",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Dunele adânci",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Taluzul canionului",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    },
+    {
+      "Title": "Versantul de nisip",
+      "oppositeFallback": true,
+      "oppositeArcade": true
+    }
+  ]
+}

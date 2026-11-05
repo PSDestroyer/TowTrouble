@@ -359,11 +359,12 @@ namespace TowTrouble
             crew.text = w.Cooperative && w.Occupied < 2 ? L("Coechipier deconectat", "Crewmate disconnected") : "";
             if (w.Phase == RecoveryPhase.Explore)
             {
-                ClearRecoveryGuidance();
+                if (!waypointGarage) ClearRecoveryGuidance();
                 objective.text = "";
                 marker.gameObject.SetActive(false);
                 cableGroup.SetActive(false);
                 partnerGroup.SetActive(false);
+                RefreshGarageGuidance(w, slot, Camera.main);
                 RefreshExploreHint(w, slot);
                 foreach (var tag in hudPlates) tag.gameObject.SetActive(false);
                 return;
@@ -396,19 +397,28 @@ namespace TowTrouble
 
         private void RefreshExploreHint(RecoveryWorld world, int slot)
         {
+            // Do not spend the first-time contracts hint while the garage owns
+            // attention at spawn. Its timer starts once the player drives away.
+            if (waypointGarage)
+            {
+                exploreHintPlate.gameObject.SetActive(false);
+                return;
+            }
             if (!exploreHintSeen)
             {
                 exploreHintSeen = true;
                 exploreHintUntil = Time.unscaledTime + 6f;
             }
 
-            if (P.tutorial && Time.unscaledTime < exploreHintUntil)
-                ShowExploreHint(ContractControl(), L("Vezi contractele", "View contracts"));
-            else if (world.AtGarage(slot))
+            // The garage's contextual key is at the parking place, not duplicated
+            // here or hidden behind the initial contracts tutorial.
+            if (session.CanOpenGarage)
             {
                 string key = session.UsingGamepad ? "X" : P.ReadKey(P.garageKey, Key.G).ToString();
-                ShowExploreHint(key, L("Intră în garaj", "Enter garage"));
+                ShowExploreHint(key, "Customize");
             }
+            else if (P.tutorial && Time.unscaledTime < exploreHintUntil)
+                ShowExploreHint(ContractControl(), L("Vezi contractele", "View contracts"));
             else if (exploreHintPlate.gameObject.activeSelf)
                 exploreHintPlate.gameObject.SetActive(false);
         }

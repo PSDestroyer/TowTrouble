@@ -29,13 +29,14 @@ namespace TowTrouble.Editor
             var forest = BuildSuntailExteriorPrefab("Forest depot lodge", "Assets/Suntail Village/Prefabs/Buildings/House_1.prefab", true);
             var lake = BuildSuntailExteriorPrefab("Lakeside service house", "Assets/Suntail Village/Prefabs/Buildings/House_6.prefab", true);
             var canopy = BuildSuntailExteriorPrefab("Open timber canopy", "Assets/Suntail Village/Prefabs/Building Modules/Decor/Wooden_Canopy_1.prefab", false);
-            var map = UnityEngine.Object.FindFirstObjectByType<RecoveryMap>();
-            var forestBay = map.Deliveries.Single(d => d.Id == "B");
-            var lakeBay = map.Deliveries.Single(d => d.Id == "E");
-            PlaceSuntailExterior(forest, forestBay.Position + new Vector3(-32, 0, 20), forestBay.Position, group, .88f);
-            var lakeInstance = PlaceSuntailExterior(lake, lakeBay.Position + new Vector3(28, 0, 20), lakeBay.Position, group, .88f);
+            // Buildings belong to their surveyed roadside plots. Receiving bays
+            // can move off-road without shifting the buildings on every rebuild.
+            var forestPlot = Ground(nodes["B"].Point);
+            var lakePlot = Ground(nodes["E"].Point);
+            PlaceSuntailExterior(forest, forestPlot + new Vector3(-32, 0, 20), forestPlot, group, .88f);
+            var lakeInstance = PlaceSuntailExterior(lake, lakePlot + new Vector3(28, 0, 20), lakePlot, group, .88f);
             var canopyReference = lakeInstance.transform.position + lakeInstance.transform.right * 13;
-            PlaceSuntailExterior(canopy, canopyReference, lakeBay.Position, group, 1.1f);
+            PlaceSuntailExterior(canopy, canopyReference, lakePlot, group, 1.1f);
             PaintSuntailExteriorGround(root);
             Debug.Log("[TowTrouble] Added exactly three Suntail exterior landmarks: two closed service buildings and one open canopy; no interiors, furniture, lights or behaviours.");
         }

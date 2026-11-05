@@ -11,6 +11,24 @@ namespace TowTrouble
         private RecoveryIconGraphic waypointIcon, waypointArrow;
         private float waypointScale;
         private bool waypointHasHeight;
+        private bool waypointHasInstruction;
+        private string waypointWidthSample;
+
+        public static string DeliveryWaypointInstruction(RecoveryPhase phase, RecoveryContract contract,
+            Vector3 driverPosition, Vector3 recoveredPosition, float recoveredSpeed)
+        {
+            if (phase != RecoveryPhase.Deliver || contract == null) return null;
+            if (contract.ContainsDelivery(recoveredPosition))
+            {
+                // Match RecoveryWorld's hold condition. Completion remains authoritative;
+                // do not predict its 1.2-second hold with a second UI timer.
+                return recoveredSpeed < 2f ? "Delivering…" : "Stop to deliver";
+            }
+
+            Vector3 approach = contract.Delivery - driverPosition;
+            return approach.sqrMagnitude < 24f * 24f && Mathf.Abs(approach.y) < 6f
+                ? "Bring recovered car here" : null;
+        }
 
         private void BuildWaypoint()
         {
@@ -63,23 +81,26 @@ namespace TowTrouble
                 guidanceNote.gameObject.SetActive(false);
         }
 
-        private void SetWaypointContent(string place, string distance, bool delivery, bool showHeight)
+        private void SetWaypointContent(string place, string distance, bool delivery, bool showHeight, bool instruction,
+            RecoveryIcon? icon = null, string captionSample = null)
         {
-            var kind = delivery ? RecoveryIcon.FinishFlag : RecoveryIcon.WaypointCar;
+            var kind = icon ?? (delivery ? RecoveryIcon.FinishFlag : RecoveryIcon.WaypointCar);
             if (waypointIcon.Kind != kind)
             {
                 waypointIcon.Kind = kind;
                 waypointIcon.SetVerticesDirty();
             }
             waypointIcon.color = delivery ? DeliveryTint : Amber;
-            if (waypointPlace.text != place || waypointHasHeight != showHeight || !Mathf.Approximately(P.textScale, waypointScale))
+            if (waypointPlace.text != place || waypointHasHeight != showHeight || waypointHasInstruction != instruction || waypointWidthSample != captionSample || !Mathf.Approximately(P.textScale, waypointScale))
             {
                 waypointPlace.text = place;
                 waypointHasHeight = showHeight;
+                waypointHasInstruction = instruction;
                 waypointScale = P.textScale;
+                waypointWidthSample = captionSample;
                 float scale = Mathf.Max(1f, waypointScale);
                 // Reserve enough room for a stable three/four digit reading as the car moves.
-                string sample = showHeight ? L("999 m  <size=75%>·  199 m mai sus</size>", "999 m  <size=75%>·  199 m higher</size>") : "1,000 m";
+                string sample = captionSample ?? (instruction ? "Bring recovered car here" : showHeight ? L("999 m  <size=75%>·  199 m mai sus</size>", "999 m  <size=75%>·  199 m higher</size>") : "1,000 m");
                 float labelWidth = Mathf.Max(waypointPlace.GetPreferredValues(place).x, waypointCaption.GetPreferredValues(sample).x);
                 labelWidth = Mathf.Clamp(Mathf.Ceil(labelWidth) + 4f, 82f, 275f * scale);
                 float width = 46f + labelWidth + 34f, height = 54f * scale;

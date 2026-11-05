@@ -70,7 +70,7 @@ namespace TowTrouble.Editor
         }
         private static void FitApproachDelivery(string id,Vector3 center,Vector3 refuge,Transform parent)
         {
-            var marker=environment.GetComponentsInChildren<Transform>().First(t=>t.name.StartsWith("Dropoff "+id+" -"));
+            var marker=environment.GetComponentsInChildren<Transform>(true).First(t=>t.name.StartsWith("Dropoff "+id+" -"));
             Undo.RecordObject(marker,"Move mountain delivery marker");
             foreach(var t in marker.Cast<Transform>().ToArray())Undo.DestroyObjectImmediate(t.gameObject);
             marker.position=Ground(center);center=marker.position;

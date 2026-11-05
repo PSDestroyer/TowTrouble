@@ -19,6 +19,7 @@ namespace TowTrouble
         private string participatingRun;
         public RecoveryGarageCatalog GarageCatalog=>world.Drivers[0].GetComponent<RecoveryCustomization>()?.Catalog;
         public bool GarageOpen=>View=="Garage";
+        public bool CanOpenGarage=>Connected&&world.FreeRoam&&!menuOpen&&world.AtGarage(LocalSlot)&&GarageCatalog!=null;
         public GarageSlot GarageFocusSlot {get;private set;}=GarageSlot.Assembly;
         public string GarageFocusPart {get;private set;}
         public void FocusGarage(GarageSlot slot,string partId){GarageFocusSlot=slot;GarageFocusPart=partId;}
@@ -148,7 +149,7 @@ namespace TowTrouble
         }
         public void OpenGarage()
         {
-            if(!Connected||!world.FreeRoam||menuOpen||!world.AtGarage(LocalSlot)||GarageCatalog==null)return;
+            if(!CanOpenGarage)return;
             world.SetGarageState(true);world.Drive(Vector2.zero,true,false);menuOpen=true;View="Garage";if(Solo)Time.timeScale=0;
         }
         public void PreviewGarage(RecoveryBuild build)

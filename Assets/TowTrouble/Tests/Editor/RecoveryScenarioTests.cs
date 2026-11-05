@@ -11,11 +11,11 @@ namespace TowTrouble.Tests
    Assert.That(RecoveryTowObstacle.IsClear(new Vector3(5,0,3),Vector3.right),Is.True);
    Assert.That(RecoveryTowObstacle.IsClear(new Vector3(-5,0,3),Vector3.right),Is.True);
   }
-  [Test] public void OpenWorldExtractionRequiresTheAuthoredExit()
+  [Test] public void OpenWorldExtractionAcceptsAlternativeGroundRoutes()
   {
    var c=new RecoveryContract(1,0,"","","","",Vector3.zero,Vector3.zero,8,0){IsOpenWorld=true,ExitDirection=Vector3.forward};
-   Assert.That(c.IsExtracted(Vector3.right*9),Is.False);Assert.That(c.IsExtracted(Vector3.back*9),Is.False);
-   Assert.That(c.IsExtracted(Vector3.forward*7),Is.False);Assert.That(c.IsExtracted(new Vector3(3,0,9)),Is.True);
+   Assert.That(c.IsExtracted(Vector3.right*9),Is.True);Assert.That(c.IsExtracted(Vector3.back*9),Is.True);
+   Assert.That(c.IsExtracted(Vector3.forward*7),Is.False);Assert.That(c.IsExtracted(Vector3.up*20),Is.False);Assert.That(c.IsExtracted(new Vector3(3,0,9)),Is.True);
    var tutorial=RecoveryContract.All[0];Assert.That(tutorial.IsExtracted(new Vector3(0,0,26)),Is.True);
   }
   [Test] public void FallenTreeResetRestoresItsAuthoredPoseWithoutSimulation()

@@ -34,7 +34,7 @@ namespace TowTrouble.Editor
             var timber=AssetDatabase.LoadAssetAtPath<Material>(VisualRoot+"/Workshop aged timber.mat");
             foreach(var bay in plan.Deliveries)
             {
-                var group=environment.GetComponentsInChildren<Transform>().First(t=>t.name.StartsWith("Dropoff "+bay.Id+" -"));var origin=nodes[bay.Node].Point;
+                var group=environment.GetComponentsInChildren<Transform>(true).First(t=>t.name.StartsWith("Dropoff "+bay.Id+" -"));var origin=nodes[bay.Node].Point;
                 var p=SafeSignPoint(origin,Vector3.back,19,3);var facing=Flat(origin-p).normalized;var right=Vector3.Cross(Vector3.up,facing);
                 var board=group.Find("Destination sign");board.position=p+Vector3.up*2.5f;board.rotation=Quaternion.LookRotation(-facing);board.localScale=new Vector3(5.7f,1.35f,.2f);
                 var text=DestinationCaption(group);text.transform.position=board.position+facing*.13f;text.transform.rotation=board.rotation;FitDestinationCaption(text, board);

@@ -41,14 +41,15 @@ namespace TowTrouble
             ClearRecoveryGuidance();
         }
 
-        private void TrackWaypoint(RecoveryWorld world, Camera camera, int slot, bool atHitch, bool delivery, string place, string distance, bool showHeight)
+        private void TrackWaypoint(RecoveryWorld world, Camera camera, int slot, bool atHitch, bool delivery, string place, string distance, bool showHeight, bool instruction)
         {
+            waypointGarage = false;
             waypointWorld = world;
             waypointCamera = camera;
             waypointSlot = slot;
             waypointAtHitch = atHitch;
             waypointDelivery = delivery;
-            SetWaypointContent(place, distance, delivery, showHeight);
+            SetWaypointContent(place, distance, delivery, showHeight, instruction);
         }
 
         // Project after the follow camera has moved. Captions and routing stay on the slower HUD clock.
@@ -56,15 +57,25 @@ namespace TowTrouble
         {
             PositionCrewTags(waypointWorld, waypointCamera);
             if (waypointWorld == null || gameplay == null || !gameplay.activeInHierarchy) return;
+            if (waypointGarage)
+            {
+                if (waypointCamera == null || waypointWorld.Phase != RecoveryPhase.Explore || session.MenuOpen)
+                    ClearRecoveryGuidance();
+                else ProjectWaypoint(waypointCamera, waypointWorld.GaragePosition + Vector3.up * 3f, false);
+                return;
+            }
             if (waypointCamera == null || !waypointWorld.HasContract)
             {
                 ClearRecoveryGuidance();
                 return;
             }
 
-            bool prompting = RefreshHitchPrompt(waypointWorld, waypointCamera, waypointSlot);
+            bool insideDelivery = waypointDelivery && waypointWorld.Contract.ContainsDelivery(waypointWorld.Casualty.transform.position);
+            // Once the recovered car is in place, delivery feedback takes priority over reattaching it.
+            bool prompting = !insideDelivery && RefreshHitchPrompt(waypointWorld, waypointCamera, waypointSlot);
+            if (insideDelivery) HideHitchPrompt();
             bool workingCable = !waypointDelivery && waypointWorld.Attached(waypointSlot);
-            if (prompting || workingCable)
+            if ((!waypointDelivery && prompting) || workingCable)
             {
                 if (marker.gameObject.activeSelf) marker.gameObject.SetActive(false);
                 localCaptionVisible = false;
@@ -96,6 +107,7 @@ namespace TowTrouble
             if (waypointWorld != null && marker != null && marker.gameObject.activeSelf) marker.gameObject.SetActive(false);
             waypointWorld = null;
             waypointCamera = null;
+            waypointGarage = false;
             hasExtractionCaption = false;
             localCaptionVisible = false;
             guidanceRun = null;
@@ -158,6 +170,8 @@ namespace TowTrouble
             bool delivery = world.Phase == RecoveryPhase.Deliver;
             var contract = world.Contract;
             var driver = world.Drivers[slot].transform;
+            string deliveryInstruction = DeliveryWaypointInstruction(world.Phase, contract, driver.position,
+                world.Casualty.transform.position, world.Casualty.Speed);
             Vector3 target = delivery ? contract.Delivery : world.TowTargetPosition;
             string place = delivery
                 ? (contract.IsOpenWorld ? L(contract.DeliveryName, contract.DeliveryEnglish) : L("Zona de predare", "Drop-off area"))
@@ -192,7 +206,7 @@ namespace TowTrouble
                 if (delivery && now < releaseCueUntil) note = L("Mașină eliberată", "Vehicle freed");
                 else if (!delivery && now < acceptedUntil) note = L("Intervenție acceptată", "Recovery accepted");
             }
-            SetGuidanceNote(note);
+            SetGuidanceNote(deliveryInstruction == null ? note : null);
 
             Vector3 delta = target - driver.position;
             float distance = delta.magnitude;
@@ -205,7 +219,12 @@ namespace TowTrouble
                 metric += "  <size=75%>·  " + Mathf.RoundToInt(Mathf.Abs(delta.y)) + " m " + level + "</size>";
             }
             if (workingAtSite && world.ClearingObstacle) place = L("Copac căzut", "Fallen tree");
-            TrackWaypoint(world, camera, slot, workingAtSite, delivery, place, metric, showHeight);
+            if (deliveryInstruction != null)
+            {
+                metric = deliveryInstruction;
+                showHeight = false;
+            }
+            TrackWaypoint(world, camera, slot, workingAtSite, delivery, place, metric, showHeight, deliveryInstruction != null);
         }
 
         private void SampleRoad(RecoveryWorld world, Vector3 position, Vector3 target, bool delivery)
