@@ -1,194 +1,91 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Newtonsoft.Json;
-using _Assets._PlatformSpeciffics.Switch;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 namespace HalvaStudio.Save
 {
-    public class SaveManager : Singleton<SaveManager>
+    // The imported SaveManager is the single persistence entry point, on desktop and Switch.
+    public sealed class SaveManager : MonoBehaviour
     {
-        public SaveData saveData;
-        [SerializeField] private SaveData defaultSaveData;
-
-        public override void AwakeInit()
+        private static SaveManager instance;
+        private static SaveStore store;
+        private static readonly Dictionary<string, SaveStore> isolated = new Dictionary<string, SaveStore>();
+        private double nextWrite;
+        private string reportedError;
+        public static string SavePath => Path.Combine(Application.persistentDataPath, "save.json");
+        public SaveData saveData => Store.Data;
+        public static SaveStore Store
         {
-            Debug.Log("Initializing SaveManager...");
-            Load();
-        }
-
-        private void Load()
-        {
-            if (saveData == null)
+            get
             {
-                saveData = new SaveData();
-            }
-
-#if UNITY_EDITOR
-            saveData = (SaveData)LoadEditor(typeof(SaveData));
-#else
-            saveData = (SaveData)LoadSwitch(typeof(SaveData));
-#endif
-        }
-
-        public void Save(bool forceSave = false)
-        {
-            Debug.Log("Saving data...");
-#if UNITY_EDITOR
-            SaveEditor(saveData);
-#else
-            SaveSwitch(saveData, forceSave);
-#endif
-        }
-
-        #region Editor
-
-        public void SaveEditor(object saveObject)
-        {
-            try
-            {
-                string jsonFile = JsonConvert.SerializeObject(saveObject);
-                string savePath = GetSavePath();
-
-                File.WriteAllText(savePath, jsonFile);
-
-                Debug.Log("Save completed.");
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error saving data: " + e.Message);
-            }
-        }
-
-        private string GetSavePath()
-        {
-            string savePath = Path.Combine(Application.persistentDataPath, "save.json");
-            Debug.Log("Save Path: " + savePath);
-            return savePath;
-        }
-
-        public object LoadEditor(System.Type objectType)
-        {
-            string savePath = GetSavePath();
-            object returnObject = null;
-
-            if (File.Exists(savePath))
-            {
-                try
+                if (store == null)
                 {
-                    string jsonFile = File.ReadAllText(savePath);
-                    returnObject = JsonConvert.DeserializeObject(jsonFile, objectType);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError("Error loading data: " + e.Message);
-                    returnObject = defaultSaveData ?? new SaveData();
-                }
-            }
-            else
-            {
-                Debug.LogError("Save file not found. Using default data.");
-                returnObject = defaultSaveData ?? new SaveData();
-            }
-
-            return returnObject;
-        }
-
-        #endregion
 #if UNITY_SWITCH && !UNITY_EDITOR
-        #region Switch
-
-        public void SaveSwitch(object saveObject, bool forceSave = false)
-        {
-            try
-            {
-                string jsonFile = JsonConvert.SerializeObject(saveObject);
-                NintendoSave.Save(jsonFile, forceSave);
-                Debug.Log("Save completed.");
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error saving data: " + e.Message);
-            }
-        }
-
-        public object LoadSwitch(System.Type objectType)
-        {
-            bool successful = false;
-            string jsonFile = NintendoSave.Load(ref successful);
-
-            if (jsonFile == null)
-            {
-                Debug.LogError("Save file not found. Using default data.");
-                return defaultSaveData ?? new SaveData();
-            }
-
-            try
-            {
-                return JsonConvert.DeserializeObject(jsonFile, objectType);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error deserializing data: " + e.Message);
-                return defaultSaveData ?? new SaveData();
-            }
-        }
-
-        #endregion
+                    store = new SaveStore(new _Assets._PlatformSpeciffics.Switch.NintendoSaveStorage());
+#else
+                    store = new SaveStore(new FileSaveStorage(SavePath));
 #endif
-        [System.Serializable]
-        public class SaveData
-        {
-            [Header("Player Data")]
-            public int money;
-            public int currentWeaponID;
-
-            [Header("Settings")]
-            public int lookSensitivity;
-            public string difficulty;
-            public float soundLevel;
-            public float musicLevel;
-            public bool vibrationsState;
-            public bool indicatorState;
-
-            public int currentLevel;
-            public int GiftCount;
-            // public List<int> giftColected;
-            // public List<int> missionStars;
-            public float averagRating;
-            public int[] rating;
-    
-            //Player Data
-            public bool canAirHit;
-            public bool canSwim;
-            public bool canDash;
-            public bool canParachute;
-            public bool canJetPack;
-            
-            
-            
-            public Dictionary<string, bool> boughtCars = new Dictionary<string, bool>(); // Initialize dictionary
-        }
-
-        #region Custom Methods
-
-        public void SaveCar(string carName, bool isBought)
-        {
-            if (saveData.boughtCars == null)
-            {
-                saveData.boughtCars = new Dictionary<string, bool>();
+                }
+                if (Application.isPlaying && instance == null)
+                    new GameObject("SaveManager").AddComponent<SaveManager>();
+                return store;
             }
-
-            saveData.boughtCars[carName] = isBought;
         }
-
-        public bool IsCarBought(string carName)
+        // Validation never touches the user's save file, including its backup.
+        public static SaveStore Isolated(string name)
+        { if (!isolated.TryGetValue(name, out var value)) isolated[name] = value = new SaveStore(new MemorySaveStorage()); return value; }
+        public static void ReleaseIsolated(string name) { isolated.Remove(name); }
+        public static SaveManager Instance
+        { get { var value = Store; return instance; } }
+        private void Awake()
         {
-            return saveData.boughtCars.ContainsKey(carName) && saveData.boughtCars[carName];
+            if (instance != null && instance != this) { Destroy(gameObject); return; }
+            instance = this; DontDestroyOnLoad(gameObject); var value = Store;
         }
-
-        #endregion
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics() { instance = null; store = null; isolated.Clear(); }
+        public void AwakeInit() { var value = Store; }
+        public void Save(bool forceSave = false) { Store.MarkDirty(); RequestSave(forceSave); }
+        public static bool RequestSave(bool force = false)
+        {
+            var value = Store;
+            if (!Application.isPlaying || force) return Flush();
+#if UNITY_SWITCH && !UNITY_EDITOR
+            // Coalesce repeated purchases/settings changes without discarding pending data.
+            if (instance != null && Time.realtimeSinceStartupAsDouble < instance.nextWrite) return value.CanWrite;
+#endif
+            return Flush();
+        }
+        private static bool Flush()
+        {
+            if (store == null) return true;
+            bool success = store.Flush();
+            if (instance != null)
+            {
+                instance.nextWrite = Time.realtimeSinceStartupAsDouble + 5;
+                if (!success && instance.reportedError != store.Error)
+                { instance.reportedError = store.Error; Debug.LogWarning("[Tow Trouble] Save pending: " + store.Error); }
+                if (success) instance.reportedError = null;
+            }
+            return success;
+        }
+        private void Update()
+        { if (store != null && store.Dirty && Time.realtimeSinceStartupAsDouble >= nextWrite) Flush(); }
+        private void OnApplicationPause(bool paused) { if (paused) Flush(); }
+        private void OnApplicationFocus(bool focused) { if (!focused) Flush(); }
+        private void OnApplicationQuit() { Flush(); }
+        private void OnDestroy() { if (instance == this) { Flush(); instance = null; } }
+        public void SaveCar(string name, bool owned) { saveData.boughtCars[name] = owned; Save(); }
+        public bool IsCarBought(string name) => saveData.boughtCars.TryGetValue(name, out var owned) && owned;
+        [Serializable] public sealed class SaveData
+        {
+            public Dictionary<string, string> values = new Dictionary<string, string>();
+            public Dictionary<string, bool> boughtCars = new Dictionary<string, bool>();
+            // Preserve unused fields in previously imported saves without coupling the game to them.
+            [JsonExtensionData] public IDictionary<string, JToken> extra;
+        }
     }
 }

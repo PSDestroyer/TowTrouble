@@ -1,66 +1,16 @@
-using UnityEngine;
+using HalvaStudio.Save;
 using UnityEditor;
-using System.IO;
+using UnityEngine;
 
-public class SaveManagerEditor : EditorWindow
+public sealed class SaveManagerEditor : EditorWindow
 {
-    private string filePath; // Path to the save file
-
-    [MenuItem("Window/Save File Deletion Window")]
-    public static void ShowWindow()
-    {
-        GetWindow<SaveManagerEditor>("Save File Deletion");
-    }
-
-    private void OnEnable()
-    {
-        // Initialize filePath with default value
-        filePath = Path.Combine(Application.persistentDataPath, "save.json");
-    }
-
+    [MenuItem("Tow Trouble/Save Data")]
+    public static void ShowWindow() => GetWindow<SaveManagerEditor>("Save Data");
     private void OnGUI()
     {
-        GUILayout.Label("Save File Deletion", EditorStyles.boldLabel);
-
-        // Display and update the file path
-        filePath = EditorGUILayout.TextField("File Path", filePath);
-
-        if (GUILayout.Button("Delete Save File"))
-        {
-            DeleteSaveFile();
-        }
-
-        if (GUILayout.Button("Delete Player Prefs"))
-        {
-            PlayerPrefs.DeleteAll();
-            Debug.Log("PlayerPrefs deleted.");
-        }
-
-        if (GUILayout.Button("Delete Everything"))
-        {
-            DeleteSaveFile();
-            PlayerPrefs.DeleteAll();
-            Debug.Log("All data deleted.");
-        }
-    }
-
-    private void DeleteSaveFile()
-    {
-        if (File.Exists(filePath))
-        {
-            try
-            {
-                File.Delete(filePath);
-                Debug.Log("Save file deleted at path: " + filePath);
-            }
-            catch (IOException ex)
-            {
-                Debug.LogError("Error deleting file: " + ex.Message);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Save file does not exist at path: " + filePath);
-        }
+        EditorGUILayout.LabelField("Local save", EditorStyles.boldLabel);
+        EditorGUILayout.SelectableLabel(SaveManager.SavePath, GUILayout.Height(42));
+        EditorGUILayout.HelpBox("Career, settings and co-op address belong to this local user. Use Reset Progress in Settings for a fresh career. This window never deletes unrelated application data.", MessageType.Info);
+        if (GUILayout.Button("Show Save Folder")) EditorUtility.RevealInFinder(System.IO.Path.GetDirectoryName(SaveManager.SavePath));
     }
 }

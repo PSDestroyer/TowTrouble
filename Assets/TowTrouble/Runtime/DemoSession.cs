@@ -33,9 +33,7 @@ namespace TowTrouble
         public int SelectedContract {get;private set;}
         public bool Solo {get;private set;}
         public string View {get;set;}="Title";
-        public bool UsingGamepad=>Gamepad.current!=null && lastGamepad;
-        private bool lastGamepad;
-        private float lastKeyboard;
+        public bool UsingGamepad=>RecoveryInputDevices.UsingGamepad;
         private int menuInputConsumedFrame = -1;
         public void ConsumeMenuInput() { menuInputConsumedFrame = Time.frameCount; }
         private UnityEngine.Rendering.Universal.ColorAdjustments grade;
@@ -118,7 +116,7 @@ namespace TowTrouble
 
         private void OnDestroy()
         {
-            RestoreGraphicsPreference();ClearTrainingDressing();Gamepad.current?.ResetHaptics();Time.timeScale=1;
+            RestoreGraphicsPreference();ClearTrainingDressing();RecoveryInputDevices.Pad?.ResetHaptics();Time.timeScale=1;
             if (network != null && network.ClientManager != null) network.ClientManager.OnClientConnectionState -= ClientState;
         }
 
@@ -231,8 +229,6 @@ namespace TowTrouble
                 if (IsHost) network.ServerManager.StopConnection(true);
                 MenuConnectionFailed();status = "Connection timed out. Check the host address and try again.";
             }
-            if((Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame)||(Mouse.current!=null&&Mouse.current.leftButton.wasPressedThisFrame)){lastKeyboard=Time.unscaledTime;lastGamepad=false;}
-            var activePad=Gamepad.current;if(activePad!=null&&(activePad.buttonSouth.wasPressedThisFrame||activePad.buttonEast.wasPressedThisFrame||activePad.buttonNorth.wasPressedThisFrame||activePad.buttonWest.wasPressedThisFrame||activePad.leftStickButton.wasPressedThisFrame||activePad.rightStickButton.wasPressedThisFrame||activePad.selectButton.wasPressedThisFrame||activePad.startButton.wasPressedThisFrame||activePad.leftShoulder.isPressed||activePad.rightShoulder.isPressed||activePad.leftStick.ReadValue().sqrMagnitude>.05f||activePad.rightStick.ReadValue().sqrMagnitude>.05f||activePad.dpad.ReadValue().sqrMagnitude>.05f||activePad.rightTrigger.ReadValue()>.05f||activePad.leftTrigger.ReadValue()>.05f))lastGamepad=true;
             if (!Connected || LocalSlot < 0) return;
             if(!identitySent){identitySent=true;if(IsHost)world.ConfigureSession(world.Map!=null?0:SelectedContract,!Solo,explorationRequested||world.Map!=null);world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);}
             if(world.FreeRoam&&!garageIdentitySent){garageIdentitySent=true;SendGarageBuild();}
@@ -251,7 +247,7 @@ namespace TowTrouble
             { world.Drive(Vector2.zero, true, false); return; }
             bool overlayWasOpen=BoardOpen||GarageOpen;
             var keyboard = Keyboard.current;
-            var pad = Gamepad.current;
+            var pad = RecoveryInputDevices.Pad;
             if(world.FreeRoam&&View=="Gameplay")
             {
                 if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.boardKey,Key.Tab)].wasPressedThisFrame)||(pad!=null&&pad.leftStickButton.wasPressedThisFrame))ToggleBoard();

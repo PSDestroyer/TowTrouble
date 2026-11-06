@@ -19,7 +19,7 @@ namespace TowTrouble
             missionStatusTitle = Text(missionStatusPanel, "", 64, 7, 264, 20, 14, Muted);
             missionStatusTitle.alignment = TextAlignmentOptions.MidlineLeft;
             missionStatusTitle.textWrappingMode = TextWrappingModes.NoWrap;
-            missionStatusAction = Text(missionStatusPanel, "", 64, 27, 264, 28, 18, Paper, true);
+            missionStatusAction = ControlText(Text(missionStatusPanel, "", 64, 27, 264, 28, 18, Paper, true));
             missionStatusAction.alignment = TextAlignmentOptions.MidlineLeft;
             SetMissionStatus("NO ACTIVE RECOVERY", ContractControl() + " · Choose a recovery");
         }

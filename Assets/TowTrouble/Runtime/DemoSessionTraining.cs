@@ -52,14 +52,14 @@ namespace TowTrouble
             {
                 bool camera = Keyboard.current?.cKey.wasPressedThisFrame == true ||
                     Mouse.current != null && Mouse.current.rightButton.isPressed && Mouse.current.delta.ReadValue().sqrMagnitude > 1 ||
-                    Gamepad.current != null && (Gamepad.current.rightStick.ReadValue().sqrMagnitude > .2f || Gamepad.current.buttonNorth.wasPressedThisFrame);
+                    RecoveryInputDevices.Pad != null && (RecoveryInputDevices.Pad.rightStick.ReadValue().sqrMagnitude > .2f || RecoveryInputDevices.Pad.buttonNorth.wasPressedThisFrame);
                 if (camera) trainingCamera += Time.unscaledDeltaTime + .15f;
                 if (trainingCamera > .3f) { BeginPracticeRecovery(); trainingStep = 2; }
             }
             else if (trainingStep == 2 && world.Attached(LocalSlot)) { trainingAttached = true; trainingStep = 3; }
             else if (trainingStep == 3)
             {
-                if (world.Attached(LocalSlot) && (Keyboard.current != null && Keyboard.current[Profile.ReadKey(Profile.reelKey, Key.Q)].isPressed || Gamepad.current?.leftShoulder.isPressed == true)) {trainingWinchHeld+=Time.deltaTime;trainingWinched=trainingWinchHeld>.4f;world.TrainingWinchUsed=trainingWinched;}
+                if (world.Attached(LocalSlot) && (Keyboard.current != null && Keyboard.current[Profile.ReadKey(Profile.reelKey, Key.Q)].isPressed || RecoveryInputDevices.Pad?.leftShoulder.isPressed == true)) {trainingWinchHeld+=Time.deltaTime;trainingWinched=trainingWinchHeld>.4f;world.TrainingWinchUsed=trainingWinched;}
                 if (world.Phase == RecoveryPhase.Deliver) trainingStep = 4;
             }
             else if (trainingStep == 4 && world.Phase == RecoveryPhase.Complete) trainingStep = 5;

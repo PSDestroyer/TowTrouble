@@ -67,7 +67,7 @@ namespace TowTrouble
         {
             var panel=Panel(pageRoot,36,212,GarageCategoryWidth,548);
             Text(panel,garageCategoryFocus?"CUSTOMIZE  >":"CUSTOMIZE",16,12,268,30,18,garageCategoryFocus?Amber:Paper,true);
-            garageTabHint=Text(panel,"",155,38,130,20,11,Muted);garageTabHint.alignment=TextAlignmentOptions.Right;
+            garageTabHint=ControlText(Text(panel,"",155,38,130,20,11,Muted));garageTabHint.alignment=TextAlignmentOptions.Right;
             string[] names={"STYLE","TECH","TOWING"};
             for(int i=0;i<3;i++)
             {
@@ -184,7 +184,7 @@ namespace TowTrouble
             Text(pageRoot,"Preview resets on exit. Fitted parts stay saved.",40,852,GarageCategoryWidth-8,40,12,Muted);
             var presets=GarageButton(pageRoot,"SAVED SETUPS",GaragePreviewX,792,GaragePreviewWidth*.53f,()=>OpenGarageOverlay(GarageOverlay.Setups),false,44);AddGarageHint(presets,"setups");
             var reset=GarageButton(pageRoot,"RESET VIEW",GaragePreviewX+GaragePreviewWidth*.53f+12,792,GaragePreviewWidth*.47f-12,ResetGarageView,false,44);AddGarageHint(reset,"reset");
-            garageControlHint=Text(pageRoot,"",GaragePreviewX,844,GaragePreviewWidth,50,11,Muted);
+            garageControlHint=ControlText(Text(pageRoot,"",GaragePreviewX,844,GaragePreviewWidth,50,11,Muted));
         }
         private void FitNewPanelText()
         {
@@ -237,7 +237,7 @@ namespace TowTrouble
             }
             else Text(detail,boardCompleted?L("Recuperările terminate vor apărea aici pentru rejucare.","Finished recoveries will appear here for replay."):L("Alege o recuperare din Finalizate pentru a o rejuca.","Choose a completed recovery to replay."),30,30,774,100,25,Paper,true);
             Text(pageRoot,visible.Count+L(boardCompleted?" recuperări finalizate":" recuperări disponibile",boardCompleted?" completed recoveries":" available recoveries"),76,708,256,30,14,Paper);
-            boardSelectionHint=Text(pageRoot,"",340,708,316,30,14,Muted);
+            boardSelectionHint=ControlText(Text(pageRoot,"",340,708,316,30,14,Muted));
             var statusCard=Panel(pageRoot,76,w.Map!=null?750:720,1448,w.Map!=null?40:50);Icon(statusCard,w.HasContract?RecoveryIcon.Hook:RecoveryIcon.Flag,18,13,25,Amber);Text(statusCard,w.HasContract?L("ÎN DESFĂȘURARE: ","IN PROGRESS: ")+w.Contract.TitleFor(P):L("Nicio intervenție activă. Alege unde mergem mai departe.","No active recovery. Choose where we go next."),60,0,1368,50,18,Paper).alignment=TextAlignmentOptions.MidlineLeft;
             startButton=Button(pageRoot,w.HasContract?L("ABANDONEAZĂ INTERVENȚIA","ABANDON RECOVERY"):L("ACCEPTĂ INTERVENȚIA","ACCEPT RECOVERY"),1004,805,520,BoardPrimaryAction,true,62);
             startButton.interactable=CanUseBoardPrimary();AddBoardHint(startButton,2,false);

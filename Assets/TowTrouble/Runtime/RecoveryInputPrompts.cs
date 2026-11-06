@@ -11,13 +11,18 @@ namespace TowTrouble
     {
         public static int FamilyOverride;
         public static RecoveryControllerFamily Family(Gamepad pad)
-            => FamilyOverride>=1&&FamilyOverride<=3?(RecoveryControllerFamily)(FamilyOverride-1):pad == null ? RecoveryControllerFamily.Xbox : Identify(pad.layout, pad.description.manufacturer, pad.description.product);
+#if UNITY_SWITCH && !UNITY_EDITOR
+            => RecoveryControllerFamily.Nintendo;
+#else
+            => pad != null ? Identify(pad.layout, pad.description.manufacturer, pad.description.product) :
+                FamilyOverride>=1&&FamilyOverride<=3 ? (RecoveryControllerFamily)(FamilyOverride-1) : RecoveryControllerFamily.Xbox;
+#endif
         public static RecoveryControllerFamily Identify(string layout, string manufacturer, string product)
         {
             string identity = (layout ?? "") + " " + (manufacturer ?? "") + " " + (product ?? "");
             if (Has(identity, "DualShock") || Has(identity, "DualSense") || Has(identity, "PlayStation") || Has(identity, "Sony"))
                 return RecoveryControllerFamily.PlayStation;
-            if (Has(identity, "Nintendo") || Has(identity, "Switch") || Has(identity, "Joy-Con"))
+            if (Has(identity, "Nintendo") || Has(identity, "Switch") || Has(identity, "Joy-Con") || Has(identity, "NPad"))
                 return RecoveryControllerFamily.Nintendo;
             return RecoveryControllerFamily.Xbox;
         }
@@ -33,6 +38,7 @@ namespace TowTrouble
         public static string MenuLabel(RecoveryControllerFamily family) => family == RecoveryControllerFamily.PlayStation ? "Options" : family == RecoveryControllerFamily.Nintendo ? "+" : "Menu";
         public static string SelectLabel(RecoveryControllerFamily family) => family == RecoveryControllerFamily.PlayStation ? "Share" : family == RecoveryControllerFamily.Nintendo ? "-" : "View";
         public static string TriggerLabels(RecoveryControllerFamily family) => family == RecoveryControllerFamily.PlayStation ? "L2/R2" : family == RecoveryControllerFamily.Nintendo ? "ZL/ZR" : "LT/RT";
+        public static string LeftStickPressLabel(RecoveryControllerFamily family) => family == RecoveryControllerFamily.Nintendo ? "L-stick" : "L3";
         public static string RightStickPressLabel(RecoveryControllerFamily family) => family == RecoveryControllerFamily.PlayStation ? "R3" : family == RecoveryControllerFamily.Nintendo ? "R-stick" : "RS";
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 namespace TowTrouble.Tests
 {
     // These exercise initialization on disposable inactive copies in Edit Mode.
-    // No scene gameplay, physics simulation, networking or PlayerPrefs are started.
+    // No scene gameplay, physics simulation, networking or persistent storage are started.
     // Inactive preview bodies have no simulated pose; the authored Transform is checked.
     public sealed class RecoveryVehicleInitializationTests
     {

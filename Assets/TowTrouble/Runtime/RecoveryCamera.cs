@@ -35,12 +35,12 @@ namespace TowTrouble
                 {
                     float rotationInput=0;
                     if(!session.GarageCameraInputBlocked&&Mouse.current!=null&&Mouse.current.leftButton.isPressed&&(UnityEngine.EventSystems.EventSystem.current==null||!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))rotationInput+=Mouse.current.delta.x.ReadValue()*.16f*p.cameraSensitivity;
-                    if(!session.GarageCameraInputBlocked&&Gamepad.current!=null)rotationInput+=Gamepad.current.rightStick.x.ReadValue()*Time.unscaledDeltaTime*80*p.cameraSensitivity;
+                    if(!session.GarageCameraInputBlocked&&RecoveryInputDevices.Pad!=null)rotationInput+=RecoveryInputDevices.Pad.rightStick.x.ReadValue()*Time.unscaledDeltaTime*80*p.cameraSensitivity;
                     if(session.GarageOpen)
                         GarageCameraPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],rotationInput,p.reducedMotion,Time.unscaledDeltaTime,out position,out look);
                     else
                     {
-                        bool reset=Keyboard.current?.cKey.wasPressedThisFrame==true||Gamepad.current?.rightStickButton.wasPressedThisFrame==true;
+                        bool reset=Keyboard.current?.cKey.wasPressedThisFrame==true||RecoveryInputDevices.Pad?.rightStickButton.wasPressedThisFrame==true;
                         StarterCameraPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],session.View=="Starter"?rotationInput:0,reset,out position,out look);
                     }
                 }
@@ -55,7 +55,7 @@ namespace TowTrouble
                 if(!session.MenuOpen)
                 {
                     if(Mouse.current!=null&&Mouse.current.rightButton.isPressed){var delta=Mouse.current.delta.ReadValue();orbit+=delta.x*.12f*p.cameraSensitivity;elevation=Mathf.Clamp(elevation+delta.y*(p.invertCamera?1:-1)*.015f*p.cameraSensitivity,3,13);moving=true;}
-                    if(Gamepad.current!=null){var stick=Gamepad.current.rightStick.ReadValue();if(stick.sqrMagnitude>.05f){orbit+=stick.x*Time.unscaledDeltaTime*90*p.cameraSensitivity;elevation=Mathf.Clamp(elevation+stick.y*(p.invertCamera?-1:1)*Time.unscaledDeltaTime*5,3,13);moving=true;}if(Gamepad.current.buttonNorth.wasPressedThisFrame){orbit=0;elevation=8;}}
+                    if(RecoveryInputDevices.Pad!=null){var stick=RecoveryInputDevices.Pad.rightStick.ReadValue();if(stick.sqrMagnitude>.05f){orbit+=stick.x*Time.unscaledDeltaTime*90*p.cameraSensitivity;elevation=Mathf.Clamp(elevation+stick.y*(p.invertCamera?-1:1)*Time.unscaledDeltaTime*5,3,13);moving=true;}if(RecoveryInputDevices.Pad.buttonNorth.wasPressedThisFrame){orbit=0;elevation=8;}}
                     if(Keyboard.current!=null&&Keyboard.current.cKey.wasPressedThisFrame){orbit=0;elevation=8;}
                 }
                 if(!moving)orbit=Mathf.LerpAngle(orbit,0,Time.deltaTime*2.5f);

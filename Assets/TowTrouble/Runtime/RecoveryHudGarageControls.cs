@@ -71,7 +71,7 @@ namespace TowTrouble
         }
         private string GarageBinding(string kind)
         {
-            bool pad=session.UsingGamepad;var family=RecoveryInputPrompts.Family(Gamepad.current);
+            bool pad=session.UsingGamepad;var family=RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
             switch(kind)
             {
                 case "confirm":return pad?RecoveryInputPrompts.ConfirmLabel(family):"Enter";
@@ -86,7 +86,7 @@ namespace TowTrouble
         }
         private void RefreshGarageHints()
         {
-            string style=session.UsingGamepad?RecoveryInputPrompts.Family(Gamepad.current).ToString():"Keyboard";
+            string style=session.UsingGamepad?RecoveryInputPrompts.Family(RecoveryInputDevices.Pad).ToString():"Keyboard";
             if(garageHintStyle==style)return;garageHintStyle=style;
             foreach(var hint in garageHints)
             {
@@ -97,12 +97,12 @@ namespace TowTrouble
                 hint.Cap.anchoredPosition=new Vector2(9,-(rect.rect.height-height)*.5f);hint.Cap.sizeDelta=hint.Key.rectTransform.sizeDelta=new Vector2(width,height);
                 hint.Caption.rectTransform.anchoredPosition=new Vector2(width+20,0);hint.Caption.rectTransform.sizeDelta=new Vector2(Mathf.Max(20,rect.rect.width-width-30),rect.rect.height);
             }
-            bool gamepad=session.UsingGamepad;var family=RecoveryInputPrompts.Family(Gamepad.current);
+            bool gamepad=session.UsingGamepad;var family=RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
             if(garageTabHint!=null)garageTabHint.text=gamepad?RecoveryInputPrompts.PreviousTabLabel(family)+" / "+RecoveryInputPrompts.NextTabLabel(family)+" · Tabs":"Q / E · Tabs";
             if(garageControlHint!=null)
             {
-                garageControlHint.text=gamepad?"D-pad / LS: Select · "+GarageBinding("confirm")+": Fit · "+GarageBinding("back")+": Back\nRS: Rotate · "+GarageBinding("filter")+": All/Owned"+(garageSlot==GarageSlot.Wheels?" · "+RecoveryInputPrompts.TriggerLabels(family)+": Tire type":"")
-                    :"WASD / Arrows: Select · Left edge: Categories · Enter: Fit\nDrag car: Rotate · Tab: All/Owned"+(garageSlot==GarageSlot.Wheels?" · R / T: Tire type":"");
+                garageControlHint.text=gamepad?"D-pad / Left stick · Select    Right stick · Rotate"+(garageSlot==GarageSlot.Wheels?" · "+RecoveryInputPrompts.TriggerLabels(family)+": Tire type":"")
+                    :"WASD / Arrows · Select    LMB · Rotate"+(garageSlot==GarageSlot.Wheels?" · R / T: Tire type":"");
             }
             if(garageDialogHint!=null)garageDialogHint.text=garageOverlay==GarageOverlay.Setups
                 ?GarageBinding("confirm")+": Activate highlighted button · "+GarageBinding("back")+": Back"
@@ -113,7 +113,7 @@ namespace TowTrouble
             if(!online||page!="Garage"||!session.GarageOpen){SetGarageNavigation(false);return false;}
             SetGarageNavigation(true);RefreshGarageHints();FocusGarageUI();
             if(Time.frameCount==garageOpenedFrame)return true;
-            var keyboard=Keyboard.current;var pad=Gamepad.current;
+            var keyboard=Keyboard.current;var pad=RecoveryInputDevices.Pad;
             bool cancel=keyboard?.escapeKey.wasPressedThisFrame==true||RecoveryInputPrompts.Cancel(pad)?.wasPressedThisFrame==true;
             if(cancel)
             {

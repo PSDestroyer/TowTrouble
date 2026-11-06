@@ -26,8 +26,8 @@ namespace TowTrouble.Tests
         [Test] public void TrainingProfileCannotPersist()
         {
             const string key="TowTrouble.Validation.MenuSettings";var previous=RecoveryProfile.ValidationStorageKey;
-            try{RecoveryProfile.ValidationStorageKey=key;PlayerPrefs.SetString(key,"sentinel");var training=new RecoveryProfile{SuppressSaving=true,credits=999};training.Save();Assert.That(PlayerPrefs.GetString(key),Is.EqualTo("sentinel"));}
-            finally{PlayerPrefs.DeleteKey(key);PlayerPrefs.DeleteKey(key+".previous");RecoveryProfile.ValidationStorageKey=previous;}
+            try{RecoveryProfile.ValidationStorageKey=key;RecoveryProfile.Storage.SetString(key,"sentinel");var training=new RecoveryProfile{SuppressSaving=true,credits=999};training.Save();Assert.That(RecoveryProfile.Storage.GetString(key),Is.EqualTo("sentinel"));}
+            finally{RecoveryProfile.Storage.Delete(key);RecoveryProfile.Storage.Delete(key+".previous");RecoveryProfile.ValidationStorageKey=previous;}
         }
     }
 }

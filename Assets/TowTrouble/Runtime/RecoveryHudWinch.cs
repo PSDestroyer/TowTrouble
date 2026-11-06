@@ -27,13 +27,13 @@ namespace TowTrouble
             cableText = Text(cable, "", 44, 3, 230, 26, 18, Paper, true);
             cableText.alignment = TextAlignmentOptions.MidlineLeft;
             cableFill = CableMeter(cable, 38, 262);
-            reelHint = Text(cable, "", 12, 29, 94, 21, 14, Paper);
+            reelHint = ControlText(Text(cable, "", 12, 29, 94, 21, 14, Paper));
             reelHint.alignment = TextAlignmentOptions.MidlineLeft;
-            payoutHint = Text(cable, "", 180, 29, 94, 21, 14, Paper);
+            payoutHint = ControlText(Text(cable, "", 180, 29, 94, 21, 14, Paper));
             payoutHint.alignment = TextAlignmentOptions.MidlineRight;
             reelIcon = Icon(cable, RecoveryIcon.ReelIn, 0, 29, 21, Paper);
             payoutIcon = Icon(cable, RecoveryIcon.PayOut, 0, 29, 21, Paper);
-            actionText = Text(cable, "", 12, 50, 262, 26, 16, Paper);
+            actionText = ControlText(Text(cable, "", 12, 50, 262, 26, 16, Paper));
             actionText.alignment = TextAlignmentOptions.MidlineLeft;
             cableGroup.SetActive(false);
 
@@ -89,9 +89,9 @@ namespace TowTrouble
                 }
                 else if (pullAdvice != null) hint = pullAdvice;
                 else if (IntroduceWinch)
-                { label = "Cable attached"; hint = "Hold " + (session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.ReadKey(P.reelKey, Key.Q).ToString()) + " to reel in"; }
+                { label = "Cable attached"; hint = "Hold " + (session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.reelKey, Key.Q).ToString()) + " to reel in"; }
                 if (hint == null && quietDetach && !IntroduceWinch)
-                    hint = (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.ReadKey(P.hookKey, Key.F).ToString()) + " · Detach cable";
+                    hint = (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.hookKey, Key.F).ToString()) + " · Detach cable";
                 if (UrgentAssistance) hint = null;
 
                 bool showHint = !string.IsNullOrEmpty(hint);
@@ -116,8 +116,8 @@ namespace TowTrouble
         private void RefreshCableControlHints()
         {
             bool gamepad = session.UsingGamepad;
-            string reel = gamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.reelKey;
-            string payout = gamepad ? RecoveryInputPrompts.NextTabLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.extendKey;
+            string reel = gamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.reelKey;
+            string payout = gamepad ? RecoveryInputPrompts.NextTabLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.extendKey;
             if (lastReelBinding == reel && lastPayoutBinding == payout && hintScale == P.textScale) return;
             lastReelBinding = reel;
             lastPayoutBinding = payout;
@@ -167,7 +167,7 @@ namespace TowTrouble
 
         private void BuildCableDetails(RectTransform card)
         {
-            cableDetails = Text(card, "", 32, 548, 496, 55, 16, Muted);
+            cableDetails = ControlText(Text(card, "", 32, 548, 496, 55, 16, Muted));
             cableDetails.alignment = TextAlignmentOptions.MidlineLeft;
             RefreshCableDetails(session.World, session.LocalSlot);
         }
@@ -180,8 +180,8 @@ namespace TowTrouble
             if (!attached) return;
             var frame = world.Winch(slot);
             float capacity = world.Drivers[slot].WinchForce / 1000f;
-            string controls = session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(Gamepad.current))+" / "+RecoveryInputPrompts.NextTabLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.reelKey + " / " + P.extendKey;
-            string detach = session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.hookKey;
+            string controls = session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad))+" / "+RecoveryInputPrompts.NextTabLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.reelKey + " / " + P.extendKey;
+            string detach = session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.hookKey;
             cableDetails.text = L("Troliu ", "Winch ") + (frame.Load * capacity).ToString("0.0") + " / " +
                 capacity.ToString("0.#") + " kN   ·   " + frame.Length.ToString("0.0") + " m\n" +
                 controls + L("  Scurtează / slăbește", "  Reel in / pay out") + "   ·   " +

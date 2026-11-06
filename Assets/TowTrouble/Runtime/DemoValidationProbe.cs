@@ -38,11 +38,16 @@ namespace TowTrouble
         private Command command = new Command();
         private int sequence = -1;
         private float nextPoll;
-        private bool hadProfile;
-        private string originalProfile;
+
         private Gamepad testPad;
         private float releasePadAt;
-        private void Awake(){hadProfile=PlayerPrefs.HasKey("TowTrouble.Profile.v1");originalProfile=PlayerPrefs.GetString("TowTrouble.Profile.v1","");}
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void IsolateProfile()
+        {
+            var args=Environment.GetCommandLineArgs();
+            for(int i=0;i<args.Length-1;i++) if(args[i]=="-tow-probe")
+                RecoveryProfile.ValidationStorageKey="TowTrouble.Probe."+Path.GetFullPath(args[i+1]);
+        }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Bootstrap()
@@ -54,6 +59,7 @@ namespace TowTrouble
 
         public static void Enable(string commandFile)
         {
+            RecoveryProfile.ValidationStorageKey="TowTrouble.Probe."+Path.GetFullPath(commandFile);
             var probe = new GameObject("Development smoke probe").AddComponent<DemoValidationProbe>();
             probe.file = Path.GetFullPath(commandFile);
             Application.runInBackground = true;
@@ -118,7 +124,7 @@ namespace TowTrouble
         {
             if (session != null) session.ValidationInputActive = false;
             if(testPad!=null)InputSystem.RemoveDevice(testPad);
-            if(hadProfile)PlayerPrefs.SetString("TowTrouble.Profile.v1",originalProfile);else PlayerPrefs.DeleteKey("TowTrouble.Profile.v1");PlayerPrefs.Save();
+
         }
     }
 }

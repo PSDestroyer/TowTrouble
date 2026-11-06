@@ -24,7 +24,7 @@ namespace TowTrouble
             background.color = Ink;
             background.raycastTarget = false;
             hitchPointIcon = Icon(hitchPrompt, RecoveryIcon.Hook, 8, 6, 26, Amber);
-            hitchKeycap = Panel(hitchPrompt, 8, 6, 26, 26, Paper);
+            hitchKeycap = Panel(hitchPrompt, 8, 6, 26, 26, Paper); hitchKeycap.name="HUD control hint";
             hitchBinding = Text(hitchKeycap, "", 0, 0, 26, 26, 16, Ink, true);
             hitchBinding.alignment = TextAlignmentOptions.Center;
             hitchAction = Text(hitchPrompt, "", 42, 0, 132, 38, 17, Paper, true);
@@ -62,7 +62,7 @@ namespace TowTrouble
                 return false;
             }
 
-            string key = canAttach ? session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(UnityEngine.InputSystem.Gamepad.current)) : P.ReadKey(P.hookKey, Key.F).ToString() : "";
+            string key = canAttach ? session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.hookKey, Key.F).ToString() : "";
             bool reconnecting = NeedsDeliveryReconnect(world, slot);
             string action = canAttach ? reconnecting ? "Reconnect cable" : "Attach cable" : "Move closer to attach";
             hitchKeycap.gameObject.SetActive(canAttach);

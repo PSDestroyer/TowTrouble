@@ -11,7 +11,7 @@ namespace TowTrouble
 {
     public sealed partial class RecoveryHud
     {
-        private string renderedMenuFocusKey,configuredMenuPage;
+        private string renderedMenuFocusKey,configuredMenuPage,menuDeviceStyle;
         private bool menuOwnsNavigation, menuPreviousNavigation, menuRelease;
         private EventSystem menuEventSystem;
         private int menuFrame, menuX, menuY;
@@ -41,7 +41,7 @@ namespace TowTrouble
         private TMP_Text BuildMenuFooter()
         {
             Panel(pageRoot,76,864,1448,34,new Color(.03f,.04f,.05f,.88f));
-            menuFooter=Text(pageRoot,"",94,866,740,28,15,Paper);
+            menuFooter=ControlText(Text(pageRoot,"",94,866,740,28,15,Paper));
             MenuHint(pageRoot,"confirm","Select",1050,866,230);
             MenuHint(pageRoot,"back","Back",1330,866,190);
             return menuFooter;
@@ -56,7 +56,7 @@ namespace TowTrouble
         }
         private string MenuKey(string kind)
         {
-            var f=RecoveryInputPrompts.Family(Gamepad.current);
+            var f=RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
             if(!session.UsingGamepad)return kind=="back"?"Esc":kind=="previous"?"Q":kind=="next"?"E":"Enter";
             return kind=="back"?RecoveryInputPrompts.CancelLabel(f):kind=="previous"?RecoveryInputPrompts.PreviousTabLabel(f):kind=="next"?RecoveryInputPrompts.NextTabLabel(f):RecoveryInputPrompts.ConfirmLabel(f);
         }
@@ -110,8 +110,8 @@ namespace TowTrouble
             if(!IsGeneralMenu)return false;
             SetMenuNavigation(true);
             if(page=="Title"||Time.frameCount==menuFrame)return true;
-            if(menuScroll!=null){float scroll=(Gamepad.current?.rightStick.y.ReadValue()??0)*Time.unscaledDeltaTime*650; if(Keyboard.current?.pageUpKey.isPressed==true)scroll+=Time.unscaledDeltaTime*650;if(Keyboard.current?.pageDownKey.isPressed==true)scroll-=Time.unscaledDeltaTime*650;var content=menuScroll.content;float range=Mathf.Max(0,content.rect.height-menuScroll.viewport.rect.height);content.anchoredPosition=new Vector2(content.anchoredPosition.x,Mathf.Clamp(content.anchoredPosition.y-scroll,0,range));}
-            var keyboard=Keyboard.current;var pad=Gamepad.current;
+            if(menuScroll!=null){float scroll=(RecoveryInputDevices.Pad?.rightStick.y.ReadValue()??0)*Time.unscaledDeltaTime*650; if(Keyboard.current?.pageUpKey.isPressed==true)scroll+=Time.unscaledDeltaTime*650;if(Keyboard.current?.pageDownKey.isPressed==true)scroll-=Time.unscaledDeltaTime*650;var content=menuScroll.content;float range=Mathf.Max(0,content.rect.height-menuScroll.viewport.rect.height);content.anchoredPosition=new Vector2(content.anchoredPosition.x,Mathf.Clamp(content.anchoredPosition.y-scroll,0,range));}
+            var keyboard=Keyboard.current;var pad=RecoveryInputDevices.Pad;
             bool cancel=keyboard?.escapeKey.wasPressedThisFrame==true||RecoveryInputPrompts.Cancel(pad)?.wasPressedThisFrame==true;
             var selected=EventSystem.current?.currentSelectedGameObject?.GetComponent<UnityEngine.UI.Selectable>();
             if(selected is TMP_InputField editing && editing.isFocused)
@@ -188,6 +188,9 @@ namespace TowTrouble
         }
         private void UpdateMenuPresentation()
         {
+            string deviceStyle=session.UsingGamepad+":"+RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
+            if(menuDeviceStyle!=deviceStyle){menuDeviceStyle=deviceStyle;if(page=="Help"||page=="Credits"||page=="Settings"&&settingsTab=="Comenzi") {float y=menuScroll!=null?menuScroll.content.anchoredPosition.y:0;Show(page);if(menuScroll!=null)menuScroll.content.anchoredPosition=new Vector2(0,y);return;} }
+            if(page=="Results"&&resultInputHint!=null&&resultInputHost)resultInputHint.text=MenuKey("confirm")+" · Continue";
             UpdateStarterHints();
             foreach(var hint in menuHints)if(hint.Item1!=null)hint.Item1.text=MenuKey(hint.Item2);
             if(menuFooter!=null)menuFooter.text=session.UsingGamepad?"D-pad / Left stick · Navigate":"WASD / Arrows · Navigate";

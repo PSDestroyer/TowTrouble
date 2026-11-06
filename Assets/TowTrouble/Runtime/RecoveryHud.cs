@@ -50,7 +50,7 @@ namespace TowTrouble
             var canvas=new GameObject("Tow Trouble UI",typeof(RectTransform),typeof(Canvas),typeof(UnityEngine.UI.CanvasScaler),typeof(UnityEngine.UI.GraphicRaycaster));canvas.transform.SetParent(transform,false);canvas.GetComponent<Canvas>().renderMode=RenderMode.ScreenSpaceOverlay;
             var scaler=canvas.GetComponent<UnityEngine.UI.CanvasScaler>();scaler.uiScaleMode=UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1600,900);scaler.screenMatchMode=UnityEngine.UI.CanvasScaler.ScreenMatchMode.Expand;scaler.matchWidthOrHeight=.5f;root=(RectTransform)canvas.transform;
             uiAudio=gameObject.AddComponent<AudioSource>();uiAudio.playOnAwake=false;clickClip=AudioClip.Create("UI confirm",1500,1,44100,false);var samples=new float[1500];for(int i=0;i<samples.Length;i++)samples[i]=Mathf.Sin(i*.14f)*.05f*(1-i/(float)samples.Length);clickClip.SetData(samples,0);
-            BuildGameplay();Show(session.ConsumeReturnToMain()?"Main":"Title");
+            BuildGameplay();BuildPersistenceHint();Show(session.ConsumeReturnToMain()?"Main":"Title");
         }
         private void OnDestroy(){SetMenuNavigation(false);SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();if(clickClip!=null)Destroy(clickClip);}
         private RectTransform Node(string name,Transform parent,float x,float y,float width,float height)
@@ -63,6 +63,7 @@ namespace TowTrouble
             if(height>28&&width>100){image.color=Color.clear;Plate(rt,tint);}
             return rt;
         }
+        private TMP_Text ControlText(TMP_Text value) { RecoveryPromptText.Bind(value); return value; }
         private TMP_Text Text(Transform parent,string text,float x,float y,float width,float height,float size=22,Color? color=null,bool bold=false)
         {var rt=Node(text,parent,x,y,width,height);var t=rt.gameObject.AddComponent<TextMeshProUGUI>();t.font=bold&&size>=26&&displayFont!=null?displayFont:font;t.text=text;t.fontSize=size*P.textScale;t.enableAutoSizing=true;t.fontSizeMin=size*Mathf.Min(1,P.textScale);t.fontSizeMax=size*P.textScale;t.color=color??Paper;t.fontStyle=bold&&t.font!=displayFont?FontStyles.Bold:FontStyles.Normal;t.textWrappingMode=TextWrappingModes.Normal;t.raycastTarget=false;textSizes[t]=size;if(parent.name.Contains("control hint")||parent.name=="Control hint")t.gameObject.AddComponent<RecoveryControlGlyph>().Configure(session);return t;}
         private UnityEngine.UI.Button Button(Transform parent,string label,float x,float y,float width,Action action,bool primary=false,float height=54)
@@ -199,7 +200,7 @@ namespace TowTrouble
         {
             if(root==null)return;bool online=session.Connected&&session.LocalSlot>=0;var w=session.World;
             if(!online&&session.View=="Starter"&&page!="Starter"&&page!="Confirm")Show("Starter");
-            UpdateMenuPresentation();
+            RefreshPersistenceHint();UpdateMenuPresentation();
             if (online) ObserveAssistance(w, session.LocalSlot);
             else { assistanceWorld = null; exploreHintWanted = hitchWanted = false; }
             UpdateHintFades();
@@ -207,9 +208,9 @@ namespace TowTrouble
             {foreach(var key in Keyboard.current.allKeys)if(key.wasPressedThisFrame){if(key.keyCode==Key.Escape){pendingBinding=null;Show("Settings");return;} string error=RecoveryMenuSettings.BindingError(P,pendingBinding,key.keyCode); if(error!=null){settingsMessage=error+". Choose another key, or Esc to cancel.";status.text=settingsMessage;return;}typeof(RecoveryProfile).GetField(pendingBinding).SetValue(P,key.keyCode.ToString());P.Save();pendingBinding=null;settingsMessage="Control saved";Show("Settings");return;}}
             if(page=="Title"&&!online)
             {
-                string confirm=RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(Gamepad.current));
+                string confirm=RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad));
                 prompt.text=session.UsingGamepad?L("APASĂ "+confirm+" PENTRU A CONTINUA","PRESS "+confirm+" TO CONTINUE"):L("APASĂ O TASTĂ PENTRU A CONTINUA","PRESS ANY KEY TO CONTINUE");
-                if((Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame)||(Mouse.current!=null&&Mouse.current.leftButton.wasPressedThisFrame)||RecoveryInputPrompts.Confirm(Gamepad.current)?.wasPressedThisFrame==true)
+                if((Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame)||(Mouse.current!=null&&Mouse.current.leftButton.wasPressedThisFrame)||RecoveryInputPrompts.Confirm(RecoveryInputDevices.Pad)?.wasPressedThisFrame==true)
                 {if(P.onboarded)Show("Main");else{firstSetup=true;Show("Settings");}}return;
             }
             if(online&&!wasOnline)Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");
@@ -264,7 +265,7 @@ namespace TowTrouble
             RefreshRecoveryGuidance(w, slot, camera, workingAtSite);
             if (UrgentAssistance) HideGuidanceNote();
         }
-        private string ContractControl()=>session.UsingGamepad ? "L3" : P.ReadKey(P.boardKey, Key.Tab).ToString();
+        private string ContractControl()=>session.UsingGamepad ? RecoveryInputPrompts.LeftStickPressLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.boardKey, Key.Tab).ToString();
 
         private void BuildExploreHint()
         {
@@ -278,7 +279,7 @@ namespace TowTrouble
             background.color = Ink;
             background.raycastTarget = false;
 
-            exploreHintKeycap = Panel(exploreHintPlate, 8, 6, 26, 26, Paper);
+            exploreHintKeycap = Panel(exploreHintPlate, 8, 6, 26, 26, Paper); exploreHintKeycap.name="HUD control hint";
             exploreHintBinding = Text(exploreHintKeycap, "", 0, 0, 26, 26, 16, Ink, true);
             exploreHintBinding.alignment = TextAlignmentOptions.Center;
             garagePrompt = Text(exploreHintPlate, "", 42, 0, 132, 38, 17, Paper, true);
@@ -293,7 +294,7 @@ namespace TowTrouble
             // The persistent mission status owns the contracts instruction now.
             if (!waypointGarage && session.CanOpenGarage)
             {
-                string key = session.UsingGamepad ? RecoveryInputPrompts.WestLabel(Gamepad.current!=null?RecoveryInputPrompts.Family(Gamepad.current):RecoveryControllerFamily.Xbox) : P.ReadKey(P.garageKey, Key.G).ToString();
+                string key = session.UsingGamepad ? RecoveryInputPrompts.WestLabel(RecoveryInputDevices.Pad!=null?RecoveryInputPrompts.Family(RecoveryInputDevices.Pad):RecoveryControllerFamily.Xbox) : P.ReadKey(P.garageKey, Key.G).ToString();
                 ShowExploreHint(key, "Customize");
             }
             else exploreHintWanted = false;

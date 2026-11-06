@@ -7,6 +7,8 @@ namespace TowTrouble
     public sealed partial class RecoveryHud
     {
         // A presentation snapshot also lets Editor previews render without claiming rewards.
+        private TMP_Text resultInputHint;
+        private bool resultInputHost;
         private sealed class ResultSummary
         {
             public string Title, Destination, Crew;
@@ -97,9 +99,10 @@ namespace TowTrouble
             }
             if (result.FreeRoam)
             {
-                string footer = result.Host ? (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(UnityEngine.InputSystem.Gamepad.current)) : "Enter") + L(" · Continuă", " · Continue")
+                string footer = result.Host ? (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : "Enter") + L(" · Continuă", " · Continue")
                     : L("Așteptăm gazda să continue", "Waiting for the host to continue");
-                var hint = Text(card, footer, 32, actionY + 66, 776, 25, 13, Muted);
+                resultInputHost=result.Host;
+                var hint = resultInputHint = ControlText(Text(card, footer, 32, actionY + 66, 776, 25, 13, Muted));
                 hint.alignment = TextAlignmentOptions.Center;
             }
         }

@@ -41,12 +41,20 @@ namespace TowTrouble
                     Button(body,"APPLY DISPLAY CHANGES",30,382,806,ApplyDisplay,true);
                     break;
                 case "Comenzi":
-                    for(int i=0;i<RecoveryMenuSettings.BindingFields.Length;i++){
+                    if(session.UsingGamepad)
+                    {
+                        Text(body,RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)+" CONTROLLER",24,10,800,34,21,Amber,true);
+                        string[] controls=ControllerGuide().Split('\n');
+                        for(int i=0;i<controls.Length;i++)
+                            ControlText(Text(body,controls[i],24+(i/5)*420,54+(i%5)*48,398,44,18,Paper));
+                    }
+                    else for(int i=0;i<RecoveryMenuSettings.BindingFields.Length;i++){
                         string field=RecoveryMenuSettings.BindingFields[i];int col=i/6,row=i%6;
                         var button=Button(body,RecoveryMenuSettings.BindingLabels[i]+"  ["+typeof(RecoveryProfile).GetField(field).GetValue(P)+"]",20+col*420,18+row*44,406,()=>{pendingBinding=field;settingsMessage="Press a key. Esc cancels.";status.text=settingsMessage;},false,40);
-                        menuDescriptions[button.gameObject]="Choose a keyboard key for "+RecoveryMenuSettings.BindingLabels[i].ToLowerInvariant()+". Duplicate and reserved bindings are rejected.\n\n"+ControllerGuide();
+                        ControlText(button.GetComponentInChildren<TMPro.TMP_Text>());
+                        menuDescriptions[button.gameObject]="Choose a keyboard key for "+RecoveryMenuSettings.BindingLabels[i].ToLowerInvariant()+". Duplicate and reserved bindings are rejected.";
                     }
-                    SettingButton(body,"CONTROLLER: "+new[]{"AUTOMATIC","XBOX","PLAYSTATION","NINTENDO"}[Mathf.Clamp(P.controllerFamily,0,3)],288,()=>{P.controllerFamily=(P.controllerFamily+1)%4;SaveMenuPreference();},"Automatic detects your controller. Use a manual family if an adapter reports the wrong controller. Confirm and Back follow the selected family.");
+
                     var invert=Button(body,"INVERT CAMERA Y: "+OnOff(P.invertCamera),30,350,806,()=>{P.invertCamera=!P.invertCamera;SaveMenuPreference();},false,40);menuDescriptions[invert.gameObject]="Reverses vertical camera movement for mouse and right stick.";
                     Slider(body,"Camera sensitivity",P.cameraSensitivity,.3f,2,400,v=>P.cameraSensitivity=v);
                     break;
@@ -81,13 +89,14 @@ namespace TowTrouble
         }
         private UnityEngine.UI.Button SettingButton(RectTransform body,string label,float y,Action action,string description)
         {var button=Button(body,label,30,y,806,action);menuDescriptions[button.gameObject]=description;return button;}
-        private string SettingsDescription()=>settingsTab=="Audio"?"Set the sound to suit your space. Vehicle audio and interface sounds are separate. Muting audio never removes visual feedback.":settingsTab=="Imagine"?"Choose your display settings on the left, then Apply. Keep the result within 15 seconds or the previous settings return automatically.":settingsTab=="Comenzi"?ControllerGuide():settingsTab=="Accesibilitate"?"Choose readable text and comfortable camera movement. Cable warnings can include symbols as well as colour.":"Contextual hints help you learn at your own pace. Reset Progress starts a new career and keeps your preferences.";
+        private string SettingsDescription()=>settingsTab=="Audio"?"Set the sound to suit your space. Vehicle audio and interface sounds are separate. Muting audio never removes visual feedback.":settingsTab=="Imagine"?"Choose your display settings on the left, then Apply. Keep the result within 15 seconds or the previous settings return automatically.":settingsTab=="Comenzi"?(session.UsingGamepad?"Controls follow your connected controller automatically. Switch to your keyboard or mouse whenever you prefer.\n\nAdjust camera sensitivity below, or invert its vertical movement.":"Select an action to change its keyboard binding. Each key can have one action; menu navigation keys stay reserved.\n\nConnect a controller to see its button layout."):settingsTab=="Accesibilitate"?"Choose readable text and comfortable camera movement. Cable warnings can include symbols as well as colour.":"Contextual hints help you learn at your own pace. Reset Progress starts a new career and keeps your preferences.";
         private static string OnOff(bool value)=>value?"ON":"OFF";
         private void SaveMenuPreference(){session.ApplySettings();P.Save();Show("Settings");}
         private string ControllerGuide()
         {
-            var family=RecoveryInputPrompts.Family(Gamepad.current);
-            return RecoveryInputPrompts.TriggerLabels(family)+" · Drive / reverse\nLeft stick · Steer\n"+RecoveryInputPrompts.ConfirmLabel(family)+" · Cable\n"+RecoveryInputPrompts.CancelLabel(family)+" · Brake\n"+RecoveryInputPrompts.PreviousTabLabel(family)+" / "+RecoveryInputPrompts.NextTabLabel(family)+" · Reel in / pay out\nRight stick · Camera\n"+RecoveryInputPrompts.NorthLabel(family)+" · Reset camera\n"+RecoveryInputPrompts.WestLabel(family)+" · Garage\nLeft stick press · Recoveries";
+            var family=RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
+            if(!session.UsingGamepad)return P.forwardKey+" / "+P.reverseKey+" · Drive / reverse\n"+P.leftKey+" / "+P.rightKey+" · Steer\n"+P.hookKey+" · Cable\n"+P.brakeKey+" · Brake\n"+P.reelKey+" / "+P.extendKey+" · Reel in / pay out\nRMB · Camera\nC · Reset camera\n"+P.garageKey+" · Garage\n"+P.boardKey+" · Recoveries";
+            return RecoveryInputPrompts.TriggerLabels(family)+" · Drive / reverse\nLeft stick · Steer\n"+RecoveryInputPrompts.ConfirmLabel(family)+" · Cable\n"+RecoveryInputPrompts.CancelLabel(family)+" · Brake\n"+RecoveryInputPrompts.PreviousTabLabel(family)+" / "+RecoveryInputPrompts.NextTabLabel(family)+" · Reel in / pay out\nRight stick · Camera\n"+RecoveryInputPrompts.NorthLabel(family)+" · Reset camera\n"+RecoveryInputPrompts.WestLabel(family)+" · Garage\n"+RecoveryInputPrompts.LeftStickPressLabel(family)+" · Recoveries";
         }
         private static string QualityLabel(int index)=>index==0?"PERFORMANCE":"QUALITY";
         private void InitializeDisplayDraft()

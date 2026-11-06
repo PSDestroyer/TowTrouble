@@ -1,11 +1,12 @@
 using System;
+using HalvaStudio.Save;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace TowTrouble
 {
-    // Small, versioned desktop profile. No network authority or scene references are persisted.
+    // Versioned local-user profile. No network authority or scene references are persisted.
     [Serializable] public sealed class RecoveryProfile
     {
         public int version=4, completedMask, medalMask, noResetMask, noSnapMask, lastContract, vehicle, paint;
@@ -21,6 +22,18 @@ namespace TowTrouble
         [NonSerialized] public bool SuppressSaving;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         public static string ValidationStorageKey;
+#endif
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetValidationScope() { ValidationStorageKey=null; }
+#endif
+#if UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void ValidationBootstrap()
+        {
+            string isolated = UnityEditor.SessionState.GetString("TowTrouble.ValidationProfile", "");
+            if (!string.IsNullOrEmpty(isolated)) ValidationStorageKey = isolated;
+        }
 #endif
         private static string StorageKey { get {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -99,12 +112,18 @@ namespace TowTrouble
             p.language = string.Equals(p.language, "ro", StringComparison.OrdinalIgnoreCase) ? "ro" : "en";
             p.EnsureGarage();p.Clamp();return p;
         }
+        public static SaveStore Storage { get {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (!string.IsNullOrEmpty(ValidationStorageKey)) return SaveManager.Isolated(ValidationStorageKey);
+#endif
+            return SaveManager.Store;
+        } }
         private const string Key="TowTrouble.Profile.v1";
         public static RecoveryProfile Load()
         {
-            string saved=PlayerPrefs.GetString(StorageKey,"");
+            string saved=Storage.GetString(StorageKey,"");
             try {return Parse(saved);}
-            catch(ArgumentException){if(!string.IsNullOrEmpty(saved))PlayerPrefs.SetString(StorageKey+".unreadableBackup",saved);Debug.LogWarning("[TowTrouble] Profilul original a fost păstrat; sunt folosite valorile implicite.");return new RecoveryProfile();}
+            catch(ArgumentException){Storage.SuspendWrites("The career could not be read. Original save preserved.");Debug.LogWarning("[Tow Trouble] Career could not be read; original save preserved. Saving is disabled until the file is recovered.");return new RecoveryProfile();}
         }
         public void Save()
         {
@@ -114,8 +133,12 @@ namespace TowTrouble
             if (!Application.isPlaying && string.IsNullOrEmpty(ValidationStorageKey)) return;
 #endif
             cableControlsRevision = 1;
-            EnsureGarage();Clamp();var previous=PlayerPrefs.GetString(StorageKey,"");if(!string.IsNullOrEmpty(previous))PlayerPrefs.SetString(StorageKey+".previous",previous);
-            PlayerPrefs.SetString(StorageKey,JsonUtility.ToJson(this));PlayerPrefs.Save();
+            EnsureGarage();Clamp();var previous=Storage.GetString(StorageKey,"");if(!string.IsNullOrEmpty(previous))Storage.SetString(StorageKey+".previous",previous);
+            Storage.SetString(StorageKey,JsonUtility.ToJson(this));
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (!string.IsNullOrEmpty(ValidationStorageKey)) { Storage.Flush(); return; }
+#endif
+            SaveManager.RequestSave();
         }
         private void Clamp(){controllerFamily=Mathf.Clamp(controllerFamily,0,3);ownedVehicles&=15;paint=Mathf.Clamp(paint,0,3);vehicle=Mathf.Clamp(vehicle,0,3);if(starterChosen){starterVehicle=Mathf.Clamp(starterVehicle,0,3);ownedVehicles|=1<<starterVehicle;if(!OwnsVehicle(vehicle))vehicle=starterVehicle;}else{starterVehicle=-1;ownedVehicles=0;}lastContract=Mathf.Clamp(lastContract,0,2);master=Mathf.Clamp01(master);effects=Mathf.Clamp01(effects);ui=Mathf.Clamp01(ui);brightness=Mathf.Clamp(brightness,.7f,1.4f);textScale=Mathf.Clamp(textScale,.85f,1.3f);cameraSensitivity=Mathf.Clamp(cameraSensitivity,.3f,2f);}
         public bool Completed(int id)=>(completedMask&(1<<id))!=0;

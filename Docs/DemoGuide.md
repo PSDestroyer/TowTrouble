@@ -126,7 +126,7 @@ Nu există încă trasee noi în Mega, deșert jucabil sau misiuni Greu/Expert. 
 
 Catalogul conține 380 intrări în 16 categorii, incluzând echipamentul inițial și configurațiile funcționale. Audit: `Docs/Design/HotRod-AssetAudit.csv` (717 prefaburi sursă). Sumar: `Docs/Design/HotRod-Catalog.md`. Compatibilitatea verifică familia și socketurile; potrivirea vizuală a combinațiilor necesită verificare. Prefaburile derivate ocupă aproximativ 10 MB, cu referințe la mesh-urile/texturile existente.
 
-Profilul v2 migrează profilul v1 păstrând progresul, setările și culorile. Contractele istorice finalizate primesc o singură creditare de migrare. Se păstrează copia profilului anterior în PlayerPrefs, iar verificările agentului nu scriu în profilul real. Motorul nivel 3 costă 8800 CR direct sau 6000 CR la schimb cu motorul nivel 2; schimbul înlocuiește referințele vechi din configurații/preseturi.
+Profilul v2 migrează profilul v1 păstrând progresul, setările și culorile. Contractele istorice finalizate primesc o singură creditare de migrare. Profilul este păstrat acum de SaveManager în save.json, cu backup, scriere atomică și protecție la corupere; verificările folosesc stocare separată și nu scriu în profilul real. Motorul nivel 3 costă 8800 CR direct sau 6000 CR la schimb cu motorul nivel 2; schimbul înlocuiește referințele vechi din configurații/preseturi.
 
 Gazda validează starea, participantul și piesele catalogului. Configurațiile se transmit la schimbare. Contractul nu poate fi acceptat cât timp un coechipier este în garaj. Banii rămân progres local al fiecărui jucător, nu economie competitivă cu backend.
 

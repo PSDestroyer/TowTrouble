@@ -31,7 +31,7 @@ namespace TowTrouble
             Text(pageRoot,"One free starter. Upgrade any ride at the workshop.",82,112,1442,34,20,Muted);
             int selected=Mathf.Clamp(vehiclePreview,0,3);
             if(Application.isPlaying){session.World.PreviewVehicle(selected);session.World.PreviewPaint(starterPaint);}
-            starterCompareHint=Text(pageRoot,"",80,178,432,26,16,Paper);
+            starterCompareHint=ControlText(Text(pageRoot,"",80,178,432,26,16,Paper));
             Text(pageRoot,"Pull · Weight · Top speed",80,205,432,20,13,Muted);
             starterChoices=new UnityEngine.UI.Button[4];
             for(int i=0;i<4;i++)
@@ -48,7 +48,7 @@ namespace TowTrouble
                 if(active)Icon(choice.transform,RecoveryIcon.Check,394,18,22,Ink);
             }
             var hint=Panel(pageRoot,550,184,620,38,new Color(.03f,.04f,.05f,.72f));
-            starterRotateHint=Text(hint,"",18,3,584,30,16,Paper);
+            starterRotateHint=ControlText(Text(hint,"",18,3,584,30,16,Paper));
             var details=Panel(pageRoot,550,624,974,108);
             Text(details,RecoveryVehicle.ModelNames[selected],24,11,926,38,29,Paper,true);
             Text(details,StarterDescriptions[selected],24,57,926,34,20,Muted);
@@ -73,8 +73,8 @@ namespace TowTrouble
         {
             if(page!="Starter")return;
             bool pad=session.UsingGamepad;
-            if(starterCompareHint!=null)starterCompareHint.text=pad?"D-pad up / down · Compare rides":"W / S or arrows · Compare rides";
-            if(starterRotateHint!=null)starterRotateHint.text=pad?"Right stick · Rotate    "+RecoveryInputPrompts.RightStickPressLabel(RecoveryInputPrompts.Family(UnityEngine.InputSystem.Gamepad.current))+" · Reset view":"Drag the car · Rotate    C · Reset view";
+            if(starterCompareHint!=null)starterCompareHint.text=pad?"D-pad · Compare rides":"W / S or Arrows · Compare rides";
+            if(starterRotateHint!=null)starterRotateHint.text=pad?"Right stick · Rotate    "+RecoveryInputPrompts.RightStickPressLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad))+" · Reset view":"LMB · Rotate    C · Reset view";
         }
         private void ConfigureStarterNavigation()
         {

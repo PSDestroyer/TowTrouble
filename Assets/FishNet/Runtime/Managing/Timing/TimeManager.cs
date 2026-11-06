@@ -313,6 +313,7 @@ namespace FishNet.Managing.Timing
         /// <summary>
         /// Playerprefs string to load and save user fixed time.
         /// </summary>
+        private float _originalFixedDeltaTime;
         private const string SAVED_FIXED_TIME_TEXT = "SavedFixedTimeFN";
         #endregion
 
@@ -498,9 +499,12 @@ namespace FishNet.Managing.Timing
         {
             SetAutomaticPhysicsSimulation(true);
 
-            float simulationTime = PlayerPrefs.GetFloat(SAVED_FIXED_TIME_TEXT, float.MinValue);
-            if (simulationTime != float.MinValue)
-                Time.fixedDeltaTime = simulationTime;
+#if UNITY_EDITOR
+            float simulationTime = UnityEditor.SessionState.GetFloat(SAVED_FIXED_TIME_TEXT, float.MinValue);
+#else
+            float simulationTime = _originalFixedDeltaTime;
+#endif
+            if (simulationTime > 0f) Time.fixedDeltaTime = simulationTime;
         }
 
         /// <summary>
@@ -545,11 +549,12 @@ namespace FishNet.Managing.Timing
             {
                 #if UNITY_EDITOR
                 // Preserve user tick rate.
-                PlayerPrefs.SetFloat(SAVED_FIXED_TIME_TEXT, Time.fixedDeltaTime);
+                UnityEditor.SessionState.SetFloat(SAVED_FIXED_TIME_TEXT, Time.fixedDeltaTime);
                 // Let the player know.
                 // if (Time.fixedDeltaTime != (float)TickDelta)
                 //    Debug.LogWarning("Time.fixedDeltaTime is being overriden with TimeManager.TickDelta");
                 #endif
+                if (_originalFixedDeltaTime <= 0f) _originalFixedDeltaTime = Time.fixedDeltaTime;
                 Time.fixedDeltaTime = (float)TickDelta;
                 /* Only check this if network manager
                  * is not null. It would be null via
@@ -569,14 +574,14 @@ namespace FishNet.Managing.Timing
             else
             {
                 #if UNITY_EDITOR
-                float savedTime = PlayerPrefs.GetFloat(SAVED_FIXED_TIME_TEXT, float.MinValue);
+                float savedTime = UnityEditor.SessionState.GetFloat(SAVED_FIXED_TIME_TEXT, float.MinValue);
                 if (savedTime != float.MinValue && Time.fixedDeltaTime != savedTime)
                 {
                     Debug.LogWarning("Time.fixedDeltaTime has been set back to user values.");
                     Time.fixedDeltaTime = savedTime;
                 }
 
-                PlayerPrefs.DeleteKey(SAVED_FIXED_TIME_TEXT);
+                UnityEditor.SessionState.EraseFloat(SAVED_FIXED_TIME_TEXT);
                 #endif
                 SetPhysicsMode(mode);
             }

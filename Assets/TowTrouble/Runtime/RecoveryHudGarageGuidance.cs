@@ -25,7 +25,7 @@ namespace TowTrouble
                 return;
             }
 
-            string key = session.UsingGamepad ? RecoveryInputPrompts.WestLabel(Gamepad.current!=null?RecoveryInputPrompts.Family(Gamepad.current):RecoveryControllerFamily.Xbox) : P.ReadKey(P.garageKey, Key.G).ToString();
+            string key = session.UsingGamepad ? RecoveryInputPrompts.WestLabel(RecoveryInputDevices.Pad!=null?RecoveryInputPrompts.Family(RecoveryInputDevices.Pad):RecoveryControllerFamily.Xbox) : P.ReadKey(P.garageKey, Key.G).ToString();
             string ready = key + " · Customize";
             string caption = session.CanOpenGarage ? ready : world.InGarageArea(slot)
                 ? world.Attached(slot) ? "Detach cable first" : "Stop to customize"

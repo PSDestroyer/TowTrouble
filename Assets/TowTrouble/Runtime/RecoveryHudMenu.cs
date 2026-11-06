@@ -60,11 +60,16 @@ namespace TowTrouble
             Text(host,"Direct IP / LAN · UDP 7777 · 2 players",28,221,654,48,16,Muted);
             Button(host,"HOST SESSION",28,301,654,()=>StartMenuSession(false),true);
             Text(join,"JOIN A FRIEND",28,22,654,44,27,Paper,true);
-            address=Input(join,"HOST ADDRESS",PlayerPrefs.GetString(LastHostPreference,""),28,94,658,v=>{if(Application.isPlaying&&!P.SuppressSaving){PlayerPrefs.SetString(LastHostPreference,v.Trim());PlayerPrefs.Save();}});
+            address=Input(join,"HOST ADDRESS",RecoveryProfile.Storage.GetString(LastHostPreference,""),28,94,658,v=>{if(Application.isPlaying&&!P.SuppressSaving){RecoveryProfile.Storage.SetString(LastHostPreference,v.Trim());SaveLocalPreferences();}});
             Text(join,"Ask the host for their IP address. 127.0.0.1 connects to this computer only.",28,221,658,60,16,Muted);
             Button(join,"JOIN SESSION",28,301,658,()=>{if(string.IsNullOrWhiteSpace(address.text)){status.text="Enter your friend's host address first.";return;}busyJoin=true;textEntryOriginal=address.text.Trim();session.Join(textEntryOriginal);Show("Busy");});
             status=Text(pageRoot,session.Status,76,750,1448,42,17,Muted);Footer();
         }
+        private static void SaveLocalPreferences() {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (!string.IsNullOrEmpty(RecoveryProfile.ValidationStorageKey)) { RecoveryProfile.Storage.Flush(); return; }
+#endif
+            HalvaStudio.Save.SaveManager.RequestSave(); }
         private string LastHostPreference {
             get {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -115,7 +120,7 @@ namespace TowTrouble
         private void OpenTextEntry(TMP_InputField field)
         {
             textEntryDraft=field.text;textEntryLabel=field.name;textEntryLimit=field.characterLimit;
-            textEntryCommit=value=>{if(textEntryLabel=="YOUR NAME"){P.name=CleanName(value);P.Save();}else{PlayerPrefs.SetString(LastHostPreference,value.Trim());PlayerPrefs.Save();}};
+            textEntryCommit=value=>{if(textEntryLabel=="YOUR NAME"){P.name=CleanName(value);P.Save();}else if (!P.SuppressSaving){RecoveryProfile.Storage.SetString(LastHostPreference,value.Trim());SaveLocalPreferences();}};
             Show("TextEntry");
         }
         private void BuildTextEntry()
@@ -151,7 +156,7 @@ namespace TowTrouble
             var content=Node("Notices content",viewport,0,0,1150,500);var text=Text(content,notices,0,0,1150,500,16,Muted);text.enableAutoSizing=false;
             float height=Mathf.Max(420,text.GetPreferredValues(notices,1150,0).y+20);content.sizeDelta=new Vector2(1150,height);text.rectTransform.sizeDelta=content.sizeDelta;
             menuScroll.content=content;menuScroll.viewport=viewport;
-            Text(card,"Right stick / Page Up / Page Down / mouse wheel · Scroll",28,451,1192,27,14,Muted);
+            ControlText(Text(card,session.UsingGamepad?"Right stick · Scroll":"Page Up / Page Down / Mouse wheel · Scroll",28,451,1192,27,14,Muted));
         }
     }
 }

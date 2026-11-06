@@ -156,7 +156,7 @@ namespace TowTrouble
             var viewport=Node("Review viewport",scrollRoot,0,0,794,286);viewport.gameObject.AddComponent<UnityEngine.UI.Image>().color=Color.white;viewport.gameObject.AddComponent<UnityEngine.UI.Mask>().showMaskGraphic=false;
             var content=Node("Review text",viewport,0,0,774,286);var text=Text(content,body,0,0,774,286,18,Muted);text.enableAutoSizing=false;float height=Mathf.Max(286,text.GetPreferredValues(body,774,0).y);content.sizeDelta=new Vector2(774,height);text.rectTransform.sizeDelta=content.sizeDelta;scroll.viewport=viewport;scroll.content=content;
             garageReviewScroll=scroll;
-            garageDialogHint=Text(panel,"",28,386,794,24,12,Muted);
+            garageDialogHint=ControlText(Text(panel,"",28,386,794,24,12,Muted));
             Action yes=garageOverlay==GarageOverlay.Compatibility?(Action)FitGaragePart:garageOverlay==GarageOverlay.Sell?SellGaragePart:SaveGarageSetup;
             var confirm=GarageOverlayButton(panel,garageOverlay==GarageOverlay.Compatibility?GaragePrimaryLabel(session.GarageCatalog.Find(garageSelected)):"CONFIRM",28,418,385,yes,true);
             AddGarageHint(confirm,"confirm");
@@ -183,7 +183,7 @@ namespace TowTrouble
                 foreach(var button in new[]{rename,save,apply})GarageFont(button.GetComponentInChildren<TMP_Text>(),15);
             }
             var back=GarageOverlayButton(panel,"BACK TO GARAGE",24,552,400,CloseGarageOverlay);AddGarageHint(back,"back");
-            garageDialogHint=Text(panel,"",446,548,598,54,13,Muted);
+            garageDialogHint=ControlText(Text(panel,"",446,548,598,54,13,Muted));
         }
     }
 }

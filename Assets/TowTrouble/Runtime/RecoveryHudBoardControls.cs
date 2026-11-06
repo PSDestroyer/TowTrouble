@@ -112,7 +112,7 @@ namespace TowTrouble
             if (!online || page != "Board" && !dialog) { SetBoardNavigation(false); return false; }
             SetBoardNavigation(true);
             RefreshBoardHints();
-            var keyboard = Keyboard.current; var pad = Gamepad.current;
+            var keyboard = Keyboard.current; var pad = RecoveryInputDevices.Pad;
             bool cancel = keyboard != null && keyboard.escapeKey.wasPressedThisFrame ||
                 RecoveryInputPrompts.Cancel(pad)?.wasPressedThisFrame == true;
             if (cancel)
@@ -193,7 +193,7 @@ namespace TowTrouble
         private void RefreshBoardHints()
         {
             bool gamepad = session.UsingGamepad;
-            var family = RecoveryInputPrompts.Family(Gamepad.current);
+            var family = RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
             foreach (var hint in boardHints)
             {
                 string key = hint.Kind == 0 ? gamepad ? RecoveryInputPrompts.PreviousTabLabel(family) : "Q"
