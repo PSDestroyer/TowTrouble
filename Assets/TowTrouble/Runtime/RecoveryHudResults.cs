@@ -92,12 +92,12 @@ namespace TowTrouble
                     () => { session.RestartContract(); Show("Lobby"); }, false, 40).interactable = result.Host;
                 Button(card, L("CONTRACTE", "CONTRACTS"), 428, actionY + 66, 380,
                     () => { session.Replay(); Show("Contracts"); }, false, 40).interactable = result.Host;
-                Button(card, L("VEHICULE", "VEHICLES"), 32, actionY + 116, 776,
-                    () => { session.Replay(); returnPage = "Lobby"; Show("Vehicles"); }, false, 40).interactable = result.Host;
+                Button(card, "MAIN MENU", 32, actionY + 116, 776,
+                    () => { session.LeaveToMain(); Show("Busy"); }, false, 40).interactable = result.Host;
             }
             if (result.FreeRoam)
             {
-                string footer = result.Host ? (session.UsingGamepad ? "A" : "Enter") + L(" · Continuă", " · Continue")
+                string footer = result.Host ? (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(UnityEngine.InputSystem.Gamepad.current)) : "Enter") + L(" · Continuă", " · Continue")
                     : L("Așteptăm gazda să continue", "Waiting for the host to continue");
                 var hint = Text(card, footer, 32, actionY + 66, 776, 25, 13, Muted);
                 hint.alignment = TextAlignmentOptions.Center;

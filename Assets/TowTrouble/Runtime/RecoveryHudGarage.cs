@@ -27,7 +27,7 @@ namespace TowTrouble
             if(catalog==null){Header("GARAGE UNAVAILABLE","");return;}
             if(garageDraft==null)PrepareGarage();
             garageCards.Clear();garageCategoryButtons.Clear();garageHints.Clear();garageModalButtons.Clear();garageListScroll=null;
-            Header("YOUR WORKSHOP","Preview a part. Fit it when you're ready.");Wallet(pageRoot,P.credits);
+            Header("YOUR WORKSHOP",session.Training?"Practice only · preview equipment, then finish training. Your career money is safe.":"Preview a part. Fit it when you're ready.");Wallet(pageRoot,P.credits);
             var slots=RecoveryGarageWorkflow.Slots(garageSection);
             if(Array.IndexOf(slots,garageSlot)<0){garageSlot=slots[0];garageSelected=P.Build(P.vehicle).Item(garageSlot,catalog);garageScrollY=0;}
             var candidates=GarageCandidates();
@@ -180,7 +180,7 @@ namespace TowTrouble
         }
         private void BuildGarageFooter()
         {
-            var back=GarageButton(pageRoot,"BACK TO DRIVING",36,792,GarageCategoryWidth,CloseGarage,false,56);AddGarageHint(back,"back");
+            var back=GarageButton(pageRoot,session.Training?"FINISH TRAINING":"BACK TO DRIVING",36,792,GarageCategoryWidth,CloseGarage,false,56);AddGarageHint(back,"back");
             Text(pageRoot,"Preview resets on exit. Fitted parts stay saved.",40,852,GarageCategoryWidth-8,40,12,Muted);
             var presets=GarageButton(pageRoot,"SAVED SETUPS",GaragePreviewX,792,GaragePreviewWidth*.53f,()=>OpenGarageOverlay(GarageOverlay.Setups),false,44);AddGarageHint(presets,"setups");
             var reset=GarageButton(pageRoot,"RESET VIEW",GaragePreviewX+GaragePreviewWidth*.53f+12,792,GaragePreviewWidth*.47f-12,ResetGarageView,false,44);AddGarageHint(reset,"reset");

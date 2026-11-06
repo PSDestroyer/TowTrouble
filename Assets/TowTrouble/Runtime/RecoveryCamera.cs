@@ -29,7 +29,7 @@ namespace TowTrouble
             if(lobby||session.GarageOpen)
             {
                 var car=session.World.Drivers[Mathf.Max(0,session.LocalSlot)].transform;var center=car.position;
-                if(session.View=="Vehicles"||session.GarageOpen)
+                if(session.View=="Starter"||session.GarageOpen)
                 {
                     float rotationInput=0;
                     if(!session.GarageCameraInputBlocked&&Mouse.current!=null&&Mouse.current.leftButton.isPressed&&(UnityEngine.EventSystems.EventSystem.current==null||!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))rotationInput+=Mouse.current.delta.x.ReadValue()*.16f*p.cameraSensitivity;
@@ -39,7 +39,7 @@ namespace TowTrouble
                     else {orbit+=rotationInput;position=center+Quaternion.Euler(0,orbit,0)*new Vector3(7,3.8f,9);look=center+new Vector3(2.2f,1,-2.2f);}
                 }
                 else if(session.View=="Lobby") {position=session.World.Map!=null?center+new Vector3(10,6,11):new Vector3(10,6,41);look=session.World.Map!=null?center+Vector3.up:new Vector3(0,1,30);}
-                else {position=center+new Vector3(12,4.4f,5);look=center+new Vector3(1.5f,1,-3.5f);if(!p.reducedMotion)position.x+=Mathf.Sin(Time.unscaledTime*.12f)*.15f;}
+                else {MenuPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],out position,out look);}
             }
             else if(session.World.Phase==RecoveryPhase.Complete)
             {var target=session.World.TowTargetPosition;position=target+new Vector3(8,4.6f,9);look=target+Vector3.up;}

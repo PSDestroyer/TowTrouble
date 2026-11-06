@@ -33,9 +33,9 @@ namespace TowTrouble
             kinds[wheel]=kind;
             float slip=vehicle.SlipAtWheel(wheel);
             AddMud(wheel,Time.deltaTime*(.25f+slip*.8f)+Mathf.Min(distance,1)*.3f);
-            if(!Application.isPlaying||Time.timeScale<=.01f||RecoveryVehicle.EffectsGain<=0||splashes==null||wheel>=splashes.Length||splashes[wheel]==null||!splashes[wheel].gameObject.activeInHierarchy)return;
+            if(!Application.isPlaying||Time.timeScale<=.01f||RecoveryVehicle.VisualEffectsGain<=0||splashes==null||wheel>=splashes.Length||splashes[wheel]==null||!splashes[wheel].gameObject.activeInHierarchy)return;
             float rate=vehicle.Speed>.2f||slip>.1f?Mathf.Min(32,vehicle.Speed*3+slip*22):0;
-            splashBudget[wheel]=Mathf.Min(3,splashBudget[wheel]+rate*Time.deltaTime*Mathf.Clamp01(RecoveryVehicle.EffectsGain));
+            splashBudget[wheel]=Mathf.Min(3,splashBudget[wheel]+rate*Time.deltaTime*Mathf.Clamp01(RecoveryVehicle.VisualEffectsGain));
             int count=(int)splashBudget[wheel];if(count==0)return;splashBudget[wheel]-=count;
             var spray=splashes[wheel];if(!spray.isPlaying)spray.Play();
             float sign=vehicle.ControlInput.y<-.05f?-1:1;

@@ -82,16 +82,16 @@ namespace TowTrouble
                 string hint = null;
                 if (cableWarning)
                 {
-                    label = L("Cablu la limită", "Cable at risk");
+                    label = (P.colorHelp?"!  ":"")+L("Cablu la limită", "Cable at risk");
                     hint = frame.Length >= RecoveryWinch.MaximumLength - .01f
                         ? L("Oprește tragerea", "Ease off the throttle")
                         : L("Slăbește cablul", "Pay out cable");
                 }
                 else if (pullAdvice != null) hint = pullAdvice;
                 else if (IntroduceWinch)
-                { label = "Cable attached"; hint = "Hold " + (session.UsingGamepad ? "LB" : P.ReadKey(P.reelKey, Key.Q).ToString()) + " to reel in"; }
+                { label = "Cable attached"; hint = "Hold " + (session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.ReadKey(P.reelKey, Key.Q).ToString()) + " to reel in"; }
                 if (hint == null && quietDetach && !IntroduceWinch)
-                    hint = (session.UsingGamepad ? "A" : P.ReadKey(P.hookKey, Key.F).ToString()) + " · Detach cable";
+                    hint = (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.ReadKey(P.hookKey, Key.F).ToString()) + " · Detach cable";
                 if (UrgentAssistance) hint = null;
 
                 bool showHint = !string.IsNullOrEmpty(hint);
@@ -116,8 +116,8 @@ namespace TowTrouble
         private void RefreshCableControlHints()
         {
             bool gamepad = session.UsingGamepad;
-            string reel = gamepad ? "LB" : P.reelKey;
-            string payout = gamepad ? "RB" : P.extendKey;
+            string reel = gamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.reelKey;
+            string payout = gamepad ? RecoveryInputPrompts.NextTabLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.extendKey;
             if (lastReelBinding == reel && lastPayoutBinding == payout && hintScale == P.textScale) return;
             lastReelBinding = reel;
             lastPayoutBinding = payout;
@@ -180,8 +180,8 @@ namespace TowTrouble
             if (!attached) return;
             var frame = world.Winch(slot);
             float capacity = world.Drivers[slot].WinchForce / 1000f;
-            string controls = session.UsingGamepad ? "LB / RB" : P.reelKey + " / " + P.extendKey;
-            string detach = session.UsingGamepad ? "A" : P.hookKey;
+            string controls = session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(Gamepad.current))+" / "+RecoveryInputPrompts.NextTabLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.reelKey + " / " + P.extendKey;
+            string detach = session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(Gamepad.current)) : P.hookKey;
             cableDetails.text = L("Troliu ", "Winch ") + (frame.Load * capacity).ToString("0.0") + " / " +
                 capacity.ToString("0.#") + " kN   ·   " + frame.Length.ToString("0.0") + " m\n" +
                 controls + L("  Scurtează / slăbește", "  Reel in / pay out") + "   ·   " +

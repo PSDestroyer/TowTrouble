@@ -20,7 +20,7 @@ namespace TowTrouble
         private Rigidbody TowBody=>ClearingObstacle?activeObstacle.Body:casualty.Body;
         public void ConfigureObstacles(RecoveryTowObstacle[] values){siteObstacles=values;}
         private void FindObstacle()
-        {var previous=activeObstacle;activeObstacle=null;if(!FreeRoam)return;foreach(var item in siteObstacles)if(item!=null&&item.SiteIndex==ContractIndex){activeObstacle=item;break;}if(previous!=activeObstacle&&activeObstacle!=null){obstacleRemotePosition=activeObstacle.Home;obstacleRemoteRotation=activeObstacle.HomeRotation;}}
+        {var previous=activeObstacle;activeObstacle=null;if(!FreeRoam||Training)return;foreach(var item in siteObstacles)if(item!=null&&item.SiteIndex==ContractIndex){activeObstacle=item;break;}if(previous!=activeObstacle&&activeObstacle!=null){obstacleRemotePosition=activeObstacle.Home;obstacleRemoteRotation=activeObstacle.HomeRotation;}}
         private void BeginScenario()
         {
             foreach(var item in siteObstacles)if(item!=null)item.ResetObstacle();FindObstacle();
@@ -30,7 +30,7 @@ namespace TowTrouble
             BeginExtraction();
         }
         private void StopScenario()
-        {ResetExtraction();obstaclePending.Value=false;foreach(var item in siteObstacles)if(item!=null)item.ResetObstacle();activeObstacle=null;}
+        {ResetExtraction();obstaclePending.Value=false;if(Training){activeObstacle=null;return;}foreach(var item in siteObstacles)if(item!=null)item.ResetObstacle();activeObstacle=null;}
         private void TickScenario(Vector3 totalPull)
         {
             if(!FreeRoam||!HasContract)return;

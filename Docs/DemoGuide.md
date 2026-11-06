@@ -225,3 +225,16 @@ Această secțiune înlocuiește prețurile și bugetele independente de mai sus
 Primele două oferă împreună2375CR la prima finalizare chiar fără bonusurile de performanță. Body1400 sau motor800+roți de noroi600 sunt două căi de pregătire verificate. Motor3 costă2600 total,1800 după Motor2; reductor/suspensie1000; troliu14kN1600; cabluri14/18/26/36kN200/1200/2000/4200. Rejucările rămân plătite, cu baza redusă afișată înainte de acceptare și proporție mai bună la dificultăți mari.
 
 Recompensele includ distanța reală pe drum, urcarea, livrarea și pregătirea estimată. Timpul jucătorului nu mărește plata și nu există cronometru-limită. Estimarea este calibrată cu trei drumuri și o extragere/livrare reală Ranger; toate24 încă nu au cronometrare completă cu fiecare mașină. Detalii și limite: `Docs/Validation/CareerEconomy/README.md`.
+
+
+## Meniul și tutorialul actual — 2026-11-06
+
+Această secțiune înlocuiește vechile intrări Vehicles / Tutorial-Contracts din meniul principal. Jocul și UI-ul sunt în engleză. Main are Play Solo, Play Co-op, How to Play și Settings; Credits/Quit sunt secundare. Prima configurare oferă exact un starter gratuit, cu confirmare; ulterior alte body-uri se cumpără în garajul din gameplay. Mașina din Main și statisticile reflectă echiparea montată.
+
+How to Play oferă trei pagini de ghid și antrenament opțional pe OpenWorldRecovery, fără o scenă separată. Antrenamentul folosește o copie nesalvată a profilului, mașină de probă, conuri temporare și 5.000 CR de probă. Include condus, cameră, conectare, troliu, extragere, livrare și garaj. La sfârșit sau abandon se restabilesc banii și echiparea carierei; preferințele modificate rămân salvate. Nu se acordă recompense sau misiuni finalizate.
+
+Navigare generală: WASD/săgeți sau D-pad/left stick; Enter / Confirm; Esc / Back; Q/E sau shoulders pentru taburi. Controllerul Nintendo folosește A est pentru confirmare și B sud pentru revenire. Indiciile comută după dispozitiv, cu pictograme Xbox/PlayStation/Nintendo și override în Controls. Formularele Co-op au tastatură virtuală pentru controller.
+
+Settings include rebinding cu verificarea conflictelor, audio separat de VFX, Quality/Performance prin copie URP temporară, display cu Apply/Keep și revenire automată la 15 secunde, text/motion/simboluri și resetarea progresului cu preferințele păstrate. Pause permite revenire confirmată la Main. Credits rămâne neutru până la alegerea numelui creatorului; licențele disponibile sunt într-o secțiune separată.
+
+Validare: 243/243 teste Unity, 52 randări de panel fără text depășit, navigare live cu tastatură și controller virtual, lobby cu un participant, Retry/Cancel, reset și două fluxuri complete de antrenament. Controller fizic, doi peers și fullscreen în player necesită verificare separată. Nu s-a creat build. Dovezi: `Docs/Validation/MenuFinal/README.md`.

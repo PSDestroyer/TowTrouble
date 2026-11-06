@@ -77,6 +77,7 @@ namespace TowTrouble
         }
         private static Transform Find(Transform root,string name){foreach(var t in root.GetComponentsInChildren<Transform>(true))if(t.name==name)return t;return null;}
         private static Bounds BoundsOf(GameObject go){var rs=go.GetComponentsInChildren<Renderer>();var b=new Bounds(go.transform.position,Vector3.zero);foreach(var r in rs)b.Encapsulate(r.bounds);return b;}
+        public void ClearPreview(){Clear();applied="";boundGeometry=-1;}
         private void Clear()
         {
             if(assembly!=null){assembly.gameObject.SetActive(false);if(Application.isPlaying)Destroy(assembly.gameObject);else DestroyImmediate(assembly.gameObject);assembly=null;}

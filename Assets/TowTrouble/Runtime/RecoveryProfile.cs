@@ -14,6 +14,18 @@ namespace TowTrouble
         public bool onboarded, reducedMotion, invertCamera, vibration=true, tutorial=true, colorHelp=true;
         public float master=.8f, effects=.8f, ui=.7f, brightness=1f, textScale=1f, cameraSensitivity=1f;
         public int quality=1;
+        public bool tutorialOffered, tutorialCompleted;
+        public int displayWidth,displayHeight,displayMode=-1;
+        public int controllerFamily; // 0 automatic; 1 Xbox, 2 PlayStation, 3 Nintendo
+        [NonSerialized] public bool SuppressSaving;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public static string ValidationStorageKey;
+#endif
+        private static string StorageKey { get {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (!string.IsNullOrEmpty(ValidationStorageKey)) return ValidationStorageKey;
+#endif
+            return Key; } }
         public string forwardKey="W",reverseKey="S",leftKey="A",rightKey="D",brakeKey="Space";
         public string language="en", name="Driver", hookKey="F", resetKey="R", reelKey="Q", extendKey="E";
         public int cableControlsRevision;
@@ -78,17 +90,22 @@ namespace TowTrouble
         private const string Key="TowTrouble.Profile.v1";
         public static RecoveryProfile Load()
         {
-            string saved=PlayerPrefs.GetString(Key,"");
+            string saved=PlayerPrefs.GetString(StorageKey,"");
             try {return Parse(saved);}
-            catch(ArgumentException){if(!string.IsNullOrEmpty(saved))PlayerPrefs.SetString(Key+".unreadableBackup",saved);Debug.LogWarning("[TowTrouble] Profilul original a fost păstrat; sunt folosite valorile implicite.");return new RecoveryProfile();}
+            catch(ArgumentException){if(!string.IsNullOrEmpty(saved))PlayerPrefs.SetString(StorageKey+".unreadableBackup",saved);Debug.LogWarning("[TowTrouble] Profilul original a fost păstrat; sunt folosite valorile implicite.");return new RecoveryProfile();}
         }
         public void Save()
         {
+            if (SuppressSaving) return;
+#if UNITY_EDITOR
+            // Preview canvases can rebuild sliders in Edit Mode. They must never save a career.
+            if (!Application.isPlaying && string.IsNullOrEmpty(ValidationStorageKey)) return;
+#endif
             cableControlsRevision = 1;
-            EnsureGarage();Clamp();var previous=PlayerPrefs.GetString(Key,"");if(!string.IsNullOrEmpty(previous))PlayerPrefs.SetString(Key+".previous",previous);
-            PlayerPrefs.SetString(Key,JsonUtility.ToJson(this));PlayerPrefs.Save();
+            EnsureGarage();Clamp();var previous=PlayerPrefs.GetString(StorageKey,"");if(!string.IsNullOrEmpty(previous))PlayerPrefs.SetString(StorageKey+".previous",previous);
+            PlayerPrefs.SetString(StorageKey,JsonUtility.ToJson(this));PlayerPrefs.Save();
         }
-        private void Clamp(){ownedVehicles&=15;paint=Mathf.Clamp(paint,0,3);vehicle=Mathf.Clamp(vehicle,0,3);if(starterChosen){starterVehicle=Mathf.Clamp(starterVehicle,0,3);ownedVehicles|=1<<starterVehicle;if(!OwnsVehicle(vehicle))vehicle=starterVehicle;}else{starterVehicle=-1;ownedVehicles=0;}lastContract=Mathf.Clamp(lastContract,0,2);master=Mathf.Clamp01(master);effects=Mathf.Clamp01(effects);ui=Mathf.Clamp01(ui);brightness=Mathf.Clamp(brightness,.7f,1.4f);textScale=Mathf.Clamp(textScale,.85f,1.3f);cameraSensitivity=Mathf.Clamp(cameraSensitivity,.3f,2f);}
+        private void Clamp(){controllerFamily=Mathf.Clamp(controllerFamily,0,3);ownedVehicles&=15;paint=Mathf.Clamp(paint,0,3);vehicle=Mathf.Clamp(vehicle,0,3);if(starterChosen){starterVehicle=Mathf.Clamp(starterVehicle,0,3);ownedVehicles|=1<<starterVehicle;if(!OwnsVehicle(vehicle))vehicle=starterVehicle;}else{starterVehicle=-1;ownedVehicles=0;}lastContract=Mathf.Clamp(lastContract,0,2);master=Mathf.Clamp01(master);effects=Mathf.Clamp01(effects);ui=Mathf.Clamp01(ui);brightness=Mathf.Clamp(brightness,.7f,1.4f);textScale=Mathf.Clamp(textScale,.85f,1.3f);cameraSensitivity=Mathf.Clamp(cameraSensitivity,.3f,2f);}
         public bool Completed(int id)=>(completedMask&(1<<id))!=0;
         public bool Unlocked(int id)=>id==0||Completed(id-1);
         public bool Clean(int id)=>(medalMask&(1<<id))!=0;

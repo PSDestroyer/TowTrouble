@@ -86,7 +86,7 @@ namespace TowTrouble
             if (casualty.TryGetWheelContact(wheel, out var hit)
                 || Physics.Raycast(center + Vector3.up * .5f, Vector3.down, out hit, 2f, 1 << 8, QueryTriggerInteraction.Ignore)) point = hit.point;
             if (extractionVisuals != null && extractionVisuals.Matches(ContractIndex))
-                extractionVisuals.ShowRelease(point, Contract.ExitDirection, RecoveryVehicle.EffectsGain);
+                extractionVisuals.ShowRelease(point, Contract.ExitDirection, RecoveryVehicle.VisualEffectsGain);
             else casualty.ShowExtractionRelease(point);
         }
     }

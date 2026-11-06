@@ -1,0 +1,5319 @@
+{
+  "results": [
+    {
+      "state": "Main",
+      "scale": 1.0,
+      "texts": 17,
+      "issues": [],
+      "controls": [
+        {
+          "name": "PLAY SOLO",
+          "enabled": true,
+          "up": null,
+          "down": "PLAY CO-OP",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "PLAY CO-OP",
+          "enabled": true,
+          "up": "PLAY SOLO",
+          "down": "HOW TO PLAY",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "HOW TO PLAY",
+          "enabled": true,
+          "up": "PLAY CO-OP",
+          "down": "SETTINGS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SETTINGS",
+          "enabled": true,
+          "up": "HOW TO PLAY",
+          "down": "CREDITS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CREDITS",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": null,
+          "left": null,
+          "right": "QUIT"
+        },
+        {
+          "name": "QUIT",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": null,
+          "left": "CREDITS",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "MainNew",
+      "scale": 1.0,
+      "texts": 17,
+      "issues": [],
+      "controls": [
+        {
+          "name": "PLAY SOLO",
+          "enabled": true,
+          "up": null,
+          "down": "PLAY CO-OP",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "PLAY CO-OP",
+          "enabled": true,
+          "up": "PLAY SOLO",
+          "down": "HOW TO PLAY",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "HOW TO PLAY",
+          "enabled": true,
+          "up": "PLAY CO-OP",
+          "down": "SETTINGS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SETTINGS",
+          "enabled": true,
+          "up": "HOW TO PLAY",
+          "down": "CREDITS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CREDITS",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": null,
+          "left": null,
+          "right": "QUIT"
+        },
+        {
+          "name": "QUIT",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": null,
+          "left": "CREDITS",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Starter",
+      "scale": 1.0,
+      "texts": 26,
+      "issues": [],
+      "controls": [
+        {
+          "name": "ORIGINAL",
+          "enabled": true,
+          "up": null,
+          "down": "Starter 1",
+          "left": null,
+          "right": "CREAM"
+        },
+        {
+          "name": "CREAM",
+          "enabled": true,
+          "up": null,
+          "down": "Starter 2",
+          "left": "ORIGINAL",
+          "right": "OLIVE"
+        },
+        {
+          "name": "OLIVE",
+          "enabled": true,
+          "up": null,
+          "down": "Starter 2",
+          "left": "CREAM",
+          "right": "MUSTARD"
+        },
+        {
+          "name": "MUSTARD",
+          "enabled": true,
+          "up": null,
+          "down": "Starter 3",
+          "left": "OLIVE",
+          "right": null
+        },
+        {
+          "name": "Starter 0",
+          "enabled": true,
+          "up": "ORIGINAL",
+          "down": "BACK",
+          "left": null,
+          "right": "Starter 1"
+        },
+        {
+          "name": "Starter 1",
+          "enabled": true,
+          "up": "ORIGINAL",
+          "down": "BACK",
+          "left": "Starter 0",
+          "right": "Starter 2"
+        },
+        {
+          "name": "Starter 2",
+          "enabled": true,
+          "up": "CREAM",
+          "down": "CHOOSE RANGER",
+          "left": "Starter 1",
+          "right": "Starter 3"
+        },
+        {
+          "name": "Starter 3",
+          "enabled": true,
+          "up": "MUSTARD",
+          "down": "CHOOSE RANGER",
+          "left": "Starter 2",
+          "right": null
+        },
+        {
+          "name": "CHOOSE RANGER",
+          "enabled": true,
+          "up": "Starter 3",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Starter 0",
+          "down": null,
+          "left": null,
+          "right": "CHOOSE RANGER"
+        }
+      ]
+    },
+    {
+      "state": "Coop",
+      "scale": 1.0,
+      "texts": 20,
+      "issues": [],
+      "controls": [
+        {
+          "name": "YOUR NAME",
+          "enabled": true,
+          "up": null,
+          "down": "HOST ADDRESS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "HOST SESSION",
+          "enabled": true,
+          "up": "YOUR NAME",
+          "down": "BACK",
+          "left": null,
+          "right": "JOIN SESSION"
+        },
+        {
+          "name": "HOST ADDRESS",
+          "enabled": true,
+          "up": "YOUR NAME",
+          "down": "JOIN SESSION",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "JOIN SESSION",
+          "enabled": true,
+          "up": "HOST ADDRESS",
+          "down": "BACK",
+          "left": "HOST SESSION",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "HOST SESSION",
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Lobby",
+      "scale": 1.0,
+      "texts": 18,
+      "issues": [],
+      "controls": [
+        {
+          "name": "READY",
+          "enabled": true,
+          "up": null,
+          "down": "LEAVE SESSION",
+          "left": null,
+          "right": "START EXPLORING"
+        },
+        {
+          "name": "START EXPLORING",
+          "enabled": true,
+          "up": null,
+          "down": "LEAVE SESSION",
+          "left": "READY",
+          "right": null
+        },
+        {
+          "name": "LEAVE SESSION",
+          "enabled": true,
+          "up": "READY",
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Audio",
+      "scale": 1.0,
+      "texts": 24,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "Master volume",
+          "enabled": true,
+          "up": "Audio",
+          "down": "Vehicle and sound effects",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Vehicle and sound effects",
+          "enabled": true,
+          "up": "Master volume",
+          "down": "Interface",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Interface",
+          "enabled": true,
+          "up": "Vehicle and sound effects",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "Interface",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Interface",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "Imagine",
+      "scale": 1.0,
+      "texts": 26,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "Brightness",
+          "enabled": true,
+          "up": "Display",
+          "down": "QUALITY: QUALITY",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "QUALITY: QUALITY",
+          "enabled": true,
+          "up": "Brightness",
+          "down": "MODE: WINDOWED",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "MODE: WINDOWED",
+          "enabled": true,
+          "up": "QUALITY: QUALITY",
+          "down": "RESOLUTION: 800 × 600",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESOLUTION: 800 × 600",
+          "enabled": true,
+          "up": "MODE: WINDOWED",
+          "down": "APPLY DISPLAY CHANGES",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "APPLY DISPLAY CHANGES",
+          "enabled": true,
+          "up": "RESOLUTION: 800 × 600",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "APPLY DISPLAY CHANGES",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "APPLY DISPLAY CHANGES",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "Comenzi",
+      "scale": 1.0,
+      "texts": 35,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "Accelerate  [W]",
+          "enabled": true,
+          "up": "Controls",
+          "down": "Reverse  [S]",
+          "left": null,
+          "right": "Reel in  [Q]"
+        },
+        {
+          "name": "Reverse  [S]",
+          "enabled": true,
+          "up": "Accelerate  [W]",
+          "down": "Steer left  [A]",
+          "left": null,
+          "right": "Pay out  [E]"
+        },
+        {
+          "name": "Steer left  [A]",
+          "enabled": true,
+          "up": "Reverse  [S]",
+          "down": "Steer right  [D]",
+          "left": null,
+          "right": "Reset vehicle  [R]"
+        },
+        {
+          "name": "Steer right  [D]",
+          "enabled": true,
+          "up": "Steer left  [A]",
+          "down": "Brake  [Space]",
+          "left": null,
+          "right": "Recoveries  [Tab]"
+        },
+        {
+          "name": "Brake  [Space]",
+          "enabled": true,
+          "up": "Steer right  [D]",
+          "down": "Attach / detach cable  [F]",
+          "left": null,
+          "right": "Garage  [G]"
+        },
+        {
+          "name": "Attach / detach cable  [F]",
+          "enabled": true,
+          "up": "Brake  [Space]",
+          "down": "CONTROLLER: AUTOMATIC",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Reel in  [Q]",
+          "enabled": true,
+          "up": "Controls",
+          "down": "Pay out  [E]",
+          "left": "Accelerate  [W]",
+          "right": null
+        },
+        {
+          "name": "Pay out  [E]",
+          "enabled": true,
+          "up": "Reel in  [Q]",
+          "down": "Reset vehicle  [R]",
+          "left": "Reverse  [S]",
+          "right": null
+        },
+        {
+          "name": "Reset vehicle  [R]",
+          "enabled": true,
+          "up": "Pay out  [E]",
+          "down": "Recoveries  [Tab]",
+          "left": "Steer left  [A]",
+          "right": null
+        },
+        {
+          "name": "Recoveries  [Tab]",
+          "enabled": true,
+          "up": "Reset vehicle  [R]",
+          "down": "Garage  [G]",
+          "left": "Steer right  [D]",
+          "right": null
+        },
+        {
+          "name": "Garage  [G]",
+          "enabled": true,
+          "up": "Recoveries  [Tab]",
+          "down": "CONTROLLER: AUTOMATIC",
+          "left": "Brake  [Space]",
+          "right": null
+        },
+        {
+          "name": "CONTROLLER: AUTOMATIC",
+          "enabled": true,
+          "up": "Attach / detach cable  [F]",
+          "down": "INVERT CAMERA Y: OFF",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "INVERT CAMERA Y: OFF",
+          "enabled": true,
+          "up": "CONTROLLER: AUTOMATIC",
+          "down": "Camera sensitivity",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Camera sensitivity",
+          "enabled": true,
+          "up": "INVERT CAMERA Y: OFF",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "Garage  [G]",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Attach / detach cable  [F]",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "Accesibilitate",
+      "scale": 1.0,
+      "texts": 24,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "Text / HUD size",
+          "enabled": true,
+          "up": "Accessibility",
+          "down": "REDUCED MOTION: OFF",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "REDUCED MOTION: OFF",
+          "enabled": true,
+          "up": "Text / HUD size",
+          "down": "TENSION SYMBOLS: ON",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "TENSION SYMBOLS: ON",
+          "enabled": true,
+          "up": "REDUCED MOTION: OFF",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "TENSION SYMBOLS: ON",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "TENSION SYMBOLS: ON",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "Joc",
+      "scale": 1.0,
+      "texts": 25,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "TUTORIAL HINTS: ON",
+          "enabled": true,
+          "up": "Game",
+          "down": "CONTROLLER VIBRATION: ON",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CONTROLLER VIBRATION: ON",
+          "enabled": true,
+          "up": "TUTORIAL HINTS: ON",
+          "down": "HOW TO PLAY",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "HOW TO PLAY",
+          "enabled": true,
+          "up": "CONTROLLER VIBRATION: ON",
+          "down": "RESET PROGRESS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESET PROGRESS",
+          "enabled": true,
+          "up": "HOW TO PLAY",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "RESET PROGRESS",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "RESET PROGRESS",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "FirstSetup",
+      "scale": 1.0,
+      "texts": 13,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Brightness",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Text / HUD size",
+          "enabled": true,
+          "up": "Brightness",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CHOOSE YOUR FIRST RIDE",
+          "enabled": true,
+          "up": "Text / HUD size",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Text / HUD size",
+          "down": null,
+          "left": null,
+          "right": "CHOOSE YOUR FIRST RIDE"
+        }
+      ]
+    },
+    {
+      "state": "Credits",
+      "scale": 1.0,
+      "texts": 12,
+      "issues": [],
+      "controls": [
+        {
+          "name": "THIRD-PARTY NOTICES",
+          "enabled": true,
+          "up": null,
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "THIRD-PARTY NOTICES",
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Notices",
+      "scale": 1.0,
+      "texts": 10,
+      "issues": [],
+      "controls": [
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Help0",
+      "scale": 1.0,
+      "texts": 22,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Driving",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": null,
+          "right": "Recovery"
+        },
+        {
+          "name": "Recovery",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Driving",
+          "right": "Workshop"
+        },
+        {
+          "name": "Workshop",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Recovery",
+          "right": null
+        },
+        {
+          "name": "START TRAINING",
+          "enabled": true,
+          "up": "Driving",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Driving",
+          "down": null,
+          "left": null,
+          "right": "START TRAINING"
+        }
+      ]
+    },
+    {
+      "state": "Help1",
+      "scale": 1.0,
+      "texts": 22,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Driving",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": null,
+          "right": "Recovery"
+        },
+        {
+          "name": "Recovery",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Driving",
+          "right": "Workshop"
+        },
+        {
+          "name": "Workshop",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Recovery",
+          "right": null
+        },
+        {
+          "name": "START TRAINING",
+          "enabled": true,
+          "up": "Recovery",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Recovery",
+          "down": null,
+          "left": null,
+          "right": "START TRAINING"
+        }
+      ]
+    },
+    {
+      "state": "Help2",
+      "scale": 1.0,
+      "texts": 22,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Driving",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": null,
+          "right": "Recovery"
+        },
+        {
+          "name": "Recovery",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Driving",
+          "right": "Workshop"
+        },
+        {
+          "name": "Workshop",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Recovery",
+          "right": null
+        },
+        {
+          "name": "START TRAINING",
+          "enabled": true,
+          "up": "Workshop",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Workshop",
+          "down": null,
+          "left": null,
+          "right": "START TRAINING"
+        }
+      ]
+    },
+    {
+      "state": "Pause",
+      "scale": 1.0,
+      "texts": 12,
+      "issues": [],
+      "controls": [
+        {
+          "name": "RESUME",
+          "enabled": true,
+          "up": null,
+          "down": "RECOVERIES",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RECOVERIES",
+          "enabled": true,
+          "up": "RESUME",
+          "down": "SETTINGS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SETTINGS",
+          "enabled": true,
+          "up": "RECOVERIES",
+          "down": "RESET VEHICLE",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESET VEHICLE",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": "MAIN MENU",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "MAIN MENU",
+          "enabled": true,
+          "up": "RESET VEHICLE",
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Confirm",
+      "scale": 1.0,
+      "texts": 9,
+      "issues": [],
+      "controls": [
+        {
+          "name": "RESET PROGRESS",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": "CANCEL"
+        },
+        {
+          "name": "CANCEL",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": "RESET PROGRESS",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "TutorialOffer",
+      "scale": 1.0,
+      "texts": 11,
+      "issues": [],
+      "controls": [
+        {
+          "name": "START TRAINING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": "SKIP · START EXPLORING",
+          "right": null
+        },
+        {
+          "name": "SKIP · START EXPLORING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": "START TRAINING"
+        }
+      ]
+    },
+    {
+      "state": "TutorialDone",
+      "scale": 1.0,
+      "texts": 8,
+      "issues": [],
+      "controls": [
+        {
+          "name": "VISIT THE WORKSHOP",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "TrainingComplete",
+      "scale": 1.0,
+      "texts": 8,
+      "issues": [],
+      "controls": [
+        {
+          "name": "START EXPLORING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "TextEntry",
+      "scale": 1.0,
+      "texts": 52,
+      "issues": [],
+      "controls": [
+        {
+          "name": "1",
+          "enabled": true,
+          "up": null,
+          "down": "a",
+          "left": null,
+          "right": "2"
+        },
+        {
+          "name": "2",
+          "enabled": true,
+          "up": null,
+          "down": "b",
+          "left": "1",
+          "right": "3"
+        },
+        {
+          "name": "3",
+          "enabled": true,
+          "up": null,
+          "down": "c",
+          "left": "2",
+          "right": "4"
+        },
+        {
+          "name": "4",
+          "enabled": true,
+          "up": null,
+          "down": "d",
+          "left": "3",
+          "right": "5"
+        },
+        {
+          "name": "5",
+          "enabled": true,
+          "up": null,
+          "down": "e",
+          "left": "4",
+          "right": "6"
+        },
+        {
+          "name": "6",
+          "enabled": true,
+          "up": null,
+          "down": "f",
+          "left": "5",
+          "right": "7"
+        },
+        {
+          "name": "7",
+          "enabled": true,
+          "up": null,
+          "down": "g",
+          "left": "6",
+          "right": "8"
+        },
+        {
+          "name": "8",
+          "enabled": true,
+          "up": null,
+          "down": "h",
+          "left": "7",
+          "right": "9"
+        },
+        {
+          "name": "9",
+          "enabled": true,
+          "up": null,
+          "down": "i",
+          "left": "8",
+          "right": "0"
+        },
+        {
+          "name": "0",
+          "enabled": true,
+          "up": null,
+          "down": "j",
+          "left": "9",
+          "right": null
+        },
+        {
+          "name": "a",
+          "enabled": true,
+          "up": "1",
+          "down": "k",
+          "left": null,
+          "right": "b"
+        },
+        {
+          "name": "b",
+          "enabled": true,
+          "up": "2",
+          "down": "l",
+          "left": "a",
+          "right": "c"
+        },
+        {
+          "name": "c",
+          "enabled": true,
+          "up": "3",
+          "down": "m",
+          "left": "b",
+          "right": "d"
+        },
+        {
+          "name": "d",
+          "enabled": true,
+          "up": "4",
+          "down": "n",
+          "left": "c",
+          "right": "e"
+        },
+        {
+          "name": "e",
+          "enabled": true,
+          "up": "5",
+          "down": "o",
+          "left": "d",
+          "right": "f"
+        },
+        {
+          "name": "f",
+          "enabled": true,
+          "up": "6",
+          "down": "p",
+          "left": "e",
+          "right": "g"
+        },
+        {
+          "name": "g",
+          "enabled": true,
+          "up": "7",
+          "down": "q",
+          "left": "f",
+          "right": "h"
+        },
+        {
+          "name": "h",
+          "enabled": true,
+          "up": "8",
+          "down": "r",
+          "left": "g",
+          "right": "i"
+        },
+        {
+          "name": "i",
+          "enabled": true,
+          "up": "9",
+          "down": "s",
+          "left": "h",
+          "right": "j"
+        },
+        {
+          "name": "j",
+          "enabled": true,
+          "up": "0",
+          "down": "t",
+          "left": "i",
+          "right": null
+        },
+        {
+          "name": "k",
+          "enabled": true,
+          "up": "a",
+          "down": "u",
+          "left": null,
+          "right": "l"
+        },
+        {
+          "name": "l",
+          "enabled": true,
+          "up": "b",
+          "down": "v",
+          "left": "k",
+          "right": "m"
+        },
+        {
+          "name": "m",
+          "enabled": true,
+          "up": "c",
+          "down": "w",
+          "left": "l",
+          "right": "n"
+        },
+        {
+          "name": "n",
+          "enabled": true,
+          "up": "d",
+          "down": "x",
+          "left": "m",
+          "right": "o"
+        },
+        {
+          "name": "o",
+          "enabled": true,
+          "up": "e",
+          "down": "y",
+          "left": "n",
+          "right": "p"
+        },
+        {
+          "name": "p",
+          "enabled": true,
+          "up": "f",
+          "down": "z",
+          "left": "o",
+          "right": "q"
+        },
+        {
+          "name": "q",
+          "enabled": true,
+          "up": "g",
+          "down": ".",
+          "left": "p",
+          "right": "r"
+        },
+        {
+          "name": "r",
+          "enabled": true,
+          "up": "h",
+          "down": "-",
+          "left": "q",
+          "right": "s"
+        },
+        {
+          "name": "s",
+          "enabled": true,
+          "up": "i",
+          "down": ":",
+          "left": "r",
+          "right": "t"
+        },
+        {
+          "name": "t",
+          "enabled": true,
+          "up": "j",
+          "down": "_",
+          "left": "s",
+          "right": null
+        },
+        {
+          "name": "u",
+          "enabled": true,
+          "up": "k",
+          "down": "SPACE",
+          "left": null,
+          "right": "v"
+        },
+        {
+          "name": "v",
+          "enabled": true,
+          "up": "l",
+          "down": "SPACE",
+          "left": "u",
+          "right": "w"
+        },
+        {
+          "name": "w",
+          "enabled": true,
+          "up": "m",
+          "down": "DELETE",
+          "left": "v",
+          "right": "x"
+        },
+        {
+          "name": "x",
+          "enabled": true,
+          "up": "n",
+          "down": "DELETE",
+          "left": "w",
+          "right": "y"
+        },
+        {
+          "name": "y",
+          "enabled": true,
+          "up": "o",
+          "down": "DELETE",
+          "left": "x",
+          "right": "z"
+        },
+        {
+          "name": "z",
+          "enabled": true,
+          "up": "p",
+          "down": "DONE",
+          "left": "y",
+          "right": "."
+        },
+        {
+          "name": ".",
+          "enabled": true,
+          "up": "q",
+          "down": "DONE",
+          "left": "z",
+          "right": "-"
+        },
+        {
+          "name": "-",
+          "enabled": true,
+          "up": "r",
+          "down": "CANCEL",
+          "left": ".",
+          "right": ":"
+        },
+        {
+          "name": ":",
+          "enabled": true,
+          "up": "s",
+          "down": "CANCEL",
+          "left": "-",
+          "right": "_"
+        },
+        {
+          "name": "_",
+          "enabled": true,
+          "up": "t",
+          "down": "CANCEL",
+          "left": ":",
+          "right": null
+        },
+        {
+          "name": "SPACE",
+          "enabled": true,
+          "up": "v",
+          "down": null,
+          "left": null,
+          "right": "DELETE"
+        },
+        {
+          "name": "DELETE",
+          "enabled": true,
+          "up": "x",
+          "down": null,
+          "left": "SPACE",
+          "right": "DONE"
+        },
+        {
+          "name": "DONE",
+          "enabled": true,
+          "up": ".",
+          "down": null,
+          "left": "DELETE",
+          "right": "CANCEL"
+        },
+        {
+          "name": "CANCEL",
+          "enabled": true,
+          "up": ":",
+          "down": null,
+          "left": "DONE",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Busy",
+      "scale": 1.0,
+      "texts": 9,
+      "issues": [],
+      "controls": [
+        {
+          "name": "RETRY",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": "BACK TO MENU"
+        },
+        {
+          "name": "BACK TO MENU",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": "RETRY",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "BoardAvailable",
+      "scale": 1.0,
+      "texts": 30,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Board available tab",
+          "enabled": true,
+          "up": null,
+          "down": "board_recovery_16",
+          "left": null,
+          "right": "Board completed tab"
+        },
+        {
+          "name": "Board completed tab",
+          "enabled": true,
+          "up": null,
+          "down": "board_recovery_16",
+          "left": "Board available tab",
+          "right": null
+        },
+        {
+          "name": "board_recovery_16",
+          "enabled": true,
+          "up": "Board available tab",
+          "down": "board_recovery_17",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_17",
+          "enabled": true,
+          "up": "board_recovery_16",
+          "down": "board_recovery_20",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_20",
+          "enabled": true,
+          "up": "board_recovery_17",
+          "down": "BACK TO DRIVING",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ACCEPT RECOVERY",
+          "enabled": false,
+          "up": "board_recovery_20",
+          "down": null,
+          "left": "BACK TO DRIVING",
+          "right": null
+        },
+        {
+          "name": "BACK TO DRIVING",
+          "enabled": true,
+          "up": "board_recovery_20",
+          "down": null,
+          "left": null,
+          "right": "ACCEPT RECOVERY"
+        }
+      ]
+    },
+    {
+      "state": "BoardCompleted",
+      "scale": 1.0,
+      "texts": 54,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Board available tab",
+          "enabled": true,
+          "up": null,
+          "down": "board_recovery_0",
+          "left": null,
+          "right": "Board completed tab"
+        },
+        {
+          "name": "Board completed tab",
+          "enabled": true,
+          "up": null,
+          "down": "board_recovery_0",
+          "left": "Board available tab",
+          "right": null
+        },
+        {
+          "name": "board_recovery_0",
+          "enabled": true,
+          "up": "Board available tab",
+          "down": "board_recovery_1",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_1",
+          "enabled": true,
+          "up": "board_recovery_0",
+          "down": "board_recovery_2",
+          "left": null,
+          "right": "Completed scrollbar"
+        },
+        {
+          "name": "board_recovery_2",
+          "enabled": true,
+          "up": "board_recovery_1",
+          "down": "board_recovery_3",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_3",
+          "enabled": true,
+          "up": "board_recovery_2",
+          "down": "board_recovery_4",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_4",
+          "enabled": true,
+          "up": "board_recovery_3",
+          "down": "board_recovery_5",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_5",
+          "enabled": true,
+          "up": "board_recovery_4",
+          "down": "board_recovery_6",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_6",
+          "enabled": true,
+          "up": "board_recovery_5",
+          "down": "board_recovery_7",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_7",
+          "enabled": true,
+          "up": "board_recovery_6",
+          "down": "board_recovery_8",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_8",
+          "enabled": true,
+          "up": "board_recovery_7",
+          "down": "board_recovery_9",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_9",
+          "enabled": true,
+          "up": "board_recovery_8",
+          "down": "board_recovery_10",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_10",
+          "enabled": true,
+          "up": "board_recovery_9",
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Completed scrollbar",
+          "enabled": true,
+          "up": "Board completed tab",
+          "down": "board_recovery_2",
+          "left": "board_recovery_1",
+          "right": null
+        },
+        {
+          "name": "ACCEPT RECOVERY",
+          "enabled": false,
+          "up": "Completed scrollbar",
+          "down": "board_recovery_4",
+          "left": "BACK TO DRIVING",
+          "right": null
+        },
+        {
+          "name": "BACK TO DRIVING",
+          "enabled": true,
+          "up": "board_recovery_3",
+          "down": "board_recovery_4",
+          "left": null,
+          "right": "ACCEPT RECOVERY"
+        }
+      ]
+    },
+    {
+      "state": "Garage",
+      "scale": 1.0,
+      "texts": 318,
+      "issues": [],
+      "controls": [
+        {
+          "name": "STYLE",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "TECH",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "TOWING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "BODY",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "WHEELS",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ENGINE",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "TRANSMISSION",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SUSPENSION",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CHASSIS",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RECOMMENDED PART",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ALL",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "OWNED",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ALL",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ROAD",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "MIXED",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "MUD",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SNOW",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SAND",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "stock_Wheels",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_caf1306e0fd268a4b912c3eb3cc1c840",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_4f8e33eab5032134a801b9b9e18f3c53",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_55f0c3fdd001ee847bab0d5c64c4a8f8",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_1dcdfd0a645ba4546b5c7caacd614fff",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_8b605de9d0be6ac45b47b830f2522356",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_2639a1fffd512554986ea1af81ef6b3a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_3f21f69b9d7ff4c41aec797813f9dc5e",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_c00a0c6f44412cc43a6586edffaec39c",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_8a227117028cfc3448827e8e7831a010",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_6b74b1b397b98c94baf39c2bc5f98d6d",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_9e70eba1e74fce24887936504d71b77d",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e8885160051d9574db0ad7b56b9199a2",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_d388d6ab8b724a44c8983649b3a80a9a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e217c33724063a74b8cf02d6a760cf61",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_680a0abe2b2fe064f8c5f45f38fb8248",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_6657f228003b54e4f888d6c87bd23154",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_53277c4b9fe77d34ba973f6f15efca99",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_bc7d4d10ec9bd9f42aa370f08829144b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e58af60d94eacbd44893a901aa8c7237",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_0df15380a1b9af14d9a4fce8d1e85e17",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_72b03d5d83d5b454c98d53da281ad045",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_c2b49a3a5f580564283a19614ccc2a7a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_b4e086cd33b6a0646904f22742aa6c6b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_9831c6344f37cd54797fb9b5507a67e6",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_allterrain",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e7b9558c0855f9c4789eef4298d14789",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_ab4dd2977fd84824dbee514fdc9edba7",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_5f7395aa26c6a82419b7b5de5db6bde2",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_19dcac52483a5a84d903c37ee6ab94cb",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_7156bf3079d204c41b330c00e757cef5",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_df2a664702811f345874c93c8292896b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_b21f68dda7c1fb24982219d51502c9c6",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_fe5e7ab572b0ab9459abfddfef9b2b0d",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_1010b8eeb52209e4ca888d130a30c01c",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_f8f62e82d683e6843b7e7e1bbdc069fe",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_18693615707da0446ab7e940152226d7",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_4271848ceb4511c4dafb6d0d8cc37b6a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_f8cb1205339a7604fa26b52bb76b398d",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_77838377d1ec6154abd22edaa7061b55",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_47023e67c8bc95245afbbe56cefbddc5",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_2c6735d7e497afd4dadd97c515ebcf3e",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e51320bdd8af69143ae469d83cb8a25b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_62938a6c11fa1d540a44f47078e4ed32",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_978e7753b72fbfe4292638220620da78",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_20517494c0f9e0c45baaa861a0385dfd",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_69ba8f4fd82337a4bbcdd7389d911e54",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_1b56d7403decb4248af8f59b0dfbb9b6",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_a3f6967baabfe71418766131e20e9010",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_c1807f3fb7ff20f4182c01b271ce1c2c",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_b678e57ed6f035d40bd78778ad1a2582",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_a471a095963df1e44909c6f1d8db0fc9",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_60eb36c110e225547af0261de0c29e82",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_10cb491e4ff98394587bfd11fefdca58",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_980dd3d38b2b37740a99afaf56c7f033",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_2d3593ff8c252a649825469cd79b4830",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_1220514db264db6458f3599afea278dc",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_074fb12dc766a734680348b6e0cb8841",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_4d431e022b49463429a2653d8ce5191a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_3e3faa46ff6c48d4c90e9a42b20e23db",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_010d40d3c65a4f246991771cd2f654d2",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_bae898a8337c2874fbe46d804501ef9c",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_8f21fd08b70ee8b41a3386699a2a4798",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_39cfb9d1de4fa524d8248246731b447a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_7d4c892e08b8ac241b30d8a2c1543646",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_439f407e47e6a464899380833db74fdc",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_c9ff7805b3403b54a8c4a0f49515b5f7",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_69b5e94cbe90c024ebb06e94d1cbb1b9",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_a1473d43c9bb928458425484b396af1a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_b9f4e74710357644d80aab6b3c542346",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_796c1fa8b55471243a2498c5a490aa80",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_706daf03faf2b854da1550930f800993",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_6c0891779a3bea94d8df676ad803fc0a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_9173c1d2e9a8ce34c8162377b108ec28",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_2509451e50440224f92eaaaacb64599f",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_244283c7fad461440a0f23bee1db341b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_43fca230dac777b4cae9275d47c91939",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_6da90ae8e4cda344496754dc2eb3cb93",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_9bb5b28950240a246ad56267aabe2806",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_a219bc6af508db846b465cf8391903c4",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_eeada5e9d24421446b2aa3f85ec58591",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_mud",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_sand",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_235b49242aeb6eb41af963c5f1e62d04",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_acec0505730e799438b11430f7d4b093",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_winter",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_winter_pro",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Catalogue scrollbar",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Garage primary action",
+          "enabled": false,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "BACK TO DRIVING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SAVED SETUPS",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESET VIEW",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Main",
+      "scale": 1.3,
+      "texts": 17,
+      "issues": [],
+      "controls": [
+        {
+          "name": "PLAY SOLO",
+          "enabled": true,
+          "up": null,
+          "down": "PLAY CO-OP",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "PLAY CO-OP",
+          "enabled": true,
+          "up": "PLAY SOLO",
+          "down": "HOW TO PLAY",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "HOW TO PLAY",
+          "enabled": true,
+          "up": "PLAY CO-OP",
+          "down": "SETTINGS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SETTINGS",
+          "enabled": true,
+          "up": "HOW TO PLAY",
+          "down": "CREDITS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CREDITS",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": null,
+          "left": null,
+          "right": "QUIT"
+        },
+        {
+          "name": "QUIT",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": null,
+          "left": "CREDITS",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "MainNew",
+      "scale": 1.3,
+      "texts": 17,
+      "issues": [],
+      "controls": [
+        {
+          "name": "PLAY SOLO",
+          "enabled": true,
+          "up": null,
+          "down": "PLAY CO-OP",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "PLAY CO-OP",
+          "enabled": true,
+          "up": "PLAY SOLO",
+          "down": "HOW TO PLAY",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "HOW TO PLAY",
+          "enabled": true,
+          "up": "PLAY CO-OP",
+          "down": "SETTINGS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SETTINGS",
+          "enabled": true,
+          "up": "HOW TO PLAY",
+          "down": "CREDITS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CREDITS",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": null,
+          "left": null,
+          "right": "QUIT"
+        },
+        {
+          "name": "QUIT",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": null,
+          "left": "CREDITS",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Starter",
+      "scale": 1.3,
+      "texts": 26,
+      "issues": [],
+      "controls": [
+        {
+          "name": "ORIGINAL",
+          "enabled": true,
+          "up": null,
+          "down": "Starter 1",
+          "left": null,
+          "right": "CREAM"
+        },
+        {
+          "name": "CREAM",
+          "enabled": true,
+          "up": null,
+          "down": "Starter 2",
+          "left": "ORIGINAL",
+          "right": "OLIVE"
+        },
+        {
+          "name": "OLIVE",
+          "enabled": true,
+          "up": null,
+          "down": "Starter 2",
+          "left": "CREAM",
+          "right": "MUSTARD"
+        },
+        {
+          "name": "MUSTARD",
+          "enabled": true,
+          "up": null,
+          "down": "Starter 3",
+          "left": "OLIVE",
+          "right": null
+        },
+        {
+          "name": "Starter 0",
+          "enabled": true,
+          "up": "ORIGINAL",
+          "down": "BACK",
+          "left": null,
+          "right": "Starter 1"
+        },
+        {
+          "name": "Starter 1",
+          "enabled": true,
+          "up": "ORIGINAL",
+          "down": "BACK",
+          "left": "Starter 0",
+          "right": "Starter 2"
+        },
+        {
+          "name": "Starter 2",
+          "enabled": true,
+          "up": "CREAM",
+          "down": "CHOOSE RANGER",
+          "left": "Starter 1",
+          "right": "Starter 3"
+        },
+        {
+          "name": "Starter 3",
+          "enabled": true,
+          "up": "MUSTARD",
+          "down": "CHOOSE RANGER",
+          "left": "Starter 2",
+          "right": null
+        },
+        {
+          "name": "CHOOSE RANGER",
+          "enabled": true,
+          "up": "Starter 3",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Starter 0",
+          "down": null,
+          "left": null,
+          "right": "CHOOSE RANGER"
+        }
+      ]
+    },
+    {
+      "state": "Coop",
+      "scale": 1.3,
+      "texts": 20,
+      "issues": [],
+      "controls": [
+        {
+          "name": "YOUR NAME",
+          "enabled": true,
+          "up": null,
+          "down": "HOST ADDRESS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "HOST SESSION",
+          "enabled": true,
+          "up": "YOUR NAME",
+          "down": "BACK",
+          "left": null,
+          "right": "JOIN SESSION"
+        },
+        {
+          "name": "HOST ADDRESS",
+          "enabled": true,
+          "up": "YOUR NAME",
+          "down": "JOIN SESSION",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "JOIN SESSION",
+          "enabled": true,
+          "up": "HOST ADDRESS",
+          "down": "BACK",
+          "left": "HOST SESSION",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "HOST SESSION",
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Lobby",
+      "scale": 1.3,
+      "texts": 18,
+      "issues": [],
+      "controls": [
+        {
+          "name": "READY",
+          "enabled": true,
+          "up": null,
+          "down": "LEAVE SESSION",
+          "left": null,
+          "right": "START EXPLORING"
+        },
+        {
+          "name": "START EXPLORING",
+          "enabled": true,
+          "up": null,
+          "down": "LEAVE SESSION",
+          "left": "READY",
+          "right": null
+        },
+        {
+          "name": "LEAVE SESSION",
+          "enabled": true,
+          "up": "READY",
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Audio",
+      "scale": 1.3,
+      "texts": 24,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "Master volume",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "Master volume",
+          "enabled": true,
+          "up": "Audio",
+          "down": "Vehicle and sound effects",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Vehicle and sound effects",
+          "enabled": true,
+          "up": "Master volume",
+          "down": "Interface",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Interface",
+          "enabled": true,
+          "up": "Vehicle and sound effects",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "Interface",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Interface",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "Imagine",
+      "scale": 1.3,
+      "texts": 26,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "Brightness",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "Brightness",
+          "enabled": true,
+          "up": "Display",
+          "down": "QUALITY: QUALITY",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "QUALITY: QUALITY",
+          "enabled": true,
+          "up": "Brightness",
+          "down": "MODE: WINDOWED",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "MODE: WINDOWED",
+          "enabled": true,
+          "up": "QUALITY: QUALITY",
+          "down": "RESOLUTION: 800 × 600",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESOLUTION: 800 × 600",
+          "enabled": true,
+          "up": "MODE: WINDOWED",
+          "down": "APPLY DISPLAY CHANGES",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "APPLY DISPLAY CHANGES",
+          "enabled": true,
+          "up": "RESOLUTION: 800 × 600",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "APPLY DISPLAY CHANGES",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "APPLY DISPLAY CHANGES",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "Comenzi",
+      "scale": 1.3,
+      "texts": 35,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "Accelerate  [W]",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "Accelerate  [W]",
+          "enabled": true,
+          "up": "Controls",
+          "down": "Reverse  [S]",
+          "left": null,
+          "right": "Reel in  [Q]"
+        },
+        {
+          "name": "Reverse  [S]",
+          "enabled": true,
+          "up": "Accelerate  [W]",
+          "down": "Steer left  [A]",
+          "left": null,
+          "right": "Pay out  [E]"
+        },
+        {
+          "name": "Steer left  [A]",
+          "enabled": true,
+          "up": "Reverse  [S]",
+          "down": "Steer right  [D]",
+          "left": null,
+          "right": "Reset vehicle  [R]"
+        },
+        {
+          "name": "Steer right  [D]",
+          "enabled": true,
+          "up": "Steer left  [A]",
+          "down": "Brake  [Space]",
+          "left": null,
+          "right": "Recoveries  [Tab]"
+        },
+        {
+          "name": "Brake  [Space]",
+          "enabled": true,
+          "up": "Steer right  [D]",
+          "down": "Attach / detach cable  [F]",
+          "left": null,
+          "right": "Garage  [G]"
+        },
+        {
+          "name": "Attach / detach cable  [F]",
+          "enabled": true,
+          "up": "Brake  [Space]",
+          "down": "CONTROLLER: AUTOMATIC",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Reel in  [Q]",
+          "enabled": true,
+          "up": "Controls",
+          "down": "Pay out  [E]",
+          "left": "Accelerate  [W]",
+          "right": null
+        },
+        {
+          "name": "Pay out  [E]",
+          "enabled": true,
+          "up": "Reel in  [Q]",
+          "down": "Reset vehicle  [R]",
+          "left": "Reverse  [S]",
+          "right": null
+        },
+        {
+          "name": "Reset vehicle  [R]",
+          "enabled": true,
+          "up": "Pay out  [E]",
+          "down": "Recoveries  [Tab]",
+          "left": "Steer left  [A]",
+          "right": null
+        },
+        {
+          "name": "Recoveries  [Tab]",
+          "enabled": true,
+          "up": "Reset vehicle  [R]",
+          "down": "Garage  [G]",
+          "left": "Steer right  [D]",
+          "right": null
+        },
+        {
+          "name": "Garage  [G]",
+          "enabled": true,
+          "up": "Recoveries  [Tab]",
+          "down": "CONTROLLER: AUTOMATIC",
+          "left": "Brake  [Space]",
+          "right": null
+        },
+        {
+          "name": "CONTROLLER: AUTOMATIC",
+          "enabled": true,
+          "up": "Attach / detach cable  [F]",
+          "down": "INVERT CAMERA Y: OFF",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "INVERT CAMERA Y: OFF",
+          "enabled": true,
+          "up": "CONTROLLER: AUTOMATIC",
+          "down": "Camera sensitivity",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Camera sensitivity",
+          "enabled": true,
+          "up": "INVERT CAMERA Y: OFF",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "Garage  [G]",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Attach / detach cable  [F]",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "Accesibilitate",
+      "scale": 1.3,
+      "texts": 24,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "Text / HUD size",
+          "enabled": true,
+          "up": "Accessibility",
+          "down": "REDUCED MOTION: OFF",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "REDUCED MOTION: OFF",
+          "enabled": true,
+          "up": "Text / HUD size",
+          "down": "TENSION SYMBOLS: ON",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "TENSION SYMBOLS: ON",
+          "enabled": true,
+          "up": "REDUCED MOTION: OFF",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "TENSION SYMBOLS: ON",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "TENSION SYMBOLS: ON",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "Joc",
+      "scale": 1.3,
+      "texts": 25,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Audio",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": null,
+          "right": "Display"
+        },
+        {
+          "name": "Display",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": "Audio",
+          "right": "Controls"
+        },
+        {
+          "name": "Controls",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": "Display",
+          "right": "Accessibility"
+        },
+        {
+          "name": "Accessibility",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": "Controls",
+          "right": "Game"
+        },
+        {
+          "name": "Game",
+          "enabled": true,
+          "up": null,
+          "down": "TUTORIAL HINTS: ON",
+          "left": "Accessibility",
+          "right": null
+        },
+        {
+          "name": "TUTORIAL HINTS: ON",
+          "enabled": true,
+          "up": "Game",
+          "down": "CONTROLLER VIBRATION: ON",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CONTROLLER VIBRATION: ON",
+          "enabled": true,
+          "up": "TUTORIAL HINTS: ON",
+          "down": "HOW TO PLAY",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "HOW TO PLAY",
+          "enabled": true,
+          "up": "CONTROLLER VIBRATION: ON",
+          "down": "RESET PROGRESS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESET PROGRESS",
+          "enabled": true,
+          "up": "HOW TO PLAY",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESTORE TAB DEFAULTS",
+          "enabled": true,
+          "up": "RESET PROGRESS",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "RESET PROGRESS",
+          "down": null,
+          "left": null,
+          "right": "RESTORE TAB DEFAULTS"
+        }
+      ]
+    },
+    {
+      "state": "FirstSetup",
+      "scale": 1.3,
+      "texts": 13,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Brightness",
+          "enabled": true,
+          "up": null,
+          "down": "Text / HUD size",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Text / HUD size",
+          "enabled": true,
+          "up": "Brightness",
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CHOOSE YOUR FIRST RIDE",
+          "enabled": true,
+          "up": "Text / HUD size",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Text / HUD size",
+          "down": null,
+          "left": null,
+          "right": "CHOOSE YOUR FIRST RIDE"
+        }
+      ]
+    },
+    {
+      "state": "Credits",
+      "scale": 1.3,
+      "texts": 12,
+      "issues": [],
+      "controls": [
+        {
+          "name": "THIRD-PARTY NOTICES",
+          "enabled": true,
+          "up": null,
+          "down": "BACK",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "THIRD-PARTY NOTICES",
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Notices",
+      "scale": 1.3,
+      "texts": 10,
+      "issues": [],
+      "controls": [
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Help0",
+      "scale": 1.3,
+      "texts": 22,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Driving",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": null,
+          "right": "Recovery"
+        },
+        {
+          "name": "Recovery",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Driving",
+          "right": "Workshop"
+        },
+        {
+          "name": "Workshop",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Recovery",
+          "right": null
+        },
+        {
+          "name": "START TRAINING",
+          "enabled": true,
+          "up": "Driving",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Driving",
+          "down": null,
+          "left": null,
+          "right": "START TRAINING"
+        }
+      ]
+    },
+    {
+      "state": "Help1",
+      "scale": 1.3,
+      "texts": 22,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Driving",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": null,
+          "right": "Recovery"
+        },
+        {
+          "name": "Recovery",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Driving",
+          "right": "Workshop"
+        },
+        {
+          "name": "Workshop",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Recovery",
+          "right": null
+        },
+        {
+          "name": "START TRAINING",
+          "enabled": true,
+          "up": "Recovery",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Recovery",
+          "down": null,
+          "left": null,
+          "right": "START TRAINING"
+        }
+      ]
+    },
+    {
+      "state": "Help2",
+      "scale": 1.3,
+      "texts": 22,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Driving",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": null,
+          "right": "Recovery"
+        },
+        {
+          "name": "Recovery",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Driving",
+          "right": "Workshop"
+        },
+        {
+          "name": "Workshop",
+          "enabled": true,
+          "up": null,
+          "down": "START TRAINING",
+          "left": "Recovery",
+          "right": null
+        },
+        {
+          "name": "START TRAINING",
+          "enabled": true,
+          "up": "Workshop",
+          "down": null,
+          "left": "BACK",
+          "right": null
+        },
+        {
+          "name": "BACK",
+          "enabled": true,
+          "up": "Workshop",
+          "down": null,
+          "left": null,
+          "right": "START TRAINING"
+        }
+      ]
+    },
+    {
+      "state": "Pause",
+      "scale": 1.3,
+      "texts": 12,
+      "issues": [],
+      "controls": [
+        {
+          "name": "RESUME",
+          "enabled": true,
+          "up": null,
+          "down": "RECOVERIES",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RECOVERIES",
+          "enabled": true,
+          "up": "RESUME",
+          "down": "SETTINGS",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SETTINGS",
+          "enabled": true,
+          "up": "RECOVERIES",
+          "down": "RESET VEHICLE",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESET VEHICLE",
+          "enabled": true,
+          "up": "SETTINGS",
+          "down": "MAIN MENU",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "MAIN MENU",
+          "enabled": true,
+          "up": "RESET VEHICLE",
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Confirm",
+      "scale": 1.3,
+      "texts": 9,
+      "issues": [],
+      "controls": [
+        {
+          "name": "RESET PROGRESS",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": "CANCEL"
+        },
+        {
+          "name": "CANCEL",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": "RESET PROGRESS",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "TutorialOffer",
+      "scale": 1.3,
+      "texts": 11,
+      "issues": [],
+      "controls": [
+        {
+          "name": "START TRAINING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": "SKIP · START EXPLORING",
+          "right": null
+        },
+        {
+          "name": "SKIP · START EXPLORING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": "START TRAINING"
+        }
+      ]
+    },
+    {
+      "state": "TutorialDone",
+      "scale": 1.3,
+      "texts": 8,
+      "issues": [],
+      "controls": [
+        {
+          "name": "VISIT THE WORKSHOP",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "TrainingComplete",
+      "scale": 1.3,
+      "texts": 8,
+      "issues": [],
+      "controls": [
+        {
+          "name": "START EXPLORING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "TextEntry",
+      "scale": 1.3,
+      "texts": 52,
+      "issues": [],
+      "controls": [
+        {
+          "name": "1",
+          "enabled": true,
+          "up": null,
+          "down": "a",
+          "left": null,
+          "right": "2"
+        },
+        {
+          "name": "2",
+          "enabled": true,
+          "up": null,
+          "down": "b",
+          "left": "1",
+          "right": "3"
+        },
+        {
+          "name": "3",
+          "enabled": true,
+          "up": null,
+          "down": "c",
+          "left": "2",
+          "right": "4"
+        },
+        {
+          "name": "4",
+          "enabled": true,
+          "up": null,
+          "down": "d",
+          "left": "3",
+          "right": "5"
+        },
+        {
+          "name": "5",
+          "enabled": true,
+          "up": null,
+          "down": "e",
+          "left": "4",
+          "right": "6"
+        },
+        {
+          "name": "6",
+          "enabled": true,
+          "up": null,
+          "down": "f",
+          "left": "5",
+          "right": "7"
+        },
+        {
+          "name": "7",
+          "enabled": true,
+          "up": null,
+          "down": "g",
+          "left": "6",
+          "right": "8"
+        },
+        {
+          "name": "8",
+          "enabled": true,
+          "up": null,
+          "down": "h",
+          "left": "7",
+          "right": "9"
+        },
+        {
+          "name": "9",
+          "enabled": true,
+          "up": null,
+          "down": "i",
+          "left": "8",
+          "right": "0"
+        },
+        {
+          "name": "0",
+          "enabled": true,
+          "up": null,
+          "down": "j",
+          "left": "9",
+          "right": null
+        },
+        {
+          "name": "a",
+          "enabled": true,
+          "up": "1",
+          "down": "k",
+          "left": null,
+          "right": "b"
+        },
+        {
+          "name": "b",
+          "enabled": true,
+          "up": "2",
+          "down": "l",
+          "left": "a",
+          "right": "c"
+        },
+        {
+          "name": "c",
+          "enabled": true,
+          "up": "3",
+          "down": "m",
+          "left": "b",
+          "right": "d"
+        },
+        {
+          "name": "d",
+          "enabled": true,
+          "up": "4",
+          "down": "n",
+          "left": "c",
+          "right": "e"
+        },
+        {
+          "name": "e",
+          "enabled": true,
+          "up": "5",
+          "down": "o",
+          "left": "d",
+          "right": "f"
+        },
+        {
+          "name": "f",
+          "enabled": true,
+          "up": "6",
+          "down": "p",
+          "left": "e",
+          "right": "g"
+        },
+        {
+          "name": "g",
+          "enabled": true,
+          "up": "7",
+          "down": "q",
+          "left": "f",
+          "right": "h"
+        },
+        {
+          "name": "h",
+          "enabled": true,
+          "up": "8",
+          "down": "r",
+          "left": "g",
+          "right": "i"
+        },
+        {
+          "name": "i",
+          "enabled": true,
+          "up": "9",
+          "down": "s",
+          "left": "h",
+          "right": "j"
+        },
+        {
+          "name": "j",
+          "enabled": true,
+          "up": "0",
+          "down": "t",
+          "left": "i",
+          "right": null
+        },
+        {
+          "name": "k",
+          "enabled": true,
+          "up": "a",
+          "down": "u",
+          "left": null,
+          "right": "l"
+        },
+        {
+          "name": "l",
+          "enabled": true,
+          "up": "b",
+          "down": "v",
+          "left": "k",
+          "right": "m"
+        },
+        {
+          "name": "m",
+          "enabled": true,
+          "up": "c",
+          "down": "w",
+          "left": "l",
+          "right": "n"
+        },
+        {
+          "name": "n",
+          "enabled": true,
+          "up": "d",
+          "down": "x",
+          "left": "m",
+          "right": "o"
+        },
+        {
+          "name": "o",
+          "enabled": true,
+          "up": "e",
+          "down": "y",
+          "left": "n",
+          "right": "p"
+        },
+        {
+          "name": "p",
+          "enabled": true,
+          "up": "f",
+          "down": "z",
+          "left": "o",
+          "right": "q"
+        },
+        {
+          "name": "q",
+          "enabled": true,
+          "up": "g",
+          "down": ".",
+          "left": "p",
+          "right": "r"
+        },
+        {
+          "name": "r",
+          "enabled": true,
+          "up": "h",
+          "down": "-",
+          "left": "q",
+          "right": "s"
+        },
+        {
+          "name": "s",
+          "enabled": true,
+          "up": "i",
+          "down": ":",
+          "left": "r",
+          "right": "t"
+        },
+        {
+          "name": "t",
+          "enabled": true,
+          "up": "j",
+          "down": "_",
+          "left": "s",
+          "right": null
+        },
+        {
+          "name": "u",
+          "enabled": true,
+          "up": "k",
+          "down": "SPACE",
+          "left": null,
+          "right": "v"
+        },
+        {
+          "name": "v",
+          "enabled": true,
+          "up": "l",
+          "down": "SPACE",
+          "left": "u",
+          "right": "w"
+        },
+        {
+          "name": "w",
+          "enabled": true,
+          "up": "m",
+          "down": "DELETE",
+          "left": "v",
+          "right": "x"
+        },
+        {
+          "name": "x",
+          "enabled": true,
+          "up": "n",
+          "down": "DELETE",
+          "left": "w",
+          "right": "y"
+        },
+        {
+          "name": "y",
+          "enabled": true,
+          "up": "o",
+          "down": "DELETE",
+          "left": "x",
+          "right": "z"
+        },
+        {
+          "name": "z",
+          "enabled": true,
+          "up": "p",
+          "down": "DONE",
+          "left": "y",
+          "right": "."
+        },
+        {
+          "name": ".",
+          "enabled": true,
+          "up": "q",
+          "down": "DONE",
+          "left": "z",
+          "right": "-"
+        },
+        {
+          "name": "-",
+          "enabled": true,
+          "up": "r",
+          "down": "CANCEL",
+          "left": ".",
+          "right": ":"
+        },
+        {
+          "name": ":",
+          "enabled": true,
+          "up": "s",
+          "down": "CANCEL",
+          "left": "-",
+          "right": "_"
+        },
+        {
+          "name": "_",
+          "enabled": true,
+          "up": "t",
+          "down": "CANCEL",
+          "left": ":",
+          "right": null
+        },
+        {
+          "name": "SPACE",
+          "enabled": true,
+          "up": "v",
+          "down": null,
+          "left": null,
+          "right": "DELETE"
+        },
+        {
+          "name": "DELETE",
+          "enabled": true,
+          "up": "x",
+          "down": null,
+          "left": "SPACE",
+          "right": "DONE"
+        },
+        {
+          "name": "DONE",
+          "enabled": true,
+          "up": ".",
+          "down": null,
+          "left": "DELETE",
+          "right": "CANCEL"
+        },
+        {
+          "name": "CANCEL",
+          "enabled": true,
+          "up": ":",
+          "down": null,
+          "left": "DONE",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "Busy",
+      "scale": 1.3,
+      "texts": 9,
+      "issues": [],
+      "controls": [
+        {
+          "name": "RETRY",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": "BACK TO MENU"
+        },
+        {
+          "name": "BACK TO MENU",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": "RETRY",
+          "right": null
+        }
+      ]
+    },
+    {
+      "state": "BoardAvailable",
+      "scale": 1.3,
+      "texts": 30,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Board available tab",
+          "enabled": true,
+          "up": null,
+          "down": "board_recovery_16",
+          "left": null,
+          "right": "Board completed tab"
+        },
+        {
+          "name": "Board completed tab",
+          "enabled": true,
+          "up": null,
+          "down": "board_recovery_16",
+          "left": "Board available tab",
+          "right": null
+        },
+        {
+          "name": "board_recovery_16",
+          "enabled": true,
+          "up": "Board available tab",
+          "down": "board_recovery_17",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_17",
+          "enabled": true,
+          "up": "board_recovery_16",
+          "down": "board_recovery_20",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_20",
+          "enabled": true,
+          "up": "board_recovery_17",
+          "down": "BACK TO DRIVING",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ACCEPT RECOVERY",
+          "enabled": false,
+          "up": "board_recovery_20",
+          "down": null,
+          "left": "BACK TO DRIVING",
+          "right": null
+        },
+        {
+          "name": "BACK TO DRIVING",
+          "enabled": true,
+          "up": "board_recovery_20",
+          "down": null,
+          "left": null,
+          "right": "ACCEPT RECOVERY"
+        }
+      ]
+    },
+    {
+      "state": "BoardCompleted",
+      "scale": 1.3,
+      "texts": 54,
+      "issues": [],
+      "controls": [
+        {
+          "name": "Board available tab",
+          "enabled": true,
+          "up": null,
+          "down": "board_recovery_0",
+          "left": null,
+          "right": "Board completed tab"
+        },
+        {
+          "name": "Board completed tab",
+          "enabled": true,
+          "up": null,
+          "down": "board_recovery_0",
+          "left": "Board available tab",
+          "right": null
+        },
+        {
+          "name": "board_recovery_0",
+          "enabled": true,
+          "up": "Board available tab",
+          "down": "board_recovery_1",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_1",
+          "enabled": true,
+          "up": "board_recovery_0",
+          "down": "board_recovery_2",
+          "left": null,
+          "right": "Completed scrollbar"
+        },
+        {
+          "name": "board_recovery_2",
+          "enabled": true,
+          "up": "board_recovery_1",
+          "down": "board_recovery_3",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_3",
+          "enabled": true,
+          "up": "board_recovery_2",
+          "down": "board_recovery_4",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_4",
+          "enabled": true,
+          "up": "board_recovery_3",
+          "down": "board_recovery_5",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_5",
+          "enabled": true,
+          "up": "board_recovery_4",
+          "down": "board_recovery_6",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_6",
+          "enabled": true,
+          "up": "board_recovery_5",
+          "down": "board_recovery_7",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_7",
+          "enabled": true,
+          "up": "board_recovery_6",
+          "down": "board_recovery_8",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_8",
+          "enabled": true,
+          "up": "board_recovery_7",
+          "down": "board_recovery_9",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_9",
+          "enabled": true,
+          "up": "board_recovery_8",
+          "down": "board_recovery_10",
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "board_recovery_10",
+          "enabled": true,
+          "up": "board_recovery_9",
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Completed scrollbar",
+          "enabled": true,
+          "up": "Board completed tab",
+          "down": "board_recovery_2",
+          "left": "board_recovery_1",
+          "right": null
+        },
+        {
+          "name": "ACCEPT RECOVERY",
+          "enabled": false,
+          "up": "Completed scrollbar",
+          "down": "board_recovery_4",
+          "left": "BACK TO DRIVING",
+          "right": null
+        },
+        {
+          "name": "BACK TO DRIVING",
+          "enabled": true,
+          "up": "board_recovery_3",
+          "down": "board_recovery_4",
+          "left": null,
+          "right": "ACCEPT RECOVERY"
+        }
+      ]
+    },
+    {
+      "state": "Garage",
+      "scale": 1.3,
+      "texts": 318,
+      "issues": [],
+      "controls": [
+        {
+          "name": "STYLE",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "TECH",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "TOWING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "BODY",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "WHEELS",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ENGINE",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "TRANSMISSION",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SUSPENSION",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "CHASSIS",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RECOMMENDED PART",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ALL",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "OWNED",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ALL",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "ROAD",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "MIXED",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "MUD",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SNOW",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SAND",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "stock_Wheels",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_caf1306e0fd268a4b912c3eb3cc1c840",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_4f8e33eab5032134a801b9b9e18f3c53",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_55f0c3fdd001ee847bab0d5c64c4a8f8",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_1dcdfd0a645ba4546b5c7caacd614fff",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_8b605de9d0be6ac45b47b830f2522356",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_2639a1fffd512554986ea1af81ef6b3a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_3f21f69b9d7ff4c41aec797813f9dc5e",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_c00a0c6f44412cc43a6586edffaec39c",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_8a227117028cfc3448827e8e7831a010",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_6b74b1b397b98c94baf39c2bc5f98d6d",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_9e70eba1e74fce24887936504d71b77d",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e8885160051d9574db0ad7b56b9199a2",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_d388d6ab8b724a44c8983649b3a80a9a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e217c33724063a74b8cf02d6a760cf61",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_680a0abe2b2fe064f8c5f45f38fb8248",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_6657f228003b54e4f888d6c87bd23154",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_53277c4b9fe77d34ba973f6f15efca99",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_bc7d4d10ec9bd9f42aa370f08829144b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e58af60d94eacbd44893a901aa8c7237",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_0df15380a1b9af14d9a4fce8d1e85e17",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_72b03d5d83d5b454c98d53da281ad045",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_c2b49a3a5f580564283a19614ccc2a7a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_b4e086cd33b6a0646904f22742aa6c6b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_9831c6344f37cd54797fb9b5507a67e6",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_allterrain",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e7b9558c0855f9c4789eef4298d14789",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_ab4dd2977fd84824dbee514fdc9edba7",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_5f7395aa26c6a82419b7b5de5db6bde2",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_19dcac52483a5a84d903c37ee6ab94cb",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_7156bf3079d204c41b330c00e757cef5",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_df2a664702811f345874c93c8292896b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_b21f68dda7c1fb24982219d51502c9c6",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_fe5e7ab572b0ab9459abfddfef9b2b0d",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_1010b8eeb52209e4ca888d130a30c01c",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_f8f62e82d683e6843b7e7e1bbdc069fe",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_18693615707da0446ab7e940152226d7",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_4271848ceb4511c4dafb6d0d8cc37b6a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_f8cb1205339a7604fa26b52bb76b398d",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_77838377d1ec6154abd22edaa7061b55",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_47023e67c8bc95245afbbe56cefbddc5",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_2c6735d7e497afd4dadd97c515ebcf3e",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_e51320bdd8af69143ae469d83cb8a25b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_62938a6c11fa1d540a44f47078e4ed32",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_978e7753b72fbfe4292638220620da78",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_20517494c0f9e0c45baaa861a0385dfd",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_69ba8f4fd82337a4bbcdd7389d911e54",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_1b56d7403decb4248af8f59b0dfbb9b6",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_a3f6967baabfe71418766131e20e9010",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_c1807f3fb7ff20f4182c01b271ce1c2c",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_b678e57ed6f035d40bd78778ad1a2582",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_a471a095963df1e44909c6f1d8db0fc9",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_60eb36c110e225547af0261de0c29e82",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_10cb491e4ff98394587bfd11fefdca58",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_980dd3d38b2b37740a99afaf56c7f033",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_2d3593ff8c252a649825469cd79b4830",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_1220514db264db6458f3599afea278dc",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_074fb12dc766a734680348b6e0cb8841",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_4d431e022b49463429a2653d8ce5191a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_3e3faa46ff6c48d4c90e9a42b20e23db",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_010d40d3c65a4f246991771cd2f654d2",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_bae898a8337c2874fbe46d804501ef9c",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_8f21fd08b70ee8b41a3386699a2a4798",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_39cfb9d1de4fa524d8248246731b447a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_7d4c892e08b8ac241b30d8a2c1543646",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_439f407e47e6a464899380833db74fdc",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_c9ff7805b3403b54a8c4a0f49515b5f7",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_69b5e94cbe90c024ebb06e94d1cbb1b9",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_a1473d43c9bb928458425484b396af1a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_b9f4e74710357644d80aab6b3c542346",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_796c1fa8b55471243a2498c5a490aa80",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_706daf03faf2b854da1550930f800993",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_6c0891779a3bea94d8df676ad803fc0a",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_9173c1d2e9a8ce34c8162377b108ec28",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_2509451e50440224f92eaaaacb64599f",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_244283c7fad461440a0f23bee1db341b",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_43fca230dac777b4cae9275d47c91939",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_6da90ae8e4cda344496754dc2eb3cb93",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_9bb5b28950240a246ad56267aabe2806",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_a219bc6af508db846b465cf8391903c4",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_eeada5e9d24421446b2aa3f85ec58591",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_mud",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_sand",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_235b49242aeb6eb41af963c5f1e62d04",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "part_acec0505730e799438b11430f7d4b093",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_winter",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "tires_winter_pro",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Catalogue scrollbar",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "Garage primary action",
+          "enabled": false,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "BACK TO DRIVING",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "SAVED SETUPS",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        },
+        {
+          "name": "RESET VIEW",
+          "enabled": true,
+          "up": null,
+          "down": null,
+          "left": null,
+          "right": null
+        }
+      ]
+    }
+  ],
+  "preferencesPreserved": true,
+  "sceneDirtyBefore": false,
+  "sceneDirtyAfter": false
+}

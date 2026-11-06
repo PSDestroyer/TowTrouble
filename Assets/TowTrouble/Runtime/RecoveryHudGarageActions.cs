@@ -87,6 +87,7 @@ namespace TowTrouble
         }
         private void CloseGarage()
         {
+            if(session.Training&&session.TrainingStep>=6){session.ConsumeMenuInput();session.EndTraining(true);Show("TrainingComplete");return;}
             session.ConsumeMenuInput();garageDraft=null;garageOverlay=GarageOverlay.None;session.GarageCameraInputBlocked=false;
             session.CloseOverlay();Show("Gameplay");
         }

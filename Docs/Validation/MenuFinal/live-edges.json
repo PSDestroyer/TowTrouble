@@ -1,0 +1,127 @@
+{
+  "passed": true,
+  "frames": 471,
+  "seconds": 9.487835,
+  "evidence": [
+    {
+      "name": "Settings opens the guide",
+      "passed": true,
+      "frame": 930,
+      "page": "Help"
+    },
+    {
+      "name": "Guide Back returns to the originating settings tab",
+      "passed": true,
+      "frame": 935,
+      "page": "Settings"
+    },
+    {
+      "name": "Display change opens a safe review",
+      "passed": true,
+      "frame": 945,
+      "page": "Confirm"
+    },
+    {
+      "name": "Keep persists confirmed display preferences",
+      "passed": true,
+      "frame": 950,
+      "page": "Settings"
+    },
+    {
+      "name": "Quality can be restored after a kept Performance preview",
+      "passed": true,
+      "frame": 960,
+      "page": "Settings"
+    },
+    {
+      "name": "Blank join is rejected before networking",
+      "passed": true,
+      "frame": 965,
+      "page": "Coop"
+    },
+    {
+      "name": "Co-op lobby requires the second driver",
+      "passed": true,
+      "frame": 975,
+      "page": "Lobby"
+    },
+    {
+      "name": "Start Exploring is disabled for an incomplete crew",
+      "passed": true,
+      "frame": 975,
+      "page": "Lobby"
+    },
+    {
+      "name": "One ready driver cannot start two-player co-op",
+      "passed": true,
+      "frame": 980,
+      "page": "Lobby"
+    },
+    {
+      "name": "Leaving the lobby requires an explicit confirmation",
+      "passed": true,
+      "frame": 985,
+      "page": "Confirm"
+    },
+    {
+      "name": "Lobby exit returns to Main with progress intact",
+      "passed": true,
+      "frame": 1005,
+      "page": "Main"
+    },
+    {
+      "name": "Unavailable host produces a recoverable connection error",
+      "passed": true,
+      "frame": 1350,
+      "page": "Busy"
+    },
+    {
+      "name": "Retry starts another connection attempt",
+      "passed": true,
+      "frame": 1355,
+      "page": "Busy"
+    },
+    {
+      "name": "Cancel stops connection and returns to Main",
+      "passed": true,
+      "frame": 1360,
+      "page": "Main"
+    },
+    {
+      "name": "Actual menu keycaps load controller textures",
+      "passed": true,
+      "frame": 1380,
+      "page": "Main"
+    },
+    {
+      "name": "Reset progress defaults to Cancel",
+      "passed": true,
+      "frame": 1390,
+      "page": "Confirm"
+    },
+    {
+      "name": "Confirmed reset removes career and reopens first-ride choice",
+      "passed": true,
+      "frame": 1395,
+      "page": "Starter"
+    },
+    {
+      "name": "Reset keeps controls, accessibility and controller preferences",
+      "passed": true,
+      "frame": 1395,
+      "page": "Starter"
+    },
+    {
+      "name": "Reset survives a profile reload in the isolated namespace",
+      "passed": true,
+      "frame": 1395,
+      "page": "Starter"
+    },
+    {
+      "name": "Real career save is still absent",
+      "passed": true,
+      "frame": 1395,
+      "page": "Starter"
+    }
+  ]
+}

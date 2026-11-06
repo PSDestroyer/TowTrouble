@@ -129,7 +129,7 @@ namespace TowTrouble.Tests
             var stock=catalog.Find("stock_Winch");var improved=catalog.Find("winch_2");
             Assert.That(stock.WinchForce,Is.EqualTo(8000));Assert.That(stock.WinchSpeed,Is.EqualTo(1));
             Assert.That(improved.WinchForce,Is.EqualTo(14000));Assert.That(improved.WinchSpeed,Is.EqualTo(1.3f));
-            Assert.That(improved.Price,Is.EqualTo(2400));
+            Assert.That(improved.Price,Is.EqualTo(1600));
             var profile=RecoveryProfile.Parse("");profile.Build(0).Normalize(catalog,profile.Owns);
             Assert.That(GaragePerformance.Calculate(profile.Build(0),catalog).WinchForce,Is.EqualTo(8000));
             profile.ownedParts.Add("winch_2");profile.Build(0).Set(improved,catalog);

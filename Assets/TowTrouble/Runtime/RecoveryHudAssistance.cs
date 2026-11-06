@@ -92,7 +92,7 @@ namespace TowTrouble
         {
             if (safePointReady)
             {
-                ShowExploreHint(session.UsingGamepad ? "Back" : P.ReadKey(P.resetKey, Key.R).ToString(),
+                ShowExploreHint(session.UsingGamepad ? RecoveryInputPrompts.SelectLabel(RecoveryInputPrompts.Family(UnityEngine.InputSystem.Gamepad.current)) : P.ReadKey(P.resetKey, Key.R).ToString(),
                     "Return to safe point", world.HasContract && world.Resets(0) + world.Resets(1) == 0
                         ? "Using reset removes the no-reset bonus" : null);
                 return true;

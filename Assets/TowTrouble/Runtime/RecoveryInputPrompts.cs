@@ -9,8 +9,9 @@ namespace TowTrouble
     // Semantic menu actions are separate from physical positions and platform labels.
     public static class RecoveryInputPrompts
     {
+        public static int FamilyOverride;
         public static RecoveryControllerFamily Family(Gamepad pad)
-            => pad == null ? RecoveryControllerFamily.Xbox : Identify(pad.layout, pad.description.manufacturer, pad.description.product);
+            => FamilyOverride>=1&&FamilyOverride<=3?(RecoveryControllerFamily)(FamilyOverride-1):pad == null ? RecoveryControllerFamily.Xbox : Identify(pad.layout, pad.description.manufacturer, pad.description.product);
         public static RecoveryControllerFamily Identify(string layout, string manufacturer, string product)
         {
             string identity = (layout ?? "") + " " + (manufacturer ?? "") + " " + (product ?? "");

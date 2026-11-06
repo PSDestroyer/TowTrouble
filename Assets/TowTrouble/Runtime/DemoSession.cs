@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace TowTrouble
 {
-    public sealed class DemoSession : MonoBehaviour
+    public sealed partial class DemoSession : MonoBehaviour
     {
         [SerializeField] private NetworkManager network;
         [SerializeField] private RecoveryWorld world;
@@ -40,7 +40,7 @@ namespace TowTrouble
         public void ConsumeMenuInput() { menuInputConsumedFrame = Time.frameCount; }
         private UnityEngine.Rendering.Universal.ColorAdjustments grade;
         private void Awake(){Profile=RecoveryProfile.Load();SelectedContract=Profile.lastContract;ApplySettings();}
-        public void ApplySettings(){AudioListener.volume=Profile.master;RecoveryVehicle.EffectsGain=Profile.effects;if(QualitySettings.GetQualityLevel()!=Mathf.Clamp(Profile.quality,0,QualitySettings.names.Length-1))QualitySettings.SetQualityLevel(Mathf.Clamp(Profile.quality,0,QualitySettings.names.Length-1),true);if(grade==null){var volume=FindFirstObjectByType<UnityEngine.Rendering.Volume>();if(volume!=null&&volume.profile!=null)volume.profile.TryGet(out grade);}if(grade!=null)grade.postExposure.Override(Mathf.Log(Profile.brightness,2)+.1f);}
+        public void ApplySettings(){RecoveryInputPrompts.FamilyOverride=Profile.controllerFamily;Profile.language="en";AudioListener.volume=Profile.master;RecoveryVehicle.EffectsGain=Profile.effects;ApplyGraphicsPreference();if(grade==null){var volume=FindFirstObjectByType<UnityEngine.Rendering.Volume>();if(volume!=null&&volume.profile!=null)volume.profile.TryGet(out grade);}if(grade!=null)grade.postExposure.Override(Mathf.Log(Profile.brightness,2)+.1f);}
         public void SelectContract(int value){SelectedContract=Mathf.Clamp(value,0,RecoveryContract.All.Length-1);if(Profile.Unlocked(SelectedContract)){Profile.lastContract=SelectedContract;Profile.Save();}if(Profile.Unlocked(SelectedContract)&&Connected&&IsHost&&world.Phase==RecoveryPhase.Lobby)world.ConfigureSession(SelectedContract,!Solo,world.FreeRoam);}
         public void SelectVehicle(int value)
         {
@@ -85,16 +85,18 @@ namespace TowTrouble
 
         private static int travelMode;
         private static string travelAddress;
-        public void OpenTutorial(){if(!Connected)TravelTo("CanyonRecovery",0,null);}
+        public void OpenTutorial(){ RequestTraining(); }
         private void TravelTo(string scene,int mode,string address)
         {travelMode=mode;travelAddress=address;Time.timeScale=1;SceneManager.LoadScene(scene);}
         private void Start()
         {
+            if (world.Map == null) { TravelTo("OpenWorldRecovery",0,null); return; }
+            if(Profile.displayWidth>=800&&Profile.displayHeight>=600&&Profile.displayMode>=0&&Profile.displayMode<=3)Screen.SetResolution(Profile.displayWidth,Profile.displayHeight,(FullScreenMode)Profile.displayMode);
             Application.targetFrameRate = 60;
             network.ServerManager.SetFrameRate(60);
             network.ClientManager.SetFrameRate(60);
             network.ClientManager.OnClientConnectionState += ClientState;
-            recoveryCamera.Bind(this);world.PreviewVehicle(Profile.vehicle);world.PreviewPaint(Profile.paint);
+            recoveryCamera.Bind(this);PreviewFittedRide();
             int mode=travelMode;string destination=travelAddress;travelMode=0;travelAddress=null;
             if(mode==1||mode==2)Host(mode==1,true);else if(mode==3)Join(destination);
             var args = System.Environment.GetCommandLineArgs();
@@ -108,7 +110,7 @@ namespace TowTrouble
 
         private void OnDestroy()
         {
-            Gamepad.current?.ResetHaptics();Time.timeScale=1;
+            RestoreGraphicsPreference();ClearTrainingDressing();Gamepad.current?.ResetHaptics();Time.timeScale=1;
             if (network != null && network.ClientManager != null) network.ClientManager.OnClientConnectionState -= ClientState;
         }
 
@@ -118,7 +120,7 @@ namespace TowTrouble
             { Connecting = false; wasConnected = true; status = "Connected. Get your crew ready."; }
             else if (args.ConnectionState == LocalConnectionState.Stopped && !leaving)
             {
-                Connecting = false;
+                Connecting = false; MenuConnectionFailed();
                 status = wasConnected ? "Connection closed. Return to the menu to reconnect." : "Could not connect. Check the host address and UDP port 7777.";
                 if (IsHost) network.ServerManager.StopConnection(true);
             }
@@ -126,12 +128,12 @@ namespace TowTrouble
 
         public void Host(bool solo,bool exploration=false)
         {
-            if(!Profile.starterChosen){View="Vehicles";return;}
+            if(!Profile.starterChosen){View="Starter";return;}
             if (Connecting || Connected || leaving) return;
             if(exploration&&world.Map==null){TravelTo("OpenWorldRecovery",solo?1:2,null);return;}
             Solo=solo;explorationRequested=exploration;garageIdentitySent=false;identitySent=false;recorded=false;
             quickStart = solo; readySent = false; Connecting = true; connectDeadline = Time.unscaledTime + 12f;
-            status = "Starting FishNet host...";
+            status = "Starting your session…";
             network.TransportManager.Transport.SetMaximumClients(2);
             network.TransportManager.Transport.SetPort(7777);
             network.TransportManager.Transport.SetClientAddress("127.0.0.1");
@@ -141,7 +143,7 @@ namespace TowTrouble
 
         public void Join(string address)
         {
-            if(!Profile.starterChosen){View="Vehicles";return;}
+            if(!Profile.starterChosen){View="Starter";return;}
             if (Connecting || Connected || leaving) return;
             if(world.Map==null){TravelTo("OpenWorldRecovery",3,address);return;}
             address = address.Trim();
@@ -164,7 +166,7 @@ namespace TowTrouble
         public void ToggleMenu() {if(BoardOpen||GarageOpen){CloseOverlay();return;}menuOpen = !menuOpen;if(Solo)Time.timeScale=menuOpen?0:1; }
         public void ToggleBoard()
         {
-            if(!Connected||!world.FreeRoam||world.Phase==RecoveryPhase.Lobby||world.Phase==RecoveryPhase.Complete)return;
+            if(Training||!Connected||!world.FreeRoam||world.Phase==RecoveryPhase.Lobby||world.Phase==RecoveryPhase.Complete)return;
             if(BoardOpen){CloseOverlay();return;}if(menuOpen)return;
             world.Drive(Vector2.zero,true,false);menuOpen=true;View="Board";if(Solo)Time.timeScale=0;
         }
@@ -191,7 +193,7 @@ namespace TowTrouble
         {if(!BoardOpen||!IsHost||world.Phase!=RecoveryPhase.Explore||index<0||index>=world.AvailableContracts.Length)return;CloseOverlay();world.AcceptContract(index);}
         public void RecordCompletion()
         {
-            if(!Connected||world.Phase!=RecoveryPhase.Complete||recorded)return;
+            if(Training||!Connected||world.Phase!=RecoveryPhase.Complete||recorded)return;
             recorded=true;if(participatingRun==world.RunId){RecoveryEconomy.Claim(Profile,world.RunId,world.Contract,world.Resets(0)+world.Resets(1)==0,world.Snaps==0);Profile.Save();}
         }
         public void FinishExplorationContract()
@@ -214,11 +216,12 @@ namespace TowTrouble
 
         private void Update()
         {
+            TickTraining();
             if (Connecting && Time.unscaledTime > connectDeadline)
             {
                 Connecting = false; network.ClientManager.StopConnection();
                 if (IsHost) network.ServerManager.StopConnection(true);
-                status = "Connection timed out. Check the address and host firewall.";
+                MenuConnectionFailed();status = "Connection timed out. Check the host address and try again.";
             }
             if((Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame)||(Mouse.current!=null&&Mouse.current.leftButton.wasPressedThisFrame)){lastKeyboard=Time.unscaledTime;lastGamepad=false;}
             var activePad=Gamepad.current;if(activePad!=null&&(activePad.buttonSouth.wasPressedThisFrame||activePad.buttonEast.wasPressedThisFrame||activePad.buttonNorth.wasPressedThisFrame||activePad.buttonWest.wasPressedThisFrame||activePad.leftStickButton.wasPressedThisFrame||activePad.rightStickButton.wasPressedThisFrame||activePad.selectButton.wasPressedThisFrame||activePad.startButton.wasPressedThisFrame||activePad.leftShoulder.isPressed||activePad.rightShoulder.isPressed||activePad.leftStick.ReadValue().sqrMagnitude>.05f||activePad.rightStick.ReadValue().sqrMagnitude>.05f||activePad.dpad.ReadValue().sqrMagnitude>.05f||activePad.rightTrigger.ReadValue()>.05f||activePad.leftTrigger.ReadValue()>.05f))lastGamepad=true;
@@ -227,7 +230,7 @@ namespace TowTrouble
             if(world.FreeRoam&&!garageIdentitySent){garageIdentitySent=true;SendGarageBuild();}
             if(GarageOpen&&world.Phase!=RecoveryPhase.Explore)CloseOverlay();
             if(world.HasContract)participatingRun=world.RunId;
-            if(world.Phase==RecoveryPhase.Complete&&!recorded)RecordCompletion();
+            if(world.Phase==RecoveryPhase.Complete&&!recorded&&!Training)RecordCompletion();
             if(world.Phase!=RecoveryPhase.Complete)recorded=false;
             if (quickStart && world.Phase == RecoveryPhase.Lobby)
             {
@@ -250,7 +253,7 @@ namespace TowTrouble
             if (world.Phase == RecoveryPhase.Lobby || world.Phase == RecoveryPhase.Complete){pad?.ResetHaptics();return;}
             if (!menuOpen)
             {
-                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.F)].wasPressedThisFrame) || (pad != null && pad.buttonSouth.wasPressedThisFrame)) world.ToggleCable();
+                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.F)].wasPressedThisFrame) || (pad != null && RecoveryInputPrompts.Confirm(pad).wasPressedThisFrame)) world.ToggleCable();
                 if ((keyboard != null && keyboard[Profile.ReadKey(Profile.resetKey,Key.R)].wasPressedThisFrame) || (pad != null && pad.selectButton.wasPressedThisFrame)) world.Unstuck();
             }
             if(!menuOpen){if(keyboard!=null){if(keyboard.digit1Key.wasPressedThisFrame)world.SendSignal(1);if(keyboard.digit2Key.wasPressedThisFrame)world.SendSignal(2);if(keyboard.digit3Key.wasPressedThisFrame)world.SendSignal(3);}if(pad!=null&&pad.dpad.up.wasPressedThisFrame)world.SendSignal(1);if(pad!=null&&pad.dpad.right.wasPressedThisFrame)world.SendSignal(2);if(pad!=null&&pad.dpad.down.wasPressedThisFrame)world.SendSignal(3);}
@@ -275,7 +278,7 @@ namespace TowTrouble
                 if (pad != null && UsingGamepad)
                 {
                     input.x = pad.leftStick.x.ReadValue(); input.y = pad.rightTrigger.ReadValue() - pad.leftTrigger.ReadValue();
-                    brake = pad.buttonEast.isPressed; winch = pad.leftShoulder.isPressed;extend=pad.rightShoulder.isPressed;
+                    brake = RecoveryInputPrompts.Cancel(pad).isPressed; winch = pad.leftShoulder.isPressed;extend=pad.rightShoulder.isPressed;
                 }
             }
             world.Drive(input, brake, winch,extend);

@@ -90,10 +90,10 @@ namespace TowTrouble
         public float SlipAtWheel(int index)=>WheelSlip[index];
         public void ShowExtractionRelease(Vector3 point)
         {
-            if(dust==null||!dust.gameObject.activeInHierarchy||EffectsGain<=0)return;
+            if(dust==null||!dust.gameObject.activeInHierarchy||VisualEffectsGain<=0)return;
             var main=dust.main;var basis=main.simulationSpace==ParticleSystemSimulationSpace.Custom&&main.customSimulationSpace!=null?main.customSimulationSpace:dust.transform;
             var burst=new ParticleSystem.EmitParams{position=main.simulationSpace==ParticleSystemSimulationSpace.World?point:basis.InverseTransformPoint(point)};
-            dust.Emit(burst,Mathf.RoundToInt(10*Mathf.Clamp01(EffectsGain)));
+            dust.Emit(burst,Mathf.RoundToInt(10*Mathf.Clamp01(VisualEffectsGain)));
         }
         public void SetTowForce(float force,Vector3 reaction=default){towLoad=Mathf.Clamp01(force/Mathf.Max(1,driveForce*4));cableReaction=reaction;}
         private void ClearWheelFeedback()
@@ -104,6 +104,7 @@ namespace TowTrouble
         }
 
         public static float EffectsGain=.8f;
+        public const float VisualEffectsGain=1f;
         public Rigidbody Body => body;
         public Vector3 WheelAnchor(int index)=>wheels[index].transform.position;
         public Transform WheelVisual(int index)=>wheelVisuals[index];

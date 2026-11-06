@@ -12,7 +12,7 @@ namespace TowTrouble
         public void Present(RecoverySituationKind kind,bool active)
         {
             if(engineSmoke==null)return;
-            float rate=SmokeRate(kind,active,RecoveryVehicle.EffectsGain);
+            float rate=SmokeRate(kind,active,RecoveryVehicle.VisualEffectsGain);
             var emission=engineSmoke.emission;emission.rateOverTime=rate;
             if(!Application.isPlaying)return;
             if(rate>0&&Time.timeScale>.01f&&engineSmoke.gameObject.activeInHierarchy){if(!engineSmoke.isPlaying)engineSmoke.Play(false);}

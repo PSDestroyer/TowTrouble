@@ -99,7 +99,7 @@ namespace TowTrouble
         public int Snaps => snaps;
         public int Occupied => (driver0Id.Value >= 0 ? 1 : 0) + (driver1Id.Value >= 0 ? 1 : 0);
         public bool CanStart => Occupied > 0 && ready0.Value && (!cooperative.Value || Occupied==2) && (driver1Id.Value < 0 || ready1.Value);
-        public RecoveryContract Contract=>map!=null&&FreeRoam?map.Contracts[Mathf.Clamp(contractId.Value,0,map.Contracts.Length-1)]:RecoveryContract.Get(contractId.Value);
+        public RecoveryContract Contract=>trainingContract??(map!=null&&FreeRoam?map.Contracts[Mathf.Clamp(contractId.Value,0,map.Contracts.Length-1)]:RecoveryContract.Get(contractId.Value));
         public int ContractIndex=>contractId.Value;
         public bool Cooperative=>cooperative.Value;
         public string DriverName(int slot)=>slot==0?name0.Value:name1.Value;
@@ -109,7 +109,7 @@ namespace TowTrouble
         public int Signal(int slot)=>slot==0?signal0.Value:signal1.Value;
         public float CableLength(int slot)=>slot>=0?lengths[slot]:0;
         public void ConfigureEnvironment(GameObject value){environment=value;}
-        public void PreviewVehicle(int index){if(NetworkObject==null||!IsClientInitialized)drivers[0].SetModel(index);}
+        public void PreviewVehicle(int index){if(NetworkObject==null||!IsClientInitialized){drivers[0].GetComponent<RecoveryCustomization>()?.ClearPreview();drivers[0].SetModel(index);}}
         public int Slot(int id) => id == driver0Id.Value && id >= 0 ? 0 : (id == driver1Id.Value && id >= 0 ? 1 : -1);
         public bool Ready(int slot) => slot == 0 ? ready0.Value : ready1.Value;
         public bool OccupiedSlot(int slot) => (slot == 0 ? driver0Id.Value : driver1Id.Value) >= 0;
@@ -355,7 +355,7 @@ namespace TowTrouble
                 drivers[i].Body.AddForceAtPosition(-direction * force, a);
             }
             TickScenario(totalPull);
-            if (!ClearingObstacle && Phase == RecoveryPhase.Recover && (UsesArcadeExtraction?extraction!=null&&extraction.IsFree:Contract.IsExtracted(casualty.transform.position)))
+            if (!ClearingObstacle && Phase == RecoveryPhase.Recover && (!Training||TrainingWinchUsed) && (UsesArcadeExtraction?extraction!=null&&extraction.IsFree:Contract.IsExtracted(casualty.transform.position)))
                 phase.Value = (int)RecoveryPhase.Deliver;
             if (Phase == RecoveryPhase.Deliver)
             {
