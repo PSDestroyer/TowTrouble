@@ -13,7 +13,8 @@ namespace TowTrouble
         public float master=.8f, effects=.8f, ui=.7f, brightness=1f, textScale=1f, cameraSensitivity=1f;
         public int quality=1;
         public string forwardKey="W",reverseKey="S",leftKey="A",rightKey="D",brakeKey="Space";
-        public string language="en", name="Driver", hookKey="E", resetKey="R", reelKey="Q", extendKey="F";
+        public string language="en", name="Driver", hookKey="F", resetKey="R", reelKey="Q", extendKey="E";
+        public int cableControlsRevision;
         public int credits,lastPayout;
         public List<string> ownedParts=new List<string>();
         public List<string> paidRuns=new List<string>();
@@ -43,6 +44,14 @@ namespace TowTrouble
                 if(p.paint>0)p.builds[Mathf.Clamp(p.vehicle,0,3)].Items=new[]{"paint_"+p.paint};
                 p.version=2;
             }
+            // Upgrade the old default pair once; preserve custom bindings and later rebinds.
+            if (p.cableControlsRevision == 0)
+            {
+                if (string.Equals(p.hookKey, "E", StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(p.extendKey, "F", StringComparison.OrdinalIgnoreCase))
+                { p.hookKey = "F"; p.extendKey = "E"; }
+                p.cableControlsRevision = 1;
+            }
             p.language = string.Equals(p.language, "ro", StringComparison.OrdinalIgnoreCase) ? "ro" : "en";
             p.EnsureGarage();p.Clamp();return p;
         }
@@ -55,6 +64,7 @@ namespace TowTrouble
         }
         public void Save()
         {
+            cableControlsRevision = 1;
             EnsureGarage();Clamp();var previous=PlayerPrefs.GetString(Key,"");if(!string.IsNullOrEmpty(previous))PlayerPrefs.SetString(Key+".previous",previous);
             PlayerPrefs.SetString(Key,JsonUtility.ToJson(this));PlayerPrefs.Save();
         }

@@ -37,8 +37,8 @@ Lobby-ul folosește aceleași două locuri de parcare, nume, culori albastru/por
 | --- | --- | --- |
 | Condus | WASD / săgeți | Stick stânga; RT/LT |
 | Frână | Space | B |
-| Conectare / desprindere | E | A |
-| Scurtare / alungire cablu | Q / F | LB / RB |
+| Conectare / desprindere | F | A |
+| Scurtare / alungire cablu | Q / E | LB / RB |
 | Punct sigur | R | Select |
 | Rotire cameră | Mouse dreapta | Stick dreapta |
 | Recentrare cameră | C | Y |
@@ -168,3 +168,32 @@ Aceeași reproducere izolată nu mai aruncă excepția; cinci verificări Edit M
 OpenWorldRecovery are acum relieful și drumurile netezite, trasee cu curbe, texturi și margini estompate, atelier detaliat, vegetație pe biomuri, apă și poduri refăcute, iluminare proprie și nori nativi. Cele 24 de recuperări și 8 predări sunt păstrate. Tutorialul și scenele originale Mega/Desert nu au fost modificate. Imagini comparative și verificări statice: `Docs/Validation/VisualPolish`.
 
 Pentru această etapă nu s-a pornit Play Mode și nu s-au creat builduri. Utilizatorul verifică în Editor: Explorează → garaj → Tab → R01, apoi accesul spre lac, deșert și zăpadă. Performanța și comportamentul fizic după remodelare necesită această verificare.
+
+Recovery-board controls (2026-11-06): Q/E changes Available/Completed, W/S or Up/Down selects a recovery, Enter accepts or opens abandonment confirmation, Esc returns to driving. Controller navigation uses shoulders and D-pad/left stick. Prompts follow Xbox (A/B, LB/RB), PlayStation (Cross/Circle, L1/R1) or Nintendo (A/B, L/R, east A confirms). This board/confirmation is the first family-aware menu; broader full-game gamepad support remains planned. Validation: Docs/Validation/BoardControls; authorized isolated Solo passed29 checks with virtual input, including Nintendo's swapped physical face positions. Physical controllers and a multiplayer peer were not tested; no build was created.
+
+
+## Garage UX and controls — 2026-11-06
+
+Current garage flow in OpenWorldRecovery: stop at the workshop with no cable or active recovery, then G (Xbox X / PlayStation Square / Nintendo Y). Highlight a recovery in the board before entering the garage to prepare for that job. Equipment advice uses the fitted build, surface needs and nominal breakout load; terrain, slope and positioning still affect actual towing.
+
+- Style contains appearance parts. Tech contains Body, Wheels, Engine, Transmission, Suspension and Chassis. Towing contains Cable and Winch. Parts stay in the three-column grid, ordered by price then readable model/level order; duplicate bodies are labeled Classic / Hot Rod.
+- Selection previews one part against the fitted setup. Equipped, Owned and Preview badges distinguish states. Enter / controller Confirm buys and fits only that part, or fits an owned part free. Leaving discards the preview. Body changes list incompatible fitted parts before payment; those parts remain owned.
+- Compare fitted → preview below the car. Wheels show Road/Mud/Snow/Sand grip; mass is a tradeoff rather than an automatic upgrade. All/Owned and tire-role filters narrow the catalogue.
+- Saved setups opens four legacy-compatible slots with Empty/Saved/Active states. NAME cycles a controller-friendly label. SAVE FITTED saves mounted equipment, never an unbought preview. Applying is free; overwriting asks first. Selling pays 70% and asks for confirmation; fitted or saved parts explain why they cannot be sold.
+
+| Garage action | Keyboard | Controller |
+| --- | --- | --- |
+| Change Style / Tech / Towing | Q / E | LB/RB, L1/R1, L/R |
+| Select category / grid item | WASD / arrows; left from first grid column enters categories, right returns | D-pad / left stick; same layout |
+| Buy & fit / fit owned | Enter | Xbox A / PlayStation Cross / Nintendo A (east) |
+| Back / cancel review / drive | Esc | Xbox B / PlayStation Circle / Nintendo B (south) |
+| All / Owned | Tab | X / Square / Y |
+| Tire role | T / R | LT/RT, L2/R2, ZL/ZR |
+| Recommended part | F | Y / Triangle / X |
+| Saved setups | P | Menu / Options / + |
+| Sell selected unused owned part | Delete | View / Share / − |
+| Rotate car / reset view | Drag free car area / C | Right stick / RS press (R3) |
+
+Enter/Confirm activates the highlighted button inside Saved setups and confirmation dialogs. Modal reviews block camera rotation and accept no held-button carryover. Garage and Completed lists share smooth scrolling and the reduced-motion setting. Gamepad prompts switch with the last input device. Full gamepad support in other gameplay/menus remains a separate task.
+
+Validation of this garage iteration: 57 direct-invoked NUnit cases, 36 static layouts at text100/130%, and 62 actual Play/Solo checks using keyboard and virtual controller devices passed. Player preferences were restored exactly and Unity left stopped. Physical controller hardware and co-op peers still need testing. Evidence: `Docs/Validation/GarageUX`.

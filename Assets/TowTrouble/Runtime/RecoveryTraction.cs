@@ -5,6 +5,16 @@ namespace TowTrouble
     // Shared force calculations, independent of networking, effects and vehicle poses.
     public static class RecoveryTraction
     {
+        public const float PoweredRollingDamping = 35f;
+        // Near cruise speed, retain only enough thrust to offset ordinary road
+        // and Rigidbody damping. Soil, slope and tow loads still reduce speed;
+        // requested thrust never exceeds the body's existing per-wheel force.
+        public static float SpeedLimitedDrive(float nominal, float speed, float limit, float mass, float damping, int wheels)
+        {
+            speed=Mathf.Abs(speed);
+            float cruise=speed*(PoweredRollingDamping+mass*Mathf.Max(0,damping)/Mathf.Max(1,wheels));
+            return Mathf.Clamp(cruise+nominal*(limit-speed)/3f,0,nominal);
+        }
         public static Vector2 CableBrake(Vector3 reaction,Vector3 forward,Vector3 right,int wheels)
         {return new Vector2(-Vector3.Dot(reaction,forward),-Vector3.Dot(reaction,right))/Mathf.Max(1,wheels);}
         public static float Grip(float coefficient,float throttle,float aggressiveLoss)

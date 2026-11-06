@@ -128,7 +128,8 @@ namespace TowTrouble
             if (size.x <= 0 || size.y <= 0) return;
             var half = waypointBadge.sizeDelta * .5f;
             float lowerHud = cableGroup.activeSelf ? (partnerGroup.activeSelf ? 145f : 95f) : partnerGroup.activeSelf ? 95f : 48f;
-            float upperHud = guidanceNote.gameObject.activeSelf ? guidanceNote.sizeDelta.y + 32f : 12f;
+            float upperHud = missionStatusPanel != null ? missionStatusPanel.rect.height + 32f : 12f;
+            if (guidanceNote.gameObject.activeSelf) upperHud += guidanceNote.rect.height + 8f;
             if (!string.IsNullOrEmpty(crew.text)) upperHud = Mathf.Max(upperHud, 100f);
             float bottom = Mathf.Min(lowerHud + half.y + 8f, size.y * .45f);
             float top = Mathf.Min(upperHud + half.y + 8f, size.y * .45f);

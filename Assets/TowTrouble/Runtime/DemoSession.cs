@@ -23,6 +23,9 @@ namespace TowTrouble
         public GarageSlot GarageFocusSlot {get;private set;}=GarageSlot.Assembly;
         public string GarageFocusPart {get;private set;}
         public void FocusGarage(GarageSlot slot,string partId){GarageFocusSlot=slot;GarageFocusPart=partId;}
+        public int GarageViewReset { get; private set; }
+        public bool GarageCameraInputBlocked { get; set; }
+        public void ResetGarageView() { GarageViewReset++; }
         public bool BoardOpen=>View=="Board";
         public int LastReward=>Profile.lastPayout;
         private bool identitySent, recorded;
@@ -33,6 +36,8 @@ namespace TowTrouble
         public bool UsingGamepad=>Gamepad.current!=null && lastGamepad;
         private bool lastGamepad;
         private float lastKeyboard;
+        private int menuInputConsumedFrame = -1;
+        public void ConsumeMenuInput() { menuInputConsumedFrame = Time.frameCount; }
         private UnityEngine.Rendering.Universal.ColorAdjustments grade;
         private void Awake(){Profile=RecoveryProfile.Load();SelectedContract=Profile.lastContract;ApplySettings();}
         public void ApplySettings(){AudioListener.volume=Profile.master;RecoveryVehicle.EffectsGain=Profile.effects;if(QualitySettings.GetQualityLevel()!=Mathf.Clamp(Profile.quality,0,QualitySettings.names.Length-1))QualitySettings.SetQualityLevel(Mathf.Clamp(Profile.quality,0,QualitySettings.names.Length-1),true);if(grade==null){var volume=FindFirstObjectByType<UnityEngine.Rendering.Volume>();if(volume!=null&&volume.profile!=null)volume.profile.TryGet(out grade);}if(grade!=null)grade.postExposure.Override(Mathf.Log(Profile.brightness,2)+.1f);}
@@ -162,6 +167,7 @@ namespace TowTrouble
         {if(Connected&&GarageCatalog!=null){var build=Profile.Build(Profile.vehicle);build.Normalize(GarageCatalog,Profile.Owns);world.SetGarageBuild(JsonUtility.ToJson(build));}}
         public void CloseOverlay()
         {
+            GarageCameraInputBlocked=false;
             if(GarageOpen){world.SetGarageState(false);var build=Profile.Build(Profile.vehicle);world.Drivers[LocalSlot].GetComponent<RecoveryCustomization>()?.Apply(build,Profile.paint,true);SendGarageBuild();}
             menuOpen=false;View="Gameplay";Time.timeScale=1;
         }
@@ -198,8 +204,8 @@ namespace TowTrouble
                 if (IsHost) network.ServerManager.StopConnection(true);
                 status = "Connection timed out. Check the address and host firewall.";
             }
-            if(Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame){lastKeyboard=Time.unscaledTime;lastGamepad=false;}
-            var activePad=Gamepad.current;if(activePad!=null&&(activePad.buttonSouth.wasPressedThisFrame||activePad.buttonEast.wasPressedThisFrame||activePad.buttonNorth.wasPressedThisFrame||activePad.buttonWest.wasPressedThisFrame||activePad.leftStickButton.wasPressedThisFrame||activePad.startButton.wasPressedThisFrame||activePad.leftShoulder.isPressed||activePad.rightShoulder.isPressed||activePad.leftStick.ReadValue().sqrMagnitude>.05f||activePad.rightStick.ReadValue().sqrMagnitude>.05f||activePad.dpad.ReadValue().sqrMagnitude>.05f||activePad.rightTrigger.ReadValue()>.05f||activePad.leftTrigger.ReadValue()>.05f))lastGamepad=true;
+            if((Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame)||(Mouse.current!=null&&Mouse.current.leftButton.wasPressedThisFrame)){lastKeyboard=Time.unscaledTime;lastGamepad=false;}
+            var activePad=Gamepad.current;if(activePad!=null&&(activePad.buttonSouth.wasPressedThisFrame||activePad.buttonEast.wasPressedThisFrame||activePad.buttonNorth.wasPressedThisFrame||activePad.buttonWest.wasPressedThisFrame||activePad.leftStickButton.wasPressedThisFrame||activePad.rightStickButton.wasPressedThisFrame||activePad.selectButton.wasPressedThisFrame||activePad.startButton.wasPressedThisFrame||activePad.leftShoulder.isPressed||activePad.rightShoulder.isPressed||activePad.leftStick.ReadValue().sqrMagnitude>.05f||activePad.rightStick.ReadValue().sqrMagnitude>.05f||activePad.dpad.ReadValue().sqrMagnitude>.05f||activePad.rightTrigger.ReadValue()>.05f||activePad.leftTrigger.ReadValue()>.05f))lastGamepad=true;
             if (!Connected || LocalSlot < 0) return;
             if(!identitySent){identitySent=true;if(IsHost)world.ConfigureSession(world.Map!=null?0:SelectedContract,!Solo,explorationRequested||world.Map!=null);world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);}
             if(world.FreeRoam&&!garageIdentitySent){garageIdentitySent=true;SendGarageBuild();}
@@ -212,6 +218,10 @@ namespace TowTrouble
                 if (!readySent) { readySent = true; world.SetReady(true); }
                 if (world.CanStart) { quickStart = false; world.StartRecovery(); }
             }
+            // UI submit/cancel can close an overlay before this Update executes.
+            // Consume that frame so the same button cannot pause or operate a cable.
+            if (menuInputConsumedFrame == Time.frameCount)
+            { world.Drive(Vector2.zero, true, false); return; }
             bool overlayWasOpen=BoardOpen||GarageOpen;
             var keyboard = Keyboard.current;
             var pad = Gamepad.current;
@@ -220,13 +230,11 @@ namespace TowTrouble
                 if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.boardKey,Key.Tab)].wasPressedThisFrame)||(pad!=null&&pad.leftStickButton.wasPressedThisFrame))ToggleBoard();
                 if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.garageKey,Key.G)].wasPressedThisFrame)||(pad!=null&&pad.buttonWest.wasPressedThisFrame))OpenGarage();
             }
-            else if(BoardOpen&&((keyboard!=null&&(keyboard[Profile.ReadKey(Profile.boardKey,Key.Tab)].wasPressedThisFrame||keyboard.escapeKey.wasPressedThisFrame))||(pad!=null&&(pad.buttonEast.wasPressedThisFrame||pad.leftStickButton.wasPressedThisFrame))))CloseOverlay();
-            else if(GarageOpen&&((keyboard!=null&&keyboard.escapeKey.wasPressedThisFrame)||(pad!=null&&pad.buttonEast.wasPressedThisFrame)))CloseOverlay();
             if(!overlayWasOpen&&(View=="Gameplay"||View=="Pause")&&((keyboard!=null&&keyboard.escapeKey.wasPressedThisFrame)||(pad!=null&&pad.startButton.wasPressedThisFrame)))ToggleMenu();
             if (world.Phase == RecoveryPhase.Lobby || world.Phase == RecoveryPhase.Complete){pad?.ResetHaptics();return;}
             if (!menuOpen)
             {
-                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.E)].wasPressedThisFrame) || (pad != null && pad.buttonSouth.wasPressedThisFrame)) world.ToggleCable();
+                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.F)].wasPressedThisFrame) || (pad != null && pad.buttonSouth.wasPressedThisFrame)) world.ToggleCable();
                 if ((keyboard != null && keyboard[Profile.ReadKey(Profile.resetKey,Key.R)].wasPressedThisFrame) || (pad != null && pad.selectButton.wasPressedThisFrame)) world.Unstuck();
             }
             if(!menuOpen){if(keyboard!=null){if(keyboard.digit1Key.wasPressedThisFrame)world.SendSignal(1);if(keyboard.digit2Key.wasPressedThisFrame)world.SendSignal(2);if(keyboard.digit3Key.wasPressedThisFrame)world.SendSignal(3);}if(pad!=null&&pad.dpad.up.wasPressedThisFrame)world.SendSignal(1);if(pad!=null&&pad.dpad.right.wasPressedThisFrame)world.SendSignal(2);if(pad!=null&&pad.dpad.down.wasPressedThisFrame)world.SendSignal(3);}
@@ -246,7 +254,7 @@ namespace TowTrouble
                 {
                     input.x = (keyboard[Profile.ReadKey(Profile.rightKey,Key.D)].isPressed || keyboard.rightArrowKey.isPressed ? 1f : 0f) - (keyboard[Profile.ReadKey(Profile.leftKey,Key.A)].isPressed || keyboard.leftArrowKey.isPressed ? 1f : 0f);
                     input.y = (keyboard[Profile.ReadKey(Profile.forwardKey,Key.W)].isPressed || keyboard.upArrowKey.isPressed ? 1f : 0f) - (keyboard[Profile.ReadKey(Profile.reverseKey,Key.S)].isPressed || keyboard.downArrowKey.isPressed ? 1f : 0f);
-                    brake = keyboard[Profile.ReadKey(Profile.brakeKey,Key.Space)].isPressed; winch = keyboard[Profile.ReadKey(Profile.reelKey,Key.Q)].isPressed;extend=keyboard[Profile.ReadKey(Profile.extendKey,Key.F)].isPressed;
+                    brake = keyboard[Profile.ReadKey(Profile.brakeKey,Key.Space)].isPressed; winch = keyboard[Profile.ReadKey(Profile.reelKey,Key.Q)].isPressed;extend=keyboard[Profile.ReadKey(Profile.extendKey,Key.E)].isPressed;
                 }
                 if (pad != null && UsingGamepad)
                 {

@@ -36,7 +36,7 @@ namespace TowTrouble
         private Vector3 safePosition;
         private Quaternion safeRotation;
         private float radius=.47f, driveForce=3100f, steering=30f;
-        private float maxSpeed=13f,dryGripScale=1f,mudGripScale=1f,mudResistanceScale=1f,sandGripScale=1f,snowGripScale=1f,suspensionLift;
+        private float maxSpeed=RecoveryBodyBalance.StockSpeed(0),dryGripScale=1f,mudGripScale=1f,mudResistanceScale=1f,sandGripScale=1f,snowGripScale=1f,suspensionLift;
         private int geometryVersion;
         public int GeometryVersion=>geometryVersion;
         public float CableStrength {get;private set;}=RecoveryRules.BreakForce;
@@ -124,7 +124,7 @@ namespace TowTrouble
             if(models==null||models.Length==0)return;
             modelIndex=Mathf.Clamp(index,0,models.Length-1);var m=models[modelIndex];
             for(int i=0;i<models.Length;i++)models[i].Root.SetActive(i==modelIndex);
-            wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=13;dryGripScale=mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=RecoveryWinch.StockSpeed;WinchForce=RecoveryWinch.StockForce;geometryVersion++;driveForce=m.Drive;steering=m.Steering;
+            wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=RecoveryBodyBalance.StockSpeed(modelIndex);dryGripScale=mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=RecoveryWinch.StockSpeed;WinchForce=RecoveryWinch.StockForce;geometryVersion++;driveForce=m.Drive;steering=m.Steering;
             for(int i=0;i<wheels.Length;i++){wheels[i].transform.localPosition=m.Anchors[i];wheels[i].radius=radius;}
             if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?(recoveryMass>0?recoveryMass:950f):m.Mass;
             ResetWheelPresentation();
@@ -231,8 +231,8 @@ namespace TowTrouble
                 float longitudinal=Vector3.Dot(pointVelocity,forward),lateral=Vector3.Dot(pointVelocity,right);
                 bool muddy=hit.collider.TryGetComponent<RecoveryMudTerrain>(out var mud);
                 if(muddy)mudWheels++;
-                float drive=casualty||brake?0:input.y*driveForce*Mathf.Clamp01((maxSpeed-Mathf.Abs(forwardSpeed))/3);
-                float rolling=casualty?100:Mathf.Abs(input.y)<.05f?240:35;
+                float drive=casualty||brake?0:input.y*RecoveryTraction.SpeedLimitedDrive(driveForce,forwardSpeed,maxSpeed,body.mass,body.linearDamping,wheels.Length);
+                float rolling=casualty?100:Mathf.Abs(input.y)<.05f?240:RecoveryTraction.PoweredRollingDamping;
                 float braking=Mathf.Clamp(-longitudinal*(brake?1300:rolling),-5500,5500);
                 float surfaceGrip=1.25f*dryGripScale,surfaceSideGrip=1.3f*dryGripScale,looseDrag=0;
                 if(hit.collider.TryGetComponent<RecoveryGroundSurface>(out var surface)){var kind=surface.KindAt(hit.point);surfaceGrip=kind==RecoveryGroundKind.Snow?.52f*snowGripScale:kind==RecoveryGroundKind.Sand?.68f*sandGripScale:1.25f*dryGripScale;surfaceSideGrip=surfaceGrip;looseDrag=RecoveryTraction.SoftGroundDrag(kind,surface.Softness,kind==RecoveryGroundKind.Snow?snowGripScale:sandGripScale);}

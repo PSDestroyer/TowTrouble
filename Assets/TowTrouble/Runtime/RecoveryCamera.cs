@@ -32,8 +32,8 @@ namespace TowTrouble
                 if(session.View=="Vehicles"||session.GarageOpen)
                 {
                     float rotationInput=0;
-                    if(Mouse.current!=null&&Mouse.current.leftButton.isPressed&&(UnityEngine.EventSystems.EventSystem.current==null||!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))rotationInput+=Mouse.current.delta.x.ReadValue()*.16f*p.cameraSensitivity;
-                    if(Gamepad.current!=null)rotationInput+=Gamepad.current.rightStick.x.ReadValue()*Time.unscaledDeltaTime*80*p.cameraSensitivity;
+                    if(!session.GarageCameraInputBlocked&&Mouse.current!=null&&Mouse.current.leftButton.isPressed&&(UnityEngine.EventSystems.EventSystem.current==null||!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))rotationInput+=Mouse.current.delta.x.ReadValue()*.16f*p.cameraSensitivity;
+                    if(!session.GarageCameraInputBlocked&&Gamepad.current!=null)rotationInput+=Gamepad.current.rightStick.x.ReadValue()*Time.unscaledDeltaTime*80*p.cameraSensitivity;
                     if(session.GarageOpen)
                         GarageCameraPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],rotationInput,p.reducedMotion,Time.unscaledDeltaTime,out position,out look);
                     else {orbit+=rotationInput;position=center+Quaternion.Euler(0,orbit,0)*new Vector3(7,3.8f,9);look=center+new Vector3(2.2f,1,-2.2f);}

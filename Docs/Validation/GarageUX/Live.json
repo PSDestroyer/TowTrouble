@@ -1,0 +1,451 @@
+{
+  "complete": true,
+  "error": null,
+  "step": 75,
+  "total": 75,
+  "frames": 2250,
+  "virtualInput": true,
+  "stationaryVehicleFixture": true,
+  "checks": [
+    {
+      "label": "Board owns navigation before garage",
+      "pass": true,
+      "page": "Board",
+      "overlay": "None",
+      "selected": null,
+      "credits": 20000
+    },
+    {
+      "label": "Board back restores navigation",
+      "pass": true,
+      "page": "Gameplay",
+      "overlay": "None",
+      "selected": null,
+      "credits": 20000
+    },
+    {
+      "label": "G opens garage with persistent part selection and navigation ownership",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 20000
+    },
+    {
+      "label": "Left edge moves focus into categories",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 20000
+    },
+    {
+      "label": "Body is reachable in Tech",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Assembly",
+      "credits": 20000
+    },
+    {
+      "label": "Right returns from categories into the grid",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Assembly",
+      "credits": 20000
+    },
+    {
+      "label": "Right arrow selects and previews a shop body without purchase",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "part_ed5523aa6ea2eb747a299391edbfd247",
+      "credits": 20000
+    },
+    {
+      "label": "WASD scrolls a deep grid selection smoothly into view",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "part_b56046536aeaa1248a125370bbfc6c98",
+      "credits": 20000
+    },
+    {
+      "label": "Recommendation points to alpine tires for planned R15",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "tires_winter_pro",
+      "credits": 20000
+    },
+    {
+      "label": "Preview has not spent or equipped",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "tires_winter_pro",
+      "credits": 20000
+    },
+    {
+      "label": "Enter buys and fits only the recommended tires",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "tires_winter_pro",
+      "credits": 17000
+    },
+    {
+      "label": "Engine preview is separate",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "engine_2",
+      "credits": 17000
+    },
+    {
+      "label": "Selecting another part discards the earlier unbought preview",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "cable_18",
+      "credits": 17000
+    },
+    {
+      "label": "Cable purchase preserves fitted tires and cannot buy the previous engine",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "cable_18",
+      "credits": 16550
+    },
+    {
+      "label": "Unavailable purchase explains the missing credits",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "engine_3",
+      "credits": 17
+    },
+    {
+      "label": "Enter cannot purchase without money",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "engine_3",
+      "credits": 17
+    },
+    {
+      "label": "Engine fits once without changing cable or tires",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "engine_2",
+      "credits": 13750
+    },
+    {
+      "label": "Appearance-only part purchases and fits",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "part_c14e258abbf3956408a68c2ea9776761",
+      "credits": 13150
+    },
+    {
+      "label": "Body replacement opens review before payment",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Compatibility",
+      "selected": "part_db6772488e62a844a820c7dd2658153e",
+      "credits": 13150
+    },
+    {
+      "label": "Held Enter cannot confirm body replacement",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Compatibility",
+      "selected": "part_db6772488e62a844a820c7dd2658153e",
+      "credits": 13150
+    },
+    {
+      "label": "Escape cancels body change without spending",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "part_db6772488e62a844a820c7dd2658153e",
+      "credits": 13150
+    },
+    {
+      "label": "Body review reopens",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Compatibility",
+      "selected": "part_db6772488e62a844a820c7dd2658153e",
+      "credits": 13150
+    },
+    {
+      "label": "Confirmed body change retains replaced part ownership",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "part_db6772488e62a844a820c7dd2658153e",
+      "credits": 10250
+    },
+    {
+      "label": "Stock refit is free",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Assembly",
+      "credits": 10250
+    },
+    {
+      "label": "Sell requires explicit confirmation",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Sell",
+      "selected": "part_c14e258abbf3956408a68c2ea9776761",
+      "credits": 10250
+    },
+    {
+      "label": "Cancel sale preserves credits and inventory",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "part_c14e258abbf3956408a68c2ea9776761",
+      "credits": 10250
+    },
+    {
+      "label": "Confirmed sale pays once and restores fitted preview",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Bonnet",
+      "credits": 10670
+    },
+    {
+      "label": "P opens Saved setups and blocks camera input",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Setups",
+      "selected": "engine_3",
+      "credits": 10670
+    },
+    {
+      "label": "Save fitted ignores the unbought preview",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Setups",
+      "selected": "engine_3",
+      "credits": 10670
+    },
+    {
+      "label": "Named setup cycles without needing a keyboard",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Setups",
+      "selected": "engine_3",
+      "credits": 10670
+    },
+    {
+      "label": "Fitting owned stock is free",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 10670
+    },
+    {
+      "label": "Apply setup restores saved equipment for free",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Setups",
+      "selected": "tires_winter_pro",
+      "credits": 10670
+    },
+    {
+      "label": "Overwriting a saved setup opens confirmation",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Overwrite",
+      "selected": "tires_winter_pro",
+      "credits": 10670
+    },
+    {
+      "label": "Cancel overwrite returns to setups",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Setups",
+      "selected": "tires_winter_pro",
+      "credits": 10670
+    },
+    {
+      "label": "Used setup explains why an unequipped item cannot be sold",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "tires_winter_pro",
+      "credits": 10670
+    },
+    {
+      "label": "Sell shortcut respects setup references",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "tires_winter_pro",
+      "credits": 10670
+    },
+    {
+      "label": "Owned filter contains no shop-only parts",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "tires_winter_pro",
+      "credits": 10670
+    },
+    {
+      "label": "Empty owned tire category is safe and informative",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": null,
+      "credits": 10670
+    },
+    {
+      "label": "All restores tire choices",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "part_f8cb1205339a7604fa26b52bb76b398d",
+      "credits": 10670
+    },
+    {
+      "label": "Xbox RB changes main tab",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "cable_18",
+      "credits": 10670
+    },
+    {
+      "label": "Xbox A buys selected part",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "cable_26",
+      "credits": 9270
+    },
+    {
+      "label": "Xbox B returns directly to driving and restores navigation",
+      "pass": true,
+      "page": "Gameplay",
+      "overlay": "None",
+      "selected": "cable_26",
+      "credits": 9270
+    },
+    {
+      "label": "Gamepad garage entry does not also toggle Owned",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "cable_26",
+      "credits": 9270
+    },
+    {
+      "label": "PlayStation L1 changes tab and displays family hints",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "PlayStation Options opens setups",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "Setups",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "PlayStation Circle closes only the overlay",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "Right stick rotates the garage camera",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "R3 resets garage camera",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "PlayStation Square toggles Owned",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "PlayStation Circle exits garage",
+      "pass": true,
+      "page": "Gameplay",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "Nintendo Y opens garage",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "Nintendo A east fits an owned part for free",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "cable_18",
+      "credits": 9270
+    },
+    {
+      "label": "Nintendo L uses Nintendo shoulder hints",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "stock_Wheels",
+      "credits": 9270
+    },
+    {
+      "label": "Nintendo ZR cycles tire type",
+      "pass": true,
+      "page": "Garage",
+      "overlay": "None",
+      "selected": "part_e7b9558c0855f9c4789eef4298d14789",
+      "credits": 9270
+    },
+    {
+      "label": "Nintendo B south exits without triggering cable or pause",
+      "pass": true,
+      "page": "Gameplay",
+      "overlay": "None",
+      "selected": "part_e7b9558c0855f9c4789eef4298d14789",
+      "credits": 9270
+    }
+  ]
+}

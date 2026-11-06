@@ -11,10 +11,10 @@ namespace TowTrouble
         private int assistanceSlot = -1, observedSnaps, completionMask;
         private bool observedAttached, firstCableUsed, firstCableIntroduced, firstSnapExplained;
         private bool snapIsLocal, safePointReady, newRecoveryAvailable;
-        private float cableIntroUntil, snappedUntil, struggleSeconds, recoveryIdleSince;
+        private float cableIntroUntil, snappedUntil, struggleSeconds;
         private float resetStillSince = -1f;
         private Vector3 resetStillPosition;
-        private float lastAssistanceTime, nextBoardReminder;
+        private float lastAssistanceTime;
         private CanvasGroup exploreHintFade, hitchFade;
         private bool exploreHintWanted, hitchWanted;
         private TMP_Text exploreHintDetail;
@@ -34,7 +34,6 @@ namespace TowTrouble
                 observedAttached = false; observedSnaps = world.Snaps;
                 snappedUntil = 0; resetStillSince = -1; safePointReady = false;
                 firstCableUsed = firstCableIntroduced = firstSnapExplained = false;
-                nextBoardReminder = now + 45f; recoveryIdleSince = now;
             }
             if (world.HasContract && assistanceRun != world.RunId)
             {

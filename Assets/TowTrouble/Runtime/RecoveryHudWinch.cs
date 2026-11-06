@@ -91,7 +91,7 @@ namespace TowTrouble
                 else if (IntroduceWinch)
                 { label = "Cable attached"; hint = "Hold " + (session.UsingGamepad ? "LB" : P.ReadKey(P.reelKey, Key.Q).ToString()) + " to reel in"; }
                 if (hint == null && quietDetach && !IntroduceWinch)
-                    hint = (session.UsingGamepad ? "A" : P.ReadKey(P.hookKey, Key.E).ToString()) + " · Detach cable";
+                    hint = (session.UsingGamepad ? "A" : P.ReadKey(P.hookKey, Key.F).ToString()) + " · Detach cable";
                 if (UrgentAssistance) hint = null;
 
                 bool showHint = !string.IsNullOrEmpty(hint);
@@ -124,7 +124,7 @@ namespace TowTrouble
             hintScale = P.textScale;
 
             string reelKey = gamepad ? reel : P.ReadKey(reel, Key.Q).ToString();
-            string payoutKey = gamepad ? payout : P.ReadKey(payout, Key.F).ToString();
+            string payoutKey = gamepad ? payout : P.ReadKey(payout, Key.E).ToString();
             reelHint.text = "[" + reelKey + "]";
             payoutHint.text = "[" + payoutKey + "]";
             float leftWidth = Mathf.Ceil(reelHint.GetPreferredValues(reelHint.text, 1000, 40).x) + 2f;

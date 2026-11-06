@@ -10,7 +10,8 @@ namespace TowTrouble
             if(part.Slot==GarageSlot.Assembly)
             {
                 int index=Mathf.Clamp(model,0,3);float mass=part.BodyMass>0?part.BodyMass:RecoveryVehicle.Masses[index];float drive=part.BodyDrive>0?part.BodyDrive:RecoveryVehicle.PullForces[index];
-                return mass.ToString("0")+"kg · "+(drive*4/1000).ToString("0.0")+"kN";
+                float speed=part.BodySpeed>0?part.BodySpeed:RecoveryBodyBalance.StockSpeed(index);
+                return mass.ToString("0")+" kg · "+(drive*4/1000).ToString("0.0")+" kN\n"+(english?"Top speed: ":"Viteză: ")+(speed*3.6f).ToString("0")+" km/h";
             }
             if(part.Slot==GarageSlot.Wheels&&part.TireKind!=GarageTireKind.Unspecified)
             {

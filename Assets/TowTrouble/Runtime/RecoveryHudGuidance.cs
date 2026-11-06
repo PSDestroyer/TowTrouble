@@ -37,6 +37,8 @@ namespace TowTrouble
 
         private void OnDisable()
         {
+            SetGarageNavigation(false);
+            SetBoardNavigation(false);
             Canvas.preWillRenderCanvases -= PositionTrackedWaypoint;
             ClearRecoveryGuidance();
         }
@@ -140,13 +142,15 @@ namespace TowTrouble
             }
 
             Vector3 separation = world.TowTargetPosition - world.Drivers[slot].transform.position;
+            if (world.Phase == RecoveryPhase.Deliver && !NeedsDeliveryReconnect(world, slot))
+            { atRecoverySite = false; return false; }
             // A nearby switchback can still sit on a different level of the mountain.
             float radius = atRecoverySite ? 33f : 28f;
             float height = atRecoverySite ? 10f : 8f;
             bool inRange = separation.sqrMagnitude <= radius * radius && Mathf.Abs(separation.y) <= height;
-            if (world.Phase == RecoveryPhase.Deliver || world.Attached(slot) || !inRange || world.Map == null)
+            if (world.Attached(slot) || !inRange || world.Map == null)
             {
-                atRecoverySite = world.Phase != RecoveryPhase.Deliver && (world.Attached(slot) || inRange);
+                atRecoverySite = world.Attached(slot) || inRange;
                 return atRecoverySite;
             }
 
@@ -167,10 +171,12 @@ namespace TowTrouble
                 return;
             }
 
-            bool delivery = world.Phase == RecoveryPhase.Deliver;
+            bool delivering = world.Phase == RecoveryPhase.Deliver;
+            bool reconnecting = NeedsDeliveryReconnect(world, slot);
+            bool delivery = delivering && !reconnecting;
             var contract = world.Contract;
             var driver = world.Drivers[slot].transform;
-            string deliveryInstruction = DeliveryWaypointInstruction(world.Phase, contract, driver.position,
+            string deliveryInstruction = reconnecting ? null : DeliveryWaypointInstruction(world.Phase, contract, driver.position,
                 world.Casualty.transform.position, world.Casualty.Speed);
             Vector3 target = delivery ? contract.Delivery : world.TowTargetPosition;
             string place = delivery
@@ -178,17 +184,17 @@ namespace TowTrouble
                 : contract.TitleFor(P);
             float now = Time.unscaledTime;
             bool attached = world.Attached(slot);
-            if (delivery && !showedDelivery) releaseCueUntil = now + 1.8f;
+            if (delivering && !showedDelivery) releaseCueUntil = now + 1.8f;
             if (workingAtSite && !showedSite) wheelCueUntil = now + 2.4f;
             bool onObstacle = workingAtSite && world.ClearingObstacle && attached;
             if (onObstacle && !pullingObstacle) obstacleCueUntil = now + 2.4f;
-            showedDelivery = delivery;
+            showedDelivery = delivering;
             showedSite = workingAtSite;
             pullingObstacle = onObstacle;
 
             // A specific caught wheel can be pointed out once on arrival. At the hitch
             // the interaction itself takes over, and a connected cable owns the feedback.
-            hasExtractionCaption = workingAtSite && !attached && now < wheelCueUntil &&
+            hasExtractionCaption = !delivering && workingAtSite && !attached && now < wheelCueUntil &&
                 world.UsesArcadeExtraction && !contract.ExtractionProfile.TerrainAware && RefreshExtractionCaption(world);
             if (!hasExtractionCaption) localCaptionVisible = false;
 

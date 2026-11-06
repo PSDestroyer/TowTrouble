@@ -24,8 +24,6 @@ namespace TowTrouble
         private bool wasOnline, wasComplete, firstSetup;
         private RecoveryPhase previousPhase;
         private float refreshAt;
-        private bool exploreHintSeen;
-        private float exploreHintUntil;
         private int displayedSpeed = -1;
         private RectTransform exploreHintPlate, exploreHintKeycap;
         private TMP_Text exploreHintBinding;
@@ -54,7 +52,7 @@ namespace TowTrouble
             uiAudio=gameObject.AddComponent<AudioSource>();uiAudio.playOnAwake=false;clickClip=AudioClip.Create("UI confirm",1500,1,44100,false);var samples=new float[1500];for(int i=0;i<samples.Length;i++)samples[i]=Mathf.Sin(i*.14f)*.05f*(1-i/(float)samples.Length);clickClip.SetData(samples,0);
             BuildGameplay();Show("Title");
         }
-        private void OnDestroy(){DisposeRoadTrail();if(clickClip!=null)Destroy(clickClip);}
+        private void OnDestroy(){SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();if(clickClip!=null)Destroy(clickClip);}
         private RectTransform Node(string name,Transform parent,float x,float y,float width,float height)
         {var go=new GameObject(name,typeof(RectTransform));go.transform.SetParent(parent,false);var rt=(RectTransform)go.transform;rt.anchorMin=rt.anchorMax=new Vector2(0,1);rt.pivot=new Vector2(0,1);rt.anchoredPosition=new Vector2(x,-y);rt.sizeDelta=new Vector2(width,height);return rt;}
         private RectTransform Stretch(string name,Transform parent)
@@ -87,15 +85,19 @@ namespace TowTrouble
         {Panel(pageRoot,0,850,1600,50,new Color(.03f,.04f,.05f,.52f));Button(pageRoot,L("ÎNAPOI","BACK"),76,808,230,()=>Show(back));Text(pageRoot,session.UsingGamepad?"A  "+L("Confirmă","Confirm")+"     B  "+L("Înapoi","Back"):"ENTER  "+L("Confirmă","Confirm")+"     ESC  "+L("Înapoi","Back"),340,866,1184,28,16,Paper).alignment=TextAlignmentOptions.Right;}
         public void Show(string target)
         {
+            if(page=="Garage"&&target!="Garage")RememberGarageScroll();
+            if(target!="Garage")SetGarageNavigation(false);
+            if(target=="Garage")BeginGaragePage(page!="Garage");
+            bool enteringBoard = target == "Board" && page != "Board";
+            if (page == "Board") RememberBoardScroll();
+            SetBoardNavigation(target == "Board");
+            if(target=="Garage")SetGarageNavigation(true);
+            if (target == "Board") BeginBoardPage(enteringBoard);
             if (target != "Gameplay") HideRoadTrail();
             if (target == "Board")
             {
-                exploreHintSeen = true;
-                exploreHintUntil = 0f;
-                nextBoardReminder = Time.unscaledTime + 60f;
                 newRecoveryAvailable = false;
             }
-            if (target == "Lobby") exploreHintSeen = false;
             focusName=page==target?EventSystem.current?.currentSelectedGameObject?.name:null;
             if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);pageRoot=null;}
             if(target=="Garage"&&page!="Garage")PrepareGarage();
@@ -109,6 +111,9 @@ namespace TowTrouble
         private IEnumerator FocusFirst()
         {
             var target=pageRoot;string remembered=focusName;yield return null;if(page=="Gameplay"||target==null||target!=pageRoot||!target.gameObject.activeInHierarchy)yield break;
+            if (page == "Board") { FocusBoardRecovery(); yield break; }
+            if (page == "Garage") { FocusGarageUI(); yield break; }
+            if (page == "Confirm" && confirmationReturn == "Board") { FocusBoardDialog(); yield break; }
             var controls=target.GetComponentsInChildren<UnityEngine.UI.Selectable>();UnityEngine.UI.Selectable preferred=null;
             foreach(var control in controls)if(control.IsInteractable())
             {if(control.name==remembered){preferred=control;break;}if(preferred==null)preferred=control;var plate=control.GetComponentInChildren<RecoveryPlateGraphic>();if(remembered==null&&plate!=null&&plate.Style==RecoveryPlateStyle.Gold){preferred=control;break;}}
@@ -222,6 +227,7 @@ namespace TowTrouble
             marker=Text(gameplay.transform,"",0,0,340,70,18,Amber,true);marker.alignment=TextAlignmentOptions.Center;
             marker.GetComponent<TextMeshProUGUI>().outlineWidth=.12f;
             BuildWaypoint();
+            BuildMissionStatus();
             BuildHitchPrompt();
             BuildRoadTrail();
             for(int i=0;i<2;i++)
@@ -248,25 +254,10 @@ namespace TowTrouble
         }
         private void Confirm(string question,Action yes,string back)
         {
-            if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);}page="Confirm";focusName=null;confirmationReturn=back;session.View="Confirm";pageRoot=Stretch("Confirmation",root);Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.65f));var card=Panel(pageRoot,475,300,650,290);Text(card,question,32,30,586,130,29,Paper,true);Button(card,L("CONFIRMĂ","CONFIRM"),32,200,270,yes,true);Button(card,L("RENUNȚĂ","CANCEL"),328,200,290,()=>Show(back));StartCoroutine(FocusFirst());
-        }
-        private void BuildResults()
-        {
-            session.RecordCompletion();var w=session.World;var card=Panel(pageRoot,440,126,720,650);Text(card,L("CONTRACT ÎNCHEIAT","CONTRACT COMPLETE"),36,34,648,60,40,Amber,true);
-            Text(card,w.Contract.TitleFor(P),36,111,648,48,30,Paper,true);
-            for(int i=0;i<3;i++){bool earned=i==0||(i==1?w.Resets(0)+w.Resets(1)==0:w.Snaps==0);var medal=Node("Medal "+i,card,126+i*190,175,66,66).gameObject.AddComponent<RecoveryMedalGraphic>();medal.color=earned?Amber:new Color(.25f,.28f,.24f);}
-            string data=L("Timp   ","Time   ")+TimeSpan.FromSeconds(w.Elapsed).ToString(@"mm\:ss")+"\n"+L("Resetări   ","Resets   ")+(w.Resets(0)+w.Resets(1))+"   •   "+L("Cabluri rupte   ","Broken cables   ")+w.Snaps;
-            data+="\n"+L("Recompensă: ","Reward: ")+session.LastReward+" CR   •   "+L("Sold: ","Balance: ")+P.credits+" CR";
-            data+="\n"+(w.Resets(0)+w.Resets(1)==0?"+ ":"— ")+L("Fără resetări","No resets")+"    "+(w.Snaps==0?"+ ":"— ")+L("Fără cablu rupt","No cable breaks");
-            if(w.FreeRoam && newRecoveryAvailable)data+="\nNew recovery available";
-            if(w.Cooperative)data+="\n"+w.DriverName(0)+" / "+w.DriverName(1)+"  •  "+Mathf.RoundToInt(w.PullSeconds(0))+"s / "+Mathf.RoundToInt(w.PullSeconds(1))+"s "+L("în tracțiune","pulling");
-            Text(card,data,36,270,648,160,21,Paper);
-            if(w.FreeRoam)
-            {Button(card,L("CONTINUĂ EXPLORAREA","CONTINUE EXPLORING"),36,470,648,()=>{session.FinishExplorationContract();Show("Gameplay");},true).interactable=session.IsHost;return;}
-            Button(card,L("URMĂTORUL CONTRACT","NEXT CONTRACT"),36,449,648,()=>{session.Replay();session.SelectContract(Mathf.Min(2,w.ContractIndex+1));Show("Contracts");},true).interactable=session.IsHost;
-            Button(card,L("REJOACĂ","REPLAY"),36,521,308,()=>{session.RestartContract();Show("Lobby");}).interactable=session.IsHost;
-            Button(card,L("CONTRACTE","CONTRACTS"),368,521,316,()=>{session.Replay();Show("Contracts");}).interactable=session.IsHost;
-            Button(card,L("VEHICULE","VEHICLES"),36,590,648,()=>{session.Replay();returnPage="Lobby";Show("Vehicles");}).interactable=session.IsHost;
+            if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);}page="Confirm";focusName=null;confirmationReturn=back;session.View="Confirm";pageRoot=Stretch("Confirmation",root);Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.65f));var card=Panel(pageRoot,475,300,650,290);Text(card,question,32,30,586,130,29,Paper,true);Button(card,L("CONFIRMĂ","CONFIRM"),32,200,270,yes,true);Button(card,L("RENUNȚĂ","CANCEL"),328,200,290,()=>Show(back));
+            SetBoardNavigation(back == "Board");
+            if (back == "Board") ConfigureBoardDialog();
+            StartCoroutine(FocusFirst());
         }
         private void Slider(Transform parent,string label,float value,float min,float max,float y,Action<float> change)
         {
@@ -330,17 +321,18 @@ namespace TowTrouble
             if(!online&&wasOnline)Show("Coop");
             if(online)
             {
-                if (w.Phase == RecoveryPhase.Explore && previousPhase == RecoveryPhase.Complete)
-                    { exploreHintSeen = false; recoveryIdleSince = Time.unscaledTime; }
                 if(w.Phase==RecoveryPhase.Complete&&!wasComplete)Show("Results");
                 else if(w.Phase!=previousPhase&&w.Phase!=RecoveryPhase.Complete){if(w.Phase!=RecoveryPhase.Lobby||(page!="Contracts"&&page!="Vehicles"))Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");}
                 if(session.MenuOpen&&page=="Gameplay"&&session.View!="Garage"&&session.View!="Board")Show("Pause");
                 if(!session.MenuOpen&&page=="Pause")Show("Gameplay");
                 wasComplete=w.Phase==RecoveryPhase.Complete;previousPhase=w.Phase;
             }
-            if(online&&(session.View=="Garage"||session.View=="Board")&&page!=session.View)Show(session.View);
+            if(online&&(session.View=="Garage"||session.View=="Board")&&page!=session.View&&
+                !(page=="Confirm"&&confirmationReturn==session.View))Show(session.View);
             else if(online&&(page=="Garage"||page=="Board")&&session.View=="Gameplay")Show("Gameplay");
             wasOnline=online;
+            if (HandleGarageControls(online)) return;
+            if (HandleBoardControls(online)) return;
             bool back=(Keyboard.current!=null&&Keyboard.current.escapeKey.wasPressedThisFrame)||(Gamepad.current!=null&&Gamepad.current.buttonEast.wasPressedThisFrame);
             if(back&&page=="Confirm"){Show(confirmationReturn);return;}
             if(back&&page=="Lobby")Confirm(L("Părăsești sesiunea?","Leave this session?"),()=>session.Leave(),"Lobby");
@@ -355,7 +347,6 @@ namespace TowTrouble
                 for(int i=0;i<2;i++)if(worldNames[i]!=null)worldNames[i].text=w.OccupiedSlot(i)?w.DriverName(i)+" • "+RecoveryVehicle.ModelNames[w.VehicleIndex(i)]+"\n"+(w.Ready(i)?L("PREGĂTIT","READY"):L("SE PREGĂTEȘTE","GETTING READY")):L("AȘTEPTĂM UN PRIETEN…","WAITING FOR A FRIEND…");
                 readyText.text=w.Ready(session.LocalSlot)?L("NU SUNT GATA","NOT READY"):L("PREGĂTIT","READY");startButton.interactable=session.IsHost&&w.CanStart;
             }
-            if(page=="Board"&&online){if(boardRenderedCompletedMask!=P.completedMask)Show("Board");if(startButton!=null)startButton.interactable=boardIndex>=0&&boardIndex<w.AvailableContracts.Length&&session.IsHost&&w.Phase==RecoveryPhase.Explore&&!w.CrewInGarage;}
             if(page=="Gameplay"&&online)RefreshGameplay();
         }
         private void RefreshGameplay()
@@ -365,6 +356,7 @@ namespace TowTrouble
             crew.text = w.Cooperative && w.Occupied < 2 ? L("Coechipier deconectat", "Crewmate disconnected") : "";
             if (w.Phase == RecoveryPhase.Explore)
             {
+                RefreshMissionStatus(w, slot, false);
                 if (!waypointGarage) ClearRecoveryGuidance();
                 objective.text = "";
                 marker.gameObject.SetActive(false);
@@ -379,6 +371,7 @@ namespace TowTrouble
             exploreHintWanted = false;
             RefreshUrgentHint(w, slot);
             bool workingAtSite = UpdateApproach(w, slot);
+            RefreshMissionStatus(w, slot, workingAtSite);
             var camera=Camera.main;if(camera==null){ClearRecoveryGuidance();marker.gameObject.SetActive(false);return;}
             RefreshCrewTagText(w);
             RefreshRecoveryGuidance(w, slot, camera, workingAtSite);
@@ -410,32 +403,11 @@ namespace TowTrouble
 
         private void RefreshExploreHint(RecoveryWorld world, int slot)
         {
-            // Do not spend the first-time contracts hint while the garage owns
-            // attention at spawn. Its timer starts once the player drives away.
-            if (waypointGarage)
+            // The persistent mission status owns the contracts instruction now.
+            if (!waypointGarage && session.CanOpenGarage)
             {
-                exploreHintWanted = false;
-                return;
-            }
-            if (!exploreHintSeen)
-            {
-                exploreHintSeen = true;
-                exploreHintUntil = Time.unscaledTime + 6f;
-            }
-
-            // The garage's contextual key is at the parking place, not duplicated
-            // here or hidden behind the initial contracts tutorial.
-            if (session.CanOpenGarage)
-            {
-                string key = session.UsingGamepad ? "X" : P.ReadKey(P.garageKey, Key.G).ToString();
+                string key = session.UsingGamepad ? RecoveryInputPrompts.WestLabel(Gamepad.current!=null?RecoveryInputPrompts.Family(Gamepad.current):RecoveryControllerFamily.Xbox) : P.ReadKey(P.garageKey, Key.G).ToString();
                 ShowExploreHint(key, "Customize");
-            }
-            else if (P.tutorial && (Time.unscaledTime < exploreHintUntil ||
-                Time.unscaledTime >= nextBoardReminder && Time.unscaledTime - recoveryIdleSince > 35f))
-            {
-                if (Time.unscaledTime >= nextBoardReminder)
-                { exploreHintUntil = Time.unscaledTime + 6f; nextBoardReminder = Time.unscaledTime + 60f; }
-                ShowExploreHint(ContractControl(), newRecoveryAvailable ? "New recovery available" : "Recoveries");
             }
             else exploreHintWanted = false;
         }

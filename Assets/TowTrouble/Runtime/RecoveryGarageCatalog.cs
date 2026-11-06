@@ -85,14 +85,14 @@ namespace TowTrouble
             }
         }
     }
-    [Serializable] public sealed class GaragePreset { public string Name; public RecoveryBuild Build; }
+    [Serializable] public sealed class GaragePreset { public string Name; public RecoveryBuild Build; public string Label; }
     public struct GaragePerformance
     {
         public float Mass, Drive, Speed, DryGrip, MudGrip, MudResistance, SandGrip, SnowGrip, Lift, Track, Cable, Winch, WinchForce;
         public static GaragePerformance Calculate(RecoveryBuild build,RecoveryGarageCatalog catalog)
         {
             int model=Mathf.Clamp(build.Model,0,3);
-            var value=new GaragePerformance{Mass=RecoveryVehicle.Masses[model],Drive=RecoveryVehicle.PullForces[model],Speed=13,DryGrip=1,MudGrip=1,MudResistance=1,SandGrip=1,SnowGrip=1,Track=1,Cable=RecoveryRules.BreakForce,Winch=RecoveryWinch.StockSpeed,WinchForce=RecoveryWinch.StockForce};
+            var value=new GaragePerformance{Mass=RecoveryVehicle.Masses[model],Drive=RecoveryVehicle.PullForces[model],Speed=RecoveryBodyBalance.StockSpeed(model),DryGrip=1,MudGrip=1,MudResistance=1,SandGrip=1,SnowGrip=1,Track=1,Cable=RecoveryRules.BreakForce,Winch=RecoveryWinch.StockSpeed,WinchForce=RecoveryWinch.StockForce};
             var body=catalog.Find(build.Item(GarageSlot.Assembly,catalog));
             if(body!=null&&body.BodyMass>0){value.Mass=body.BodyMass;value.Drive=body.BodyDrive>0?body.BodyDrive:value.Drive;value.Speed=body.BodySpeed>0?body.BodySpeed:value.Speed;}
             if(build.Items!=null)foreach(var id in build.Items)
@@ -106,6 +106,7 @@ namespace TowTrouble
                 value.MudGrip*=p.MudGrip;value.MudResistance*=p.MudResistance;value.Lift+=p.Lift;value.Track*=p.Track;
                 if(p.Slot==GarageSlot.Cable)value.Cable=p.CableStrength;if(p.Slot==GarageSlot.Winch){value.Winch=p.WinchSpeed;value.WinchForce=p.WinchForce;}
             }
+            value.Speed=Mathf.Min(value.Speed,RecoveryBodyBalance.MaximumSpeed);
             value.Mass=Mathf.Clamp(value.Mass,900,2400);value.Track=Mathf.Clamp(value.Track,.9f,1.15f);value.Lift=Mathf.Clamp(value.Lift,0,.22f);return value;
         }
     }

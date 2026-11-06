@@ -59,27 +59,37 @@ namespace TowTrouble.Editor
 
         }
         private static string Pct(float value)=>((value-1)*100).ToString("+0;-0;0")+"%";
+        public static void ApplyBodies(IEnumerable<GaragePart> parts)
+        { foreach(var p in parts)if(p.Slot==GarageSlot.Assembly)Body(p); }
+        [MenuItem("Tow Trouble/Garage/Rebalance Body Prices and Speeds")]
+        public static void RefreshBodies()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Edit Mode only");
+            var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(GarageAuthoring.CatalogPath);
+            Undo.RecordObject(catalog,"Body economy and speed balance");
+            ApplyBodies(catalog.Parts);EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssetIfDirty(catalog);
+        }
         private static void Body(GaragePart p)
         {
             p.AddedMass=0;p.DriveMultiplier=1;p.SpeedMultiplier=1;
-            if(p.Price==0){p.BodyMass=p.BodyDrive=p.BodySpeed=0;p.Description="Șasiul original al mașinii tale. Masa și forța depind de modelul ales.";p.EnglishDescription="Your vehicle's original chassis. Mass and pulling force follow the selected model.";return;}
+            if(p.Id=="stock_Assembly"){p.Price=0;p.BodyMass=p.BodyDrive=p.BodySpeed=0;p.Description="Șasiul original al mașinii tale. Masa și forța depind de modelul ales.";p.EnglishDescription="Your vehicle's original chassis. Mass and pulling force follow the selected model.";return;}
             string n=(p.Prefabs!=null&&p.Prefabs.Length>0&&p.Prefabs[0]!=null?p.Prefabs[0].name:p.Name).ToLowerInvariant();
             float mass,drive,speed;string typeRO,typeEN;
-            if(n.Contains("pickupster")){mass=1840;drive=4000;speed=11.6f;typeRO="Utilitară";typeEN="Utility";}
-            else if(n.Contains("lorry")){mass=1980;drive=4100;speed=10.8f;typeRO="Grea";typeEN="Heavy";}
-            else if(n.Contains("villager")){mass=1750;drive=3900;speed=12;typeRO="Utilitară";typeEN="Utility";}
-            else if(n.Contains("goblin")){mass=1550;drive=3500;speed=13;typeRO="Off-road";typeEN="Off-road";}
-            else if(n.Contains("geep")){mass=1450;drive=3350;speed=12.2f;typeRO="Off-road";typeEN="Off-road";}
-            else if(n.Contains("bucket")){mass=1020;drive=2600;speed=14.2f;typeRO="Ușoară";typeEN="Light";}
-            else if(n.Contains("bulldog")){mass=1150;drive=2800;speed=13;typeRO="Compactă";typeEN="Compact";}
-            else if(n.Contains("speedster")){mass=1100;drive=2850;speed=15.2f;typeRO="Sport";typeEN="Sport";}
-            else if(n.Contains("electron")){mass=1210;drive=3000;speed=14;typeRO="Ușoară";typeEN="Light";}
-            else if(n.Contains("prince")){mass=1440;drive=3300;speed=13.4f;typeRO="Echilibrată";typeEN="Balanced";}
-            else if(n.Contains("rumpler")){mass=1380;drive=3150;speed=12.6f;typeRO="Echilibrată";typeEN="Balanced";}
-            else if(n.Contains("spartan")){mass=1620;drive=3600;speed=12;typeRO="Robustă";typeEN="Heavy-duty";}
-            else if(n.Contains("martian")){mass=1260;drive=3000;speed=14.6f;typeRO="Sport";typeEN="Sport";}
-            else if(n.Contains("midjet")||n.Contains("midget")){mass=980;drive=2500;speed=14;typeRO="Ușoară";typeEN="Light";}
-            else if(n.Contains("taxi")){mass=1350;drive=3100;speed=13;typeRO="Echilibrată";typeEN="Balanced";}
+            if(n.Contains("pickupster")){mass=1840;drive=4000;speed=58/3.6f;typeRO="Utilitară";typeEN="Utility";}
+            else if(n.Contains("lorry")){mass=1980;drive=4100;speed=54/3.6f;typeRO="Grea";typeEN="Heavy";}
+            else if(n.Contains("villager")){mass=1750;drive=3900;speed=60/3.6f;typeRO="Utilitară";typeEN="Utility";}
+            else if(n.Contains("goblin")){mass=1550;drive=3500;speed=66/3.6f;typeRO="Off-road";typeEN="Off-road";}
+            else if(n.Contains("geep")){mass=1450;drive=3350;speed=64/3.6f;typeRO="Off-road";typeEN="Off-road";}
+            else if(n.Contains("bucket")){mass=1020;drive=2600;speed=76/3.6f;typeRO="Ușoară";typeEN="Light";}
+            else if(n.Contains("bulldog")){mass=1150;drive=2800;speed=72/3.6f;typeRO="Compactă";typeEN="Compact";}
+            else if(n.Contains("speedster")){mass=1100;drive=2850;speed=78/3.6f;typeRO="Sport";typeEN="Sport";}
+            else if(n.Contains("electron")){mass=1210;drive=3000;speed=76/3.6f;typeRO="Ușoară";typeEN="Light";}
+            else if(n.Contains("prince")){mass=1440;drive=3300;speed=70/3.6f;typeRO="Echilibrată";typeEN="Balanced";}
+            else if(n.Contains("rumpler")){mass=1380;drive=3150;speed=68/3.6f;typeRO="Echilibrată";typeEN="Balanced";}
+            else if(n.Contains("spartan")){mass=1620;drive=3600;speed=60/3.6f;typeRO="Robustă";typeEN="Heavy-duty";}
+            else if(n.Contains("martian")){mass=1260;drive=3000;speed=76/3.6f;typeRO="Sport";typeEN="Sport";}
+            else if(n.Contains("midjet")||n.Contains("midget")){mass=980;drive=2500;speed=74/3.6f;typeRO="Ușoară";typeEN="Light";}
+            else if(n.Contains("taxi")){mass=1350;drive=3100;speed=68/3.6f;typeRO="Echilibrată";typeEN="Balanced";}
             else throw new InvalidOperationException("Review unknown body profile: "+p.Id+" / "+n);
             if(n.Contains("bigfoot")){mass+=130;drive*=1.02f;speed*=.90f;}
             if(n.Contains("buggy")){mass-=120;drive*=.96f;speed*=1.02f;}
@@ -90,7 +100,9 @@ namespace TowTrouble.Editor
             if(n.Contains("tow")){mass+=200;drive*=1.06f;speed*=.90f;}
             if(n.Contains("lemans")||n.Contains("_gt")){mass+=40;drive*=1.06f;speed*=1.09f;}
             if(n.Contains("aero")){mass-=35;speed*=1.05f;}
+            speed=Mathf.Min(Mathf.Round(speed*3.6f)/3.6f,RecoveryBodyBalance.MaximumSpeed);
             p.BodyMass=Mathf.Round(mass/10)*10;p.BodyDrive=Mathf.Round(drive/10)*10;p.BodySpeed=speed;
+            p.Price=RecoveryBodyBalance.Price(p.BodyMass,p.BodyDrive,speed);
             p.Description=typeRO+": "+p.BodyMass.ToString("0")+" kg · "+(p.BodyDrive*4/1000).ToString("0.0")+" kN · "+(speed*3.6f).ToString("0")+" km/h. "+(mass>=1600?"Sprijin mai bun; mai grea la urcare.":mass<=1250?"Agilă; sprijin mai redus la troliu.":"Compromis între masă și tragere.");
             p.EnglishDescription=typeEN+": "+p.BodyMass.ToString("0")+" kg · "+(p.BodyDrive*4/1000).ToString("0.0")+" kN · "+(speed*3.6f).ToString("0")+" km/h. "+(mass>=1600?"More footing; heavier uphill.":mass<=1250?"Agile; less winch anchoring weight.":"Balances mass and pulling force.");
         }

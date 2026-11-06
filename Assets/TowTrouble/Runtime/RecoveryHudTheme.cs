@@ -44,10 +44,6 @@ namespace TowTrouble
             var badge=Panel(parent,x,y,width,62);Icon(badge,RecoveryIcon.Coins,15,15,30,Amber);
             var text=Text(badge,amount.ToString("N0")+" CR",54,0,width-70,62,25,Paper,true);text.alignment=TextAlignmentOptions.MidlineRight;text.enableAutoSizing=true;text.fontSizeMin=18;text.fontSizeMax=25*P.textScale;
         }
-        private string PartName(GaragePart part)
-        {
-            string name=part.Label(P);foreach(string prefix in new[]{"Attachment Top ","Motor Exhaust ","Motor Carb ","Chassis ","Fender ","Bumper ","Bonnet ","Wheel ","Body ","Historic ","Rod "})if(name.StartsWith(prefix)){name=name.Substring(prefix.Length);break;}
-            return name;
-        }
+        private string PartName(GaragePart part)=>RecoveryGarageOrdering.DisplayName(part,P);
     }
 }

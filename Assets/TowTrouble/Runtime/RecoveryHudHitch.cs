@@ -62,8 +62,9 @@ namespace TowTrouble
                 return false;
             }
 
-            string key = canAttach ? session.UsingGamepad ? "A" : P.ReadKey(P.hookKey, Key.E).ToString() : "";
-            string action = canAttach ? "Attach cable" : "Move closer to attach";
+            string key = canAttach ? session.UsingGamepad ? "A" : P.ReadKey(P.hookKey, Key.F).ToString() : "";
+            bool reconnecting = NeedsDeliveryReconnect(world, slot);
+            string action = canAttach ? reconnecting ? "Reconnect cable" : "Attach cable" : "Move closer to attach";
             hitchKeycap.gameObject.SetActive(canAttach);
             hitchPointIcon.gameObject.SetActive(!canAttach);
             if (key != hitchBinding.text || action != hitchAction.text || hitchTextScale != P.textScale)

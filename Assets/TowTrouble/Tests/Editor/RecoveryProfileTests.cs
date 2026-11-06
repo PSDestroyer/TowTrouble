@@ -5,6 +5,24 @@ namespace TowTrouble.Tests
 {
     public sealed class RecoveryProfileTests
     {
+        [Test] public void CableControlsSwapForNewAndLegacyDefaultProfiles()
+        {
+            var fresh = new RecoveryProfile();
+            Assert.AreEqual("F", fresh.hookKey); Assert.AreEqual("E", fresh.extendKey); Assert.AreEqual("Q", fresh.reelKey);
+            var old = RecoveryProfile.Parse("{\"version\":2,\"hookKey\":\"E\",\"extendKey\":\"F\",\"credits\":851,\"completedMask\":24}");
+            Assert.AreEqual("F", old.hookKey); Assert.AreEqual("E", old.extendKey);
+            Assert.AreEqual(851, old.credits); Assert.AreEqual(24, old.completedMask);
+            var reloaded = RecoveryProfile.Parse(JsonUtility.ToJson(old));
+            Assert.AreEqual("F", reloaded.hookKey); Assert.AreEqual("E", reloaded.extendKey);
+        }
+        [Test] public void CableControlMigrationPreservesCustomAndLaterReboundKeys()
+        {
+            var custom = RecoveryProfile.Parse("{\"version\":2,\"hookKey\":\"H\",\"extendKey\":\"J\"}");
+            Assert.AreEqual("H", custom.hookKey); Assert.AreEqual("J", custom.extendKey);
+            custom.hookKey = "E"; custom.extendKey = "F";
+            var reloaded = RecoveryProfile.Parse(JsonUtility.ToJson(custom));
+            Assert.AreEqual("E", reloaded.hookKey); Assert.AreEqual("F", reloaded.extendKey);
+        }
         [Test] public void ProgressionStartsWithOnlyTutorialUnlocked()
         {var p=new RecoveryProfile();Assert.That(p.Unlocked(0),Is.True);Assert.That(p.Unlocked(1),Is.False);Assert.That(p.Unlocked(2),Is.False);}
         [Test] public void CompletingTutorialUnlocksDitchWithoutRequiringDuo()

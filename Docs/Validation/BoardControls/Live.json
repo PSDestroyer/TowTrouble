@@ -1,0 +1,212 @@
+{
+  "complete": true,
+  "error": null,
+  "step": 38,
+  "frames": 1226,
+  "virtualInput": true,
+  "checks": [
+    {
+      "label": "Tab opens board and selects first recovery",
+      "pass": true,
+      "page": "Board",
+      "selected": 0,
+      "view": "Board"
+    },
+    {
+      "label": "S selects next card",
+      "pass": true,
+      "page": "Board",
+      "selected": 1,
+      "view": "Board"
+    },
+    {
+      "label": "Up selects previous card",
+      "pass": true,
+      "page": "Board",
+      "selected": 0,
+      "view": "Board"
+    },
+    {
+      "label": "E selects empty Completed",
+      "pass": true,
+      "page": "Board",
+      "selected": -1,
+      "view": "Board"
+    },
+    {
+      "label": "Empty history cannot accept",
+      "pass": true,
+      "page": "Board",
+      "selected": -1,
+      "view": "Board"
+    },
+    {
+      "label": "Q restores Available selection",
+      "pass": true,
+      "page": "Board",
+      "selected": 0,
+      "view": "Board"
+    },
+    {
+      "label": "Completed has twelve entries",
+      "pass": true,
+      "page": "Board",
+      "selected": 0,
+      "view": "Board"
+    },
+    {
+      "label": "Selected completed card scrolls into view",
+      "pass": true,
+      "page": "Board",
+      "selected": 10,
+      "view": "Board"
+    },
+    {
+      "label": "Down selects next completed card",
+      "pass": true,
+      "page": "Board",
+      "selected": 11,
+      "view": "Board"
+    },
+    {
+      "label": "Selection clamps at last card",
+      "pass": true,
+      "page": "Board",
+      "selected": 11,
+      "view": "Board"
+    },
+    {
+      "label": "Available replenished with unfinished jobs",
+      "pass": true,
+      "page": "Board",
+      "selected": 12,
+      "view": "Board"
+    },
+    {
+      "label": "W clamps at first available card",
+      "pass": true,
+      "page": "Board",
+      "selected": 12,
+      "view": "Board"
+    },
+    {
+      "label": "Enter accepts the selected recovery",
+      "pass": true,
+      "page": "Gameplay",
+      "selected": 12,
+      "view": "Gameplay"
+    },
+    {
+      "label": "Active mission has abandon primary",
+      "pass": true,
+      "page": "Board",
+      "selected": 12,
+      "view": "Board"
+    },
+    {
+      "label": "Enter opens abandon confirmation",
+      "pass": true,
+      "page": "Confirm",
+      "selected": 12,
+      "view": "Confirm"
+    },
+    {
+      "label": "Held submit does not bypass confirmation",
+      "pass": true,
+      "page": "Confirm",
+      "selected": 12,
+      "view": "Confirm"
+    },
+    {
+      "label": "Esc cancels abandonment",
+      "pass": true,
+      "page": "Board",
+      "selected": 12,
+      "view": "Board"
+    },
+    {
+      "label": "Esc returns directly to driving and restores native navigation",
+      "pass": true,
+      "page": "Gameplay",
+      "selected": 12,
+      "view": "Gameplay"
+    },
+    {
+      "label": "Xbox RB selects Completed",
+      "pass": true,
+      "page": "Board",
+      "selected": 11,
+      "view": "Board"
+    },
+    {
+      "label": "Xbox Dpad selects previous completed",
+      "pass": true,
+      "page": "Board",
+      "selected": 10,
+      "view": "Board"
+    },
+    {
+      "label": "Xbox A opens primary abandonment",
+      "pass": true,
+      "page": "Confirm",
+      "selected": 10,
+      "view": "Confirm"
+    },
+    {
+      "label": "Xbox B cancels confirmation",
+      "pass": true,
+      "page": "Board",
+      "selected": 10,
+      "view": "Board"
+    },
+    {
+      "label": "PlayStation Cross opens primary",
+      "pass": true,
+      "page": "Confirm",
+      "selected": 10,
+      "view": "Confirm"
+    },
+    {
+      "label": "PlayStation Circle cancels confirmation",
+      "pass": true,
+      "page": "Board",
+      "selected": 10,
+      "view": "Board"
+    },
+    {
+      "label": "Nintendo L selects Available",
+      "pass": true,
+      "page": "Board",
+      "selected": 12,
+      "view": "Board"
+    },
+    {
+      "label": "Nintendo A east opens primary",
+      "pass": true,
+      "page": "Confirm",
+      "selected": 12,
+      "view": "Confirm"
+    },
+    {
+      "label": "Nintendo B south cancels confirmation",
+      "pass": true,
+      "page": "Board",
+      "selected": 12,
+      "view": "Board"
+    },
+    {
+      "label": "Nintendo second A opens confirmation",
+      "pass": true,
+      "page": "Confirm",
+      "selected": 12,
+      "view": "Confirm"
+    },
+    {
+      "label": "Fresh Nintendo A confirms abandonment",
+      "pass": true,
+      "page": "Gameplay",
+      "selected": 12,
+      "view": "Gameplay"
+    }
+  ]
+}

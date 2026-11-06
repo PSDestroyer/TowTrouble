@@ -1,0 +1,63 @@
+{
+  "complete": true,
+  "error": null,
+  "frames": 474,
+  "controlledPosesAndConstraints": true,
+  "actualFInput": true,
+  "checks": [
+    {
+      "label": "Actual F connects",
+      "pass": true,
+      "objective": "Pull the vehicle free",
+      "frame": 2206
+    },
+    {
+      "label": "Connected delivery shows drop-off goal",
+      "pass": true,
+      "objective": "Tow the vehicle to the drop-off",
+      "frame": 2255
+    },
+    {
+      "label": "Manual F detach changes mission to reconnect",
+      "pass": true,
+      "objective": "Reconnect your cable to the vehicle",
+      "frame": 2304
+    },
+    {
+      "label": "Nearby F prompt offers reconnect",
+      "pass": true,
+      "objective": "Reconnect your cable to the vehicle",
+      "frame": 2304
+    },
+    {
+      "label": "Distant loss asks to return to recovered vehicle",
+      "pass": true,
+      "objective": "Return to the recovered vehicle",
+      "frame": 2398
+    },
+    {
+      "label": "Waypoint and route target vehicle rather than drop-off",
+      "pass": true,
+      "objective": "Return to the recovered vehicle",
+      "frame": 2398
+    },
+    {
+      "label": "Returning near restores reconnect goal",
+      "pass": true,
+      "objective": "Reconnect your cable to the vehicle",
+      "frame": 2492
+    },
+    {
+      "label": "Actual F reconnection restores delivery status and route",
+      "pass": true,
+      "objective": "Tow the vehicle to the drop-off",
+      "frame": 2541
+    },
+    {
+      "label": "Real physics cable break also restores vehicle recovery goal",
+      "pass": true,
+      "objective": "Return to the recovered vehicle",
+      "frame": 2589
+    }
+  ]
+}

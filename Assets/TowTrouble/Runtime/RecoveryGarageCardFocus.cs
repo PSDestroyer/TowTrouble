@@ -19,6 +19,7 @@ namespace TowTrouble
             if(scroll==null||scroll.content==null||scroll.viewport==null)return;
             var rect=(RectTransform)transform;float top=-rect.anchoredPosition.y;
             float next=VisibleOffset(top,top+rect.rect.height,scroll.viewport.rect.height,scroll.content.anchoredPosition.y,scroll.content.rect.height);
+            if(scroll is RecoverySmoothScrollRect smooth){smooth.ScrollTo(next);return;}
             scroll.StopMovement();scroll.content.anchoredPosition=new Vector2(0,next);
         }
     }

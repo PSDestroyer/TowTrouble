@@ -1,0 +1,9 @@
+# Completed history smooth scroll — 2026-11-06
+
+Completed alone now uses RecoverySmoothScrollRect. Keyboard/controller card focus and wheel bursts ease toward a clamped offset with0.10s SmoothDamp and unscaled time. Selection rebuilds retain current offset and animation speed. Native pointer dragging and scrollbar positioning cancel the animation; reduced-motion preference uses immediate positioning. The garage's existing ScrollRect behavior remains unchanged.
+
+Authorized offline Play UI fixture used the production recovery board and a memory-only profile with12 completed records. **15 checks passed across247 advancing frames** with Time.timeScale=0: intermediate positions rather than snapping, exact settled offsets, rapid selection retaining velocity through board rebuilds, reversed focus, accumulated wheel deltas, direct scrollbar takeover, reduced motion, top/bottom clamping and short history. Wheel events were sent directly to the production component; focus used the production board selection method. No networking, contract acceptance/completion, payment, purchase or build. This validates presentation behavior, not a fresh full Solo/controller route. Initial cold Pipeline callback exceeded the probe's startup timer before its first advancing frame; the warm rerun starts timing on its first tick and passed.
+
+Evidence: Live.json includes the checks and sampled offsets/speed over time. Original profile reference restored before leaving Play; protected preference values are checked after Play stops. Private profile backups remain under /private/tmp/TowSmoothScroll.
+
+Post-Play: all four protected preference keys matched the original values/existence, zero restoration writes required. Whole preference plist byte identity is not claimed. Editor returned to Edit Mode; no scene or asset authoring mutation was needed.

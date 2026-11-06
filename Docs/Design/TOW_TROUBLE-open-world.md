@@ -94,3 +94,20 @@ Aceasta este prima versiune a hărții. Nu sunt validate încă senzația de con
 ## Situații vizibile la intervenții — 2026-11-01
 Cele24 de intervenții au acum cauze distincte: șanțuri, făgașe și burta pe noroi, două mașini în apa lacului, taluzuri, pietre sub șasiu sau culoare între bolovani, zăpadă acumulată, punți îngropate în nisip, creastă de dună și albie uscată. R09/R16/R24 sunt defecțiuni de motor pe teren liber, semnalate prin fum de sub capotă, pată de ulei și triunghi de avertizare. Acestea cer remorcare, fără rezistență artificială de blocaj. Fumul urmărește ținta până la încheierea/abandonarea contractului.
 R01 păstrează prototipul anterior. Celelalte situații folosesc teren și poziții locale noi, descrieri RO/EN și fotografii actualizate, păstrând identificatorii, clasele, recompensele și predările. Apa folosește lacul existent, cu fund puțin adânc și rampă spre mal; nu există încă plutire sau sistem nou de înec. Cauza trebuie să fie vizibilă la apropiere, cârligul accesibil și direcția de ieșire lizibilă. Extragerea efectivă și dificultatea se calibrează după testul utilizatorului. Dovezi și distribuția completă: Docs/Validation/RecoverySituations.
+
+### Recovery board input — approved 2026-11-06
+Preserve the three-card Available view, scrolling Completed history and right-hand detail panel. Q/E select Available/Completed; W/S and Up/Down navigate cards, which always retain selection. Enter executes Accept Recovery or, during an active contract, Abandon Recovery with confirmation. Esc returns to driving. Show bindings beside tabs and on action buttons; retain pointer controls.
+
+Controller equivalent: D-pad/left stick selects, shoulders change tab, semantic confirm executes primary and semantic back closes. Xbox A/B + LB/RB; PlayStation Cross/Circle + L1/R1; Nintendo A/B + L/R, with Nintendo A at the east position. This distinct family-aware policy applies to the future full gamepad rollout, not just these menu labels. All new UI text remains English.
+
+### Body economy and travel speed — approved implementation 2026-11-06
+Body alternatives retain their current mass/pull tradeoffs and now cost1,400–4,600CR instead of all1,200CR. Price weights nominal pull most strongly, followed by anchoring mass and travel speed; exact table/formula is in Docs/Validation/BodyEconomy. Lightweight sport bodies reach80km/h, heavy towing bodies52–62km/h; stock archetypes68/60/72/66km/h. All equipment combinations cap powered configured speed at80 after multipliers; low range still trades20% speed for25% pull. Stock cable/mud/mission gates remain. Existing body ownership is preserved.
+
+Catalogue: price ascending; comparable body stats break equal-price ties, numeric levels sort naturally, and cards explicitly show mass, pull and top speed. Test evidence and run-cost examples are in the body economy report.
+
+
+### Garage UX integration — 2026-11-06
+
+The workshop keeps the existing three-column catalogue and large center car preview. Body belongs in Tech, appearance remains Style, and Towing contains cable/winch. Price ordering and role filters reduce the visible choice without hiding owned equipment. Equipped/Owned/Preview states, single-part preview, explicit free refit or Buy & fit, before/after comparisons, and compatibility review make each transaction concrete. Recommendations prepare the board-highlighted job before acceptance and prioritize suitable already-owned equipment; they are guidance rather than a mission-pass guarantee.
+
+Four saved configuration slots retain legacy identifiers, add optional user-visible labels and show Empty/Saved/Active. Saving uses the fitted build. Overwrite and sale require review; parts referenced by fitted builds or saved setups cannot be sold. All garage actions have keyboard and family-aware controller access, using the same shoulder/tab, directional selection, semantic Confirm/Back conventions as the recovery board. Exact bindings and test instructions are in DemoGuide. UI copy added in this iteration is English.

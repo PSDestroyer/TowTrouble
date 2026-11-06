@@ -10,6 +10,7 @@ namespace TowTrouble
         private GarageSlot focusedGarageSlot;
         private string focusedGaragePart;
         private int garageGeometry;
+        private int garageResetSeen;
         private Bounds garageBody,garageDetail;
         private float garageYaw,garageElevation,garageDistance,garageManualOrbit;
         private float garageYawVelocity,garageElevationVelocity,garageDistanceVelocity;
@@ -23,7 +24,7 @@ namespace TowTrouble
                 garageVehicle=car;garageCustomization=car.GetComponent<RecoveryCustomization>();garageLens=GetComponent<Camera>();
                 garageManualOrbit=0;garageYawVelocity=garageElevationVelocity=garageDistanceVelocity=0;garageFocusVelocity=velocity=Vector3.zero;
             }
-            if(categoryChanged)garageManualOrbit=0;
+            if(categoryChanged||garageResetSeen!=session.GarageViewReset){garageManualOrbit=0;garageResetSeen=session.GarageViewReset;}
             if(categoryChanged||garageGeometry!=car.GeometryVersion||focusedGaragePart!=session.GarageFocusPart)
             {
                 focusedGarageSlot=session.GarageFocusSlot;focusedGaragePart=session.GarageFocusPart;garageGeometry=car.GeometryVersion;
