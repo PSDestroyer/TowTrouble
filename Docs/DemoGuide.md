@@ -247,3 +247,7 @@ Culoarea aleasă la starter este acum echipată și deținută de la confirmare,
 Original/Stock înseamnă culoarea implicită a starterului sau finisajul din fabrică al caroseriei cumpărate. Poate coincide vizual cu una dintre culorile numite pe un starter. Vopseaua schimbă doar zona dedicată din atlas; geamurile, cromul, lemnul, anvelopele și decalurile își păstrează detaliile. Salvările vechi își recuperează o singură dată culoarea globală a starterului dacă nu aveau alt finisaj cumpărat echipat explicit. Banii și progresul sunt păstrați.
 
 Dovezi: `Docs/Validation/PaintAudit` — 266 teste trecute, 164 combinații de aspect, preview/cumpărare/refitare/setups/salvare/reintrare și restaurare după tutorial testate în Play. Prezentarea stării replicate a fost verificată pentru ambele sloturi; doi peers reali rămân de testat. Fără build.
+
+### Vibrații controller
+
+Settings → Game include Controller Vibration și Vibration intensity (70% implicit). Cablul sub sarcină, limita cablului și troliul au feedback progresiv; conectarea, detașarea, ruperea, eliberarea mașinii și impacturile relevante au impulsuri scurte. Meniurile, pauza și trecerea la tastatură opresc vibrațiile. Disponibilitatea efectivă depinde de controller, driver și platformă.

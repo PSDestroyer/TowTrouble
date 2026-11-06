@@ -56,6 +56,18 @@ namespace TowTrouble
             frontHitch.localPosition=assembly.FrontHitch;rearHitch.localPosition=assembly.RearHitch;
             var collision=GetComponent<BoxCollider>();collision.center=assembly.ColliderCenter+Vector3.up*performance.Lift;collision.size=assembly.ColliderSize;geometryVersion++;
         }
+        public uint HapticImpactSerial {get;private set;}
+        public float HapticImpactStrength {get;private set;}
+        private float nextHapticImpact;
+        private void OnCollisionEnter(Collision collision)
+        {
+            if(!simulate||casualty||body==null||Time.unscaledTime<nextHapticImpact)return;
+            float closing=0;
+            for(int i=0;i<collision.contactCount;i++)closing=Mathf.Max(closing,Mathf.Abs(Vector3.Dot(collision.relativeVelocity,collision.GetContact(i).normal)));
+            float strength=RecoveryHaptics.ImpactStrength(closing,collision.impulse.magnitude/Mathf.Max(1,body.mass));
+            if(strength<=0)return;
+            HapticImpactStrength=strength;unchecked { HapticImpactSerial++; }nextHapticImpact=Time.unscaledTime+.3f;
+        }
         private Rigidbody body;
         private bool initialized;
         private bool simulate;
@@ -160,7 +172,7 @@ namespace TowTrouble
         public void SetSimulation(bool value)
         {
             EnsureInitialized();
-            if(simulate!=value)ResetWheelPresentation();
+            if(simulate!=value){ResetWheelPresentation();nextHapticImpact=Time.unscaledTime+.5f;}
             simulate = value;
             body.interpolation = value ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
             body.isKinematic = !value;
@@ -179,7 +191,7 @@ namespace TowTrouble
 
         public void ResetVehicle(bool original)
         {
-            EnsureInitialized();
+            EnsureInitialized();nextHapticImpact=Time.unscaledTime+.5f;
             var p = original ? startPosition : safePosition + Vector3.up * .35f;
             var r = original ? startRotation : safeRotation;
             body.position = p; body.rotation = r;

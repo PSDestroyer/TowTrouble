@@ -116,7 +116,7 @@ namespace TowTrouble
 
         private void OnDestroy()
         {
-            RestoreGraphicsPreference();ClearTrainingDressing();RecoveryInputDevices.Pad?.ResetHaptics();Time.timeScale=1;
+            RestoreGraphicsPreference();ClearTrainingDressing();StopHaptics();Time.timeScale=1;
             if (network != null && network.ClientManager != null) network.ClientManager.OnClientConnectionState -= ClientState;
         }
 
@@ -254,7 +254,7 @@ namespace TowTrouble
                 if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.garageKey,Key.G)].wasPressedThisFrame)||(pad!=null&&pad.buttonWest.wasPressedThisFrame))OpenGarage();
             }
             if(!overlayWasOpen&&(View=="Gameplay"||View=="Pause")&&((keyboard!=null&&keyboard.escapeKey.wasPressedThisFrame)||(pad!=null&&pad.startButton.wasPressedThisFrame)))ToggleMenu();
-            if (world.Phase == RecoveryPhase.Lobby || world.Phase == RecoveryPhase.Complete){pad?.ResetHaptics();return;}
+            if (world.Phase == RecoveryPhase.Lobby || world.Phase == RecoveryPhase.Complete){return;}
             if (!menuOpen)
             {
                 if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.F)].wasPressedThisFrame) || (pad != null && RecoveryInputPrompts.Confirm(pad).wasPressedThisFrame)) world.ToggleCable();
@@ -286,7 +286,6 @@ namespace TowTrouble
                 }
             }
             world.Drive(input, brake, winch,extend);
-            if(pad!=null){float rumble=Profile.vibration&&world.Attached(LocalSlot)&&world.Tension(LocalSlot)>.8f&&!menuOpen?.15f:0f;pad.SetMotorSpeeds(rumble,rumble*.6f);}
         }
     }
 }

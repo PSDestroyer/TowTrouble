@@ -28,7 +28,7 @@ namespace TowTrouble
         }
         public static void CopyPreferences(RecoveryProfile source, RecoveryProfile result)
         {
-            foreach (string name in BindingFields.Concat(new[] { "name", "master", "effects", "ui", "brightness", "textScale", "cameraSensitivity", "quality", "reducedMotion", "invertCamera", "vibration", "tutorial", "colorHelp", "controllerFamily", "displayWidth", "displayHeight", "displayMode" }))
+            foreach (string name in BindingFields.Concat(new[] { "name", "master", "effects", "ui", "brightness", "textScale", "cameraSensitivity", "quality", "reducedMotion", "invertCamera", "vibration", "vibrationIntensity", "tutorial", "colorHelp", "controllerFamily", "displayWidth", "displayHeight", "displayMode" }))
             { var field = typeof(RecoveryProfile).GetField(name); field.SetValue(result, field.GetValue(source)); }
             result.language = "en";
         }

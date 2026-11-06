@@ -65,11 +65,12 @@ namespace TowTrouble
                     break;
                 case "Joc":
                     SettingButton(body,"TUTORIAL HINTS: "+OnOff(P.tutorial),24,()=>{P.tutorial=!P.tutorial;SaveMenuPreference();},"Show short contextual help while learning. Mission objectives and cable warnings always remain visible.");
-                    SettingButton(body,"CONTROLLER VIBRATION: "+OnOff(P.vibration),104,()=>{P.vibration=!P.vibration;SaveMenuPreference();},"Gentle controller feedback when a cable is under high load.");
-                    SettingButton(body,"HOW TO PLAY",184,()=>Show("Help"),"Read the driving, recovery and workshop guide. Start or replay training from the main menu.");
-                    var reset=SettingButton(body,"RESET PROGRESS",316,()=>ConfirmAction("Reset all career progress?\n\nCredits, purchased equipment, recoveries, saved setups and your starter choice will be erased. Audio, video and control preferences will be kept.",()=>{session.ResetProgress();firstSetup=false;Show("Starter");},"Settings","RESET PROGRESS"),"Erase career progress and choose a new starter. Your audio, video and control settings are kept. Leave the session before resetting.");
+                    SettingButton(body,"CONTROLLER VIBRATION: "+OnOff(P.vibration),104,()=>{P.vibration=!P.vibration;SaveMenuPreference();},"Gentle feedback for cable load, winching, impacts and recovery events. Turn it off at any time.");
+                    Slider(body,"Vibration intensity",P.vibrationIntensity,0,1,180,v=>P.vibrationIntensity=v);
+                    SettingButton(body,"HOW TO PLAY",286,()=>Show("Help"),"Read the driving, recovery and workshop guide. Start or replay training from the main menu.");
+                    var reset=SettingButton(body,"RESET PROGRESS",366,()=>ConfirmAction("Reset all career progress?\n\nCredits, purchased equipment, recoveries, saved setups and your starter choice will be erased. Audio, video and control preferences will be kept.",()=>{session.ResetProgress();firstSetup=false;Show("Starter");},"Settings","RESET PROGRESS"),"Erase career progress and choose a new starter. Your audio, video and control settings are kept. Leave the session before resetting.");
                     reset.interactable=!session.Connected&&!session.Connecting;
-                    if(session.Connected)Text(body,"Return to the main menu to reset progress.",30,398,806,46,16,Muted);
+                    if(session.Connected)Text(body,"Return to the main menu to reset progress.",30,430,806,36,14,Muted);
                     break;
             }
             Button(pageRoot,"RESTORE TAB DEFAULTS",1100,808,424,()=>ConfirmAction("Restore the default "+labels[Array.IndexOf(keys,settingsTab)].ToLowerInvariant()+" settings? Career progress is kept.",RestoreSettingsTab,"Settings","RESTORE DEFAULTS"));
@@ -135,7 +136,7 @@ namespace TowTrouble
         private void RestoreSettingsTab()
         {
             var defaults=new RecoveryProfile();
-            string[] fields=settingsTab=="Audio"?new[]{"master","effects","ui"}:settingsTab=="Imagine"?new[]{"brightness","quality"}:settingsTab=="Comenzi"?RecoveryMenuSettings.BindingFields.Concat(new[]{"cameraSensitivity","controllerFamily","invertCamera"}).ToArray():settingsTab=="Accesibilitate"?new[]{"textScale","reducedMotion","colorHelp"}:new[]{"tutorial","vibration"};
+            string[] fields=settingsTab=="Audio"?new[]{"master","effects","ui"}:settingsTab=="Imagine"?new[]{"brightness","quality"}:settingsTab=="Comenzi"?RecoveryMenuSettings.BindingFields.Concat(new[]{"cameraSensitivity","controllerFamily","invertCamera"}).ToArray():settingsTab=="Accesibilitate"?new[]{"textScale","reducedMotion","colorHelp"}:new[]{"tutorial","vibration","vibrationIntensity"};
             foreach(var name in fields){var field=typeof(RecoveryProfile).GetField(name);field.SetValue(P,field.GetValue(defaults));}
             displayInitialized=false;settingsMessage="Defaults restored";SaveMenuPreference();
         }

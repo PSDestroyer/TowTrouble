@@ -14,6 +14,7 @@ namespace TowTrouble
         public bool starterChosen;
         public bool onboarded, reducedMotion, invertCamera, vibration=true, tutorial=true, colorHelp=true;
         public float master=.8f, effects=.8f, ui=.7f, brightness=1f, textScale=1f, cameraSensitivity=1f;
+        public float vibrationIntensity=.7f;
         public int quality=1;
         public int paintSelectionRevision;
         public bool tutorialOffered, tutorialCompleted;
@@ -140,7 +141,7 @@ namespace TowTrouble
 #endif
             SaveManager.RequestSave();
         }
-        private void Clamp(){controllerFamily=Mathf.Clamp(controllerFamily,0,3);ownedVehicles&=15;paint=Mathf.Clamp(paint,0,3);vehicle=Mathf.Clamp(vehicle,0,3);if(starterChosen){starterVehicle=Mathf.Clamp(starterVehicle,0,3);ownedVehicles|=1<<starterVehicle;if(!OwnsVehicle(vehicle))vehicle=starterVehicle;}else{starterVehicle=-1;ownedVehicles=0;}lastContract=Mathf.Clamp(lastContract,0,2);master=Mathf.Clamp01(master);effects=Mathf.Clamp01(effects);ui=Mathf.Clamp01(ui);brightness=Mathf.Clamp(brightness,.7f,1.4f);textScale=Mathf.Clamp(textScale,.85f,1.3f);cameraSensitivity=Mathf.Clamp(cameraSensitivity,.3f,2f);}
+        private void Clamp(){vibrationIntensity=float.IsNaN(vibrationIntensity)||float.IsInfinity(vibrationIntensity)?.7f:Mathf.Clamp01(vibrationIntensity);controllerFamily=Mathf.Clamp(controllerFamily,0,3);ownedVehicles&=15;paint=Mathf.Clamp(paint,0,3);vehicle=Mathf.Clamp(vehicle,0,3);if(starterChosen){starterVehicle=Mathf.Clamp(starterVehicle,0,3);ownedVehicles|=1<<starterVehicle;if(!OwnsVehicle(vehicle))vehicle=starterVehicle;}else{starterVehicle=-1;ownedVehicles=0;}lastContract=Mathf.Clamp(lastContract,0,2);master=Mathf.Clamp01(master);effects=Mathf.Clamp01(effects);ui=Mathf.Clamp01(ui);brightness=Mathf.Clamp(brightness,.7f,1.4f);textScale=Mathf.Clamp(textScale,.85f,1.3f);cameraSensitivity=Mathf.Clamp(cameraSensitivity,.3f,2f);}
         public bool Completed(int id)=>(completedMask&(1<<id))!=0;
         public bool Unlocked(int id)=>id==0||Completed(id-1);
         public bool Clean(int id)=>(medalMask&(1<<id))!=0;

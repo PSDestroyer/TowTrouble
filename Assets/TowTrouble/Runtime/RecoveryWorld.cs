@@ -22,6 +22,8 @@ namespace TowTrouble
     public struct RecoveryFrame
     {
         public VehicleFrame Driver0, Driver1, Casualty;
+        public uint HapticSequence;
+        public RecoveryHapticEvents Haptic0,Haptic1;
         public bool Cable0, Cable1;
         public float Tension0, Tension1, Elapsed;
         public int Snaps, Resets0, Resets1;
@@ -133,6 +135,7 @@ namespace TowTrouble
             base.OnStartServer();
             NetworkManager.SceneManager.OnClientLoadedStartScenes += ClientLoaded;
             NetworkManager.ServerManager.OnRemoteConnectionState += RemoteChanged;
+            receivedHaptics=false;hapticSequence=receivedHapticSequence=0;System.Array.Clear(hapticEvents,0,2);
             phase.Value = 0; driver0Id.Value = -1; driver1Id.Value = -1;garageMask.Value=0;runId.Value="";
             ResetRecovery();
         }
@@ -293,9 +296,10 @@ namespace TowTrouble
             int slot = sender == null ? -1 : Slot(sender.ClientId);
             if (slot < 0 || !HasContract || Time.time - lastAction[slot] < .35f) return;
             lastAction[slot] = Time.time;
-            if (connected[slot]) { connected[slot] = false; tensions[slot] = 0; return; }
+            if (connected[slot]) { connected[slot] = false; tensions[slot] = 0; unchecked { hapticEvents[slot].Detached++; } return; }
             float distance = Vector3.Distance(drivers[slot].RearHitch, TowPoint);
             if (distance > RecoveryRules.AttachRange) return;
+            unchecked { hapticEvents[slot].Attached++; }
             connected[slot] = true; lengths[slot] = Mathf.Max(RecoveryWinch.MinimumLength, distance - .3f);
             winchFrames[slot] = new WinchFrame { Length=lengths[slot], State=WinchState.Holding };
             if (Phase == RecoveryPhase.HookUp) phase.Value = (int)RecoveryPhase.Recover;
@@ -355,7 +359,7 @@ namespace TowTrouble
                 tensions[i] = Mathf.Clamp01(demand / strength);
                 cableStress[i]=RecoveryRules.CableStressAfter(cableStress[i],demand,strength,Time.fixedDeltaTime);
                 if (cableStress[i] >= 1 || distance > 25f)
-                { connected[i] = false; tensions[i] = 0; loadedCableForces[i]=0;cableStress[i]=0;winchFrames[i]=new WinchFrame{Length=lengths[i]};snaps++;continue; }
+                { connected[i] = false; tensions[i] = 0; loadedCableForces[i]=0;cableStress[i]=0;winchFrames[i]=new WinchFrame{Length=lengths[i]};snaps++;unchecked { hapticEvents[i].Broken++; }continue; }
                 float force = Mathf.Min(demand, RecoveryRules.MaxCableForce);
                 if(UsesArcadeExtraction&&!ClearingObstacle)force=RecoveryExtraction.LoadedCableForce(loadedCableForces[i],force,strength,Time.fixedDeltaTime);
                 loadedCableForces[i]=force;
@@ -394,7 +398,7 @@ namespace TowTrouble
             if (IsServerInitialized && Time.unscaledTime >= nextSnapshot)
             {
                 nextSnapshot = Time.unscaledTime + 1f / 15f;
-                Snapshot(new RecoveryFrame { Driver0 = new VehicleFrame(drivers[0]), Driver1 = new VehicleFrame(drivers[1]), Casualty = new VehicleFrame(casualty),
+                Snapshot(new RecoveryFrame { HapticSequence=unchecked(++hapticSequence),Haptic0=HapticEvents(0),Haptic1=HapticEvents(1),Driver0 = new VehicleFrame(drivers[0]), Driver1 = new VehicleFrame(drivers[1]), Casualty = new VehicleFrame(casualty),
                     Cable0 = connected[0], Cable1 = connected[1], Tension0 = tensions[0], Tension1 = tensions[1], Elapsed = elapsed, Snaps = snaps,Resets0=resets[0],Resets1=resets[1],Pull0=pullSeconds[0],Pull1=pullSeconds[1],Winch0=winchFrames[0],Winch1=winchFrames[1],ObstaclePosition=activeObstacle!=null?activeObstacle.transform.position:Vector3.zero,ObstacleRotation=activeObstacle!=null?activeObstacle.transform.rotation:Quaternion.identity,
                     ExtractionStage=(byte)ExtractionStage,ExtractionProgress=ExtractionProgress,ExtractionAlignment=ExtractionAlignment,ExtractionStalled=ExtractionStalled,ExtractionReleasedSeconds=ExtractionReleasedSeconds });
             }
@@ -404,6 +408,7 @@ namespace TowTrouble
         private void Snapshot(RecoveryFrame frame, Channel channel = Channel.Unreliable)
         {
             if (IsServerInitialized) return;
+            ReceiveHaptics(frame.HapticSequence,frame.Haptic0,frame.Haptic1);
             ReceiveObstacle(frame.ObstaclePosition,frame.ObstacleRotation);
             ExtractionStage=(ExtractionStage)frame.ExtractionStage;ExtractionProgress=frame.ExtractionProgress;ExtractionAlignment=frame.ExtractionAlignment;ExtractionStalled=frame.ExtractionStalled;ExtractionReleasedSeconds=frame.ExtractionReleasedSeconds;
             drivers[0].Receive(frame.Driver0);
