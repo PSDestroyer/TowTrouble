@@ -14,10 +14,14 @@ namespace TowTrouble
         public static int LegacyPayout(int reward,bool noResets,bool noSnaps)=>Mathf.Max(0,reward)*(105+(noResets?10:0)+(noSnaps?10:0))/100;
         public static int Price(RecoveryProfile profile,GaragePart part)=>part.Id=="engine_3"&&profile.Owns("engine_2")?Mathf.Max(0,part.Price-800):part.Price;
         public static int VehiclePrice(int model)=>model<0||model>=4?0:1200;
-        public static bool ChooseStarter(RecoveryProfile profile,int model)
+        public static bool ChooseStarter(RecoveryProfile profile,int model,int paint=0)
         {
             if(profile.starterChosen||model<0||model>=4)return false;
-            profile.starterChosen=true;profile.starterVehicle=profile.vehicle=model;profile.ownedVehicles=1<<model;return true;
+            profile.starterChosen=true;profile.starterVehicle=profile.vehicle=model;profile.ownedVehicles=1<<model;
+            profile.paint=Mathf.Clamp(paint,0,3);profile.paintSelectionRevision=1;profile.EnsureGarage();
+            string id=profile.paint==0?"stock_Paint":"paint_"+profile.paint;
+            profile.Build(model).Items=new[]{id};if(profile.paint>0&&!profile.Owns(id))profile.ownedParts.Add(id);
+            return true;
         }
         public static bool BuyVehicle(RecoveryProfile profile,int model)
         {

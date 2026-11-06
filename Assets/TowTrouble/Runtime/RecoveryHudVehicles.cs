@@ -19,7 +19,7 @@ namespace TowTrouble
         {
             if(P.starterChosen)return;
             ConfirmAction("Make "+RecoveryVehicle.ModelNames[vehiclePreview]+" your Stock vehicle?\n\nYou receive one starter for free. Buy different bodies and equipment later in the workshop.",()=>{
-                if(session.ChooseStarter(vehiclePreview)){session.SelectPaint(starterPaint);Show("TutorialOffer");}
+                if(session.ChooseStarter(vehiclePreview,starterPaint))Show("TutorialOffer");
                 else Show("Starter");
             },"Starter","CHOOSE "+RecoveryVehicle.ModelNames[vehiclePreview].ToUpperInvariant());
         }
@@ -54,14 +54,12 @@ namespace TowTrouble
             Text(details,StarterDescriptions[selected],24,57,926,34,20,Muted);
             var paintRow=Panel(pageRoot,550,748,974,46);
             Text(paintRow,"PAINT",18,8,104,30,16,Muted,true);
-            var originals=new[]{new Color(.98f,.93f,.74f),new Color(.43f,.48f,.24f),new Color(.95f,.65f,.16f),new Color(.38f,.43f,.2f)};
-            var colors=new[]{originals[selected],new Color(.98f,.93f,.74f),new Color(.43f,.48f,.24f),new Color(.95f,.65f,.16f)};
             starterPaintChoices=new UnityEngine.UI.Button[4];
             for(int i=0;i<4;i++)
             {
                 int paint=i;var swatch=Button(paintRow,"",126+i*68,1,58,()=>PreviewStarterPaint(paint),starterPaint==i,44);
                 swatch.name="Paint "+i;starterPaintChoices[i]=swatch;
-                Panel(swatch.transform,10,8,38,28,colors[i]);
+                Panel(swatch.transform,10,8,38,28,RecoveryPaintPalette.Swatch(i,selected));
                 swatch.gameObject.AddComponent<RecoveryMenuPreviewFocus>().Configure(()=>PreviewStarterPaint(paint));
             }
             Text(paintRow,StarterPaintNames[starterPaint],420,8,212,30,19,Paper,true);

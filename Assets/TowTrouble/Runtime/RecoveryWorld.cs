@@ -49,6 +49,7 @@ namespace TowTrouble
         private readonly SyncVar<string> runId=new SyncVar<string>("");
         private readonly SyncVar<string> build0=new SyncVar<string>(""),build1=new SyncVar<string>("");
         private readonly string[] appliedBuild={null,null};
+        private readonly int[] appliedBuildPaint={-1,-1},appliedBuildModel={-1,-1};
         public bool FreeRoam=>freeRoam.Value;
         public string RunId=>runId.Value;
         public Vector3 GaragePosition=>garagePosition;
@@ -60,7 +61,15 @@ namespace TowTrouble
         private readonly SyncVar<int> paint0=new SyncVar<int>();
         private readonly SyncVar<int> paint1=new SyncVar<int>();
         private int appliedPaint0=-1,appliedPaint1=-1;
-        public void PreviewPaint(int index){if(NetworkObject==null||!IsClientInitialized)drivers[0].SetPaint(index);}
+        public void PreviewPaint(int index)
+        {
+            if(NetworkObject!=null&&IsClientInitialized)return;
+            var custom=drivers[0].GetComponent<RecoveryCustomization>();
+            if(custom==null||custom.Catalog==null){drivers[0].SetPaint(index);return;}
+            var build=new RecoveryBuild{Model=drivers[0].ModelIndex};
+            build.Set(custom.Catalog.Find(index<=0?"stock_Paint":"paint_"+Mathf.Clamp(index,1,3)),custom.Catalog);
+            custom.Apply(build,0,true);
+        }
         private readonly SyncVar<int> vehicle0=new SyncVar<int>();
         private readonly SyncVar<int> vehicle1=new SyncVar<int>(1);
         private readonly SyncVar<string> name0=new SyncVar<string>("Driver 1");
@@ -188,7 +197,8 @@ namespace TowTrouble
         private void ApplyBuild(int slot)
         {
             if(!FreeRoam)return;var json=slot==0?build0.Value:build1.Value;var custom=drivers[slot].GetComponent<RecoveryCustomization>();if(custom==null)return;
-            if(appliedBuild[slot]!=json){appliedBuild[slot]=json;var build=string.IsNullOrEmpty(json)?new RecoveryBuild{Model=VehicleIndex(slot)}:JsonUtility.FromJson<RecoveryBuild>(json);custom.Apply(build,slot==0?paint0.Value:paint1.Value,true);}
+            int color=slot==0?paint0.Value:paint1.Value,model=drivers[slot].ModelIndex;
+            if(appliedBuild[slot]!=json||appliedBuildPaint[slot]!=color||appliedBuildModel[slot]!=model){appliedBuild[slot]=json;appliedBuildPaint[slot]=color;appliedBuildModel[slot]=model;var build=string.IsNullOrEmpty(json)?new RecoveryBuild{Model=VehicleIndex(slot)}:JsonUtility.FromJson<RecoveryBuild>(json);custom.Apply(build,color,true);}
         }
         [ServerRpc(RequireOwnership=false)]
         public void AcceptContract(int contract,NetworkConnection sender=null)

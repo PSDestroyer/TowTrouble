@@ -71,7 +71,7 @@ namespace TowTrouble
             else
             {
                 Icon(imageBack,SlotIcon(part.Slot),(width-18-54)*.5f,17,54,Amber);
-                if(part.Slot==GarageSlot.Paint){var swatch=Panel(imageBack,12,12,18,18,new[]{new Color(.43f,.24f,.12f),Paper,new Color(.43f,.48f,.24f),new Color(.95f,.65f,.16f)}[Mathf.Clamp(part.PaintIndex,0,3)]);swatch.GetComponent<UnityEngine.UI.Image>().color=new[]{new Color(.43f,.24f,.12f),Paper,new Color(.43f,.48f,.24f),new Color(.95f,.65f,.16f)}[Mathf.Clamp(part.PaintIndex,0,3)];}
+                if(part.Slot==GarageSlot.Paint){var palette=RecoveryPaintPalette.Current;var build=garageDraft??P.Build(P.vehicle);var tint=palette!=null?palette.SwatchFor(build,catalog,part.PaintIndex):RecoveryPaintPalette.Swatch(part.PaintIndex,P.vehicle);Panel(imageBack,12,12,18,18,tint);}
             }
             var state=RecoveryGarageWorkflow.State(P,part,catalog);
             string badge=active&&state!=GarageItemState.Equipped?"PREVIEW":state==GarageItemState.Equipped?"EQUIPPED":owned?"OWNED":null;

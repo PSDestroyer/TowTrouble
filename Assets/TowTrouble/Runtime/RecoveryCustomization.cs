@@ -18,6 +18,7 @@ namespace TowTrouble
         public void Apply(RecoveryBuild build,int color=0,bool force=false)
         {
             if(catalog==null||build==null)return;
+            color=RecoveryPaintPalette.Resolve(build,catalog,color);
             build=build.Copy();build.Model=vehicle.ModelIndex;build.Normalize(catalog);
             string key=JsonUtility.ToJson(build);
             if(!force&&applied==key&&paint==color&&boundGeometry==vehicle.GeometryVersion)return;
@@ -43,22 +44,27 @@ namespace TowTrouble
                     }
                 }
             }
-            var selectedPaint=catalog.Find(build.Item(GarageSlot.Paint,catalog));if(selectedPaint!=null&&selectedPaint.PaintIndex>=0)color=selectedPaint.PaintIndex;
+            var palette=RecoveryPaintPalette.Current;bool stockBody=RecoveryPaintPalette.StockBody(build,catalog);
+            var reused=new Dictionary<(Material,bool),Material>();
             var tires=new HashSet<Renderer>();foreach(var wheel in assembly.Wheels)foreach(var renderer in wheel.GetComponentsInChildren<Renderer>(true))tires.Add(renderer);
             foreach(var renderer in root.GetComponentsInChildren<Renderer>(true))
             {
                 var values=renderer.sharedMaterials;
                 for(int i=0;i<values.Length;i++)
                 {
-                    var original=values[i];if(original==null)continue;var material=new Material(tires.Contains(renderer)&&catalog.TireShader!=null?catalog.TireShader:original.shader);materials.Add(material);
-                    if(tires.Contains(renderer)&&catalog.TireShader!=null)
+                    var original=values[i];if(original==null)continue;bool tire=tires.Contains(renderer)&&catalog.TireShader!=null;
+                    if(reused.TryGetValue((original,tire),out var existing)){values[i]=existing;continue;}
+                    var material=new Material(tire?catalog.TireShader:original.shader){name=original.name+" - fitted paint"};materials.Add(material);reused[(original,tire)]=material;
+                    var source=original.HasProperty("_BaseMap")?original.GetTexture("_BaseMap"):original.mainTexture;
+                    var texture=palette!=null?palette.TextureFor(source,color,vehicle.ModelIndex,stockBody):source;
+                    if(tire)
                     {
-                        material.SetTexture("_Albedo_Map",original.HasProperty("_BaseMap")?original.GetTexture("_BaseMap"):original.mainTexture);material.SetColor("_Tint",Color.white);material.SetTexture("_Mud_Texture",catalog.MudTexture);material.SetColor("_Mud_Tint",new Color(.68f,.53f,.35f));material.SetFloat("_Mud_Amount",0);material.SetFloat("_Smoothness",.38f);
+                        material.SetTexture("_Albedo_Map",texture);material.SetColor("_Tint",Color.white);material.SetTexture("_Mud_Texture",catalog.MudTexture);material.SetColor("_Mud_Tint",new Color(.68f,.53f,.35f));material.SetFloat("_Mud_Amount",0);material.SetFloat("_Smoothness",.38f);
                     }
                     else
                     {
                         material.CopyPropertiesFromMaterial(original);
-                        if(!original.name.Contains("Glass")){var baseTint=new[]{new Color(.98f,.93f,.74f),new Color(.43f,.48f,.24f),new Color(.95f,.65f,.16f),new Color(.38f,.43f,.2f)}[vehicle.ModelIndex];var tint=new[]{baseTint,new Color(.98f,.93f,.74f),new Color(.43f,.48f,.24f),new Color(.95f,.65f,.16f)}[Mathf.Clamp(color,0,3)];if(material.HasProperty("_BaseColor"))material.SetColor("_BaseColor",tint);}
+                        if(material.HasProperty("_BaseMap"))material.SetTexture("_BaseMap",texture);
                     }
                     values[i]=material;
                 }

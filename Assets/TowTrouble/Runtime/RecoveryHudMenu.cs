@@ -29,7 +29,7 @@ namespace TowTrouble
             Button(pageRoot,"QUIT",286,716,190,()=>Application.Quit(),false,42);
             Text(pageRoot,"TOW COUNTY · RECOVERY SERVICE",82,800,394,28,12,Muted);
             var catalog=session.GarageCatalog;var build=P.Build(P.vehicle);var body=catalog?.Find(build.Item(GarageSlot.Assembly,catalog));
-            bool modified=build.Items!=null&&build.Items.Any(id=>!string.IsNullOrEmpty(id)&&!id.StartsWith("stock_",StringComparison.Ordinal));
+            bool modified=build.Items!=null&&build.Items.Any(id=>!string.IsNullOrEmpty(id)&&!id.StartsWith("stock_",StringComparison.Ordinal)&&!id.StartsWith("paint_",StringComparison.Ordinal));
             var card=Panel(pageRoot,1064,686,460,154);Icon(card,RecoveryIcon.Body,18,15,28,Amber);
             Text(card,modified?"YOUR RIDE · MODIFIED":"YOUR RIDE · STOCK",58,14,382,26,13,Muted,true);
             Text(card,body!=null?RecoveryGarageWorkflow.DisplayName(body,P,catalog):RecoveryVehicle.ModelNames[P.vehicle],20,48,420,44,27,Paper,true);

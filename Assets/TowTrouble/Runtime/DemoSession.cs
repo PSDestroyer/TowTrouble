@@ -52,12 +52,20 @@ namespace TowTrouble
             if((Connected&&world.Phase!=RecoveryPhase.Lobby)||!RecoveryEconomy.BuyVehicle(Profile,value))return false;
             SelectVehicle(value);return true;
         }
-        public bool ChooseStarter(int value)
+        public bool ChooseStarter(int value,int paint=0)
         {
-            if(Connected||Connecting||!RecoveryEconomy.ChooseStarter(Profile,value))return false;
+            if(Connected||Connecting||!RecoveryEconomy.ChooseStarter(Profile,value,paint))return false;
             Profile.Save();world.PreviewVehicle(value);world.PreviewPaint(Profile.paint);return true;
         }
-        public void SelectPaint(int value){Profile.paint=Mathf.Clamp(value,0,3);Profile.Save();if(Connected&&world.Phase==RecoveryPhase.Lobby)world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);else world.PreviewPaint(Profile.paint);}
+        public void SelectPaint(int value)
+        {
+            if(!Profile.starterChosen||GarageCatalog==null||(Connected&&world.Phase!=RecoveryPhase.Lobby&&!GarageOpen))return;
+            value=Mathf.Clamp(value,0,3);string id=value==0?"stock_Paint":"paint_"+value;
+            if(value>0&&!Profile.Owns(id))return;
+            Profile.Build(Profile.vehicle).Set(GarageCatalog.Find(id),GarageCatalog);Profile.paint=value;Profile.paintSelectionRevision=1;Profile.Save();
+            if(Connected){if(world.Phase==RecoveryPhase.Lobby)world.SetDriver(Profile.name,Profile.vehicle,value);SendGarageBuild();}
+            else PreviewFittedRide();
+        }
         public void ResetAtCheckpoint(){if(Connected)world.Unstuck();menuOpen=false;Time.timeScale=1;}
         public void RestartContract(){if(Connected&&IsHost){if(world.FreeRoam){int contract=world.ContractIndex;CloseOverlay();world.ReturnToExplore();world.AcceptContract(contract);}else{world.ReturnToLobby();readySent=false;quickStart=Solo;menuOpen=false;Time.timeScale=1;}}}
         private bool readySent;
@@ -179,7 +187,7 @@ namespace TowTrouble
         {if(GarageOpen)world.Drivers[LocalSlot].GetComponent<RecoveryCustomization>().Apply(build,Profile.paint,true);}
         public void CommitGarage(RecoveryBuild build)
         {
-            if(!GarageOpen||GarageCatalog==null)return;build=build.Copy();build.Normalize(GarageCatalog,Profile.Owns);Profile.builds[Profile.vehicle]=build;Profile.Save();PreviewGarage(build);SendGarageBuild();
+            if(!GarageOpen||GarageCatalog==null)return;build=build.Copy();build.Normalize(GarageCatalog,Profile.Owns);Profile.builds[Profile.vehicle]=build;Profile.paint=RecoveryPaintPalette.Resolve(build,GarageCatalog);Profile.paintSelectionRevision=1;Profile.Save();PreviewGarage(build);SendGarageBuild();
         }
         public void SendGarageBuild()
         {if(Connected&&GarageCatalog!=null){var build=Profile.Build(Profile.vehicle);build.Normalize(GarageCatalog,Profile.Owns);world.SetGarageBuild(JsonUtility.ToJson(build));}}

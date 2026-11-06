@@ -14,6 +14,7 @@ namespace TowTrouble
         public bool onboarded, reducedMotion, invertCamera, vibration=true, tutorial=true, colorHelp=true;
         public float master=.8f, effects=.8f, ui=.7f, brightness=1f, textScale=1f, cameraSensitivity=1f;
         public int quality=1;
+        public int paintSelectionRevision;
         public bool tutorialOffered, tutorialCompleted;
         public int displayWidth,displayHeight,displayMode=-1;
         public int controllerFamily; // 0 automatic; 1 Xbox, 2 PlayStation, 3 Nintendo
@@ -83,6 +84,17 @@ namespace TowTrouble
                     string.Equals(p.extendKey, "F", StringComparison.OrdinalIgnoreCase))
                 { p.hookKey = "F"; p.extendKey = "E"; }
                 p.cableControlsRevision = 1;
+            }
+            if(p.paintSelectionRevision==0)
+            {
+                // The old starter stored its color globally while normalization inserted Stock paint.
+                // Preserve an explicit paid finish; otherwise recover that selected starter color once.
+                if(p.starterChosen&&p.paint>0&&p.paint<=3)
+                {
+                    var build=p.Build(p.vehicle);bool explicitColor=Array.Exists(build.Items??Array.Empty<string>(),id=>id=="paint_1"||id=="paint_2"||id=="paint_3");
+                    if(!explicitColor){var ids=new List<string>(build.Items??Array.Empty<string>());ids.RemoveAll(id=>id=="stock_Paint");string id="paint_"+p.paint;ids.Add(id);build.Items=ids.ToArray();if(!p.Owns(id))p.ownedParts.Add(id);}
+                }
+                p.paintSelectionRevision=1;
             }
             p.language = string.Equals(p.language, "ro", StringComparison.OrdinalIgnoreCase) ? "ro" : "en";
             p.EnsureGarage();p.Clamp();return p;

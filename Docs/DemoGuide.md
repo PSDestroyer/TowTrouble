@@ -238,3 +238,12 @@ Navigare generală: WASD/săgeți sau D-pad/left stick; Enter / Confirm; Esc / B
 Settings include rebinding cu verificarea conflictelor, audio separat de VFX, Quality/Performance prin copie URP temporară, display cu Apply/Keep și revenire automată la 15 secunde, text/motion/simboluri și resetarea progresului cu preferințele păstrate. Pause permite revenire confirmată la Main. Credits rămâne neutru până la alegerea numelui creatorului; licențele disponibile sunt într-o secțiune separată.
 
 Validare: 243/243 teste Unity, 52 randări de panel fără text depășit, navigare live cu tastatură și controller virtual, lobby cu un participant, Retry/Cancel, reset și două fluxuri complete de antrenament. Controller fizic, doi peers și fullscreen în player necesită verificare separată. Nu s-a creat build. Dovezi: `Docs/Validation/MenuFinal/README.md`.
+
+
+## Paint — verificare și corecții 2026-11-06
+
+Culoarea aleasă la starter este acum echipată și deținută de la confirmare, fără cost. Previziunea și mașina folosită în joc au aceeași aplicare a vopselei. În garaj, doar Buy & Fit cumpără o culoare nouă (100 CR); culorile deținute se remontează gratuit. Ieșirea fără cumpărare revine la finisajul montat, iar saved setups rețin culoarea. Paint nu modifică performanța.
+
+Original/Stock înseamnă culoarea implicită a starterului sau finisajul din fabrică al caroseriei cumpărate. Poate coincide vizual cu una dintre culorile numite pe un starter. Vopseaua schimbă doar zona dedicată din atlas; geamurile, cromul, lemnul, anvelopele și decalurile își păstrează detaliile. Salvările vechi își recuperează o singură dată culoarea globală a starterului dacă nu aveau alt finisaj cumpărat echipat explicit. Banii și progresul sunt păstrați.
+
+Dovezi: `Docs/Validation/PaintAudit` — 266 teste trecute, 164 combinații de aspect, preview/cumpărare/refitare/setups/salvare/reintrare și restaurare după tutorial testate în Play. Prezentarea stării replicate a fost verificată pentru ambele sloturi; doi peers reali rămân de testat. Fără build.
