@@ -42,7 +42,21 @@ namespace TowTrouble
         private void Awake(){Profile=RecoveryProfile.Load();SelectedContract=Profile.lastContract;ApplySettings();}
         public void ApplySettings(){AudioListener.volume=Profile.master;RecoveryVehicle.EffectsGain=Profile.effects;if(QualitySettings.GetQualityLevel()!=Mathf.Clamp(Profile.quality,0,QualitySettings.names.Length-1))QualitySettings.SetQualityLevel(Mathf.Clamp(Profile.quality,0,QualitySettings.names.Length-1),true);if(grade==null){var volume=FindFirstObjectByType<UnityEngine.Rendering.Volume>();if(volume!=null&&volume.profile!=null)volume.profile.TryGet(out grade);}if(grade!=null)grade.postExposure.Override(Mathf.Log(Profile.brightness,2)+.1f);}
         public void SelectContract(int value){SelectedContract=Mathf.Clamp(value,0,RecoveryContract.All.Length-1);if(Profile.Unlocked(SelectedContract)){Profile.lastContract=SelectedContract;Profile.Save();}if(Profile.Unlocked(SelectedContract)&&Connected&&IsHost&&world.Phase==RecoveryPhase.Lobby)world.ConfigureSession(SelectedContract,!Solo,world.FreeRoam);}
-        public void SelectVehicle(int value){Profile.vehicle=Mathf.Clamp(value,0,3);Profile.Save();if(Connected&&world.Phase==RecoveryPhase.Lobby)world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);else world.PreviewVehicle(Profile.vehicle);world.PreviewPaint(Profile.paint);}
+        public void SelectVehicle(int value)
+        {
+            if(!Profile.OwnsVehicle(value)||(Connected&&world.Phase!=RecoveryPhase.Lobby))return;
+            Profile.vehicle=value;Profile.Save();if(Connected)world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);else world.PreviewVehicle(Profile.vehicle);world.PreviewPaint(Profile.paint);
+        }
+        public bool BuyVehicle(int value)
+        {
+            if((Connected&&world.Phase!=RecoveryPhase.Lobby)||!RecoveryEconomy.BuyVehicle(Profile,value))return false;
+            SelectVehicle(value);return true;
+        }
+        public bool ChooseStarter(int value)
+        {
+            if(Connected||Connecting||!RecoveryEconomy.ChooseStarter(Profile,value))return false;
+            Profile.Save();world.PreviewVehicle(value);world.PreviewPaint(Profile.paint);return true;
+        }
         public void SelectPaint(int value){Profile.paint=Mathf.Clamp(value,0,3);Profile.Save();if(Connected&&world.Phase==RecoveryPhase.Lobby)world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);else world.PreviewPaint(Profile.paint);}
         public void ResetAtCheckpoint(){if(Connected)world.Unstuck();menuOpen=false;Time.timeScale=1;}
         public void RestartContract(){if(Connected&&IsHost){if(world.FreeRoam){int contract=world.ContractIndex;CloseOverlay();world.ReturnToExplore();world.AcceptContract(contract);}else{world.ReturnToLobby();readySent=false;quickStart=Solo;menuOpen=false;Time.timeScale=1;}}}
@@ -112,6 +126,7 @@ namespace TowTrouble
 
         public void Host(bool solo,bool exploration=false)
         {
+            if(!Profile.starterChosen){View="Vehicles";return;}
             if (Connecting || Connected || leaving) return;
             if(exploration&&world.Map==null){TravelTo("OpenWorldRecovery",solo?1:2,null);return;}
             Solo=solo;explorationRequested=exploration;garageIdentitySent=false;identitySent=false;recorded=false;
@@ -126,6 +141,7 @@ namespace TowTrouble
 
         public void Join(string address)
         {
+            if(!Profile.starterChosen){View="Vehicles";return;}
             if (Connecting || Connected || leaving) return;
             if(world.Map==null){TravelTo("OpenWorldRecovery",3,address);return;}
             address = address.Trim();

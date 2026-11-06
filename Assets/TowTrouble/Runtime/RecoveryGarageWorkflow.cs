@@ -77,6 +77,7 @@ namespace TowTrouble
         }
         public static string DisplayName(GaragePart part, RecoveryProfile profile, RecoveryGarageCatalog catalog)
         {
+            if(part.Id=="stock_Assembly")return RecoveryVehicle.ModelNames[Mathf.Clamp(profile.vehicle,0,3)]+" Stock";
             string name = RecoveryGarageOrdering.DisplayName(part, profile);
             if (part.Slot != GarageSlot.Assembly || !catalog.Parts.Any(p => p.Id != part.Id && p.Slot == part.Slot && RecoveryGarageOrdering.DisplayName(p, profile) == name)) return name;
             string original = part.EnglishName ?? part.Name ?? "";
@@ -111,8 +112,7 @@ namespace TowTrouble
             if(fitted.Drive*4<demand)
             {
                 Func<GaragePart,bool> improves=p=>GaragePerformance.Calculate(Preview(build,p,catalog),catalog).Drive>fitted.Drive+1;
-                var upgrade=candidates.Where(p=>(p.Slot==GarageSlot.Engine||p.Slot==GarageSlot.Transmission)&&improves(p)).OrderBy(cost).ThenBy(p=>p.Price).FirstOrDefault();
-                return upgrade??candidates.Where(p=>p.Slot==GarageSlot.Assembly&&improves(p)).OrderBy(cost).ThenBy(p=>p.Price).FirstOrDefault();
+                return candidates.Where(p=>(p.Slot==GarageSlot.Engine||p.Slot==GarageSlot.Transmission||p.Slot==GarageSlot.Assembly)&&improves(p)).OrderBy(cost).ThenBy(p=>p.Price).FirstOrDefault();
             }
             return null;
         }

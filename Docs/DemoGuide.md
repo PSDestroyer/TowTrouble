@@ -197,3 +197,23 @@ Current garage flow in OpenWorldRecovery: stop at the workshop with no cable or 
 Enter/Confirm activates the highlighted button inside Saved setups and confirmation dialogs. Modal reviews block camera rotation and accept no held-button carryover. Garage and Completed lists share smooth scrolling and the reduced-motion setting. Gamepad prompts switch with the last input device. Full gamepad support in other gameplay/menus remains a separate task.
 
 Validation of this garage iteration: 57 direct-invoked NUnit cases, 36 static layouts at text100/130%, and 62 actual Play/Solo checks using keyboard and virtual controller devices passed. Player preferences were restored exactly and Unity left stopped. Physical controller hardware and co-op peers still need testing. Evidence: `Docs/Validation/GarageUX`.
+
+
+## Alegerea primei mașini — 2026-11-06
+
+La primul joc, după setările inițiale și înainte de Solo/Co-op, jucătorul alege gratuit exact un model: Scout, Hauler, Buddy sau Ranger. Previzualizarea nu oferă mașina; alegerea cere confirmare și se salvează. Modelul ales devine propria mașină Stock. Celelalte variante costă1.200CR fiecare și sunt alternative cu mici diferențe, nu upgrade-uri de putere. Misiunile nu acordă alte mașini gratuit.
+
+| Starter | Forță de bază | Masă | Viteză maximă |
+| --- | --- | --- | --- |
+| Scout | 8,4kN | 930kg | 60km/h |
+| Hauler | 8,8kN | 960kg | 56km/h |
+| Buddy | 8,0kN | 900kg | 64km/h |
+| Ranger | 8,6kN | 950kg | 58km/h |
+
+Prima caroserie cumpărabilă, Midjet Wood, costă1.400CR și oferă10kN,980kg,74km/h: îmbunătățește forța, masa de ancorare și viteza față de oricare starter. Toate cele37 de caroserii cumpărabile au forța de bază mai mare decât toate cele patru variante Stock. Comparația păstrează aceeași echipare; aderența, panta și sarcina limitează forța utilizabilă. Plafonul general rămâne80km/h. Masele vehiculelor de recuperat nu au fost reduse.
+
+Cablurile rămân11kN inclus,14kN200CR,18kN700CR,26kN1.400CR,36kN3.400CR. Două intervenții inițiale Local+Standard, terminate curat pentru prima dată, plătesc împreună1.562CR și permit prima caroserie dacă nu se cumpără alte piese între timp.
+
+Profilul v4 păstrează progresul, banii, inventarul, configurațiile și accesul deja deținut din salvările existente. Un profil vechi fără progres sau investiții primește ecranul de alegere. Nu reseta profilul real pentru test: folosește o salvare separată. Detalii: `Docs/Design/StarterProgression.md`.
+
+Vehicles și confirmarea folosesc WASD/săgeți sau D-pad/LS pentru navigare, Enter/Confirm pentru butonul evidențiat și Esc/Back pentru anulare. Nintendo A est confirmă/B sud anulează; Xbox A/B și PlayStation Cross/Circle urmează aceleași acțiuni. Alegerea gratuită nu se repetă la revenirea în meniul principal.

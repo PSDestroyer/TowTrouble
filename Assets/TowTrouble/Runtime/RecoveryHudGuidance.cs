@@ -37,6 +37,7 @@ namespace TowTrouble
 
         private void OnDisable()
         {
+            SetVehicleNavigation(false);
             SetGarageNavigation(false);
             SetBoardNavigation(false);
             Canvas.preWillRenderCanvases -= PositionTrackedWaypoint;

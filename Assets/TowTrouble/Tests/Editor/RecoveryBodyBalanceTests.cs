@@ -30,16 +30,16 @@ namespace TowTrouble.Tests
                 }
             Assert.That(catalog.Parts.Max(p=>p.BodySpeed)*3.6f,Is.EqualTo(80).Within(.001f));
         }
-        [Test] public void FreeBodyArchetypesRetainPullAndHaveDistinctTravelSpeeds()
+        [Test] public void StarterArchetypesUsePlayerBaselinesAndDistinctTravelSpeeds()
         {
-            var expected=new[]{68f,60f,72f,66f};
+            var expected=new[]{60f,56f,64f,58f};
             for(int model=0;model<4;model++)
             {
                 var b=new RecoveryBuild{Model=model};b.Normalize(Catalog);
                 var stats=GaragePerformance.Calculate(b,Catalog);
                 Assert.That(stats.Speed*3.6f,Is.EqualTo(expected[model]).Within(.001f));
-                Assert.That(stats.Drive,Is.EqualTo(RecoveryVehicle.PullForces[model]));
-                Assert.That(stats.Mass,Is.EqualTo(RecoveryVehicle.Masses[model]));
+                Assert.That(stats.Drive,Is.EqualTo(RecoveryBodyBalance.StockDrive(model)));
+                Assert.That(stats.Mass,Is.EqualTo(RecoveryBodyBalance.StockMass(model)));
             }
         }
         [Test] public void CruisingCompensatesOrdinaryDragWithoutAddingRecoveryForce()

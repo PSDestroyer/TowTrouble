@@ -8,7 +8,9 @@ namespace TowTrouble
     // Small, versioned desktop profile. No network authority or scene references are persisted.
     [Serializable] public sealed class RecoveryProfile
     {
-        public int version=2, completedMask, medalMask, noResetMask, noSnapMask, lastContract, vehicle, paint;
+        public int version=4, completedMask, medalMask, noResetMask, noSnapMask, lastContract, vehicle, paint;
+        public int ownedVehicles,starterVehicle=-1;
+        public bool starterChosen;
         public bool onboarded, reducedMotion, invertCamera, vibration=true, tutorial=true, colorHelp=true;
         public float master=.8f, effects=.8f, ui=.7f, brightness=1f, textScale=1f, cameraSensitivity=1f;
         public int quality=1;
@@ -22,6 +24,7 @@ namespace TowTrouble
         public List<GaragePreset> presets=new List<GaragePreset>();
         public string boardKey="Tab",garageKey="G";
         public bool Owns(string id)=>ownedParts!=null&&ownedParts.Contains(id);
+        public bool OwnsVehicle(int model)=>model>=0&&model<4&&(ownedVehicles&(1<<model))!=0;
         public RecoveryBuild Build(int model)
         {EnsureGarage();return builds[Mathf.Clamp(model,0,3)];}
         public void EnsureGarage()
@@ -35,7 +38,7 @@ namespace TowTrouble
         {
             var p=string.IsNullOrEmpty(saved)?new RecoveryProfile():JsonUtility.FromJson<RecoveryProfile>(saved);
             if(p==null)return new RecoveryProfile();
-            if(p.version!=1&&p.version!=2)throw new ArgumentException("Unsupported profile version");
+            if(p.version<1||p.version>4)throw new ArgumentException("Unsupported profile version");
             p.EnsureGarage();
             if(p.version==1)
             {
@@ -43,6 +46,23 @@ namespace TowTrouble
                 for(int i=1;i<4;i++)p.ownedParts.Add("paint_"+i);
                 if(p.paint>0)p.builds[Mathf.Clamp(p.vehicle,0,3)].Items=new[]{"paint_"+p.paint};
                 p.version=2;
+            }
+            if(p.version<3)
+            {
+                // Old profiles had no vehicle receipts. Keep the active ride,
+                // but mission completion no longer grants other models for free.
+                p.ownedVehicles=1|(1<<Mathf.Clamp(p.vehicle,0,3));
+                foreach(var build in p.builds)
+                    if(Array.Exists(build.Items??Array.Empty<string>(),id=>!string.IsNullOrEmpty(id)&&p.Owns(id)&&!id.StartsWith("stock_",StringComparison.Ordinal)&&!id.StartsWith("paint_",StringComparison.Ordinal)))p.ownedVehicles|=1<<build.Model;
+                foreach(var preset in p.presets)if(preset?.Build!=null&&preset.Build.Model>=0&&preset.Build.Model<4)p.ownedVehicles|=1<<preset.Build.Model;
+                p.version=3;
+            }
+            if(p.version<4)
+            {
+                bool played=p.completedMask!=0||p.credits>0||p.vehicle!=0||(p.ownedVehicles&~1)!=0||p.presets.Count>0||p.ownedParts.Exists(id=>!string.IsNullOrEmpty(id)&&!id.StartsWith("paint_",StringComparison.Ordinal)&&!id.StartsWith("stock_",StringComparison.Ordinal));
+                p.starterChosen=played;p.starterVehicle=played?Mathf.Clamp(p.vehicle,0,3):-1;
+                if(played)p.ownedVehicles|=1<<p.starterVehicle;else p.ownedVehicles=0;
+                p.version=4;
             }
             // Upgrade the old default pair once; preserve custom bindings and later rebinds.
             if (p.cableControlsRevision == 0)
@@ -68,7 +88,7 @@ namespace TowTrouble
             EnsureGarage();Clamp();var previous=PlayerPrefs.GetString(Key,"");if(!string.IsNullOrEmpty(previous))PlayerPrefs.SetString(Key+".previous",previous);
             PlayerPrefs.SetString(Key,JsonUtility.ToJson(this));PlayerPrefs.Save();
         }
-        private void Clamp(){paint=Mathf.Clamp(paint,0,3);vehicle=Mathf.Clamp(vehicle,0,3);lastContract=Mathf.Clamp(lastContract,0,2);master=Mathf.Clamp01(master);effects=Mathf.Clamp01(effects);ui=Mathf.Clamp01(ui);brightness=Mathf.Clamp(brightness,.7f,1.4f);textScale=Mathf.Clamp(textScale,.85f,1.3f);cameraSensitivity=Mathf.Clamp(cameraSensitivity,.3f,2f);}
+        private void Clamp(){ownedVehicles&=15;paint=Mathf.Clamp(paint,0,3);vehicle=Mathf.Clamp(vehicle,0,3);if(starterChosen){starterVehicle=Mathf.Clamp(starterVehicle,0,3);ownedVehicles|=1<<starterVehicle;if(!OwnsVehicle(vehicle))vehicle=starterVehicle;}else{starterVehicle=-1;ownedVehicles=0;}lastContract=Mathf.Clamp(lastContract,0,2);master=Mathf.Clamp01(master);effects=Mathf.Clamp01(effects);ui=Mathf.Clamp01(ui);brightness=Mathf.Clamp(brightness,.7f,1.4f);textScale=Mathf.Clamp(textScale,.85f,1.3f);cameraSensitivity=Mathf.Clamp(cameraSensitivity,.3f,2f);}
         public bool Completed(int id)=>(completedMask&(1<<id))!=0;
         public bool Unlocked(int id)=>id==0||Completed(id-1);
         public bool Clean(int id)=>(medalMask&(1<<id))!=0;

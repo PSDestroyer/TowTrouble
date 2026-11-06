@@ -1,0 +1,44 @@
+{
+  "complete": true,
+  "error": null,
+  "frames": 1570,
+  "method": "Stock Scout with normal rigidbody rotation; brake+8kN winch; R05 gradual powered assist after10s; controlled approach positions, no driven route",
+  "rows": [
+    {
+      "id": "R01",
+      "freed": true,
+      "poweredAssist": false,
+      "winchState": "Minimum",
+      "cableLength": 3.5,
+      "seconds": 7.26532,
+      "maxProgress": 1.0,
+      "maxTension": 0.5133953,
+      "snaps": 0,
+      "travel": 2.78325868,
+      "driverSpeed": 0.06571653,
+      "driverMass": 1350.0,
+      "targetMass": 1350.0,
+      "cableLimit": 11000.0,
+      "winchLimit": 8000.0,
+      "phase": "Deliver"
+    },
+    {
+      "id": "R05",
+      "freed": true,
+      "poweredAssist": true,
+      "winchState": "Minimum",
+      "cableLength": 3.5,
+      "seconds": 14.3150024,
+      "maxProgress": 1.0,
+      "maxTension": 0.9254281,
+      "snaps": 0,
+      "travel": 4.290032,
+      "driverSpeed": 1.908902,
+      "driverMass": 1350.0,
+      "targetMass": 1185.0,
+      "cableLimit": 11000.0,
+      "winchLimit": 8000.0,
+      "phase": "Deliver"
+    }
+  ]
+}

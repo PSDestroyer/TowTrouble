@@ -23,7 +23,7 @@ Etapa 5 este acum autorizată prin aprobarea hărții cu 24 recuperări și 8 pr
 Fiecare biom conține dificultăți diferite. Motorul este limitat de aderență; un cablu mai puternic nu produce tracțiune suplimentară. Nisipul și zăpada au acum aderență locală pe colliderul drumului și pe terenul hărții. Anvelopele de nisip cresc aderența pe nisip cu 45%; cele de iarnă cresc aderența pe zăpadă cu 65%. Compromisurile în noroi rămân -10% / -15%. Inventarul actual oferă roți cu crampoane; lanțurile din concept nu au fost confirmate ca model 3D separat.
 
 ## Economie
-Scout, echipament inițial și zero credite pentru profil nou. Tutorialul plătește ca prima intervenție. Profilurile vechi păstrează progresul și primesc o singură creditare pentru contractele deja finalizate, după medaliile salvate.
+Un model ales gratuit dintre Scout/Hauler/Buddy/Ranger, echipament inițial și zero credite pentru profil nou. Tutorialul plătește ca prima intervenție. Profilurile vechi păstrează progresul și primesc o singură creditare pentru contractele deja finalizate, după medaliile salvate.
 
 | Clasă | Durată țintă cu deplasare | Bază |
 |---|---:|---:|
@@ -111,3 +111,8 @@ Catalogue: price ascending; comparable body stats break equal-price ties, numeri
 The workshop keeps the existing three-column catalogue and large center car preview. Body belongs in Tech, appearance remains Style, and Towing contains cable/winch. Price ordering and role filters reduce the visible choice without hiding owned equipment. Equipped/Owned/Preview states, single-part preview, explicit free refit or Buy & fit, before/after comparisons, and compatibility review make each transaction concrete. Recommendations prepare the board-highlighted job before acceptance and prioritize suitable already-owned equipment; they are guidance rather than a mission-pass guarantee.
 
 Four saved configuration slots retain legacy identifiers, add optional user-visible labels and show Empty/Saved/Active. Saving uses the fitted build. Overwrite and sale require review; parts referenced by fitted builds or saved setups cannot be sold. All garage actions have keyboard and family-aware controller access, using the same shoulder/tab, directional selection, semantic Confirm/Back conventions as the recovery board. Exact bindings and test instructions are in DemoGuide. UI copy added in this iteration is English.
+
+
+### Un singur starter ales de jucător — 2026-11-06
+
+La prima intrare se alege gratuit exact un model dintre Scout, Hauler, Buddy și Ranger. Acesta devine Stock; celelalte variante costă1.200CR, fără deblocări gratuite prin misiuni. Starterele au8,0–8,8kN, sub toate caroseriile cumpărabile; prima caroserie de1.400CR oferă10kN,980kg și74km/h. Alegerea persistă în profil v4; progresul și proprietățile salvărilor existente se păstrează. Masele și sarcinile vehiculelor de recuperat rămân separate și neschimbate. Detalii în `StarterProgression.md`.

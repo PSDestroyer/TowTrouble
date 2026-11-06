@@ -9,6 +9,18 @@ namespace TowTrouble
         public static int Payout(int baseReward,bool noResets,bool noSnaps,bool first)
         {return Mathf.Max(0,baseReward)*(100+(noResets?10:0)+(noSnaps?10:0)+(first?5:0))/100;}
         public static int Price(RecoveryProfile profile,GaragePart part)=>part.Id=="engine_3"&&profile.Owns("engine_2")?6000:part.Price;
+        public static int VehiclePrice(int model)=>model<0||model>=4?0:1200;
+        public static bool ChooseStarter(RecoveryProfile profile,int model)
+        {
+            if(profile.starterChosen||model<0||model>=4)return false;
+            profile.starterChosen=true;profile.starterVehicle=profile.vehicle=model;profile.ownedVehicles=1<<model;return true;
+        }
+        public static bool BuyVehicle(RecoveryProfile profile,int model)
+        {
+            if(!profile.starterChosen||model<0||model>=4||profile.OwnsVehicle(model))return false;
+            int price=VehiclePrice(model);if(profile.credits<price)return false;
+            profile.credits-=price;profile.ownedVehicles|=1<<model;return true;
+        }
         public static bool Buy(RecoveryProfile profile,GaragePart part)
         {
             if(part==null||part.Price<=0||profile.Owns(part.Id)||profile.credits<Price(profile,part))return false;

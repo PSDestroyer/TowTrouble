@@ -57,7 +57,7 @@ namespace TowTrouble.Tests
         }
         [Test] public void StockBodiesAndTiresKeepTheirOriginalVehicleBaselines()
         {
-            for(int i=0;i<4;i++){var build=new RecoveryBuild{Model=i};build.Normalize(catalog);var stats=GaragePerformance.Calculate(build,catalog);Assert.That(stats.Mass,Is.EqualTo(RecoveryVehicle.Masses[i]));Assert.That(stats.Drive,Is.EqualTo(RecoveryVehicle.PullForces[i]));Assert.That(stats.DryGrip,Is.EqualTo(1));Assert.That(stats.SandGrip,Is.EqualTo(1));Assert.That(stats.SnowGrip,Is.EqualTo(1));}
+            for(int i=0;i<4;i++){var build=new RecoveryBuild{Model=i};build.Normalize(catalog);var stats=GaragePerformance.Calculate(build,catalog);Assert.That(stats.Mass,Is.EqualTo(RecoveryBodyBalance.StockMass(i)));Assert.That(stats.Drive,Is.EqualTo(RecoveryBodyBalance.StockDrive(i)));Assert.That(stats.DryGrip,Is.EqualTo(1));Assert.That(stats.SandGrip,Is.EqualTo(1));Assert.That(stats.SnowGrip,Is.EqualTo(1));}
         }
     }
 }

@@ -95,7 +95,7 @@ namespace TowTrouble.Tests
             foreach(string id in new[]{"engine_2","low_range","cable_26"}){profile.ownedParts.Add(id);build.Set(catalog.Find(id),catalog);}
             var contract=new RecoveryContract(1,0,"","","","",Vector3.zero,Vector3.zero,0,0){BreakoutResistance=20000};
             var part=RecoveryGarageWorkflow.Recommend(contract,GaragePerformance.Calculate(build,catalog),build,catalog,profile);
-            Assert.That(part?.Id,Is.EqualTo("engine_3"));
+            Assert.That(part,Is.Not.Null);Assert.That(part.Id,Is.Not.EqualTo("engine_2").And.Not.EqualTo("low_range"));Assert.That(GaragePerformance.Calculate(RecoveryGarageWorkflow.Preview(build,part,catalog),catalog).Drive,Is.GreaterThan(GaragePerformance.Calculate(build,catalog).Drive));
         }
         [Test] public void SurfaceRecommendationPrefersASuitableOwnedTire()
         {

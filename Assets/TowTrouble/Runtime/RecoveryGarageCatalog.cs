@@ -92,7 +92,7 @@ namespace TowTrouble
         public static GaragePerformance Calculate(RecoveryBuild build,RecoveryGarageCatalog catalog)
         {
             int model=Mathf.Clamp(build.Model,0,3);
-            var value=new GaragePerformance{Mass=RecoveryVehicle.Masses[model],Drive=RecoveryVehicle.PullForces[model],Speed=RecoveryBodyBalance.StockSpeed(model),DryGrip=1,MudGrip=1,MudResistance=1,SandGrip=1,SnowGrip=1,Track=1,Cable=RecoveryRules.BreakForce,Winch=RecoveryWinch.StockSpeed,WinchForce=RecoveryWinch.StockForce};
+            var value=new GaragePerformance{Mass=RecoveryBodyBalance.StockMass(model),Drive=RecoveryBodyBalance.StockDrive(model),Speed=RecoveryBodyBalance.StockSpeed(model),DryGrip=1,MudGrip=1,MudResistance=1,SandGrip=1,SnowGrip=1,Track=1,Cable=RecoveryRules.BreakForce,Winch=RecoveryWinch.StockSpeed,WinchForce=RecoveryWinch.StockForce};
             var body=catalog.Find(build.Item(GarageSlot.Assembly,catalog));
             if(body!=null&&body.BodyMass>0){value.Mass=body.BodyMass;value.Drive=body.BodyDrive>0?body.BodyDrive:value.Drive;value.Speed=body.BodySpeed>0?body.BodySpeed:value.Speed;}
             if(build.Items!=null)foreach(var id in build.Items)

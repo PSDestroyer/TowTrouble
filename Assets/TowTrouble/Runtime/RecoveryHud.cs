@@ -52,7 +52,7 @@ namespace TowTrouble
             uiAudio=gameObject.AddComponent<AudioSource>();uiAudio.playOnAwake=false;clickClip=AudioClip.Create("UI confirm",1500,1,44100,false);var samples=new float[1500];for(int i=0;i<samples.Length;i++)samples[i]=Mathf.Sin(i*.14f)*.05f*(1-i/(float)samples.Length);clickClip.SetData(samples,0);
             BuildGameplay();Show("Title");
         }
-        private void OnDestroy(){SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();if(clickClip!=null)Destroy(clickClip);}
+        private void OnDestroy(){SetVehicleNavigation(false);SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();if(clickClip!=null)Destroy(clickClip);}
         private RectTransform Node(string name,Transform parent,float x,float y,float width,float height)
         {var go=new GameObject(name,typeof(RectTransform));go.transform.SetParent(parent,false);var rt=(RectTransform)go.transform;rt.anchorMin=rt.anchorMax=new Vector2(0,1);rt.pivot=new Vector2(0,1);rt.anchoredPosition=new Vector2(x,-y);rt.sizeDelta=new Vector2(width,height);return rt;}
         private RectTransform Stretch(string name,Transform parent)
@@ -81,10 +81,15 @@ namespace TowTrouble
         {Panel(pageRoot,0,0,1600,196,new Color(.03f,.04f,.05f,.64f));Icon(pageRoot,RecoveryIcon.Hook,28,65,34,Amber);Text(pageRoot,title,80,58,1120,76,46,Paper,true);Panel(pageRoot,82,136,82,4,Amber);Text(pageRoot,sub,82,151,1400,40,18,Muted);}
         private void Logo(Transform parent,float x,float y,float size=82)
         {if(logo!=null){var rt=Node("Tow Trouble Logo",parent,x,y,size*6.0f,size*2.55f);var image=rt.gameObject.AddComponent<UnityEngine.UI.RawImage>();image.texture=logo;image.raycastTarget=false;}else Text(parent,"TOW\nTROUBLE",x,y,630,size*2.5f,size,Amber,true);}
-        private void Footer(string back="Main")
-        {Panel(pageRoot,0,850,1600,50,new Color(.03f,.04f,.05f,.52f));Button(pageRoot,L("ÎNAPOI","BACK"),76,808,230,()=>Show(back));Text(pageRoot,session.UsingGamepad?"A  "+L("Confirmă","Confirm")+"     B  "+L("Înapoi","Back"):"ENTER  "+L("Confirmă","Confirm")+"     ESC  "+L("Înapoi","Back"),340,866,1184,28,16,Paper).alignment=TextAlignmentOptions.Right;}
+        private TMP_Text Footer(string back="Main")
+        {Panel(pageRoot,0,850,1600,50,new Color(.03f,.04f,.05f,.52f));Button(pageRoot,L("ÎNAPOI","BACK"),76,808,230,()=>Show(back));var hint=Text(pageRoot,session.UsingGamepad?"A  "+L("Confirmă","Confirm")+"     B  "+L("Înapoi","Back"):"ENTER  "+L("Confirmă","Confirm")+"     ESC  "+L("Înapoi","Back"),340,866,1184,28,16,Paper);hint.alignment=TextAlignmentOptions.Right;return hint;}
         public void Show(string target)
         {
+            if(target=="Main"&&!P.starterChosen){target="Vehicles";returnPage="Main";}
+            if(target!="Vehicles"&&!(target=="Settings"&&firstSetup))SetVehicleNavigation(false);
+            if(target=="Vehicles"&&page!="Vehicles"&&!(page=="Confirm"&&confirmationReturn=="Vehicles"))vehiclePreview=P.vehicle;
+            if((page=="Vehicles"||page=="Confirm"&&confirmationReturn=="Vehicles")&&target!="Vehicles"&&target!="Confirm")
+            {session.World.PreviewVehicle(P.vehicle);session.World.PreviewPaint(P.paint);}
             if(page=="Garage"&&target!="Garage")RememberGarageScroll();
             if(target!="Garage")SetGarageNavigation(false);
             if(target=="Garage")BeginGaragePage(page!="Garage");
@@ -92,6 +97,7 @@ namespace TowTrouble
             if (page == "Board") RememberBoardScroll();
             SetBoardNavigation(target == "Board");
             if(target=="Garage")SetGarageNavigation(true);
+            if(target=="Vehicles"||target=="Settings"&&firstSetup){SetVehicleNavigation(true);vehicleSubmitRelease=true;}
             if (target == "Board") BeginBoardPage(enteringBoard);
             if (target != "Gameplay") HideRoadTrail();
             if (target == "Board")
@@ -113,6 +119,7 @@ namespace TowTrouble
             var target=pageRoot;string remembered=focusName;yield return null;if(page=="Gameplay"||target==null||target!=pageRoot||!target.gameObject.activeInHierarchy)yield break;
             if (page == "Board") { FocusBoardRecovery(); yield break; }
             if (page == "Garage") { FocusGarageUI(); yield break; }
+            if (page == "Vehicles") {foreach(var button in target.GetComponentsInChildren<UnityEngine.UI.Button>())if(button.name=="Vehicle choice "+vehiclePreview){EventSystem.current?.SetSelectedGameObject(button.gameObject);yield break;}}
             if (page == "Confirm" && confirmationReturn == "Board") { FocusBoardDialog(); yield break; }
             var controls=target.GetComponentsInChildren<UnityEngine.UI.Selectable>();UnityEngine.UI.Selectable preferred=null;
             foreach(var control in controls)if(control.IsInteractable())
@@ -168,19 +175,6 @@ namespace TowTrouble
                 Text(right,L("Intervențiile din această regiune nu sunt încă disponibile. Între timp, echipa are nevoie de tine în Valea Verde.","Recoveries in this region are not available yet. Your crew needs you in Green Valley."),36,137,760,220,25,Paper);
             }
             Footer();
-        }
-        private void BuildVehicles()
-        {
-            Header(L("VEHICULE","VEHICLES"),L("Alege partenerul pentru următoarea recuperare.","Choose your partner for the next recovery."));
-            var stats=Panel(pageRoot,76,220,390,330);int selected=P.vehicle;
-            Text(stats,RecoveryVehicle.ModelNames[selected],24,24,340,52,35,Amber,true);
-            string[] labels={L("TRACȚIUNE","TRACTION"),L("MANEVRABILITATE","HANDLING"),L("STABILITATE","STABILITY")};
-            float[] values={RecoveryVehicle.PullForces[selected]/3900f,RecoveryVehicle.SteeringAngles[selected]/35f,RecoveryVehicle.Masses[selected]/1750f};
-            for(int i=0;i<3;i++){Text(stats,labels[i],24,100+i*65,340,25,17,Paper,true);Panel(stats,24,134+i*65,340,7,new Color(.25f,.28f,.24f));Panel(stats,24,134+i*65,340*values[i],7,Amber);}
-            Text(pageRoot,L("Fiecare mașină are punctele sale forte.\nTrage cu mouse-ul sau folosește stickul drept pentru rotire.","Every ride has its strengths.\nDrag the mouse or use the right stick to rotate."),80,580,450,120,18,Muted);
-            string[] paintLabels={L("ORIGINAL","ORIGINAL"),L("CREM","CREAM"),L("MĂSLINIU","OLIVE"),L("MUȘTAR","MUSTARD")};for(int i=0;i<4;i++){int c=i;Button(pageRoot,paintLabels[i],620+i*220,634,200,()=>{session.SelectPaint(c);Show("Vehicles");},P.paint==i,48);}
-            for(int i=0;i<4;i++){int v=i;bool unlocked=i==0||i==3||P.Completed(i==1?0:1);Button(pageRoot,(unlocked?"":"—  ")+RecoveryVehicle.ModelNames[i],76+i*368,714,348,()=>{if(unlocked){session.SelectVehicle(v);Show("Vehicles");}},P.vehicle==i,64).interactable=unlocked;}
-            Button(pageRoot,L("SELECTEAZĂ","SELECT"),1184,808,340,()=>Show(returnPage),true);Footer(returnPage);
         }
         private TMP_InputField Input(Transform parent,string label,string value,float x,float y,float width,Action<string> changed)
         {
@@ -257,6 +251,7 @@ namespace TowTrouble
             if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>())textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);}page="Confirm";focusName=null;confirmationReturn=back;session.View="Confirm";pageRoot=Stretch("Confirmation",root);Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.65f));var card=Panel(pageRoot,475,300,650,290);Text(card,question,32,30,586,130,29,Paper,true);Button(card,L("CONFIRMĂ","CONFIRM"),32,200,270,yes,true);Button(card,L("RENUNȚĂ","CANCEL"),328,200,290,()=>Show(back));
             SetBoardNavigation(back == "Board");
             if (back == "Board") ConfigureBoardDialog();
+            if(back=="Vehicles"){SetVehicleNavigation(true);vehicleSubmitRelease=true;vehicleControlsHint=Text(card,"",32,260,586,24,12,Muted);}
             StartCoroutine(FocusFirst());
         }
         private void Slider(Transform parent,string label,float value,float min,float max,float y,Action<float> change)
@@ -271,7 +266,7 @@ namespace TowTrouble
             Header(firstSetup?L("BUN VENIT ÎN TOW TROUBLE","WELCOME TO TOW TROUBLE"):L("SETĂRI","SETTINGS"),firstSetup?L("Alege limba, luminozitatea și dimensiunea textului.","Choose language, brightness and text size."):L("Salvate automat pe acest calculator.","Saved automatically on this computer."));
             string[] tabs={"Audio","Imagine","Comenzi","Accesibilitate","Joc"};for(int i=0;i<tabs.Length;i++){string tab=tabs[i];Button(pageRoot,L(tab,new[]{"Audio","Display","Controls","Accessibility","Game"}[i]),76+i*292,196,272,()=>{settingsTab=tab;Show("Settings");},settingsTab==tab);}
             var body=Panel(pageRoot,76,278,1448,480);
-            if(firstSetup){Button(body,L("LIMBĂ: ROMÂNĂ","LANGUAGE: ENGLISH"),30,30,750,()=>{P.language=P.language=="ro"?"en":"ro";P.Save();Show("Settings");});Slider(body,L("Luminozitate","Brightness"),P.brightness,.7f,1.4f,128,v=>P.brightness=v);Slider(body,L("Dimensiune text / HUD","Text / HUD size"),P.textScale,.85f,1.3f,258,v=>P.textScale=v);Button(pageRoot,L("SĂ ÎNCEPEM","LET'S GO"),1100,808,424,()=>{P.onboarded=true;P.Save();firstSetup=false;Show("Main");},true);return;}
+            if(firstSetup){Button(body,L("LIMBĂ: ROMÂNĂ","LANGUAGE: ENGLISH"),30,30,750,()=>{P.language=P.language=="ro"?"en":"ro";P.Save();Show("Settings");});Slider(body,L("Luminozitate","Brightness"),P.brightness,.7f,1.4f,128,v=>P.brightness=v);Slider(body,L("Dimensiune text / HUD","Text / HUD size"),P.textScale,.85f,1.3f,258,v=>P.textScale=v);Button(pageRoot,L("SĂ ÎNCEPEM","LET'S GO"),1100,808,424,()=>{P.onboarded=true;P.Save();firstSetup=false;Show("Main");},true);vehicleControlsHint=Text(pageRoot,"",30,850,1000,28,14,Muted);return;}
             switch(settingsTab)
             {
                 case "Audio":Slider(body,L("Volum general","Master volume"),P.master,0,1,30,v=>P.master=v);Slider(body,L("Motoare și efecte","Engines and effects"),P.effects,0,1,160,v=>P.effects=v);Slider(body,L("Interfață","Interface"),P.ui,0,1,290,v=>P.ui=v);break;
@@ -306,6 +301,7 @@ namespace TowTrouble
         private void Update()
         {
             if(root==null)return;bool online=session.Connected&&session.LocalSlot>=0;var w=session.World;
+            if(!online&&session.View=="Vehicles"&&page!="Vehicles"&&page!="Confirm")Show("Vehicles");
             if (online) ObserveAssistance(w, session.LocalSlot);
             else { assistanceWorld = null; exploreHintWanted = hitchWanted = false; }
             UpdateHintFades();
@@ -313,8 +309,9 @@ namespace TowTrouble
             {foreach(var key in Keyboard.current.allKeys)if(key.wasPressedThisFrame){if(key.keyCode!=Key.Escape)typeof(RecoveryProfile).GetField(pendingBinding).SetValue(P,key.keyCode.ToString());P.Save();pendingBinding=null;Show("Settings");return;}}
             if(page=="Title"&&!online)
             {
-                prompt.text=session.UsingGamepad?L("APASĂ A PENTRU A CONTINUA","PRESS A TO CONTINUE"):L("APASĂ O TASTĂ PENTRU A CONTINUA","PRESS ANY KEY TO CONTINUE");
-                if((Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame)||(Mouse.current!=null&&Mouse.current.leftButton.wasPressedThisFrame)||(Gamepad.current!=null&&Gamepad.current.buttonSouth.wasPressedThisFrame))
+                string confirm=RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(Gamepad.current));
+                prompt.text=session.UsingGamepad?L("APASĂ "+confirm+" PENTRU A CONTINUA","PRESS "+confirm+" TO CONTINUE"):L("APASĂ O TASTĂ PENTRU A CONTINUA","PRESS ANY KEY TO CONTINUE");
+                if((Keyboard.current!=null&&Keyboard.current.anyKey.wasPressedThisFrame)||(Mouse.current!=null&&Mouse.current.leftButton.wasPressedThisFrame)||RecoveryInputPrompts.Confirm(Gamepad.current)?.wasPressedThisFrame==true)
                 {if(P.onboarded)Show("Main");else{firstSetup=true;Show("Settings");}}return;
             }
             if(online&&!wasOnline)Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");
@@ -331,6 +328,7 @@ namespace TowTrouble
                 !(page=="Confirm"&&confirmationReturn==session.View))Show(session.View);
             else if(online&&(page=="Garage"||page=="Board")&&session.View=="Gameplay")Show("Gameplay");
             wasOnline=online;
+            if (HandleVehicleControls()) return;
             if (HandleGarageControls(online)) return;
             if (HandleBoardControls(online)) return;
             bool back=(Keyboard.current!=null&&Keyboard.current.escapeKey.wasPressedThisFrame)||(Gamepad.current!=null&&Gamepad.current.buttonEast.wasPressedThisFrame);

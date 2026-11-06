@@ -32,10 +32,10 @@ namespace TowTrouble
         private bool recoveryJammed;
         public void SetRecoveryJammed(bool value){recoveryJammed=value;}
         public void SetRecoveryMass(float value,float lockedWheels=0)
-        {recoveryLockedWheels=Mathf.Clamp01(lockedWheels);recoveryMass=Mathf.Max(0,value);if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?(recoveryMass>0?recoveryMass:950f):CurrentModel.Mass;}
+        {recoveryLockedWheels=Mathf.Clamp01(lockedWheels);recoveryMass=Mathf.Max(0,value);if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?(recoveryMass>0?recoveryMass:950f):RecoveryBodyBalance.StockMass(modelIndex);}
         private Vector3 safePosition;
         private Quaternion safeRotation;
-        private float radius=.47f, driveForce=3100f, steering=30f;
+        private float radius=.47f, driveForce=RecoveryBodyBalance.StockDrive(0), steering=30f;
         private float maxSpeed=RecoveryBodyBalance.StockSpeed(0),dryGripScale=1f,mudGripScale=1f,mudResistanceScale=1f,sandGripScale=1f,snowGripScale=1f,suspensionLift;
         private int geometryVersion;
         public int GeometryVersion=>geometryVersion;
@@ -124,9 +124,9 @@ namespace TowTrouble
             if(models==null||models.Length==0)return;
             modelIndex=Mathf.Clamp(index,0,models.Length-1);var m=models[modelIndex];
             for(int i=0;i<models.Length;i++)models[i].Root.SetActive(i==modelIndex);
-            wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=RecoveryBodyBalance.StockSpeed(modelIndex);dryGripScale=mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=RecoveryWinch.StockSpeed;WinchForce=RecoveryWinch.StockForce;geometryVersion++;driveForce=m.Drive;steering=m.Steering;
+            wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=RecoveryBodyBalance.StockSpeed(modelIndex);dryGripScale=mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=RecoveryWinch.StockSpeed;WinchForce=RecoveryWinch.StockForce;geometryVersion++;driveForce=casualty?m.Drive:RecoveryBodyBalance.StockDrive(modelIndex);steering=casualty?m.Steering:RecoveryBodyBalance.StockSteering(modelIndex);
             for(int i=0;i<wheels.Length;i++){wheels[i].transform.localPosition=m.Anchors[i];wheels[i].radius=radius;}
-            if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?(recoveryMass>0?recoveryMass:950f):m.Mass;
+            if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?(recoveryMass>0?recoveryMass:950f):RecoveryBodyBalance.StockMass(modelIndex);
             ResetWheelPresentation();
         }
         public void SetSpawn(Vector3 position,Quaternion rotation,float drag=0f,float mudEnd=27f,bool mudOnly=false)

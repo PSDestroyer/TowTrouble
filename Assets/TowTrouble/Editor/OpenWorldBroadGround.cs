@@ -49,7 +49,7 @@ namespace TowTrouble.Editor
                     if(x<n&&z<n&&r<1.08f){int a=z*(n+1)+x;var face=new[]{a,a+n+1,a+1,a+1,a+n+1,a+n+2};triangles.AddRange(face);if(!dynamic||r<.64f)visibleTriangles.AddRange(face);}
                 }
                 var mesh=new Mesh{name=site.Id+" broad ground"};mesh.SetVertices(vertices);mesh.SetColors(blendColors);mesh.SetUVs(0,uv);mesh.SetTriangles(visibleTriangles,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
-                filter.sharedMesh=VisualAsset(mesh,"BroadGround/"+site.Id+" broad ground.asset");var collider=filter.GetComponent<MeshCollider>();var support=new Mesh{name=site.Id+" soft ground support"};support.SetVertices(supportVertices);support.SetTriangles(triangles,0);support.RecalculateBounds();collider.sharedMesh=null;collider.sharedMesh=VisualAsset(support,"BroadGround/"+site.Id+" soft ground support.asset");
+                filter.sharedMesh=VisualAsset(mesh,"BroadGround/"+site.Id+" broad ground.asset");var collider=filter.GetComponent<MeshCollider>();var support=new Mesh{name=site.Id+" soft ground support"};support.SetVertices(supportVertices);support.SetUVs(0,uv);support.SetTriangles(triangles,0);support.RecalculateBounds();collider.sharedMesh=null;collider.sharedMesh=VisualAsset(support,"BroadGround/"+site.Id+" soft ground support.asset");
                 var renderer=filter.GetComponent<MeshRenderer>();renderer.shadowCastingMode=ShadowCastingMode.Off;
                 if(!dynamic)
                 {

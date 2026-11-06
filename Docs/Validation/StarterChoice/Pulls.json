@@ -1,0 +1,44 @@
+{
+  "complete": true,
+  "error": null,
+  "frames": 2505,
+  "method": "Stock Ranger with normal rigidbody rotation; brake+8kN winch; controlled approach positions, no driven route",
+  "rows": [
+    {
+      "id": "R01",
+      "freed": true,
+      "poweredAssist": false,
+      "winchState": "Minimum",
+      "cableLength": 3.5,
+      "seconds": 7.14389038,
+      "maxProgress": 1.0,
+      "maxTension": 0.5138627,
+      "snaps": 0,
+      "travel": 2.842088,
+      "driverSpeed": 0.0499348454,
+      "driverMass": 950.0,
+      "targetMass": 1350.0,
+      "cableLimit": 11000.0,
+      "winchLimit": 8000.0,
+      "phase": "Deliver"
+    },
+    {
+      "id": "R17",
+      "freed": false,
+      "poweredAssist": false,
+      "winchState": "Minimum",
+      "cableLength": 3.5,
+      "seconds": 30.012085,
+      "maxProgress": 0.871915162,
+      "maxTension": 0.4002464,
+      "snaps": 0,
+      "travel": 2.804971,
+      "driverSpeed": 0.04560002,
+      "driverMass": 950.0,
+      "targetMass": 1350.0,
+      "cableLimit": 11000.0,
+      "winchLimit": 8000.0,
+      "phase": "Recover"
+    }
+  ]
+}

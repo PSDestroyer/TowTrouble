@@ -150,7 +150,7 @@ namespace TowTrouble.Editor
             var standard=entries.FirstOrDefault(p=>p.Id=="cable_18");
             if(standard==null){standard=new GaragePart{Id="cable_18",Slot=GarageSlot.Cable};entries.Insert(entries.IndexOf(light)+1,standard);}
             standard.Name="Cablu standard · 18 kN";standard.EnglishName="Standard cable · 18 kN";
-            standard.Price=450;standard.CableStrength=18000;
+            standard.Price=700;standard.CableStrength=18000;
             standard.Description="Prag de rupere 18 kN. Mai multă rezervă pentru sarcini și smucituri.";
             standard.EnglishDescription="Break threshold 18 kN. More headroom for load and sudden jerks.";
         }

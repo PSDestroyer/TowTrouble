@@ -5,9 +5,12 @@ namespace TowTrouble
     public static class RecoveryBodyBalance
     {
         public const float MaximumSpeed = 80f / 3.6f;
-        // Scout / Hauler / Buddy / Ranger: touring, towing, light, off-road.
+        // Player starter baselines. Recovery targets retain their authored masses.
+        public static float StockMass(int model)=>model==1?960f:model==2?900f:model==3?950f:930f;
+        public static float StockDrive(int model)=>(model==1?8800f:model==2?8000f:model==3?8600f:8400f)/4f;
+        public static float StockSteering(int model)=>model==1?27f:model==2?31f:model==3?29f:30f;
         public static float StockSpeed(int model)
-            => (model == 1 ? 60f : model == 2 ? 72f : model == 3 ? 66f : 68f) / 3.6f;
+            => (model == 1 ? 56f : model == 2 ? 64f : model == 3 ? 58f : 60f) / 3.6f;
 
         // Nominal pull is per wheel. Price values pull most strongly, then
         // anchoring mass and travel speed; variants with equal stats cost the same.
