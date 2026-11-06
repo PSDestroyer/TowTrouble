@@ -1,0 +1,227 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35875330c182b47bb8ecf638445a5a27, type: 3}
+  m_Name: RecoveryAudioBank
+  m_EditorClassIdentifier: TowTrouble.Runtime::TowTrouble.RecoveryAudioBank
+  Vehicles: {fileID: -8448432401119730090, guid: 2ced9223f8dcf49ffa7128f7ac98911b, type: 2}
+  Recovery: {fileID: -6427733987756909536, guid: 2ced9223f8dcf49ffa7128f7ac98911b, type: 2}
+  UI: {fileID: 2746516134236407446, guid: 2ced9223f8dcf49ffa7128f7ac98911b, type: 2}
+  Ambience: {fileID: 1814847422698826449, guid: 2ced9223f8dcf49ffa7128f7ac98911b, type: 2}
+  Music: {fileID: -8771378276447029354, guid: 2ced9223f8dcf49ffa7128f7ac98911b, type: 2}
+  EngineIdle: {fileID: 8300000, guid: 9296b2afa11fc4e0ab71df8aeb9f7b13, type: 3}
+  EngineDrive: {fileID: 8300000, guid: 8e7f296cd323b442183ed0b4d297d195, type: 3}
+  EngineLoad: {fileID: 8300000, guid: b1f5073b274a14dff92c7648322cdae5, type: 3}
+  WinchMotor: {fileID: 8300000, guid: b1f5073b274a14dff92c7648322cdae5, type: 3}
+  Wind: {fileID: 8300000, guid: 029867e554fd54a008458ff2c596f67b, type: 3}
+  MountainWind: {fileID: 8300000, guid: 427b67c1c279147d9aa875d80db692df, type: 3}
+  Birds: {fileID: 8300000, guid: 0718c4da444334f54a8b0e7a04e20139, type: 3}
+  Insects: {fileID: 8300000, guid: 36d2c8c4966784beaa5603346579924c, type: 3}
+  Water: {fileID: 8300000, guid: 2473461cd54804938b790e6ac2e55743, type: 3}
+  Garage: {fileID: 8300000, guid: 0e115b4d0d53147f4b3e89c62a4d8047, type: 3}
+  MenuMusic: {fileID: 8300000, guid: 1308e66d78ddf4910ace8e6b237cc218, type: 3}
+  ExploreMusic:
+  - {fileID: 8300000, guid: bf0af0d15fc4e4cd08dd98d09f599d18, type: 3}
+  - {fileID: 8300000, guid: 1308e66d78ddf4910ace8e6b237cc218, type: 3}
+  Sounds:
+  - Sound: 0
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: 89f8a4e8c18c84d35abcfc25cbcbe111, type: 3}
+    Gain: 0.16
+    Priority: 100
+    Cooldown: 0.075
+  - Sound: 1
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: e6b4cb6d4530f4fbda1911ec91906eef, type: 3}
+    Gain: 0.28
+    Priority: 80
+    Cooldown: 0.09
+  - Sound: 2
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: f67a245b91a6e4ca99da30693579de96, type: 3}
+    Gain: 0.25
+    Priority: 80
+    Cooldown: 0.12
+  - Sound: 3
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: 52bd04e13235340808a0eee8d5bed44e, type: 3}
+    Gain: 0.22
+    Priority: 110
+    Cooldown: 0.16
+  - Sound: 4
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: ce6e780bb439740be9dea5aa753971d7, type: 3}
+    Gain: 0.22
+    Priority: 110
+    Cooldown: 0.16
+  - Sound: 5
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: 31056cb9601e3403ea979a3eabed21f7, type: 3}
+    Gain: 0.26
+    Priority: 40
+    Cooldown: 0.3
+  - Sound: 6
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: 9887bec6bf51843808600ed682062266, type: 3}
+    Gain: 0.35
+    Priority: 60
+    Cooldown: 0.2
+  - Sound: 7
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: fac802e22eaa84f1e9d2fcb6ce17a37c, type: 3}
+    Gain: 0.36
+    Priority: 60
+    Cooldown: 0.25
+  - Sound: 8
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: 407f6b6bc3bbf43a5bef529bdde36df5, type: 3}
+    Gain: 0.33
+    Priority: 55
+    Cooldown: 0.4
+  - Sound: 9
+    Bus: 2
+    Clips:
+    - {fileID: 8300000, guid: fc9b995a9c268457e8f8d8ff25f8f342, type: 3}
+    Gain: 0.45
+    Priority: 15
+    Cooldown: 2
+  - Sound: 10
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: cf572085ecbec4b849f8da29cf74bbfc, type: 3}
+    Gain: 0.5
+    Priority: 35
+    Cooldown: 0.15
+  - Sound: 11
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: 9887bec6bf51843808600ed682062266, type: 3}
+    Gain: 0.4
+    Priority: 40
+    Cooldown: 0.15
+  - Sound: 12
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: 7a050e8685ae04bd5be7ee7b59fc2a6a, type: 3}
+    Gain: 0.58
+    Priority: 20
+    Cooldown: 0.4
+  - Sound: 13
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: a56db3ceb96a2457e83e3c5f2d003364, type: 3}
+    Gain: 0.4
+    Priority: 30
+    Cooldown: 0.7
+  - Sound: 14
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: 727a64f1f60f349679947585b87d6106, type: 3}
+    - {fileID: 8300000, guid: d2eade17ad3594c8b96f689a4f3c8d16, type: 3}
+    Gain: 0.42
+    Priority: 50
+    Cooldown: 0.22
+  - Sound: 15
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: 2a63f96b6f66a476eabcd1219a625a4f, type: 3}
+    - {fileID: 8300000, guid: c628cee6899164408813c07f2d61fd63, type: 3}
+    Gain: 0.48
+    Priority: 50
+    Cooldown: 0.6
+  - Sound: 16
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: 37593ed6cf6cf4e338ac194a0b82b95e, type: 3}
+    Gain: 0.38
+    Priority: 40
+    Cooldown: 0.8
+  - Sound: 17
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: e1604fb4eb94c4d11a1848b18df5f581, type: 3}
+    - {fileID: 8300000, guid: aaa0ad02165f84445ac220e13c56d9b0, type: 3}
+    - {fileID: 8300000, guid: 5cdc0df0ec06241c39471d5bda59a939, type: 3}
+    Gain: 0.18
+    Priority: 120
+    Cooldown: 0.45
+  - Sound: 18
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: 396a1cef07a9944998656bc0cce401ee, type: 3}
+    Gain: 0.32
+    Priority: 70
+    Cooldown: 0.2
+  - Sound: 19
+    Bus: 1
+    Clips:
+    - {fileID: 8300000, guid: 201abf535eaea409197048611c995138, type: 3}
+    Gain: 0.28
+    Priority: 70
+    Cooldown: 0.2
+  - Sound: 20
+    Bus: 0
+    Clips:
+    - {fileID: 8300000, guid: f6bf33fa5472e4b2d951590b2184d64d, type: 3}
+    Gain: 0.3
+    Priority: 90
+    Cooldown: 1
+  Surfaces:
+  - Surface: 0
+    Clips:
+    - {fileID: 8300000, guid: 9323178e1058a44008e666319dc21f1f, type: 3}
+    - {fileID: 8300000, guid: 133fe33075d41485d96f76a9b2b0bddc, type: 3}
+    - {fileID: 8300000, guid: f1adf6ac1e1b546669142d13b7f54db6, type: 3}
+    Gain: 0.1
+  - Surface: 5
+    Clips:
+    - {fileID: 8300000, guid: 43f19cb6879af447d8f11beac9dce12f, type: 3}
+    - {fileID: 8300000, guid: a68f1d818a4d2463e964f6a443899ed5, type: 3}
+    - {fileID: 8300000, guid: 98101f9cc32ba4a0281820137d56949c, type: 3}
+    Gain: 0.12
+  - Surface: 3
+    Clips:
+    - {fileID: 8300000, guid: 2cd99554f9ce7433da84beff269b0543, type: 3}
+    - {fileID: 8300000, guid: 73fc15c54e3d849dbb9e323ed523df52, type: 3}
+    - {fileID: 8300000, guid: ddd09a97c21aa406f862dd59c6a247ae, type: 3}
+    - {fileID: 8300000, guid: a5cc948fe8cbc44c387399228b8f278c, type: 3}
+    Gain: 0.2
+  - Surface: 4
+    Clips:
+    - {fileID: 8300000, guid: f19365e6654a240b8a70ad0032913de6, type: 3}
+    - {fileID: 8300000, guid: 883bab9a37c064fb590bed73b6ea1f1b, type: 3}
+    - {fileID: 8300000, guid: 46196de269ec74d0596e5ec339d894a6, type: 3}
+    Gain: 0.16
+  - Surface: 2
+    Clips:
+    - {fileID: 8300000, guid: fdbe9ebe6811c40f7b1145ab248d4f4b, type: 3}
+    - {fileID: 8300000, guid: eed9c64bd7b0d493884564973614bb34, type: 3}
+    - {fileID: 8300000, guid: 606a380be3ba744369f0e6e032d9061c, type: 3}
+    Gain: 0.13
+  - Surface: 1
+    Clips:
+    - {fileID: 8300000, guid: 13a49146a7495461ab890d7b1a9e77f4, type: 3}
+    - {fileID: 8300000, guid: 77d3e9133d35346558d9b0d3f266388d, type: 3}
+    - {fileID: 8300000, guid: 428cb6869b9534d5c9437a42e652fd0a, type: 3}
+    Gain: 0.08
+  Waterfalls:
+  - {x: -117.18, y: 81.615005, z: 244.23999}
+  - {x: -124.11413, y: 98.865005, z: 263.2685}
+  - {x: -139.7466, y: 62.915, z: 220.9589}

@@ -28,9 +28,11 @@ namespace TowTrouble
             switch(settingsTab)
             {
                 case "Audio":
-                    Slider(body,"Master volume",P.master,0,1,24,v=>P.master=v);
-                    Slider(body,"Vehicle and sound effects",P.effects,0,1,154,v=>P.effects=v);
-                    Slider(body,"Interface",P.ui,0,1,284,v=>{P.ui=v;if(uiAudio!=null&&clickClip!=null)uiAudio.PlayOneShot(clickClip,v);});
+                    Slider(body,"Master volume",P.master,0,1,20,v=>P.master=v);
+                    Slider(body,"Vehicle and recovery effects",P.effects,0,1,108,v=>P.effects=v);
+                    Slider(body,"Music",P.music,0,1,196,v=>P.music=v);
+                    Slider(body,"Environment",P.ambience,0,1,284,v=>P.ambience=v);
+                    Slider(body,"Interface",P.ui,0,1,372,v=>{P.ui=v;PlayUi(RecoverySound.Navigate);});
                     break;
                 case "Imagine":
                     InitializeDisplayDraft();
@@ -90,7 +92,7 @@ namespace TowTrouble
         }
         private UnityEngine.UI.Button SettingButton(RectTransform body,string label,float y,Action action,string description)
         {var button=Button(body,label,30,y,806,action);menuDescriptions[button.gameObject]=description;return button;}
-        private string SettingsDescription()=>settingsTab=="Audio"?"Set the sound to suit your space. Vehicle audio and interface sounds are separate. Muting audio never removes visual feedback.":settingsTab=="Imagine"?"Choose your display settings on the left, then Apply. Keep the result within 15 seconds or the previous settings return automatically.":settingsTab=="Comenzi"?(session.UsingGamepad?"Controls follow your connected controller automatically. Switch to your keyboard or mouse whenever you prefer.\n\nAdjust camera sensitivity below, or invert its vertical movement.":"Select an action to change its keyboard binding. Each key can have one action; menu navigation keys stay reserved.\n\nConnect a controller to see its button layout."):settingsTab=="Accesibilitate"?"Choose readable text and comfortable camera movement. Cable warnings can include symbols as well as colour.":"Contextual hints help you learn at your own pace. Reset Progress starts a new career and keeps your preferences.";
+        private string SettingsDescription()=>settingsTab=="Audio"?"Set the sound to suit your space. Vehicle effects, music, environment and interface have separate controls. Muting audio never removes visual feedback.":settingsTab=="Imagine"?"Choose your display settings on the left, then Apply. Keep the result within 15 seconds or the previous settings return automatically.":settingsTab=="Comenzi"?(session.UsingGamepad?"Controls follow your connected controller automatically. Switch to your keyboard or mouse whenever you prefer.\n\nAdjust camera sensitivity below, or invert its vertical movement.":"Select an action to change its keyboard binding. Each key can have one action; menu navigation keys stay reserved.\n\nConnect a controller to see its button layout."):settingsTab=="Accesibilitate"?"Choose readable text and comfortable camera movement. Cable warnings can include symbols as well as colour.":"Contextual hints help you learn at your own pace. Reset Progress starts a new career and keeps your preferences.";
         private static string OnOff(bool value)=>value?"ON":"OFF";
         private void SaveMenuPreference(){session.ApplySettings();P.Save();Show("Settings");}
         private string ControllerGuide()
@@ -136,7 +138,7 @@ namespace TowTrouble
         private void RestoreSettingsTab()
         {
             var defaults=new RecoveryProfile();
-            string[] fields=settingsTab=="Audio"?new[]{"master","effects","ui"}:settingsTab=="Imagine"?new[]{"brightness","quality"}:settingsTab=="Comenzi"?RecoveryMenuSettings.BindingFields.Concat(new[]{"cameraSensitivity","controllerFamily","invertCamera"}).ToArray():settingsTab=="Accesibilitate"?new[]{"textScale","reducedMotion","colorHelp"}:new[]{"tutorial","vibration","vibrationIntensity"};
+            string[] fields=settingsTab=="Audio"?new[]{"master","effects","ui","music","ambience"}:settingsTab=="Imagine"?new[]{"brightness","quality"}:settingsTab=="Comenzi"?RecoveryMenuSettings.BindingFields.Concat(new[]{"cameraSensitivity","controllerFamily","invertCamera"}).ToArray():settingsTab=="Accesibilitate"?new[]{"textScale","reducedMotion","colorHelp"}:new[]{"tutorial","vibration","vibrationIntensity"};
             foreach(var name in fields){var field=typeof(RecoveryProfile).GetField(name);field.SetValue(P,field.GetValue(defaults));}
             displayInitialized=false;settingsMessage="Defaults restored";SaveMenuPreference();
         }

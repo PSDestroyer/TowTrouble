@@ -1,0 +1,45 @@
+using System;
+using UnityEngine;
+using UnityEngine.Audio;
+
+namespace TowTrouble
+{
+    public enum RecoverySound { Navigate, Confirm, Back, Open, Close, Reject, Fit, Purchase, Accept, Complete, Attach, Detach, Snap, Release, Impact, Obstacle, Signal, Creak, WinchStart, WinchStop, EngineStart }
+    public enum RecoveryAudioBus { Vehicles, Recovery, UI, Ambience, Music }
+    public enum RecoveryAudioSurface { Dirt, Grass, Wood, Mud, Snow, Sand }
+    [Serializable] public sealed class RecoverySoundSet
+    {
+        public RecoverySound Sound;
+        public RecoveryAudioBus Bus;
+        public AudioClip[] Clips=Array.Empty<AudioClip>();
+        [Range(0,1)] public float Gain=.5f;
+        public int Priority=100;
+        public float Cooldown=.08f;
+    }
+    [Serializable] public sealed class RecoverySurfaceSounds
+    { public RecoveryAudioSurface Surface; public AudioClip[] Clips=Array.Empty<AudioClip>(); [Range(0,1)] public float Gain=.2f; }
+    [CreateAssetMenu(menuName="Tow Trouble/Audio Bank")]
+    public sealed class RecoveryAudioBank : ScriptableObject
+    {
+        public AudioMixerGroup Vehicles,Recovery,UI,Ambience,Music;
+        public AudioClip EngineIdle,EngineDrive,EngineLoad,WinchMotor,Wind,MountainWind,Birds,Insects,Water,Garage;
+        public AudioClip MenuMusic;
+        public AudioClip[] ExploreMusic=Array.Empty<AudioClip>();
+        public RecoverySoundSet[] Sounds=Array.Empty<RecoverySoundSet>();
+        public RecoverySurfaceSounds[] Surfaces=Array.Empty<RecoverySurfaceSounds>();
+        public Vector3[] Waterfalls=Array.Empty<Vector3>();
+        public AudioMixerGroup Group(RecoveryAudioBus bus)=>bus==RecoveryAudioBus.Vehicles?Vehicles:bus==RecoveryAudioBus.Recovery?Recovery:bus==RecoveryAudioBus.UI?UI:bus==RecoveryAudioBus.Ambience?Ambience:Music;
+        public RecoverySoundSet Find(RecoverySound sound)=>Array.Find(Sounds,x=>x.Sound==sound);
+        public RecoverySurfaceSounds Surface(RecoveryAudioSurface surface)=>Array.Find(Surfaces,x=>x.Surface==surface);
+    }
+    // Shared presentation rules: audio never influences traction, cable strength, rewards or gameplay RNG.
+    public static class RecoveryAudioPolicy
+    {
+        public static float Gain(float value)=>float.IsNaN(value)||float.IsInfinity(value)?0:Mathf.Clamp01(value);
+        public static bool MotorActive(WinchState state)=>state==WinchState.TakingUp||state==WinchState.Pulling||state==WinchState.Stalled||state==WinchState.PayingOut;
+        public static float EnginePitch(float speed,float throttle,float slip,float mass)
+            =>Mathf.Clamp((.78f+Mathf.Repeat(Mathf.Max(0,speed),7)/7*.48f+Gain(Mathf.Abs(throttle))*.22f+Gain(slip)*.25f)*Mathf.Lerp(1.1f,.8f,Mathf.InverseLerp(950,2200,mass)),.65f,1.65f);
+        public static bool Changed(uint current,uint previous)=>unchecked((int)(current-previous))>0;
+        public static float MusicDuck(bool menu,float tension,bool stalled)=>menu?.65f:Mathf.Lerp(1,.32f,Mathf.Max(Mathf.InverseLerp(.65f,.95f,tension),stalled?.8f:0));
+    }
+}

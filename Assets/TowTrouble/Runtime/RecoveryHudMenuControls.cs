@@ -153,7 +153,7 @@ namespace TowTrouble
             }
             return true;
         }
-        private void PlayMenuMove(){if(uiAudio!=null&&clickClip!=null)uiAudio.PlayOneShot(clickClip,P.ui*.25f);}
+        private void PlayMenuMove(){PlayUi(RecoverySound.Navigate);}
         private void MenuBack()
         {
             if(displayPending){RevertDisplay();return;}

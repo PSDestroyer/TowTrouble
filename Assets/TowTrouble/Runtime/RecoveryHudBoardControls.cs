@@ -62,6 +62,7 @@ namespace TowTrouble
         private void SelectBoardRecovery(int id)
         {
             float speed = boardScroll is RecoverySmoothScrollRect previous ? previous.ScrollSpeed : 0;
+            if(boardIndex!=id)PlayMenuMove();
             RememberBoardScroll(); boardIndex = id; Show("Board");
             if (boardScroll is RecoverySmoothScrollRect current) current.ScrollSpeed = speed;
         }

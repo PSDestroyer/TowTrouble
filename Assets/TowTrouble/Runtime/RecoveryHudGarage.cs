@@ -200,6 +200,7 @@ namespace TowTrouble
         private float boardCompletedScrollY;
         private void SelectBoardTab(bool completed)
         {
+            if(boardCompleted!=completed)PlayMenuMove();
             RememberBoardScroll();boardCompleted=completed;boardIndex=completed?boardCompletedIndex:boardAvailableIndex;Show("Board");
         }
         private void BuildBoard()

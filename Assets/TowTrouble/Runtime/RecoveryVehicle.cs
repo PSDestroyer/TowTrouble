@@ -80,6 +80,7 @@ namespace TowTrouble
         private float remoteSpeed;
         private bool hasRemote;
         private AudioSource engine;
+        public bool ExternalAudio {get;set;}
         private ParticleSystem dust;
         private readonly float[] suspensionOffsets=new float[4],previousSuspensionOffsets=new float[4];
         private readonly float[] wheelAngles=new float[4],wheelRates=new float[4],wheelSlips=new float[4],wheelLoads=new float[4];
@@ -319,7 +320,7 @@ namespace TowTrouble
                     wheelVisuals[i].SetPositionAndRotation(p,RecoveryWheelPose.Rotation(transform.rotation,i<2?steer:0,wheelAngles[i]));
                 }
             }
-            if(engine!=null)
+            if(engine!=null&&!ExternalAudio)
             {
                 var slip=WheelSlip;float average=(slip.x+slip.y+slip.z+slip.w)*.25f;
                 float pitch=.6f+Speed*.06f+Mathf.Abs(controls.y)*.32f+average*.65f+EngineEffort*.1f;

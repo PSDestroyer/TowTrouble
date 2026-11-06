@@ -31,8 +31,7 @@ namespace TowTrouble
         private TMP_Text objective, crew, speed, marker, status, slots, readyText, summary, prompt;
         private UnityEngine.UI.Button startButton;
         private TMP_InputField address;
-        private AudioSource uiAudio;
-        private AudioClip clickClip;
+        private void PlayUi(RecoverySound sound){session.Audio?.Play(sound);}
         private readonly Dictionary<TMP_Text,float> textSizes=new Dictionary<TMP_Text,float>();
         private readonly TMP_Text[] worldNames=new TMP_Text[2];
         private readonly TMP_Text[] hudNames=new TMP_Text[2];
@@ -49,10 +48,9 @@ namespace TowTrouble
             if(EventSystem.current==null)new GameObject("UI Event System",typeof(EventSystem),typeof(InputSystemUIInputModule));
             var canvas=new GameObject("Tow Trouble UI",typeof(RectTransform),typeof(Canvas),typeof(UnityEngine.UI.CanvasScaler),typeof(UnityEngine.UI.GraphicRaycaster));canvas.transform.SetParent(transform,false);canvas.GetComponent<Canvas>().renderMode=RenderMode.ScreenSpaceOverlay;
             var scaler=canvas.GetComponent<UnityEngine.UI.CanvasScaler>();scaler.uiScaleMode=UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1600,900);scaler.screenMatchMode=UnityEngine.UI.CanvasScaler.ScreenMatchMode.Expand;scaler.matchWidthOrHeight=.5f;root=(RectTransform)canvas.transform;
-            uiAudio=gameObject.AddComponent<AudioSource>();uiAudio.playOnAwake=false;clickClip=AudioClip.Create("UI confirm",1500,1,44100,false);var samples=new float[1500];for(int i=0;i<samples.Length;i++)samples[i]=Mathf.Sin(i*.14f)*.05f*(1-i/(float)samples.Length);clickClip.SetData(samples,0);
             BuildGameplay();BuildPersistenceHint();Show(session.ConsumeReturnToMain()?"Main":"Title");
         }
-        private void OnDestroy(){SetMenuNavigation(false);SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();if(clickClip!=null)Destroy(clickClip);}
+        private void OnDestroy(){SetMenuNavigation(false);SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();}
         private RectTransform Node(string name,Transform parent,float x,float y,float width,float height)
         {var go=new GameObject(name,typeof(RectTransform));go.transform.SetParent(parent,false);var rt=(RectTransform)go.transform;rt.anchorMin=rt.anchorMax=new Vector2(0,1);rt.pivot=new Vector2(0,1);rt.anchoredPosition=new Vector2(x,-y);rt.sizeDelta=new Vector2(width,height);return rt;}
         private RectTransform Stretch(string name,Transform parent)
@@ -76,7 +74,7 @@ namespace TowTrouble
             if(displayFont!=null){text.font=displayFont;text.fontStyle=FontStyles.Normal;}
             text.enableAutoSizing=true;text.fontSizeMin=14;text.fontSizeMax=21*P.textScale;
             var icon=ActionIcon(label);if(icon.HasValue&&width>260&&height>=48)ButtonIcon(button,icon.Value,primary);
-            rt.gameObject.AddComponent<RecoveryUiFeedback>();button.onClick.AddListener(()=>{if(uiAudio!=null&&clickClip!=null)uiAudio.PlayOneShot(clickClip,P.ui);action();});return button;
+            rt.gameObject.AddComponent<RecoveryUiFeedback>();button.onClick.AddListener(()=>{PlayUi(label.StartsWith("BACK",StringComparison.Ordinal)?RecoverySound.Back:RecoverySound.Confirm);action();});return button;
         }
         private void Header(string title,string sub)
         {Panel(pageRoot,0,0,1600,196,new Color(.03f,.04f,.05f,.64f));Icon(pageRoot,RecoveryIcon.Hook,28,65,34,Amber);Text(pageRoot,title,80,58,1120,76,46,Paper,true);Panel(pageRoot,82,136,82,4,Amber);Text(pageRoot,sub,82,151,1400,40,18,Muted);}

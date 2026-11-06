@@ -37,7 +37,9 @@ namespace TowTrouble
         private int menuInputConsumedFrame = -1;
         public void ConsumeMenuInput() { menuInputConsumedFrame = Time.frameCount; }
         private UnityEngine.Rendering.Universal.ColorAdjustments grade;
+        public RecoveryAudioDirector Audio { get; private set; }
         private void Awake(){Profile=RecoveryProfile.Load();SelectedContract=Profile.lastContract;ApplySettings();}
+        private void StartAudio(){var bank=Resources.Load<RecoveryAudioBank>("RecoveryAudioBank");if(bank==null){Debug.LogWarning("Tow Trouble audio bank is missing.");return;}var rig=new GameObject("Tow Trouble audio");rig.transform.SetParent(transform,false);Audio=rig.AddComponent<RecoveryAudioDirector>();Audio.Configure(this,bank);}
         public void ApplySettings(){RecoveryInputPrompts.FamilyOverride=Profile.controllerFamily;Profile.language="en";AudioListener.volume=Profile.master;RecoveryVehicle.EffectsGain=Profile.effects;ApplyGraphicsPreference();if(grade==null){var volume=FindFirstObjectByType<UnityEngine.Rendering.Volume>();if(volume!=null&&volume.profile!=null)volume.profile.TryGet(out grade);}if(grade!=null)grade.postExposure.Override(Mathf.Log(Profile.brightness,2)+.1f);}
         public void SelectContract(int value){SelectedContract=Mathf.Clamp(value,0,RecoveryContract.All.Length-1);if(Profile.Unlocked(SelectedContract)){Profile.lastContract=SelectedContract;Profile.Save();}if(Profile.Unlocked(SelectedContract)&&Connected&&IsHost&&world.Phase==RecoveryPhase.Lobby)world.ConfigureSession(SelectedContract,!Solo,world.FreeRoam);}
         public void SelectVehicle(int value)
@@ -102,7 +104,7 @@ namespace TowTrouble
             network.ServerManager.SetFrameRate(60);
             network.ClientManager.SetFrameRate(60);
             network.ClientManager.OnClientConnectionState += ClientState;
-            recoveryCamera.Bind(this);PreviewFittedRide();
+            recoveryCamera.Bind(this);PreviewFittedRide();StartAudio();
             int mode=travelMode;string destination=travelAddress;travelMode=0;travelAddress=null;
             if(mode==1||mode==2)Host(mode==1,true);else if(mode==3)Join(destination);
             var args = System.Environment.GetCommandLineArgs();
@@ -196,7 +198,7 @@ namespace TowTrouble
             menuOpen=false;View="Gameplay";Time.timeScale=1;
         }
         public void AcceptBoardContract(int index)
-        {if(!BoardOpen||!IsHost||world.Phase!=RecoveryPhase.Explore||index<0||index>=world.AvailableContracts.Length)return;CloseOverlay();world.AcceptContract(index);}
+        {if(!BoardOpen||!IsHost||world.Phase!=RecoveryPhase.Explore||index<0||index>=world.AvailableContracts.Length)return;CloseOverlay();world.AcceptContract(index);Audio?.Play(RecoverySound.Accept);}
         public void RecordCompletion()
         {
             if(Training||!Connected||world.Phase!=RecoveryPhase.Complete||recorded)return;

@@ -43,7 +43,7 @@ namespace TowTrouble
         private void SelectGaragePart(string id)
         {
             bool changed=garageSelected!=id||garageCategoryFocus;garageCategoryFocus=false;
-            if(!changed)return;
+            if(!changed)return;PlayMenuMove();
             float speed=garageListScroll!=null?garageListScroll.ScrollSpeed:0;
             RememberGarageScroll();garageSelected=id;garageMessage="";
             garageDraft=RecoveryGarageWorkflow.Preview(P.Build(P.vehicle),session.GarageCatalog.Find(id),session.GarageCatalog);
@@ -52,6 +52,7 @@ namespace TowTrouble
         }
         private void SelectGarageSlot(GarageSlot slot,bool categories=false)
         {
+            if(garageSlot!=slot)PlayMenuMove();
             garageSlot=slot;garageSection=RecoveryGarageWorkflow.Section(slot);garageRememberedSlots[garageSection]=slot;
             garageCategoryFocus=categories;garageScrollY=0;garageMessage="";
             garageSelected=P.Build(P.vehicle).Item(slot,session.GarageCatalog);garageDraft=P.Build(P.vehicle).Copy();
@@ -70,7 +71,7 @@ namespace TowTrouble
         }
         private void GaragePrimaryAction()
         {
-            var part=session.GarageCatalog.Find(garageSelected);if(!CanFitGaragePart(part))return;
+            var part=session.GarageCatalog.Find(garageSelected);if(!CanFitGaragePart(part)){PlayUi(RecoverySound.Reject);return;}
             session.ConsumeMenuInput();
             if(RecoveryGarageWorkflow.ReplacedParts(P.Build(P.vehicle),garageDraft,part,session.GarageCatalog).Count>0)
             {OpenGarageOverlay(GarageOverlay.Compatibility);return;}
@@ -80,7 +81,9 @@ namespace TowTrouble
         {
             if(!CanTransactGarage)return;
             var catalog=session.GarageCatalog;var part=catalog.Find(garageSelected);
-            if(!RecoveryGarageWorkflow.TryPrepareFit(P,part,catalog,out var build))return;
+            bool purchase=part!=null&&part.Price>0&&!P.Owns(part.Id);
+            if(!RecoveryGarageWorkflow.TryPrepareFit(P,part,catalog,out var build)){PlayUi(RecoverySound.Reject);return;}
+            PlayUi(purchase?RecoverySound.Purchase:RecoverySound.Fit);
             session.ConsumeMenuInput();session.CommitGarage(build);
             garageDraft=P.Build(P.vehicle).Copy();garageOverlay=GarageOverlay.None;
             garageMessage=GarageName(part)+" fitted and saved";garageSubmitRelease=true;Show("Garage");
@@ -105,7 +108,7 @@ namespace TowTrouble
         private void SellGaragePart()
         {
             if(!CanTransactGarage)return;var part=session.GarageCatalog.Find(garageSelected);
-            if(!RecoveryEconomy.Sell(P,part,session.GarageCatalog))return;
+            if(!RecoveryEconomy.Sell(P,part,session.GarageCatalog)){PlayUi(RecoverySound.Reject);return;}PlayUi(RecoverySound.Purchase);
             P.Save();session.ConsumeMenuInput();garageOverlay=GarageOverlay.None;
             garageSelected=P.Build(P.vehicle).Item(garageSlot,session.GarageCatalog);garageDraft=P.Build(P.vehicle).Copy();session.PreviewGarage(garageDraft);
             garageMessage="Part sold · "+(part.Price*70/100).ToString("N0")+" CR returned";garageSubmitRelease=true;Show("Garage");
@@ -127,14 +130,14 @@ namespace TowTrouble
         {
             if(!CanTransactGarage)return;
             var saved=GarageSaved(garageSetupIndex);if(saved==null){saved=new GaragePreset{Name=RecoveryGarageWorkflow.SetupKey(P.vehicle,garageSetupIndex)};P.presets.Add(saved);}
-            saved.Build=P.Build(P.vehicle).Copy();garageActiveSetupName=saved.Name;P.Save();garageOverlay=GarageOverlay.Setups;garageSubmitRelease=true;
+            PlayUi(RecoverySound.Confirm);saved.Build=P.Build(P.vehicle).Copy();garageActiveSetupName=saved.Name;P.Save();garageOverlay=GarageOverlay.Setups;garageSubmitRelease=true;
             garageMessage=RecoveryGarageWorkflow.SetupLabel(saved,garageSetupIndex)+" fitted setup saved";Show("Garage");
         }
         private void ApplyGarageSetup(int index)
         {
             if(!CanTransactGarage)return;var saved=GarageSaved(index);if(saved?.Build==null)return;
             var build=saved.Build.Copy();build.Model=P.vehicle;build.Normalize(session.GarageCatalog,P.Owns);
-            session.ConsumeMenuInput();session.CommitGarage(build);garageActiveSetupName=saved.Name;garageDraft=P.Build(P.vehicle).Copy();garageSelected=garageDraft.Item(garageSlot,session.GarageCatalog);
+            PlayUi(RecoverySound.Fit);session.ConsumeMenuInput();session.CommitGarage(build);garageActiveSetupName=saved.Name;garageDraft=P.Build(P.vehicle).Copy();garageSelected=garageDraft.Item(garageSlot,session.GarageCatalog);
             garageMessage=RecoveryGarageWorkflow.SetupLabel(saved,index)+" setup fitted and saved";garageSubmitRelease=true;Show("Garage");
         }
         private void BuildGarageOverlay()

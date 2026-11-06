@@ -1,0 +1,1676 @@
+{
+  "frames": 737,
+  "stage": 17,
+  "checks": [
+    "Every runtime source routes to the mixer",
+    "Exactly one active local listener",
+    "Legacy engine sources disabled",
+    "Menu music is playing",
+    "Three waterfall anchors",
+    "Solo connected with local driver",
+    "Local idle engine plays in Solo",
+    "Absent crew vehicle stays silent",
+    "Exploration music replaces menu music",
+    "Real cable attached",
+    "Attach sound dispatched from world event",
+    "Real cable detached",
+    "Detach sound dispatched from world event",
+    "Cable reattached",
+    "Real physics shock broke the cable",
+    "Snap sound dispatched from physics event",
+    "Stalled winch motor sounds in telemetry fixture",
+    "Loaded motor slows down audibly",
+    "High load ducks music",
+    "Pause fades vehicle and winch loops out",
+    "UI feedback remains available while paused",
+    "Effects slider independently mutes mechanical loops",
+    "Music survives effects mute",
+    "Music and environment controls mute their own buses",
+    "Effects survive music and environment mute",
+    "Focus loss leaves no audible source",
+    "Focus restore resumes the motor",
+    "Audio settings at 130 percent have no overflowing text",
+    "All five audio sliders present"
+  ],
+  "failure": null,
+  "rows": [
+    {
+      "name": "menu",
+      "frame": 1494,
+      "phase": "Lobby",
+      "view": "Main",
+      "attached": false,
+      "audioRms": 0.013022185295993638,
+      "voices": [
+        {
+          "name": "One shot 0",
+          "clip": "open_001",
+          "isPlaying": false,
+          "volume": 0.154,
+          "pitch": 1.0,
+          "group": "UI"
+        },
+        {
+          "name": "One shot 1",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 2",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 3",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 4",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 5",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 6",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 7",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 8",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 9",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 10",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 11",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "Driver 0 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6006,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.858,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5148,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 0",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Driver 1 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5992896,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.856128,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5136768,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 1",
+          "clip": "Revelation",
+          "isPlaying": true,
+          "volume": 0.135,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Wind",
+          "clip": "Wind_1",
+          "isPlaying": true,
+          "volume": 0.07,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Birds",
+          "clip": "Birds_1",
+          "isPlaying": true,
+          "volume": 0.105000004,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Insects",
+          "clip": "Forest_Insects",
+          "isPlaying": true,
+          "volume": 0.0385,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Shore",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Waterfall",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Workshop",
+          "clip": "impactMetal_light_001",
+          "isPlaying": false,
+          "volume": 0.091,
+          "pitch": 1.0,
+          "group": "Ambience"
+        }
+      ]
+    },
+    {
+      "name": "explore",
+      "frame": 1670,
+      "phase": "Explore",
+      "view": "Gameplay",
+      "attached": false,
+      "audioRms": 0.023045935989758983,
+      "voices": [
+        {
+          "name": "One shot 0",
+          "clip": "open_001",
+          "isPlaying": false,
+          "volume": 0.154,
+          "pitch": 1.0,
+          "group": "UI"
+        },
+        {
+          "name": "One shot 1",
+          "clip": "close_001",
+          "isPlaying": false,
+          "volume": 0.154,
+          "pitch": 1.0,
+          "group": "UI"
+        },
+        {
+          "name": "One shot 2",
+          "clip": "Engine Start",
+          "isPlaying": false,
+          "volume": 0.168000013,
+          "pitch": 1.0,
+          "group": "Vehicles"
+        },
+        {
+          "name": "One shot 3",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 4",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 5",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 6",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 7",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 8",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 9",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 10",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 11",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "Driver 0 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": true,
+          "volume": 0.144000009,
+          "pitch": 0.603842437,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.000393025315,
+          "pitch": 0.8626321,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.517579257,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 0",
+          "clip": "Sunset Plains",
+          "isPlaying": true,
+          "volume": 0.120804578,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Driver 1 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5992896,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.856128,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5136768,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 1",
+          "clip": "Revelation",
+          "isPlaying": true,
+          "volume": 0.0141954254,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Wind",
+          "clip": "Wind_1",
+          "isPlaying": true,
+          "volume": 0.07,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Birds",
+          "clip": "Birds_1",
+          "isPlaying": true,
+          "volume": 0.105000004,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Insects",
+          "clip": "Forest_Insects",
+          "isPlaying": true,
+          "volume": 0.0385,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Shore",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Waterfall",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Workshop",
+          "clip": "impactMetal_light_001",
+          "isPlaying": false,
+          "volume": 0.091,
+          "pitch": 1.0,
+          "group": "Ambience"
+        }
+      ]
+    },
+    {
+      "name": "attach",
+      "frame": 1715,
+      "phase": "Recover",
+      "view": "Gameplay",
+      "attached": true,
+      "audioRms": 0.015958895459422716,
+      "voices": [
+        {
+          "name": "One shot 0",
+          "clip": "footstep_grass_001",
+          "isPlaying": true,
+          "volume": 0.0269909855,
+          "pitch": 0.7869017,
+          "group": "Vehicles"
+        },
+        {
+          "name": "One shot 1",
+          "clip": "metalLatch",
+          "isPlaying": true,
+          "volume": 0.4,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 2",
+          "clip": "Engine Start",
+          "isPlaying": false,
+          "volume": 0.168000013,
+          "pitch": 1.0,
+          "group": "Vehicles"
+        },
+        {
+          "name": "One shot 3",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 4",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 5",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 6",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 7",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 8",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 9",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 10",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 11",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "Driver 0 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": true,
+          "volume": 0.144000009,
+          "pitch": 0.605759442,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": true,
+          "volume": 0.000625388057,
+          "pitch": 0.865370631,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5192224,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 0",
+          "clip": "Sunset Plains",
+          "isPlaying": true,
+          "volume": 0.135,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Driver 1 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5992896,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.856128,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5136768,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 1",
+          "clip": "Revelation",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Wind",
+          "clip": "Wind_1",
+          "isPlaying": true,
+          "volume": 0.07,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Birds",
+          "clip": "Birds_1",
+          "isPlaying": true,
+          "volume": 0.105000004,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Insects",
+          "clip": "Forest_Insects",
+          "isPlaying": true,
+          "volume": 0.0385,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Shore",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Waterfall",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Workshop",
+          "clip": "impactMetal_light_001",
+          "isPlaying": false,
+          "volume": 0.091,
+          "pitch": 1.0,
+          "group": "Ambience"
+        }
+      ]
+    },
+    {
+      "name": "snap",
+      "frame": 1808,
+      "phase": "Recover",
+      "view": "Gameplay",
+      "attached": false,
+      "audioRms": 0.027348246095397891,
+      "voices": [
+        {
+          "name": "One shot 0",
+          "clip": "metalLatch",
+          "isPlaying": false,
+          "volume": 0.4,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 1",
+          "clip": "Cable Snap",
+          "isPlaying": true,
+          "volume": 0.464,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 2",
+          "clip": "Engine Start",
+          "isPlaying": false,
+          "volume": 0.168000013,
+          "pitch": 1.0,
+          "group": "Vehicles"
+        },
+        {
+          "name": "One shot 3",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 4",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 5",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 6",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 7",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 8",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 9",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 10",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 11",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "Driver 0 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": true,
+          "volume": 0.144000009,
+          "pitch": 0.6731625,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": true,
+          "volume": 0.008795458,
+          "pitch": 0.961660743,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.576996446,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 0",
+          "clip": "Sunset Plains",
+          "isPlaying": true,
+          "volume": 0.135,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Driver 1 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5992896,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.856128,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5136768,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 1",
+          "clip": "Revelation",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Wind",
+          "clip": "Wind_1",
+          "isPlaying": true,
+          "volume": 0.07,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Birds",
+          "clip": "Birds_1",
+          "isPlaying": true,
+          "volume": 0.105000004,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Insects",
+          "clip": "Forest_Insects",
+          "isPlaying": true,
+          "volume": 0.0385,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Shore",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Waterfall",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Workshop",
+          "clip": "impactMetal_light_001",
+          "isPlaying": false,
+          "volume": 0.091,
+          "pitch": 1.0,
+          "group": "Ambience"
+        }
+      ]
+    },
+    {
+      "name": "stall fixture",
+      "frame": 1868,
+      "phase": "Recover",
+      "view": "Gameplay",
+      "attached": true,
+      "audioRms": 0.02840574676881194,
+      "voices": [
+        {
+          "name": "One shot 0",
+          "clip": "Motor start",
+          "isPlaying": true,
+          "volume": 0.1664,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 1",
+          "clip": "winch - Marker #2",
+          "isPlaying": true,
+          "volume": 0.123428576,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 2",
+          "clip": "winch - Marker #2",
+          "isPlaying": true,
+          "volume": 0.123428576,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 3",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 4",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 5",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 6",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 7",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 8",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 9",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 10",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 11",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "Driver 0 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": true,
+          "volume": 0.144000009,
+          "pitch": 0.6006,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.858,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5148,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 winch",
+          "clip": "Motor loop",
+          "isPlaying": true,
+          "volume": 0.176000014,
+          "pitch": 0.55,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 0",
+          "clip": "Sunset Plains",
+          "isPlaying": true,
+          "volume": 0.05391904,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Driver 1 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5992896,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.856128,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5136768,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 1",
+          "clip": "Revelation",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Wind",
+          "clip": "Wind_1",
+          "isPlaying": true,
+          "volume": 0.07,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Birds",
+          "clip": "Birds_1",
+          "isPlaying": true,
+          "volume": 0.105000004,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Insects",
+          "clip": "Forest_Insects",
+          "isPlaying": true,
+          "volume": 0.0385,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Shore",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Waterfall",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Workshop",
+          "clip": "impactMetal_light_001",
+          "isPlaying": false,
+          "volume": 0.091,
+          "pitch": 1.0,
+          "group": "Ambience"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "frame": 1931,
+      "phase": "Recover",
+      "view": "Pause",
+      "attached": true,
+      "audioRms": 0.012133754990669498,
+      "voices": [
+        {
+          "name": "One shot 0",
+          "clip": "click_001",
+          "isPlaying": true,
+          "volume": 0.196,
+          "pitch": 1.0,
+          "group": "UI"
+        },
+        {
+          "name": "One shot 1",
+          "clip": "winch - Marker #2",
+          "isPlaying": true,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 2",
+          "clip": "winch - Marker #2",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 3",
+          "clip": "open_001",
+          "isPlaying": false,
+          "volume": 0.154,
+          "pitch": 1.0,
+          "group": "UI"
+        },
+        {
+          "name": "One shot 4",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 5",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 6",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 7",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 8",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 9",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 10",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 11",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "Driver 0 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6006,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.858,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5148,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.55,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 0",
+          "clip": "Sunset Plains",
+          "isPlaying": true,
+          "volume": 0.0877499953,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Driver 1 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5992896,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.856128,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5136768,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 1",
+          "clip": "Revelation",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Wind",
+          "clip": "Wind_1",
+          "isPlaying": true,
+          "volume": 0.035,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Birds",
+          "clip": "Birds_1",
+          "isPlaying": true,
+          "volume": 0.0525000021,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Insects",
+          "clip": "Forest_Insects",
+          "isPlaying": true,
+          "volume": 0.01925,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Shore",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Waterfall",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Workshop",
+          "clip": "impactMetal_light_001",
+          "isPlaying": false,
+          "volume": 0.0455,
+          "pitch": 1.0,
+          "group": "Ambience"
+        }
+      ]
+    },
+    {
+      "name": "settings 130 percent",
+      "frame": 2110,
+      "phase": "Recover",
+      "view": "Settings",
+      "attached": true,
+      "audioRms": 0.010584582808033679,
+      "voices": [
+        {
+          "name": "One shot 0",
+          "clip": "winch - Marker #2",
+          "isPlaying": true,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 1",
+          "clip": "Motor start",
+          "isPlaying": true,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 2",
+          "clip": "winch - Marker #3",
+          "isPlaying": true,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 3",
+          "clip": "winch - Marker #3",
+          "isPlaying": true,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 4",
+          "clip": "open_001",
+          "isPlaying": false,
+          "volume": 0.154,
+          "pitch": 1.0,
+          "group": "UI"
+        },
+        {
+          "name": "One shot 5",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 6",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 7",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 8",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 9",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 10",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "One shot 11",
+          "clip": null,
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Recovery"
+        },
+        {
+          "name": "Driver 0 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6006,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.858,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5148,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 0 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.55,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 0",
+          "clip": "Sunset Plains",
+          "isPlaying": true,
+          "volume": 0.07758164,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Driver 1 engine 0",
+          "clip": "Engine Idle",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5992896,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 1",
+          "clip": "Engine Drive",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.856128,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 engine 2",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.5136768,
+          "group": "Vehicles"
+        },
+        {
+          "name": "Driver 1 winch",
+          "clip": "Motor loop",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 0.6,
+          "group": "Recovery"
+        },
+        {
+          "name": "Music 1",
+          "clip": "Revelation",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Music"
+        },
+        {
+          "name": "Wind",
+          "clip": "Wind_1",
+          "isPlaying": true,
+          "volume": 0.035,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Birds",
+          "clip": "Birds_1",
+          "isPlaying": true,
+          "volume": 0.0525000021,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Insects",
+          "clip": "Forest_Insects",
+          "isPlaying": true,
+          "volume": 0.01925,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Shore",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Waterfall",
+          "clip": "Water_1",
+          "isPlaying": false,
+          "volume": 0.0,
+          "pitch": 1.0,
+          "group": "Ambience"
+        },
+        {
+          "name": "Workshop",
+          "clip": "impactMetal_light_001",
+          "isPlaying": false,
+          "volume": 0.0455,
+          "pitch": 1.0,
+          "group": "Ambience"
+        }
+      ]
+    }
+  ]
+}

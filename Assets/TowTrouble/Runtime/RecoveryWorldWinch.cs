@@ -4,6 +4,7 @@ namespace TowTrouble
 {
     public sealed partial class RecoveryWorld
     {
+        public bool ExternalAudio {get;set;}
         private readonly WinchFrame[] winchFrames = new WinchFrame[2];
         private readonly AudioSource[] winchAudio = new AudioSource[2];
         private AudioClip winchMotorClip;
@@ -18,7 +19,7 @@ namespace TowTrouble
 
         private void PresentWinches()
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying||ExternalAudio) return;
             for (int i=0;i<2;i++)
             {
                 var frame=winchFrames[i];

@@ -1,0 +1,2232 @@
+{
+  "status": "completed",
+  "duration": 0.89,
+  "summary": {
+    "total": 317,
+    "passed": 317,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.AShortMajorShockBreaksTheStarterInTheSameStep",
+      "Status": "Passed",
+      "Duration": 0.0116404,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.ContinuousFailureTimingIsStableAcrossPhysicsSteps",
+      "Status": "Passed",
+      "Duration": 0.0018003,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.GreaterExcessFailsFasterThanAMinorOverload",
+      "Status": "Passed",
+      "Duration": 0.0003084,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.LoadRampCannotHideTheRuptureDemand",
+      "Status": "Passed",
+      "Duration": 0.0004237,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.PhysicsForceCeilingDoesNotCapTheBreakingDemand",
+      "Status": "Passed",
+      "Duration": 0.0001563,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.RatedAndGentleLoadsDoNotBreakAnyCableTier",
+      "Status": "Passed",
+      "Duration": 0.000126,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.RepeatedShortPulsesAccumulateInsteadOfResettingTolerance",
+      "Status": "Passed",
+      "Duration": 6.07E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.SlackCableAtSpeedDoesNotAccumulateStress",
+      "Status": "Passed",
+      "Duration": 8.02E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.TheSameShockRewardsStrongerEquipment",
+      "Status": "Passed",
+      "Duration": 0.0001105,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.CableStressTests.UnloadingRelaxesStressGraduallyIncludingWhileDetached",
+      "Status": "Passed",
+      "Duration": 0.0008939,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.OpenWorldRulesTests.DeliveryRejectsWrongAltitudeAndAllowsElevatedBays",
+      "Status": "Passed",
+      "Duration": 0.0007545,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.OpenWorldRulesTests.ExtractionWorksAcrossTheWorldAxes",
+      "Status": "Passed",
+      "Duration": 0.0002118,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.OpenWorldRulesTests.SpecializedTiresKeepTheirTradeoffs",
+      "Status": "Passed",
+      "Duration": 0.186472,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.OpenWorldRulesTests.TierControlsRewardIndependentlyOfMapIndex",
+      "Status": "Passed",
+      "Duration": 0.0003948,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.OpenWorldRulesTests.WorldPayoutPreservesTutorialProgressAndDeduplicates",
+      "Status": "Passed",
+      "Duration": 0.0020557,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAssistanceTests.NewJobNoticeOnlyWhenAvailableSelectionActuallyGainsAnEntry",
+      "Status": "Passed",
+      "Duration": 0.0013519,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAssistanceTests.PreparationComparesRealSurfaceAndCableEquipment",
+      "Status": "Passed",
+      "Duration": 0.0003604,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAssistanceTests.PullingAdviceWaitsAndUsesObservedCause",
+      "Status": "Passed",
+      "Duration": 0.0002144,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAssistanceTests.SafePointDoesNotTreatParkingOrSlowProgressAsBeingTrapped",
+      "Status": "Passed",
+      "Duration": 8.89E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.AudioPreferencesMigrateWithUsefulDefaultsAndPreserveMute",
+      "Status": "Passed",
+      "Duration": 0.0007467,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.CosmeticCounterHandlesWrapWithoutReplayingOldEvents",
+      "Status": "Passed",
+      "Duration": 7.24E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.CriticalRecoveryFeedbackDucksMusicGently",
+      "Status": "Passed",
+      "Duration": 0.0001671,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.EnginePresentationStaysBoundedAcrossBodiesAndLoads",
+      "Status": "Passed",
+      "Duration": 0.0002354,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.InvalidAudioGainsCannotReachNativeAudioSources",
+      "Status": "Passed",
+      "Duration": 6.61E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.OnlyMotorStatesProduceContinuousWinchAudio(Disconnected,False)",
+      "Status": "Passed",
+      "Duration": 0.0008405,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.OnlyMotorStatesProduceContinuousWinchAudio(Holding,False)",
+      "Status": "Passed",
+      "Duration": 3.91E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.OnlyMotorStatesProduceContinuousWinchAudio(Minimum,False)",
+      "Status": "Passed",
+      "Duration": 4.3E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.OnlyMotorStatesProduceContinuousWinchAudio(Maximum,False)",
+      "Status": "Passed",
+      "Duration": 3.91E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.OnlyMotorStatesProduceContinuousWinchAudio(TakingUp,True)",
+      "Status": "Passed",
+      "Duration": 3.47E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.OnlyMotorStatesProduceContinuousWinchAudio(Pulling,True)",
+      "Status": "Passed",
+      "Duration": 4.5E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.OnlyMotorStatesProduceContinuousWinchAudio(PayingOut,True)",
+      "Status": "Passed",
+      "Duration": 3.37E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryAudioTests.OnlyMotorStatesProduceContinuousWinchAudio(Stalled,True)",
+      "Status": "Passed",
+      "Duration": 3.51E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBoardEntriesTests.CompletionMovesTheJobIntoHistoryAndFillsTheAvailableSlot",
+      "Status": "Passed",
+      "Duration": 0.005645,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBoardEntriesTests.FinalAvailableSlotsShrinkAndHistoryContainsEveryCompletedJob",
+      "Status": "Passed",
+      "Duration": 0.0007408,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBoardEntriesTests.NewProfileGetsOnlyTheFirstThreeJobsInAuthoredOrder",
+      "Status": "Passed",
+      "Duration": 8.4E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBoardEntriesTests.ReplayingACompletedJobStillPaysWithoutChangingTheAvailableQueue",
+      "Status": "Passed",
+      "Duration": 0.0002002,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBoardEntriesTests.TutorialCompletionDoesNotCompleteWorldJobs",
+      "Status": "Passed",
+      "Duration": 7.53E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBodyBalanceTests.BodyPricesHaveProgressionAndEqualProfilesHaveEqualPrices",
+      "Status": "Passed",
+      "Duration": 0.0029011,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBodyBalanceTests.CatalogOrderingRemainsAscendingAndNumericLevelsReadNaturally",
+      "Status": "Passed",
+      "Duration": 0.0008489,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBodyBalanceTests.CruisingCompensatesOrdinaryDragWithoutAddingRecoveryForce",
+      "Status": "Passed",
+      "Duration": 0.0007887,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBodyBalanceTests.EveryBodyAndWheelCombinationRespectsTheEightyKmhCeiling",
+      "Status": "Passed",
+      "Duration": 0.0081675,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBodyBalanceTests.RepricedBodiesPurchaseAndSellOnceWithoutChangingExistingOwnership",
+      "Status": "Passed",
+      "Duration": 0.0005227,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryBodyBalanceTests.StarterArchetypesUsePlayerBaselinesAndDistinctTravelSpeeds",
+      "Status": "Passed",
+      "Duration": 0.0006937,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay(0)",
+      "Status": "Passed",
+      "Duration": 0.0002639,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay(1)",
+      "Status": "Passed",
+      "Duration": 3.41E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay(2)",
+      "Status": "Passed",
+      "Duration": 2.91E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay(3)",
+      "Status": "Passed",
+      "Duration": 4.01E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay(4)",
+      "Status": "Passed",
+      "Duration": 2.56E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.CatalogueAndAuthoringSharePricesAndEngineTradeCannotCreateMoney",
+      "Status": "Passed",
+      "Duration": 0.0005807,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.IntroOrdersSixAccessibleJobsWithoutChangingCompletionIdsOrHistory",
+      "Status": "Passed",
+      "Duration": 0.0006401,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.NewJobsPayMoreThanReplaysWithoutAWaitingBonus",
+      "Status": "Passed",
+      "Duration": 0.0001186,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.TwoUncleanFirstJobsCanBuyFirstBodyAndMotorRemainsAnAffordableAlternative(0)",
+      "Status": "Passed",
+      "Duration": 0.0016583,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.TwoUncleanFirstJobsCanBuyFirstBodyAndMotorRemainsAnAffordableAlternative(1)",
+      "Status": "Passed",
+      "Duration": 8.31E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.TwoUncleanFirstJobsCanBuyFirstBodyAndMotorRemainsAnAffordableAlternative(2)",
+      "Status": "Passed",
+      "Duration": 7.55E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryCareerBalanceTests.TwoUncleanFirstJobsCanBuyFirstBodyAndMotorRemainsAnAffordableAlternative(3)",
+      "Status": "Passed",
+      "Duration": 7.18E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryDeliveryGuidanceTests.BayBoundaryAndWrongAltitudeNeverClaimDelivery",
+      "Status": "Passed",
+      "Duration": 0.0003524,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryDeliveryGuidanceTests.DeliveryInstructionsOnlyAppearInDeliveryPhase",
+      "Status": "Passed",
+      "Duration": 0.0001513,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryDeliveryGuidanceTests.NearbyDriverMustBringTheRecoveredCarIntoTheBay",
+      "Status": "Passed",
+      "Duration": 0.0001559,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryDeliveryGuidanceTests.ReadinessUsesRecoveredCarSpeedAndResetsWhenItMovesAgain",
+      "Status": "Passed",
+      "Duration": 0.0001071,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryDeliveryHighlightTests.ConfiguringAndDisablingOnlyHideTheHighlightRenderers",
+      "Status": "Passed",
+      "Duration": 0.0014211,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryDeliveryHighlightTests.WorkshopHighlightOnlyAppearsDuringDeliveryToThatBay",
+      "Status": "Passed",
+      "Duration": 0.0004229,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.AdviceAppearsOnlyWhenThePlayerCanCorrectThePull",
+      "Status": "Passed",
+      "Duration": 0.0001331,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.AirborneExitDoesNotReleaseOrApplyGroundResistance",
+      "Status": "Passed",
+      "Duration": 0.002109,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.AlternateGroundRoutesReleaseBothStandardAndTerrainAwareRecoveries",
+      "Status": "Passed",
+      "Duration": 0.0007164,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.AlternateMotionIsReportedAsMovingRatherThanStalled",
+      "Status": "Passed",
+      "Duration": 0.0001925,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.AReleasedCarStaysFreeWhenTurningOrReversingAndANewRunResets",
+      "Status": "Passed",
+      "Duration": 0.0002309,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.AStrongPullWithoutMovementDoesNotClaimTheCarIsMoving",
+      "Status": "Passed",
+      "Duration": 0.0001453,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.BeforeConnectionCrossingThePlaneCannotCompleteRecovery",
+      "Status": "Passed",
+      "Duration": 0.0001945,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.BodyCrossingBeforeTheBlockedWheelDoesNotRelease",
+      "Status": "Passed",
+      "Duration": 0.0001958,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.CableTakesLoadGraduallyButSlackDropsForceImmediately",
+      "Status": "Passed",
+      "Duration": 9.5E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.ForwardExitRequiresContactHoldThenSmoothlyRemovesResistance",
+      "Status": "Passed",
+      "Duration": 0.0005726,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.HoldingThrottleWithoutDisplacementNeverReleasesTheCar",
+      "Status": "Passed",
+      "Duration": 0.000433,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.LostSupportRestartsTheContactHold",
+      "Status": "Passed",
+      "Duration": 0.0001916,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.PartialProgressIsPositionBasedAndSurvivesDetaching",
+      "Status": "Passed",
+      "Duration": 0.0001408,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.PoorAngleNeedsMoreForceThanAnAlignedPull",
+      "Status": "Passed",
+      "Duration": 0.0001599,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.ReleaseParticlesRespectDisabledEffectsAndTheParticleBudget",
+      "Status": "Passed",
+      "Duration": 0.0001169,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.ResistanceAtRestNeverPullsTheCarBackOrExceedsTheAppliedPull",
+      "Status": "Passed",
+      "Duration": 0.0001437,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.RotatingTheWheelAcrossTheExitWithoutMovingTheBodyDoesNotRelease",
+      "Status": "Passed",
+      "Duration": 9.48E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryExtractionTests.VerticalTravelCannotReleaseTheCar",
+      "Status": "Passed",
+      "Duration": 0.0001409,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageCameraTests.BodyAndBumperReplacementsKeepTheMovingCameraNearTheCar",
+      "Status": "Passed",
+      "Duration": 0.3118029,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageCameraTests.EffectBoundsCannotResizeBodyOrAnyGarageSlot",
+      "Status": "Passed",
+      "Duration": 0.0063125,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageGridTests.CatalogRefreshKeepsBakedImagesWithoutTouchingPerformance",
+      "Status": "Passed",
+      "Duration": 0.0009249,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageGridTests.CosmeticsDoNotClaimHorsepowerAndTechnicalCardsDescribeTheirRealEffect",
+      "Status": "Passed",
+      "Duration": 0.0007743,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageGridTests.FocusScrollsInBothDirectionsAndClampsAtTheLastRow",
+      "Status": "Passed",
+      "Duration": 0.0001685,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageHandlingTests.AChosenBodyUsesItsOwnMassAndPowerOnEveryBaseVehicle",
+      "Status": "Passed",
+      "Duration": 0.0009848,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageHandlingTests.BodyEngineAndTransmissionComposeInEitherItemOrder",
+      "Status": "Passed",
+      "Duration": 0.0003048,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageHandlingTests.EveryBodyHasMassAndPullInformationAndFamiliesOfferDifferentTradeoffs",
+      "Status": "Passed",
+      "Duration": 0.0008519,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageHandlingTests.EveryWheelHasAHonestCardAndPositiveSurfaceResponse",
+      "Status": "Passed",
+      "Duration": 0.0026244,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageHandlingTests.RoadAndSnowTiresHaveDifferentRealTractionAndKeepTheirTradeoffs",
+      "Status": "Passed",
+      "Duration": 0.0002669,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageHandlingTests.SpecialistTireProgressionKeepsItsApprovedLimits",
+      "Status": "Passed",
+      "Duration": 0.0002286,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageHandlingTests.StockBodiesAndTiresKeepTheirOriginalVehicleBaselines",
+      "Status": "Passed",
+      "Duration": 0.0002619,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.CableTiersIncreaseInStrengthAndCostWithoutGivingFreeUpgrades",
+      "Status": "Passed",
+      "Duration": 0.0014233,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.CatalogIdsAreUniqueAndAssembliesHaveFourValidWheelAnchors",
+      "Status": "Passed",
+      "Duration": 0.000607,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.CompletionPaysOnceEvenAfterSerialization",
+      "Status": "Passed",
+      "Duration": 0.0002219,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.EngineUpgradeTradesInOldEngineWithoutLeavingDanglingPresets",
+      "Status": "Passed",
+      "Duration": 0.000489,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.FailedPurchaseDoesNotChangeInventoryOrBalance",
+      "Status": "Passed",
+      "Duration": 9.73E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.FirstCableUpgradeIsEarnedAfterOneStarterRecovery",
+      "Status": "Passed",
+      "Duration": 0.0002652,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.InvalidAndIncompatibleItemsAreNormalized",
+      "Status": "Passed",
+      "Duration": 0.0005404,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.LegacyProfileMigratesOnceAndPreservesProgressAndPaint",
+      "Status": "Passed",
+      "Duration": 0.0003638,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.LowRangeAndEngineRespectTheApprovedTradeoff",
+      "Status": "Passed",
+      "Duration": 0.0002284,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.MountedAndPresetPartsCannotBeSold",
+      "Status": "Passed",
+      "Duration": 0.0001536,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.NewProfileHasStockBuildAndNoDebt",
+      "Status": "Passed",
+      "Duration": 0.0001488,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.PresetsAndInventorySurviveSaveRoundTrip",
+      "Status": "Passed",
+      "Duration": 0.0001834,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.PreviewIsIndependentAndUnownedEquipmentIsRemovedBeforeCommit",
+      "Status": "Passed",
+      "Duration": 0.0001335,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.PurchasedStrongerCablesRemainEquippedAfterSaveRoundTrip",
+      "Status": "Passed",
+      "Duration": 0.0003772,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.PurchaseIsAffordableAndCannotBeChargedTwice",
+      "Status": "Passed",
+      "Duration": 0.0001015,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.SalePaysSeventyPercentOnlyOnce",
+      "Status": "Passed",
+      "Duration": 0.0001017,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageTests.UnsupportedSaveVersionIsRejected",
+      "Status": "Passed",
+      "Duration": 0.0004158,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.BodyLivesInTechAndCosmeticPartsDoNotClaimHandlingChanges",
+      "Status": "Passed",
+      "Duration": 0.000642,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.BodyReplacementListsPaidIncompatiblePartsAndDoesNotRemoveOwnership",
+      "Status": "Passed",
+      "Duration": 0.0006454,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.DuplicateBodyNamesHaveUnderstandableVisualVariantLabels",
+      "Status": "Passed",
+      "Duration": 0.0002953,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.FittingAnOwnedPartIsFreeAndStatesDistinguishEquippedFromOwned",
+      "Status": "Passed",
+      "Duration": 0.0003209,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.ForceRecommendationDoesNotRepeatAnEquippedUpgrade",
+      "Status": "Passed",
+      "Duration": 0.0033595,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.InsufficientFundsAndAlreadyEquippedPartsCannotChargeTheProfile",
+      "Status": "Passed",
+      "Duration": 0.0001492,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.NamedSetupsRemainCompatibleWithLegacyKeysAndProtectReferencedParts",
+      "Status": "Passed",
+      "Duration": 0.0004217,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.PreviewNeverSpendsOrAccumulatesAnUnboughtEarlierPart",
+      "Status": "Passed",
+      "Duration": 0.0002432,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.PurchaseOnlyFitsTheChosenPartAndKeepsFittedEquipment",
+      "Status": "Passed",
+      "Duration": 0.0002496,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.SurfaceRecommendationPrefersASuitableOwnedTire",
+      "Status": "Passed",
+      "Duration": 0.0014538,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.ThreeColumnNavigationStopsAtRowsAndPreservesColumns",
+      "Status": "Passed",
+      "Duration": 0.0001873,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGarageWorkflowTests.TireFiltersAndRecommendationsUseActualSurfaceStats",
+      "Status": "Passed",
+      "Duration": 0.0011301,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGroundMapTests.MissingMapSafelyUsesDryGroundAndInvalidDimensionsAreRejected",
+      "Status": "Passed",
+      "Duration": 0.000417,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGroundMapTests.WheelCoverageStaysInsideRoadMaskAndWorldBounds",
+      "Status": "Passed",
+      "Duration": 0.0003157,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryGroundMapTests.WorldCoordinatesSelectThePaintedSurfaceAndClampAtBoundary",
+      "Status": "Passed",
+      "Duration": 0.0001866,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.AttachDetachAndSnapHaveDifferentShortSignals",
+      "Status": "Passed",
+      "Duration": 0.0012474,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.CableBreakSurvivesAMissedDisconnectedSnapshotAndBeatsCollision",
+      "Status": "Passed",
+      "Duration": 0.0001116,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.DisablingInputOnAConnectedPadAlsoStopsItsMotors",
+      "Status": "Passed",
+      "Duration": 0.0040873,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.ExtractionSuccessIsFeltOnlyByAnAttachedDriverAndOnlyOnce",
+      "Status": "Passed",
+      "Duration": 0.0001733,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.HardwareAdapterStopsOldDeviceAndBypassesThrottleForSilence",
+      "Status": "Passed",
+      "Duration": 0.000891,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.IntensityIsLinearAndEverySignalStaysWithinTheChillCeiling",
+      "Status": "Passed",
+      "Duration": 0.0007631,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.InvalidIntensityCannotReachAHardwareMotor(float.NaN)",
+      "Status": "Passed",
+      "Duration": 0.0001372,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.InvalidIntensityCannotReachAHardwareMotor(float.PositiveInfinity)",
+      "Status": "Passed",
+      "Duration": 2.14E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.InvalidIntensityCannotReachAHardwareMotor(-1)",
+      "Status": "Passed",
+      "Duration": 1.93E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.LocalSlotDoesNotFeelItsTeammatesCableBreak",
+      "Status": "Passed",
+      "Duration": 0.0001719,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.MotorHoldingPullingAndStallingAreDistinct",
+      "Status": "Passed",
+      "Duration": 0.0002226,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.OldEventsAreNotPlayedOnLateJoinOrMissionChange",
+      "Status": "Passed",
+      "Duration": 0.0001036,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.OrdinaryDrivingAndSlackCableStaySilent",
+      "Status": "Passed",
+      "Duration": 0.0001048,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.PauseDisabledVibrationAndDeviceChangeDiscardPendingPulses",
+      "Status": "Passed",
+      "Duration": 0.0001948,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.ResettingOutputResendsAnUnchangedLoadOnTheSameReconnectedDevice",
+      "Status": "Passed",
+      "Duration": 0.0006443,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.ResettingVehicleDoesNotPlayTeleportImpacts",
+      "Status": "Passed",
+      "Duration": 7.09E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.SmallRoadContactsAreFiltered(2.0f,10.0f,0.0f)",
+      "Status": "Passed",
+      "Duration": 0.0001001,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.SmallRoadContactsAreFiltered(10.0f,0.1f,0.0f)",
+      "Status": "Passed",
+      "Duration": 1.66E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.SmallRoadContactsAreFiltered(10.0f,3.0f,1.0f)",
+      "Status": "Passed",
+      "Duration": 1.79E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.SnapshotOrderingRejectsDuplicatesAndOlderPacketsAcrossWrap",
+      "Status": "Passed",
+      "Duration": 0.0001033,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.TensionBuildsGraduallyAndPaysOutSmoothly",
+      "Status": "Passed",
+      "Duration": 0.000172,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryHapticsTests.VibrationIntensityMigratesAndSurvivesPreferenceCopies",
+      "Status": "Passed",
+      "Duration": 0.0001934,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.ConfirmAndCancelMatchEachDevicesPrintedButtons(\"Microsoft\",False,\"A\",\"B\",\"LB\",\"RB\")",
+      "Status": "Passed",
+      "Duration": 0.0021822,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.ConfirmAndCancelMatchEachDevicesPrintedButtons(\"Sony\",False,\"Cross\",\"Circle\",\"L1\",\"R1\")",
+      "Status": "Passed",
+      "Duration": 0.0005011,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.ConfirmAndCancelMatchEachDevicesPrintedButtons(\"Nintendo\",True,\"A\",\"B\",\"L\",\"R\")",
+      "Status": "Passed",
+      "Duration": 0.0004789,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.DeviceIdentitySelectsThePromptFamily(\"XInputController\",\"Microsoft\",\"\",Xbox)",
+      "Status": "Passed",
+      "Duration": 0.0002199,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.DeviceIdentitySelectsThePromptFamily(\"DualShock4GamepadHID\",\"\",\"\",PlayStation)",
+      "Status": "Passed",
+      "Duration": 3.05E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.DeviceIdentitySelectsThePromptFamily(\"DualSenseGamepadHID\",\"Sony\",\"Wireless Controller\",PlayStation)",
+      "Status": "Passed",
+      "Duration": 3.25E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.DeviceIdentitySelectsThePromptFamily(\"SwitchProControllerHID\",\"\",\"\",Nintendo)",
+      "Status": "Passed",
+      "Duration": 3.44E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.DeviceIdentitySelectsThePromptFamily(\"Gamepad\",\"Nintendo\",\"Pro Controller\",Nintendo)",
+      "Status": "Passed",
+      "Duration": 3.13E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.DeviceIdentitySelectsThePromptFamily(\"Gamepad\",\"\",\"Unknown\",Xbox)",
+      "Status": "Passed",
+      "Duration": 3.14E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.GarageAuxiliaryActionsHaveMatchingPlatformLabels(Xbox,\"X\",\"Y\",\"Menu\",\"View\",\"LT/RT\",\"RS\")",
+      "Status": "Passed",
+      "Duration": 0.0002279,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.GarageAuxiliaryActionsHaveMatchingPlatformLabels(PlayStation,\"Square\",\"Triangle\",\"Options\",\"Share\",\"L2/R2\",\"R3\")",
+      "Status": "Passed",
+      "Duration": 3.56E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryInputPromptsTests.GarageAuxiliaryActionsHaveMatchingPlatformLabels(Nintendo,\"Y\",\"X\",\"+\",\"-\",\"ZL/ZR\",\"R-stick\")",
+      "Status": "Passed",
+      "Duration": 2.96E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.ActualSlopeHelpsDownhillAndCostsForceUphill",
+      "Status": "Passed",
+      "Duration": 0.0004428,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.BurialLipChassisDamageAndRetainedWaterEachAddLoad",
+      "Status": "Passed",
+      "Duration": 0.000371,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.EnginePowerCannotExceedGroundGripAndSlopeConsumesDrawbar",
+      "Status": "Passed",
+      "Duration": 0.0001725,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.LargerWheelsReduceTheSameRutAndLipLoad",
+      "Status": "Passed",
+      "Duration": 6.05E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.MapCarriesMassAndSoilSettingsWhileTutorialMassStaysLegacy",
+      "Status": "Passed",
+      "Duration": 0.0006834,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.SoftGroundTracksFollowTheVisibleSkinAboveTheirSupportBed",
+      "Status": "Passed",
+      "Duration": 0.0009548,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.StockCableShocksCannotBuildHardMissionLoadThroughLoadSmoothing",
+      "Status": "Passed",
+      "Duration": 0.0003753,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.TerrainAwareLoadHoldsGravityWithoutInventingAnUpwardLaunch",
+      "Status": "Passed",
+      "Duration": 0.0003188,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.TerrainAwarePocketDoesNotLoseItsLoadAfterATinyJerk",
+      "Status": "Passed",
+      "Duration": 0.0001355,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryLoadTests.TwiceTheMassRequiresTwiceTheGroundForce",
+      "Status": "Passed",
+      "Duration": 7.74E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.CurrentAndUnusedBindingsAreAccepted",
+      "Status": "Passed",
+      "Duration": 0.0002254,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.DuplicateBindingExplainsTheExistingAction",
+      "Status": "Passed",
+      "Duration": 4.85E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.FirstRunStillGrantsExactlyOneStarter",
+      "Status": "Passed",
+      "Duration": 8.67E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.ProgressResetKeepsPreferencesButRemovesEveryCareerReceipt",
+      "Status": "Passed",
+      "Duration": 0.0009775,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.RefreshRatesDoNotDuplicateOrTrapResolutionSelection",
+      "Status": "Passed",
+      "Duration": 0.0026466,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.ReservedControlsAreRejected(Escape)",
+      "Status": "Passed",
+      "Duration": 0.0001035,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.ReservedControlsAreRejected(Enter)",
+      "Status": "Passed",
+      "Duration": 4.52E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.ReservedControlsAreRejected(NumpadEnter)",
+      "Status": "Passed",
+      "Duration": 3.51E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.ReservedControlsAreRejected(C)",
+      "Status": "Passed",
+      "Duration": 3.89E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.ReservedControlsAreRejected(UpArrow)",
+      "Status": "Passed",
+      "Duration": 3.56E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.ReservedControlsAreRejected(None)",
+      "Status": "Passed",
+      "Duration": 3.52E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryMenuSettingsTests.TrainingProfileCannotPersist",
+      "Status": "Passed",
+      "Duration": 0.0007676,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.AtlasCoversAllBodyMaterialsAndPreservesUnknownTextures",
+      "Status": "Passed",
+      "Duration": 0.0040449,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.EveryFinishLeavesVehiclePerformanceUnchanged",
+      "Status": "Passed",
+      "Duration": 0.0029176,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.ExplicitStockBeatsLegacyFallbackAndMissingPaintUsesFallback",
+      "Status": "Passed",
+      "Duration": 0.0001031,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.LegacyGlobalFinishIsRecoveredOnceWithoutChangingMoneyOrProgress",
+      "Status": "Passed",
+      "Duration": 0.0003097,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.MigrationDoesNotReplaceAnExplicitFittedFinish",
+      "Status": "Passed",
+      "Duration": 0.0001567,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.PaintMaskExcludesTrimRowsAndOtherPaletteColumns",
+      "Status": "Passed",
+      "Duration": 0.000102,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.PreviewPurchaseRefitAndSavedSetupsKeepSeparateFinishes",
+      "Status": "Passed",
+      "Duration": 0.0004675,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(0,0)",
+      "Status": "Passed",
+      "Duration": 0.0003294,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(0,1)",
+      "Status": "Passed",
+      "Duration": 8.43E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(0,2)",
+      "Status": "Passed",
+      "Duration": 8.16E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(0,3)",
+      "Status": "Passed",
+      "Duration": 7.45E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(1,0)",
+      "Status": "Passed",
+      "Duration": 7.81E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(1,1)",
+      "Status": "Passed",
+      "Duration": 7.38E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(1,2)",
+      "Status": "Passed",
+      "Duration": 7.62E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(1,3)",
+      "Status": "Passed",
+      "Duration": 7.48E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(2,0)",
+      "Status": "Passed",
+      "Duration": 8.05E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(2,1)",
+      "Status": "Passed",
+      "Duration": 7.95E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(2,2)",
+      "Status": "Passed",
+      "Duration": 8.7E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(2,3)",
+      "Status": "Passed",
+      "Duration": 8.15E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(3,0)",
+      "Status": "Passed",
+      "Duration": 7.84E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(3,1)",
+      "Status": "Passed",
+      "Duration": 7.68E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(3,2)",
+      "Status": "Passed",
+      "Duration": 7.21E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPaintTests.StarterFinishIsFreeFittedOwnedAndPersistent(3,3)",
+      "Status": "Passed",
+      "Duration": 7.06E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryProfileTests.CableControlMigrationPreservesCustomAndLaterReboundKeys",
+      "Status": "Passed",
+      "Duration": 0.0001151,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryProfileTests.CableControlsSwapForNewAndLegacyDefaultProfiles",
+      "Status": "Passed",
+      "Duration": 0.0001127,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryProfileTests.CompletingTutorialUnlocksDitchWithoutRequiringDuo",
+      "Status": "Passed",
+      "Duration": 6.75E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryProfileTests.FirstThreeContractsHaveDifferentConditionsAndDeliveryLocations",
+      "Status": "Passed",
+      "Duration": 0.0001403,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryProfileTests.InvalidSavedKeyCannotIndexOutsideTheKeyboard",
+      "Status": "Passed",
+      "Duration": 0.0006206,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryProfileTests.ProfileSurvivesSerializationWithBindingsAndAccessibility",
+      "Status": "Passed",
+      "Duration": 0.0001492,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryProfileTests.ProgressionStartsWithOnlyTutorialUnlocked",
+      "Status": "Passed",
+      "Duration": 8.06E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPromptGlyphTests.AHintUsesOnlyItsControllersIconFamily(Xbox,\"A\",\"Xbox_A\")",
+      "Status": "Passed",
+      "Duration": 0.0067399,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPromptGlyphTests.AHintUsesOnlyItsControllersIconFamily(PlayStation,\"Cross\",\"PS_Cross\")",
+      "Status": "Passed",
+      "Duration": 4.49E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPromptGlyphTests.AHintUsesOnlyItsControllersIconFamily(Nintendo,\"A\",\"Nintendo_A\")",
+      "Status": "Passed",
+      "Duration": 3.2E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPromptGlyphTests.AtlasContainsEveryKeyboardLetterAndEveryMenuControllerAction",
+      "Status": "Passed",
+      "Duration": 0.000393,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPromptGlyphTests.KeyboardCapsPreserveCaptionsAndCustomBindings",
+      "Status": "Passed",
+      "Duration": 0.0001286,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPromptGlyphTests.KnownDeviceIdentityWinsOverAnOldManualPromptPreference",
+      "Status": "Passed",
+      "Duration": 0.0013091,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryPromptGlyphTests.SwitchingInputIgnoresStationaryStickStateAndHandlesDisconnect",
+      "Status": "Passed",
+      "Duration": 0.0042278,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryReconnectGuidanceTests.DroppingCableAtDestinationKeepsDeliveryInstructions",
+      "Status": "Passed",
+      "Duration": 0.0001395,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryReconnectGuidanceTests.LostVehicleReturnsThenReconnectsThenResumesDelivery",
+      "Status": "Passed",
+      "Duration": 4.5E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryReconnectGuidanceTests.ReconnectOnlyWhenDeliveryHasNoCableAndVehicleIsOutsideDropOff",
+      "Status": "Passed",
+      "Duration": 7.6E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRoadNetworkTests.CrossingsWithoutAJunctionDoNotCreateShortcuts",
+      "Status": "Passed",
+      "Duration": 0.0027397,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRoadNetworkTests.OneRoadProjectsToAccessPointsWithoutOvershooting",
+      "Status": "Passed",
+      "Duration": 0.0005185,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRoadNetworkTests.ReconfiguringTheMapRebuildsRoutesAfterAnAuthoredApproachChanges",
+      "Status": "Passed",
+      "Duration": 0.0033307,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRoadNetworkTests.SwitchbackKeepsDriversOnConnectedRoadsInEitherDirection",
+      "Status": "Passed",
+      "Duration": 0.000304,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRulesTests.ClosingCableCannotProduceNegativeTension",
+      "Status": "Passed",
+      "Duration": 5.5E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRulesTests.DeliveryIgnoresSuspensionHeight",
+      "Status": "Passed",
+      "Duration": 0.0001197,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRulesTests.DeliveryRequiresTheCasualtyInsideTheBayAndSlow",
+      "Status": "Passed",
+      "Duration": 0.0001047,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRulesTests.SlackCableNeverPushesTheVehiclesApart",
+      "Status": "Passed",
+      "Duration": 4.29E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryRulesTests.StretchedCableProducesTensionAndDampsSeparation",
+      "Status": "Passed",
+      "Duration": 6.22E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.ChecksumDetectsValidJsonWithChangedPayload",
+      "Status": "Passed",
+      "Duration": 0.0053693,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.CorruptOrNewerSaveIsNeverOverwrittenWithDefaults",
+      "Status": "Passed",
+      "Duration": 0.000876,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.InvalidPrimaryRecoversLastValidBackup",
+      "Status": "Passed",
+      "Duration": 0.000227,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.LocalHostAndClientHaveIndependentCareersAndRewardReceipts",
+      "Status": "Passed",
+      "Duration": 0.000811,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.NativeFileWritesKeepReloadablePreviousRevision",
+      "Status": "Passed",
+      "Duration": 0.0026247,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.NewSaveRoundTripsCareerPreferencesAndHostAddress",
+      "Status": "Passed",
+      "Duration": 0.0001436,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.OriginalImportedSaveRetainsUnknownDataWhenExtended",
+      "Status": "Passed",
+      "Duration": 0.0104074,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.ValidationProfileNeverTouchesCareerDocument",
+      "Status": "Passed",
+      "Duration": 0.000188,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySaveStoreTests.WriteFailureKeepsLatestProgressPendingForRetry",
+      "Status": "Passed",
+      "Duration": 0.0002732,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryScenarioTests.FallenTreeMustMoveAsideBeforeCarRecovery",
+      "Status": "Passed",
+      "Duration": 0.0001961,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryScenarioTests.FallenTreeResetRestoresItsAuthoredPoseWithoutSimulation",
+      "Status": "Passed",
+      "Duration": 0.0004193,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryScenarioTests.OpenWorldExtractionAcceptsAlternativeGroundRoutes",
+      "Status": "Passed",
+      "Duration": 0.0002026,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySituationTests.EngineSmokeOnlyRunsForAnActiveFailedEngine",
+      "Status": "Passed",
+      "Duration": 0.0002326,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySituationTests.EngineSmokeRespectsDisabledAndClampedEffectsGain",
+      "Status": "Passed",
+      "Duration": 8.55E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySituationTests.ReconfiguringASiteInvalidatesItsContractPresentation",
+      "Status": "Passed",
+      "Duration": 0.0003664,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySituationTests.SituationMetadataPreservesContractProgressRewardsAndDelivery",
+      "Status": "Passed",
+      "Duration": 0.0008236,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.AppropriateTiresHelpWithoutRemovingResistance",
+      "Status": "Passed",
+      "Duration": 0.0001039,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.CoatingCleansGraduallyAndNeverGoesNegative",
+      "Status": "Passed",
+      "Duration": 9.46E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.FirmGroundDoesNotGainSoftDrag",
+      "Status": "Passed",
+      "Duration": 4.69E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.PausedCoatingDoesNotDecay",
+      "Status": "Passed",
+      "Duration": 4.31E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.ResistanceOpposesGroundMotionWithoutDownwardSuction",
+      "Status": "Passed",
+      "Duration": 0.0001872,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.SandResistsTravelAndDeepFieldsAreHeavier",
+      "Status": "Passed",
+      "Duration": 5.07E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.SnowResistsTravelAndDeepFieldsAreHeavier",
+      "Status": "Passed",
+      "Duration": 5.47E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.StoppedVehicleHasNoArtificialHoldingForce",
+      "Status": "Passed",
+      "Duration": 5.64E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoverySoftGroundTests.SurfaceDepthIsClamped",
+      "Status": "Passed",
+      "Duration": 4.73E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.AnUnusedLegacyScoutProfileStillGetsItsFirstChoice",
+      "Status": "Passed",
+      "Duration": 0.0001335,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.CurrentProfilesCannotSelectAnUnownedVehicleThroughSavedIndex",
+      "Status": "Passed",
+      "Duration": 7.1E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.EveryPaidBodyHasMoreBasePullThanEveryStarter",
+      "Status": "Passed",
+      "Duration": 0.0009246,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.FirstChoiceGrantsExactlyTheSelectedStarterOnce(0)",
+      "Status": "Passed",
+      "Duration": 0.0002071,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.FirstChoiceGrantsExactlyTheSelectedStarterOnce(1)",
+      "Status": "Passed",
+      "Duration": 6.44E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.FirstChoiceGrantsExactlyTheSelectedStarterOnce(2)",
+      "Status": "Passed",
+      "Duration": 4.96E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.FirstChoiceGrantsExactlyTheSelectedStarterOnce(3)",
+      "Status": "Passed",
+      "Duration": 4.79E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.FirstPayoutBuysLightCableButCannotSkipStraightToStandard",
+      "Status": "Passed",
+      "Duration": 0.0001411,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.FourCleanEarlyJobsCanFundTheCableAndEnginePathWithoutSellingParts",
+      "Status": "Passed",
+      "Duration": 0.0002555,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.LegacyMigrationKeepsActiveRideEquipmentAndMoneyWithoutGrantingOtherModels",
+      "Status": "Passed",
+      "Duration": 0.0002468,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.LegacyMigrationPreservesVehiclesWithInvestedEquipmentOrSavedSetups",
+      "Status": "Passed",
+      "Duration": 0.0001567,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.MudCollisionMeshProvidesTheRenderedUvForWheelStamps",
+      "Status": "Passed",
+      "Duration": 0.0195362,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.OtherStarterVariantsArePaidIncludingScoutWhenRangerWasChosen",
+      "Status": "Passed",
+      "Duration": 0.0006733,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryStarterProgressionTests.UnchosenProfilesAndInsufficientFundsCannotBuyVehicles",
+      "Status": "Passed",
+      "Duration": 0.0001163,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTargetVehicleTests.ExistingSitesDefaultToTheOriginalVehicle",
+      "Status": "Passed",
+      "Duration": 0.0001079,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTargetVehicleTests.MapContractsCarryTargetModelAndPaintWithoutChangingProgression",
+      "Status": "Passed",
+      "Duration": 0.000347,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTargetVehicleTests.ReconfiguredMapRefreshesTheTargetAppearance",
+      "Status": "Passed",
+      "Duration": 0.0001887,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTargetVehicleTests.TutorialContractsKeepTheirOriginalVehicle",
+      "Status": "Passed",
+      "Duration": 7.75E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTrackSurfaceTests.HardAndWoodHaveNoRutRelief",
+      "Status": "Passed",
+      "Duration": 0.0001733,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTrackSurfaceTests.PaintProducesDistinctTracksWithoutChangingGrip",
+      "Status": "Passed",
+      "Duration": 0.0010189,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTrackSurfaceTests.TerrainHolesAndOutsideBoundsRejectProjection",
+      "Status": "Passed",
+      "Duration": 0.0053321,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTrackSurfaceTests.TracksStayOnTiltedDeckAndStopAtItsEdge",
+      "Status": "Passed",
+      "Duration": 0.0006921,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTrackSurfaceTests.VisualBoundaryBlendsContinuouslyAndPreservesTraction",
+      "Status": "Passed",
+      "Duration": 0.0008177,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryTrackSurfaceTests.WoodUsesOverrideAndLivingMudIsNotDoubleStamped",
+      "Status": "Passed",
+      "Duration": 0.0010912,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleEffectsTests.BrakeSignalsDistinguishBrakingFromSteadyReverse",
+      "Status": "Passed",
+      "Duration": 0.0001858,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleEffectsTests.BrakingAtlasOnlyChangesTheNativeRearLampCells",
+      "Status": "Passed",
+      "Duration": 0.0361775,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleEffectsTests.EffectsRebindToVisiblePipesAndDoNotAccumulateOnModelChanges",
+      "Status": "Passed",
+      "Duration": 0.0071082,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleEffectsTests.ExhaustStopsWithEngineAndSharesABoundedEmissionBudget",
+      "Status": "Passed",
+      "Duration": 0.0001857,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleEffectsTests.RemoteSignalsSurviveSnapshotsAndResetWithoutPhysics",
+      "Status": "Passed",
+      "Duration": 0.0030298,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleInitializationTests.DelayedAwakeDoesNotRebuildGeometryOrReplaceSpawn",
+      "Status": "Passed",
+      "Duration": 0.0071268,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleInitializationTests.InactiveTargetCanBeSpawnedBeforeAwake",
+      "Status": "Passed",
+      "Duration": 0.0031031,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleInitializationTests.InitializingSimulationBeforeSpawnKeepsLaterResetPosition",
+      "Status": "Passed",
+      "Duration": 0.0019881,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleInitializationTests.RepeatedSpawnsDoNotRepeatInitialization",
+      "Status": "Passed",
+      "Duration": 0.0020741,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryVehicleInitializationTests.ResetBeforeAwakeHasAValidBodyAndSafePosition",
+      "Status": "Passed",
+      "Duration": 0.0018321,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWaypointProjectionTests.OnScreenTargetStaysOnItsProjectedLocation",
+      "Status": "Passed",
+      "Duration": 0.0004677,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWaypointProjectionTests.RearRightTargetKeepsItsTrueSideDespiteMirroredProjection",
+      "Status": "Passed",
+      "Duration": 0.0002498,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWaypointProjectionTests.TargetAboveTopHudKeepsItsBadgeBelowTheObjective",
+      "Status": "Passed",
+      "Duration": 0.0001191,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWaypointProjectionTests.TargetDirectlyBehindProducesADownArrow",
+      "Status": "Passed",
+      "Duration": 0.0001349,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelPoseTests.ModelChangesResetsAndRemoteTeleportsDiscardOldWheelSamples",
+      "Status": "Passed",
+      "Duration": 0.0034153,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelPoseTests.RollingDoesNotChangeTheSteeredAxle",
+      "Status": "Passed",
+      "Duration": 0.0005328,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelPoseTests.SlopedContactsCannotPushHubSideways",
+      "Status": "Passed",
+      "Duration": 0.0003778,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelPoseTests.SuspensionAndInterpolationStayWithinTheirLimits",
+      "Status": "Passed",
+      "Duration": 0.0001472,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelPoseTests.WheelsFollowInterpolatedChassisBetweenPhysicsTicks(30)",
+      "Status": "Passed",
+      "Duration": 0.0008604,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelPoseTests.WheelsFollowInterpolatedChassisBetweenPhysicsTicks(60)",
+      "Status": "Passed",
+      "Duration": 0.0005067,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelPoseTests.WheelsFollowInterpolatedChassisBetweenPhysicsTicks(144)",
+      "Status": "Passed",
+      "Duration": 0.001216,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelTracksTests.StationaryWheelsDoNotAllocateRepeatedGeometry",
+      "Status": "Passed",
+      "Duration": 0.0002123,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWheelTracksTests.WheelImpressionsBlendSurfacesButBreakAtTeleports",
+      "Status": "Passed",
+      "Duration": 0.0001745,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.AReleasedTargetRestartsTheMotorGradually",
+      "Status": "Passed",
+      "Duration": 0.0005076,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.BrakeSupportUsesTheExistingSharedTireGripLimit",
+      "Status": "Passed",
+      "Duration": 0.0003084,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.ClosingSpeedCannotHideExcessiveMotorStretch",
+      "Status": "Passed",
+      "Duration": 0.0001733,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.ExistingOverloadIsNeverReleasedAutomatically",
+      "Status": "Passed",
+      "Duration": 0.0001059,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.ExternalShockStillBreaksBeforeAnyMotorForceCap",
+      "Status": "Passed",
+      "Duration": 0.000104,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.HudDistinguishesStalledMotorFromCableFailureInBothLanguages",
+      "Status": "Passed",
+      "Duration": 0.000147,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.ImmovableTargetStallsStockInsteadOfBreakingStarterCable",
+      "Status": "Passed",
+      "Duration": 0.0031217,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.MinimumLengthStopsTheMotorAndBothCommandsCancel",
+      "Status": "Passed",
+      "Duration": 0.0001199,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.PayingOutRelievesLoadAndRespectsMaximumLength",
+      "Status": "Passed",
+      "Duration": 0.0001521,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.ReleasingTheButtonHoldsLengthAndDoesNotEraseTension",
+      "Status": "Passed",
+      "Duration": 0.0001001,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.SlowsUnderLoadComparedWithAnUnloadedDrum",
+      "Status": "Passed",
+      "Duration": 0.0001263,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.StrongerWinchRequiresAMatchingCable",
+      "Status": "Passed",
+      "Duration": 0.0001059,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.TakesUpSlackWithoutPullingTheTarget",
+      "Status": "Passed",
+      "Duration": 0.0001025,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.TransitionFromSlackCannotWindPastTheForceBudget",
+      "Status": "Passed",
+      "Duration": 8.3E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.UnownedWinchDoesNotGrantFreePerformance",
+      "Status": "Passed",
+      "Duration": 0.0002098,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.WinchCatalogKeepsTwoStableTiersAndExistingOwnership",
+      "Status": "Passed",
+      "Duration": 0.0004056,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "TowTrouble.Tests.RecoveryWinchTests.ZeroTimeDoesNotWindOrPayOut",
+      "Status": "Passed",
+      "Duration": 6.81E-05,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

@@ -79,6 +79,8 @@ namespace TowTrouble
         private readonly SyncVar<bool> cooperative=new SyncVar<bool>();
         private readonly SyncVar<int> signal0=new SyncVar<int>();
         private readonly SyncVar<int> signal1=new SyncVar<int>();
+        private readonly SyncVar<uint> signalSerial0=new SyncVar<uint>(),signalSerial1=new SyncVar<uint>();
+        public uint SignalSerial(int slot)=>slot==0?signalSerial0.Value:signalSerial1.Value;
         private readonly bool[] extending=new bool[2];
         private readonly int[] resets=new int[2];
         private readonly float[] pullSeconds=new float[2];
@@ -236,7 +238,7 @@ namespace TowTrouble
         [ServerRpc(RequireOwnership=false)]
         public void SendSignal(int value,NetworkConnection sender=null)
         {
-            int slot=sender==null?-1:Slot(sender.ClientId);if(slot<0)return;value=Mathf.Clamp(value,1,3);if(slot==0)signal0.Value=value;else signal1.Value=value;
+            int slot=sender==null?-1:Slot(sender.ClientId);if(slot<0)return;value=Mathf.Clamp(value,1,3);if(slot==0){signal0.Value=value;signalSerial0.Value=unchecked(signalSerial0.Value+1);}else{signal1.Value=value;signalSerial1.Value=unchecked(signalSerial1.Value+1);}
         }
         private void ApplyContract()
         {

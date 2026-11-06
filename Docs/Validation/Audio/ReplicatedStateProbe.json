@@ -1,0 +1,19 @@
+{
+  "stage": 10,
+  "frames": 247,
+  "checks": [
+    "New run / initial replicated counters do not replay historical events",
+    "Second driver event is presented locally in replicated-state fixture",
+    "Crew cable sound is spatially anchored to that vehicle",
+    "First crew signal plays",
+    "Repeated same crew signal still plays via serial counter",
+    "Extraction release cue responds to delivery transition",
+    "Completion cue responds to result transition",
+    "Result cue uses non-spatial interface audio",
+    "Result cue does not repeat on later frames",
+    "Exploration track ends with a quiet gap",
+    "Music schedules space between exploration tracks",
+    "Next exploration track starts after its scheduled gap"
+  ],
+  "failure": null
+}
