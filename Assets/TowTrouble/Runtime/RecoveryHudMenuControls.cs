@@ -64,7 +64,8 @@ namespace TowTrouble
         {
             renderedMenuFocusKey=MenuFocusKey(page);
             SetMenuNavigation(IsGeneralMenu);
-            menuRelease=true;menuFrame=Time.frameCount;if(configuredMenuPage!=page){menuX=menuY=0;configuredMenuPage=page;}
+            bool entering=configuredMenuPage!=page;
+            menuRelease=true;menuFrame=Time.frameCount;if(entering){menuX=menuY=0;configuredMenuPage=page;}
             if(!IsGeneralMenu)return;
             Canvas.ForceUpdateCanvases();
             menuControls=pageRoot.GetComponentsInChildren<UnityEngine.UI.Selectable>();
@@ -87,7 +88,8 @@ namespace TowTrouble
                 else if(nav.selectOnUp==null&&menuTabs.Count>0)nav.selectOnUp=menuTabs.FirstOrDefault(c=>c.GetComponentInChildren<RecoveryPlateGraphic>().Style==RecoveryPlateStyle.Gold)??menuTabs[0];
                 control.navigation=nav;
             }
-            if(Application.isPlaying&&!P.reducedMotion)StartCoroutine(FadeMenu(pageRoot));
+            ConfigureStarterNavigation();
+            if(Application.isPlaying&&!P.reducedMotion&&(page!="Starter"||entering))StartCoroutine(FadeMenu(pageRoot));
         }
         private IEnumerator FadeMenu(RectTransform target)
         {
@@ -186,6 +188,7 @@ namespace TowTrouble
         }
         private void UpdateMenuPresentation()
         {
+            UpdateStarterHints();
             foreach(var hint in menuHints)if(hint.Item1!=null)hint.Item1.text=MenuKey(hint.Item2);
             if(menuFooter!=null)menuFooter.text=session.UsingGamepad?"D-pad / Left stick · Navigate":"WASD / Arrows · Navigate";
             if(menuHelp!=null&&EventSystem.current?.currentSelectedGameObject!=null&&menuDescriptions.TryGetValue(EventSystem.current.currentSelectedGameObject,out var help))menuHelp.text=help;

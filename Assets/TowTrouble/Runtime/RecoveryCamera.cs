@@ -23,20 +23,26 @@ namespace TowTrouble
             if(session==null)return;
             if(!session.GarageOpen)garageCameraActive=false;
             var p=session.Profile;bool lobby=!session.Connected||session.World.Phase==RecoveryPhase.Lobby;
+            bool choosingStarter=session.View=="Starter"||session.View=="Confirm"&&!p.starterChosen;
+            if(!choosingStarter)starterCameraActive=false;
             bool frameWheel=session.World.HasContract&&!session.World.ClearingObstacle&&(session.World.UsesArcadeExtraction||(session.World.FreeRoam&&(session.World.Contract.SituationKind==RecoverySituationKind.Ditch||session.World.Contract.SituationKind==RecoverySituationKind.Embankment)));
             extractionFraming=Mathf.MoveTowards(extractionFraming,frameWheel?1:0,Time.unscaledDeltaTime*2);
             Vector3 position,look;
             if(lobby||session.GarageOpen)
             {
                 var car=session.World.Drivers[Mathf.Max(0,session.LocalSlot)].transform;var center=car.position;
-                if(session.View=="Starter"||session.GarageOpen)
+                if(choosingStarter||session.GarageOpen)
                 {
                     float rotationInput=0;
                     if(!session.GarageCameraInputBlocked&&Mouse.current!=null&&Mouse.current.leftButton.isPressed&&(UnityEngine.EventSystems.EventSystem.current==null||!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))rotationInput+=Mouse.current.delta.x.ReadValue()*.16f*p.cameraSensitivity;
                     if(!session.GarageCameraInputBlocked&&Gamepad.current!=null)rotationInput+=Gamepad.current.rightStick.x.ReadValue()*Time.unscaledDeltaTime*80*p.cameraSensitivity;
                     if(session.GarageOpen)
                         GarageCameraPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],rotationInput,p.reducedMotion,Time.unscaledDeltaTime,out position,out look);
-                    else {orbit+=rotationInput;position=center+Quaternion.Euler(0,orbit,0)*new Vector3(7,3.8f,9);look=center+new Vector3(2.2f,1,-2.2f);}
+                    else
+                    {
+                        bool reset=Keyboard.current?.cKey.wasPressedThisFrame==true||Gamepad.current?.rightStickButton.wasPressedThisFrame==true;
+                        StarterCameraPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],session.View=="Starter"?rotationInput:0,reset,out position,out look);
+                    }
                 }
                 else if(session.View=="Lobby") {position=session.World.Map!=null?center+new Vector3(10,6,11):new Vector3(10,6,41);look=session.World.Map!=null?center+Vector3.up:new Vector3(0,1,30);}
                 else {MenuPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],out position,out look);}
@@ -70,10 +76,11 @@ namespace TowTrouble
                 position=center+rotation*followOffset;look=center+Vector3.up*1.2f+car.forward;
                 if(CameraObstruction(look,position,out var hit,QueryTriggerInteraction.UseGlobal))position=hit.point+hit.normal*.5f;
             }
-            // Garage already smooths its focus, distance and circular path. A second
-            // position lerp could cut through the car during a front/rear transition.
-            transform.position=session.GarageOpen?position:Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
-            transform.rotation=Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(look-transform.position),1-Mathf.Exp(-7*Time.unscaledDeltaTime));
+            // Preview modes own their framing and circular orbit. A second position
+            // interpolation could cut through the car during a front/rear transition.
+            transform.position=session.GarageOpen||choosingStarter?position:Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
+            var targetRotation=Quaternion.LookRotation(look-transform.position);
+            transform.rotation=choosingStarter?targetRotation:Quaternion.Slerp(transform.rotation,targetRotation,1-Mathf.Exp(-7*Time.unscaledDeltaTime));
             UpdateTreeVisibility(lobby);
         }
     }

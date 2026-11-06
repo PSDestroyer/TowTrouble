@@ -5,8 +5,16 @@ namespace TowTrouble
     public sealed partial class RecoveryHud
     {
         private int vehiclePreview,starterPaint;
+        private UnityEngine.UI.Button[] starterChoices,starterPaintChoices;
+        private UnityEngine.UI.Button starterConfirm,starterBack;
+        private TMP_Text starterCompareHint,starterRotateHint;
+        private static readonly string[] StarterRoles={"Balanced","Strongest pull","Quick & light","Steady all-rounder"};
+        private static readonly string[] StarterDescriptions={"Comfortable travel and steady pulling.","A little more pulling power, with a slower pace.","The lightest ride and the quickest on the road.","Steady pulling with a little extra anchoring weight."};
+        private static readonly string[] StarterPaintNames={"Original","Cream","Olive","Mustard"};
         private void PreviewVehicleChoice(int model)
         {if(vehiclePreview==model)return;vehiclePreview=model;session.World.PreviewVehicle(model);session.World.PreviewPaint(starterPaint);Show("Starter");}
+        private void PreviewStarterPaint(int paint)
+        {if(starterPaint==paint)return;starterPaint=paint;session.World.PreviewPaint(paint);Show("Starter");}
         private void UseVehicleChoice()
         {
             if(P.starterChosen)return;
@@ -17,18 +25,69 @@ namespace TowTrouble
         }
         private void BuildVehicles()
         {
-            Header("CHOOSE YOUR FIRST RIDE","One free starter. Make it your own in the workshop.");
-            int selected=Mathf.Clamp(vehiclePreview,0,3);if(Application.isPlaying){session.World.PreviewVehicle(selected);session.World.PreviewPaint(starterPaint);}
-            var card=Panel(pageRoot,76,225,420,330);Text(card,RecoveryVehicle.ModelNames[selected],26,24,368,48,34,Amber,true);
-            Text(card,"FREE STARTER",26,86,368,30,16,Muted,true);
-            string[] labels={"PULL","WEIGHT","TOP SPEED"};string[] values={(RecoveryBodyBalance.StockDrive(selected)*.004f).ToString("0.0")+" kN",RecoveryBodyBalance.StockMass(selected).ToString("N0")+" kg",(RecoveryBodyBalance.StockSpeed(selected)*3.6f).ToString("0")+" km/h"};
-            for(int i=0;i<3;i++){Text(card,labels[i],26,143+i*56,170,30,16,Muted);Text(card,values[i],196,138+i*56,198,38,23,Paper,true).alignment=TextAlignmentOptions.MidlineRight;}
-            string[] roles={"A balanced start. Comfortable travel and steady pulling.","A little more pull and weight. A little less speed.","Light and nimble. Faster travel with a little less pull.","A steady all-rounder with a little extra pulling power."};
-            Text(pageRoot,roles[selected],80,585,420,100,21,Muted);
-            string[] colors={"ORIGINAL","CREAM","OLIVE","MUSTARD"};for(int i=0;i<4;i++){int paint=i;Button(pageRoot,colors[i],620+i*220,637,200,()=>{starterPaint=paint;session.World.PreviewPaint(paint);Show("Starter");},starterPaint==i,44);}
-            for(int i=0;i<4;i++){int model=i;var choice=Button(pageRoot,RecoveryVehicle.ModelNames[i],76+i*368,714,348,()=>PreviewVehicleChoice(model),selected==i,64);choice.name="Starter "+i;choice.gameObject.AddComponent<RecoveryMenuPreviewFocus>().Configure(()=>PreviewVehicleChoice(model));}
-            Button(pageRoot,"CHOOSE "+RecoveryVehicle.ModelNames[selected].ToUpperInvariant(),1084,808,440,UseVehicleChoice,true);
-            Footer("Title");preferredMenuFocus="Starter "+selected;
+            Panel(pageRoot,0,0,1600,164,new Color(.03f,.04f,.05f,.64f));
+            Icon(pageRoot,RecoveryIcon.Hook,28,47,32,Amber);
+            Text(pageRoot,"YOUR FIRST RIDE",80,36,1444,65,42,Paper,true);
+            Text(pageRoot,"One free starter. Upgrade any ride at the workshop.",82,112,1442,34,20,Muted);
+            int selected=Mathf.Clamp(vehiclePreview,0,3);
+            if(Application.isPlaying){session.World.PreviewVehicle(selected);session.World.PreviewPaint(starterPaint);}
+            starterCompareHint=Text(pageRoot,"",80,178,432,26,16,Paper);
+            Text(pageRoot,"Pull · Weight · Top speed",80,205,432,20,13,Muted);
+            starterChoices=new UnityEngine.UI.Button[4];
+            for(int i=0;i<4;i++)
+            {
+                int model=i;bool active=i==selected;
+                var choice=Button(pageRoot,"",76,228+i*130,440,()=>PreviewVehicleChoice(model),active,112);
+                choice.name="Starter "+i;starterChoices[i]=choice;
+                choice.gameObject.AddComponent<RecoveryMenuPreviewFocus>().Configure(()=>PreviewVehicleChoice(model));
+                Color title=active?Ink:Paper,secondary=active?new Color(.27f,.22f,.14f):Muted;
+                Text(choice.transform,RecoveryVehicle.ModelNames[i],22,9,346,38,28,title,true);
+                Text(choice.transform,StarterRoles[i],22,48,396,25,17,secondary);
+                string stats=(RecoveryBodyBalance.StockDrive(i)*.004f).ToString("0.0")+" kN   ·   "+RecoveryBodyBalance.StockMass(i).ToString("0")+" kg   ·   "+(RecoveryBodyBalance.StockSpeed(i)*3.6f).ToString("0")+" km/h";
+                Text(choice.transform,stats,22,79,396,27,17,title,true);
+                if(active)Icon(choice.transform,RecoveryIcon.Check,394,18,22,Ink);
+            }
+            var hint=Panel(pageRoot,550,184,620,38,new Color(.03f,.04f,.05f,.72f));
+            starterRotateHint=Text(hint,"",18,3,584,30,16,Paper);
+            var details=Panel(pageRoot,550,624,974,108);
+            Text(details,RecoveryVehicle.ModelNames[selected],24,11,926,38,29,Paper,true);
+            Text(details,StarterDescriptions[selected],24,57,926,34,20,Muted);
+            var paintRow=Panel(pageRoot,550,748,974,46);
+            Text(paintRow,"PAINT",18,8,104,30,16,Muted,true);
+            var originals=new[]{new Color(.98f,.93f,.74f),new Color(.43f,.48f,.24f),new Color(.95f,.65f,.16f),new Color(.38f,.43f,.2f)};
+            var colors=new[]{originals[selected],new Color(.98f,.93f,.74f),new Color(.43f,.48f,.24f),new Color(.95f,.65f,.16f)};
+            starterPaintChoices=new UnityEngine.UI.Button[4];
+            for(int i=0;i<4;i++)
+            {
+                int paint=i;var swatch=Button(paintRow,"",126+i*68,1,58,()=>PreviewStarterPaint(paint),starterPaint==i,44);
+                swatch.name="Paint "+i;starterPaintChoices[i]=swatch;
+                Panel(swatch.transform,10,8,38,28,colors[i]);
+                swatch.gameObject.AddComponent<RecoveryMenuPreviewFocus>().Configure(()=>PreviewStarterPaint(paint));
+            }
+            Text(paintRow,StarterPaintNames[starterPaint],420,8,212,30,19,Paper,true);
+            Text(paintRow,"You can repaint it later",654,8,302,30,16,Muted).alignment=TextAlignmentOptions.MidlineRight;
+            starterConfirm=Button(pageRoot,"CHOOSE "+RecoveryVehicle.ModelNames[selected].ToUpperInvariant(),1004,808,520,UseVehicleChoice,true);
+            starterBack=Button(pageRoot,"BACK",76,808,230,()=>MenuBack());BuildMenuFooter();
+            preferredMenuFocus="Starter "+selected;
+            UpdateStarterHints();
+        }
+        private void UpdateStarterHints()
+        {
+            if(page!="Starter")return;
+            bool pad=session.UsingGamepad;
+            if(starterCompareHint!=null)starterCompareHint.text=pad?"D-pad up / down · Compare rides":"W / S or arrows · Compare rides";
+            if(starterRotateHint!=null)starterRotateHint.text=pad?"Right stick · Rotate    "+RecoveryInputPrompts.RightStickPressLabel(RecoveryInputPrompts.Family(UnityEngine.InputSystem.Gamepad.current))+" · Reset view":"Drag the car · Rotate    C · Reset view";
+        }
+        private void ConfigureStarterNavigation()
+        {
+            if(page!="Starter"||starterChoices==null||starterPaintChoices==null)return;
+            var car=starterChoices[Mathf.Clamp(vehiclePreview,0,3)];var paint=starterPaintChoices[Mathf.Clamp(starterPaint,0,3)];
+            void Link(UnityEngine.UI.Selectable control,UnityEngine.UI.Selectable up,UnityEngine.UI.Selectable down,UnityEngine.UI.Selectable left,UnityEngine.UI.Selectable right)
+            {var nav=control.navigation;nav.mode=UnityEngine.UI.Navigation.Mode.Explicit;nav.selectOnUp=up;nav.selectOnDown=down;nav.selectOnLeft=left;nav.selectOnRight=right;control.navigation=nav;}
+            for(int i=0;i<4;i++)Link(starterChoices[i],i>0?starterChoices[i-1]:null,i<3?starterChoices[i+1]:paint,null,paint);
+            for(int i=0;i<4;i++)Link(starterPaintChoices[i],car,starterConfirm,i>0?starterPaintChoices[i-1]:car,i<3?starterPaintChoices[i+1]:null);
+            Link(starterBack,starterChoices[3],null,null,starterConfirm);
+            Link(starterConfirm,paint,null,starterBack,null);
         }
     }
 }
