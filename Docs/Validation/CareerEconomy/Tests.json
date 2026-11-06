@@ -1,0 +1,551 @@
+{
+  "passed": true,
+  "cases": 109,
+  "rows": [
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "NewJobsPayMoreThanReplaysWithoutAWaitingBonus",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "IntroOrdersSixAccessibleJobsWithoutChangingCompletionIdsOrHistory",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "TwoUncleanFirstJobsCanBuyFirstBodyAndMotorRemainsAnAffordableAlternative",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "TwoUncleanFirstJobsCanBuyFirstBodyAndMotorRemainsAnAffordableAlternative",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "TwoUncleanFirstJobsCanBuyFirstBodyAndMotorRemainsAnAffordableAlternative",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "TwoUncleanFirstJobsCanBuyFirstBodyAndMotorRemainsAnAffordableAlternative",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "CatalogueAndAuthoringSharePricesAndEngineTradeCannotCreateMoney",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay",
+      "passed": true
+    },
+    {
+      "type": "RecoveryCareerBalanceTests",
+      "test": "AdvertisedReplayFeeMatchesTheSinglePaymentAndDuplicatesDoNotPay",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBoardEntriesTests",
+      "test": "NewProfileGetsOnlyTheFirstThreeJobsInAuthoredOrder",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBoardEntriesTests",
+      "test": "CompletionMovesTheJobIntoHistoryAndFillsTheAvailableSlot",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBoardEntriesTests",
+      "test": "TutorialCompletionDoesNotCompleteWorldJobs",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBoardEntriesTests",
+      "test": "FinalAvailableSlotsShrinkAndHistoryContainsEveryCompletedJob",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBoardEntriesTests",
+      "test": "ReplayingACompletedJobStillPaysWithoutChangingTheAvailableQueue",
+      "passed": true
+    },
+    {
+      "type": "RecoveryAssistanceTests",
+      "test": "PullingAdviceWaitsAndUsesObservedCause",
+      "passed": true
+    },
+    {
+      "type": "RecoveryAssistanceTests",
+      "test": "SafePointDoesNotTreatParkingOrSlowProgressAsBeingTrapped",
+      "passed": true
+    },
+    {
+      "type": "RecoveryAssistanceTests",
+      "test": "PreparationComparesRealSurfaceAndCableEquipment",
+      "passed": true
+    },
+    {
+      "type": "RecoveryAssistanceTests",
+      "test": "NewJobNoticeOnlyWhenAvailableSelectionActuallyGainsAnEntry",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "FirstChoiceGrantsExactlyTheSelectedStarterOnce",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "FirstChoiceGrantsExactlyTheSelectedStarterOnce",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "FirstChoiceGrantsExactlyTheSelectedStarterOnce",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "FirstChoiceGrantsExactlyTheSelectedStarterOnce",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "OtherStarterVariantsArePaidIncludingScoutWhenRangerWasChosen",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "UnchosenProfilesAndInsufficientFundsCannotBuyVehicles",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "LegacyMigrationKeepsActiveRideEquipmentAndMoneyWithoutGrantingOtherModels",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "CurrentProfilesCannotSelectAnUnownedVehicleThroughSavedIndex",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "AnUnusedLegacyScoutProfileStillGetsItsFirstChoice",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "LegacyMigrationPreservesVehiclesWithInvestedEquipmentOrSavedSetups",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "EveryPaidBodyHasMoreBasePullThanEveryStarter",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "FirstPayoutBuysLightCableButCannotSkipStraightToStandard",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "FourCleanEarlyJobsCanFundTheCableAndEnginePathWithoutSellingParts",
+      "passed": true
+    },
+    {
+      "type": "RecoveryStarterProgressionTests",
+      "test": "MudCollisionMeshProvidesTheRenderedUvForWheelStamps",
+      "passed": true
+    },
+    {
+      "type": "RecoveryProfileTests",
+      "test": "CableControlsSwapForNewAndLegacyDefaultProfiles",
+      "passed": true
+    },
+    {
+      "type": "RecoveryProfileTests",
+      "test": "CableControlMigrationPreservesCustomAndLaterReboundKeys",
+      "passed": true
+    },
+    {
+      "type": "RecoveryProfileTests",
+      "test": "ProgressionStartsWithOnlyTutorialUnlocked",
+      "passed": true
+    },
+    {
+      "type": "RecoveryProfileTests",
+      "test": "CompletingTutorialUnlocksDitchWithoutRequiringDuo",
+      "passed": true
+    },
+    {
+      "type": "RecoveryProfileTests",
+      "test": "ProfileSurvivesSerializationWithBindingsAndAccessibility",
+      "passed": true
+    },
+    {
+      "type": "RecoveryProfileTests",
+      "test": "InvalidSavedKeyCannotIndexOutsideTheKeyboard",
+      "passed": true
+    },
+    {
+      "type": "RecoveryProfileTests",
+      "test": "FirstThreeContractsHaveDifferentConditionsAndDeliveryLocations",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "TwiceTheMassRequiresTwiceTheGroundForce",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "BurialLipChassisDamageAndRetainedWaterEachAddLoad",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "LargerWheelsReduceTheSameRutAndLipLoad",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "ActualSlopeHelpsDownhillAndCostsForceUphill",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "EnginePowerCannotExceedGroundGripAndSlopeConsumesDrawbar",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "TerrainAwareLoadHoldsGravityWithoutInventingAnUpwardLaunch",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "TerrainAwarePocketDoesNotLoseItsLoadAfterATinyJerk",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "SoftGroundTracksFollowTheVisibleSkinAboveTheirSupportBed",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "MapCarriesMassAndSoilSettingsWhileTutorialMassStaysLegacy",
+      "passed": true
+    },
+    {
+      "type": "RecoveryLoadTests",
+      "test": "StockCableShocksCannotBuildHardMissionLoadThroughLoadSmoothing",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "PreviewNeverSpendsOrAccumulatesAnUnboughtEarlierPart",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "PurchaseOnlyFitsTheChosenPartAndKeepsFittedEquipment",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "InsufficientFundsAndAlreadyEquippedPartsCannotChargeTheProfile",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "FittingAnOwnedPartIsFreeAndStatesDistinguishEquippedFromOwned",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "BodyReplacementListsPaidIncompatiblePartsAndDoesNotRemoveOwnership",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "BodyLivesInTechAndCosmeticPartsDoNotClaimHandlingChanges",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "NamedSetupsRemainCompatibleWithLegacyKeysAndProtectReferencedParts",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "ThreeColumnNavigationStopsAtRowsAndPreservesColumns",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "TireFiltersAndRecommendationsUseActualSurfaceStats",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "DuplicateBodyNamesHaveUnderstandableVisualVariantLabels",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "ForceRecommendationDoesNotRepeatAnEquippedUpgrade",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageWorkflowTests",
+      "test": "SurfaceRecommendationPrefersASuitableOwnedTire",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBodyBalanceTests",
+      "test": "BodyPricesHaveProgressionAndEqualProfilesHaveEqualPrices",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBodyBalanceTests",
+      "test": "EveryBodyAndWheelCombinationRespectsTheEightyKmhCeiling",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBodyBalanceTests",
+      "test": "StarterArchetypesUsePlayerBaselinesAndDistinctTravelSpeeds",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBodyBalanceTests",
+      "test": "CruisingCompensatesOrdinaryDragWithoutAddingRecoveryForce",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBodyBalanceTests",
+      "test": "CatalogOrderingRemainsAscendingAndNumericLevelsReadNaturally",
+      "passed": true
+    },
+    {
+      "type": "RecoveryBodyBalanceTests",
+      "test": "RepricedBodiesPurchaseAndSellOnceWithoutChangingExistingOwnership",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageHandlingTests",
+      "test": "EveryWheelHasAHonestCardAndPositiveSurfaceResponse",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageHandlingTests",
+      "test": "RoadAndSnowTiresHaveDifferentRealTractionAndKeepTheirTradeoffs",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageHandlingTests",
+      "test": "SpecialistTireProgressionKeepsItsApprovedLimits",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageHandlingTests",
+      "test": "AChosenBodyUsesItsOwnMassAndPowerOnEveryBaseVehicle",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageHandlingTests",
+      "test": "BodyEngineAndTransmissionComposeInEitherItemOrder",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageHandlingTests",
+      "test": "EveryBodyHasMassAndPullInformationAndFamiliesOfferDifferentTradeoffs",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageHandlingTests",
+      "test": "StockBodiesAndTiresKeepTheirOriginalVehicleBaselines",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "NewProfileHasStockBuildAndNoDebt",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "FirstCableUpgradeIsEarnedAfterOneStarterRecovery",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "CableTiersIncreaseInStrengthAndCostWithoutGivingFreeUpgrades",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "PurchasedStrongerCablesRemainEquippedAfterSaveRoundTrip",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "PurchaseIsAffordableAndCannotBeChargedTwice",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "FailedPurchaseDoesNotChangeInventoryOrBalance",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "MountedAndPresetPartsCannotBeSold",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "SalePaysSeventyPercentOnlyOnce",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "CompletionPaysOnceEvenAfterSerialization",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "LegacyProfileMigratesOnceAndPreservesProgressAndPaint",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "PresetsAndInventorySurviveSaveRoundTrip",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "PreviewIsIndependentAndUnownedEquipmentIsRemovedBeforeCommit",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "InvalidAndIncompatibleItemsAreNormalized",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "EngineUpgradeTradesInOldEngineWithoutLeavingDanglingPresets",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "LowRangeAndEngineRespectTheApprovedTradeoff",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "CatalogIdsAreUniqueAndAssembliesHaveFourValidWheelAnchors",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageTests",
+      "test": "UnsupportedSaveVersionIsRejected",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageGridTests",
+      "test": "FocusScrollsInBothDirectionsAndClampsAtTheLastRow",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageGridTests",
+      "test": "CatalogRefreshKeepsBakedImagesWithoutTouchingPerformance",
+      "passed": true
+    },
+    {
+      "type": "RecoveryGarageGridTests",
+      "test": "CosmeticsDoNotClaimHorsepowerAndTechnicalCardsDescribeTheirRealEffect",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "GarageAuxiliaryActionsHaveMatchingPlatformLabels",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "GarageAuxiliaryActionsHaveMatchingPlatformLabels",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "GarageAuxiliaryActionsHaveMatchingPlatformLabels",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "DeviceIdentitySelectsThePromptFamily",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "DeviceIdentitySelectsThePromptFamily",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "DeviceIdentitySelectsThePromptFamily",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "DeviceIdentitySelectsThePromptFamily",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "DeviceIdentitySelectsThePromptFamily",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "DeviceIdentitySelectsThePromptFamily",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "ConfirmAndCancelMatchEachDevicesPrintedButtons",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "ConfirmAndCancelMatchEachDevicesPrintedButtons",
+      "passed": true
+    },
+    {
+      "type": "RecoveryInputPromptsTests",
+      "test": "ConfirmAndCancelMatchEachDevicesPrintedButtons",
+      "passed": true
+    }
+  ]
+}

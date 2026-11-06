@@ -42,7 +42,7 @@ namespace TowTrouble
             p.EnsureGarage();
             if(p.version==1)
             {
-                p.credits=0;for(int i=0;i<3;i++)if(p.Completed(i))p.credits+=RecoveryEconomy.Payout(RecoveryContract.Get(i).Reward,(p.noResetMask&(1<<i))!=0,(p.noSnapMask&(1<<i))!=0,true);
+                p.credits=0;for(int i=0;i<3;i++)if(p.Completed(i))p.credits+=RecoveryEconomy.LegacyPayout(RecoveryContract.Get(i).Reward,(p.noResetMask&(1<<i))!=0,(p.noSnapMask&(1<<i))!=0);
                 for(int i=1;i<4;i++)p.ownedParts.Add("paint_"+i);
                 if(p.paint>0)p.builds[Mathf.Clamp(p.vehicle,0,3)].Items=new[]{"paint_"+p.paint};
                 p.version=2;

@@ -14,7 +14,7 @@ namespace TowTrouble
             boardCards[id]=card;
             var title=card.GetComponentInChildren<TMP_Text>();title.rectTransform.anchoredPosition=new Vector2(216,-12);title.rectTransform.sizeDelta=new Vector2(344,50);title.font=displayFont!=null?displayFont:font;title.fontSize=24*P.textScale;
             ContractPhoto(card.transform,id,14,14,184,112);
-            Text(card.transform,contract.Difficulty(P)+"  ·  "+Mathf.RoundToInt(distance)+" m",218,65,340,25,16,active?Ink:Muted);Icon(card.transform,RecoveryIcon.Coins,218,103,22,active?Ink:Amber);Text(card.transform,contract.Reward.ToString("N0")+" CR",250,94,300,36,23,active?Ink:Amber,true);
+            Text(card.transform,contract.Difficulty(P)+"  ·  "+Mathf.RoundToInt(distance)+" m",218,65,340,25,16,active?Ink:Muted);Icon(card.transform,RecoveryIcon.Coins,218,103,22,active?Ink:Amber);Text(card.transform,RecoveryEconomy.BaseOffer(contract,!P.Completed(contract.CompletionId)).ToString("N0")+" CR",250,94,300,36,23,active?Ink:Amber,true);
             if(scroll!=null)card.gameObject.AddComponent<RecoveryGarageCardFocus>().Configure(scroll);
         }
         private void BuildCompletedRecoveries(List<int> entries,RecoveryContract[] contracts,Vector3 position)

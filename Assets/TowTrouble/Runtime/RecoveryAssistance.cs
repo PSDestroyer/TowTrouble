@@ -32,7 +32,7 @@ namespace TowTrouble
                 terrain = "Sand tires recommended";
             // A lower bound from the authored blockage, not a claim about total force on a slope.
             float resistance = Mathf.Max(contract.BreakoutResistance, contract.ExtractionProfile?.BreakawayForce ?? 0);
-            string cable = resistance > car.Cable ? "Stronger cable recommended" : null;
+            string cable = resistance > car.Cable ? "Stronger cable recommended" : resistance > Mathf.Max(car.Drive*4,car.WinchForce) ? "More pull and firm ground recommended" : null;
             return terrain != null && cable != null ? terrain + "\n" + cable
                 : terrain ?? cable ?? "Position and terrain affect the pull";
         }

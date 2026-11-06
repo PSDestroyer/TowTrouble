@@ -38,7 +38,7 @@ namespace TowTrouble.Tests
         {
             var jobs=Jobs();var profile=new RecoveryProfile{completedMask=1<<jobs[0].CompletionId};
             var before=RecoveryBoardEntries.Select(jobs,profile.completedMask,false);
-            Assert.That(RecoveryEconomy.Claim(profile,"board-replay",jobs[0],false,false),Is.EqualTo(jobs[0].Reward));
+            Assert.That(RecoveryEconomy.Claim(profile,"board-replay",jobs[0],false,false),Is.EqualTo(RecoveryEconomy.Payout(jobs[0],false,false,false)));
             Assert.That(RecoveryEconomy.Claim(profile,"board-replay",jobs[0],false,false),Is.Zero);
             Assert.That(RecoveryBoardEntries.Select(jobs,profile.completedMask,false),Is.EqualTo(before));
             Assert.That(RecoveryBoardEntries.Select(jobs,profile.completedMask,true),Is.EqualTo(new[]{0}));

@@ -29,7 +29,7 @@ namespace TowTrouble.Tests
                 Load = new RecoveryLoadSettings { Material = RecoveryLoadMaterial.Mud },
                 ExtractionProfile = new RecoveryExtractionSettings { BreakawayForce = 12000 }
             };
-            var stock = new GaragePerformance { MudGrip = 1, SnowGrip = 1, SandGrip = 1, Cable = 11000 };
+            var stock = new GaragePerformance { Drive = 3500, MudGrip = 1, SnowGrip = 1, SandGrip = 1, Cable = 11000 };
             Assert.AreEqual("Mud tires recommended\nStronger cable recommended", RecoveryAssistance.Preparation(contract, stock));
             stock.MudGrip = 1.5f; stock.Cable = 18000;
             Assert.AreEqual("Position and terrain affect the pull", RecoveryAssistance.Preparation(contract, stock));

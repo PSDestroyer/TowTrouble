@@ -37,6 +37,7 @@ namespace TowTrouble
         {
             foreach(var entry in entries)if(entry.Thumbnail==null)
             {var previous=Array.Find(parts,p=>p.Id==entry.Id);if(previous!=null){entry.Thumbnail=previous.Thumbnail;entry.ThumbnailUV=previous.ThumbnailUV;}}
+            RecoveryCareerBalance.ApplyPrices(entries);
             parts=entries;stockAssemblies=stock;lookup=null;socketCache.Clear();
         }
         public GaragePart Find(string id)

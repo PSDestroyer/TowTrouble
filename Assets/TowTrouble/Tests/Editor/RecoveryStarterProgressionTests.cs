@@ -74,8 +74,8 @@ namespace TowTrouble.Tests
         {
             var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>("Assets/TowTrouble/Garage/GarageCatalog.asset");
             var p=RecoveryProfile.Parse("");RecoveryEconomy.Claim(p,"starter-test",0,true,true);
-            Assert.That(p.credits,Is.EqualTo(562));Assert.That(RecoveryEconomy.Buy(p,catalog.Find("cable_18")),Is.False);
-            Assert.That(RecoveryEconomy.Buy(p,catalog.Find("cable_14")),Is.True);Assert.That(p.credits,Is.EqualTo(362));
+            Assert.That(p.credits,Is.EqualTo(652));Assert.That(RecoveryEconomy.Buy(p,catalog.Find("cable_18")),Is.False);
+            Assert.That(RecoveryEconomy.Buy(p,catalog.Find("cable_14")),Is.True);Assert.That(p.credits,Is.EqualTo(452));
             RecoveryEconomy.Claim(p,"standard-test",1,true,true);
             Assert.That(RecoveryEconomy.Buy(p,catalog.Find("cable_18")),Is.True);
             Assert.That(p.credits,Is.GreaterThanOrEqualTo(0));

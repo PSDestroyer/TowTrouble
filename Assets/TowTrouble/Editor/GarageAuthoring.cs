@@ -179,13 +179,13 @@ namespace TowTrouble.Editor
             tires=Add("tires_mud","Anvelope de noroi","Mud tires",GarageSlot.Wheels,1200,"Aderență în noroi +30%; rezistență în noroi -15%.","Mud grip +30%; mud resistance -15%.");tires.MudGrip=1.3f;tires.MudResistance=.85f;tires.Prefabs=Enumerable.Repeat(Wheel("Wheel_Buggy_Mud"),4).ToArray();tires.Sockets=sockets;
             tires=Add("tires_sand","Anvelope late de nisip","Wide sand tires",GarageSlot.Wheels,1200,"Set lat. Specializarea pe nisip se aplică odată cu biomul; noroi -10% aderență.","Wide set. Sand specialization arrives with the biome; mud grip -10%.");tires.MudGrip=.9f;tires.Prefabs=Enumerable.Repeat(Wheel("Wheel_HotRod_Fat_Wider"),4).ToArray();tires.Sockets=sockets;
             tires=Add("tires_winter","Anvelope de iarnă cu crampoane","Studded winter tires",GarageSlot.Wheels,1600,"Roți cu crampoane. Efectul pe zăpadă se aplică odată cu biomul; noroi -15% aderență.","Studded wheels. Snow effect arrives with the biome; mud grip -15%.");tires.MudGrip=.85f;tires.Prefabs=Enumerable.Repeat(Wheel("Wheel_Studs_Wide"),4).ToArray();tires.Sockets=sockets;
-            Add("engine_2","Motor nivel 2","Engine level 2",GarageSlot.Engine,2800,"Forță nominală +20%; aderența limitează forța utilă.","Nominal drive +20%; usable force remains grip-limited.").DriveMultiplier=1.2f;
-            Add("engine_3","Motor nivel 3","Engine level 3",GarageSlot.Engine,8800,"Forță nominală +35%. Preț total de la motorul inițial.","Nominal drive +35%. Full price from stock engine.").DriveMultiplier=1.35f;
-            var reduction=Add("low_range","Reductor","Low range",GarageSlot.Transmission,2200,"Forță +25%; viteză maximă -20%.","Drive +25%; top speed -20%.");reduction.DriveMultiplier=1.25f;reduction.SpeedMultiplier=.8f;
-            var suspension=Add("suspension_offroad","Suspensie de teren","Off-road suspension",GarageSlot.Suspension,1800,"Gardă la sol +15 cm; susținere îmbunătățită pe denivelări.","Ride height +15 cm; improved support on uneven ground.");suspension.Lift=.15f;suspension.AddedMass=20;
+            Add("engine_2","Motor nivel 2","Engine level 2",GarageSlot.Engine,800,"Forță nominală +20%; aderența limitează forța utilă.","Nominal drive +20%; usable force remains grip-limited.").DriveMultiplier=1.2f;
+            Add("engine_3","Motor nivel 3","Engine level 3",GarageSlot.Engine,2600,"Forță nominală +35%. Preț total de la motorul inițial.","Nominal drive +35%. Full price from stock engine.").DriveMultiplier=1.35f;
+            var reduction=Add("low_range","Reductor","Low range",GarageSlot.Transmission,1000,"Forță +25%; viteză maximă -20%.","Drive +25%; top speed -20%.");reduction.DriveMultiplier=1.25f;reduction.SpeedMultiplier=.8f;
+            var suspension=Add("suspension_offroad","Suspensie de teren","Off-road suspension",GarageSlot.Suspension,1000,"Gardă la sol +15 cm; susținere îmbunătățită pe denivelări.","Ride height +15 cm; improved support on uneven ground.");suspension.Lift=.15f;suspension.AddedMass=20;
             Add("cable_26","Cablu întărit · 26 kN","Reinforced cable · 26 kN",GarageSlot.Cable,1400,"Prag de rupere 26 kN.","Break threshold 26 kN.").CableStrength=26000;
             Add("cable_36","Cablu profesional · 36 kN","Professional cable · 36 kN",GarageSlot.Cable,3400,"Prag de rupere 36 kN.","Break threshold 36 kN.").CableStrength=36000;
-            Add("winch_2","Troliu îmbunătățit","Improved winch",GarageSlot.Winch,2400,"",""); // Configured by ConfigureWinchPrototype.
+            Add("winch_2","Troliu îmbunătățit","Improved winch",GarageSlot.Winch,1600,"",""); // Configured by ConfigureWinchPrototype.
             ConfigureSpecialistRecoveryEquipment(parts);
             for(int i=1;i<=3;i++){var p=Add("paint_"+i,new[]{"","Crem","Măsliniu","Muștar"}[i],new[]{"","Cream","Olive","Mustard"}[i],GarageSlot.Paint,100,"Finisaj pentru caroserie.","Body paint finish.");p.PaintIndex=i;}
         }
@@ -204,13 +204,13 @@ namespace TowTrouble.Editor
             var source=entries.Single(p=>p.Id=="tires_winter");
             var alpine=entries.FirstOrDefault(p=>p.Id=="tires_winter_pro");
             if(alpine==null){alpine=new GaragePart{Id="tires_winter_pro",Slot=GarageSlot.Wheels};entries.Add(alpine);}
-            alpine.Name="Anvelope alpine ranforsate";alpine.EnglishName="Heavy alpine tires";alpine.Price=3000;
+            alpine.Name="Anvelope alpine ranforsate";alpine.EnglishName="Heavy alpine tires";alpine.Price=1800;
             alpine.Description="Zăpadă: aderență +135%; +35 kg. Noroi: aderență -20%. Pentru recuperări grele pe zăpadă.";
             alpine.EnglishDescription="Snow grip +135%; +35 kg. Mud grip -20%. For heavy recoveries on snow.";
             alpine.Prefabs=source.Prefabs;alpine.Sockets=source.Sockets;alpine.Families=source.Families;alpine.MudGrip=.80f;alpine.AddedMass=35;
             var winch=entries.FirstOrDefault(p=>p.Id=="winch_3");
             if(winch==null){winch=new GaragePart{Id="winch_3",Slot=GarageSlot.Winch};entries.Add(winch);}
-            winch.Name="Troliu profesional · 22 kN";winch.EnglishName="Professional winch · 22 kN";winch.Price=4800;winch.WinchForce=22000;winch.WinchSpeed=.85f;
+            winch.Name="Troliu profesional · 22 kN";winch.EnglishName="Professional winch · 22 kN";winch.Price=4200;winch.WinchForce=22000;winch.WinchSpeed=.85f;
             winch.Description="22 kN; până la 0,85 m/s. Recomandat cablu de 26 kN și teren cu aderență bună.";
             winch.EnglishDescription="22 kN; up to 0.85 m/s. Recommended: 26 kN cable and firm footing.";
         }

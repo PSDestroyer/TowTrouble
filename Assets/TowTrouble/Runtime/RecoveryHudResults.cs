@@ -11,7 +11,7 @@ namespace TowTrouble
         {
             public string Title, Destination, Crew;
             public float Elapsed;
-            public int Resets, Snaps, Reward, Balance, BaseReward, ContractIndex;
+            public int Resets, Snaps, Reward, Balance, BaseReward, ContractIndex, Tier;
             public bool FreeRoam, Cooperative, Host, NewRecovery;
         }
 
@@ -24,7 +24,7 @@ namespace TowTrouble
                 Destination = world.Contract.IsOpenWorld ? world.Contract.DeliveryEnglish : "the drop-off",
                 Elapsed = world.Elapsed, Resets = world.Resets(0) + world.Resets(1), Snaps = world.Snaps,
                 Reward = session.LastReward, Balance = P.credits, BaseReward = world.Contract.Reward,
-                ContractIndex = world.ContractIndex, FreeRoam = world.FreeRoam, Cooperative = world.Cooperative,
+                Tier=world.Contract.IsOpenWorld?world.Contract.Tier:world.Contract.Id-1, ContractIndex = world.ContractIndex, FreeRoam = world.FreeRoam, Cooperative = world.Cooperative,
                 Host = session.IsHost, NewRecovery = world.FreeRoam && newRecoveryAvailable,
                 Crew = world.Cooperative ? world.DriverName(0) + " / " + world.DriverName(1) + "  ·  " +
                     Mathf.RoundToInt(world.PullSeconds(0)) + "s / " + Mathf.RoundToInt(world.PullSeconds(1)) + "s pulling" : null
@@ -61,13 +61,14 @@ namespace TowTrouble
             Panel(stats, 16, 57, 234, 1, new Color(.79f, .79f, .72f, .15f));
             Panel(stats, 16, 108, 234, 1, new Color(.79f, .79f, .72f, .15f));
 
-            bool knownPayout = result.Reward == RecoveryEconomy.Payout(result.BaseReward, noResets, noSnaps, false)
-                || result.Reward == RecoveryEconomy.Payout(result.BaseReward, noResets, noSnaps, true);
-            string breakdown = knownPayout ? L("Bază  ", "Base  ") + result.BaseReward.ToString("N0") + " CR     +     " +
-                L("Bonusuri  ", "Bonuses  ") + (result.Reward - result.BaseReward).ToString("N0") + " CR" : L("Recuperare încheiată", "Recovery finished");
+            bool knownPayout = result.Reward == RecoveryEconomy.Payout(result.BaseReward, noResets, noSnaps, false,result.Tier)
+                || result.Reward == RecoveryEconomy.Payout(result.BaseReward, noResets, noSnaps, true,result.Tier);
             // Detect the awarded first-recovery bonus from the real payout, without changing economy state.
-            bool firstBonus = knownPayout && result.Reward == RecoveryEconomy.Payout(result.BaseReward, noResets, noSnaps, true);
-            if (firstBonus) breakdown += L("  ·  include +5% prima recuperare", "  ·  includes +5% first recovery");
+            bool firstBonus = knownPayout && result.Reward == RecoveryEconomy.Payout(result.BaseReward, noResets, noSnaps, true,result.Tier);
+            int baseOffer=RecoveryEconomy.BaseOffer(result.BaseReward,firstBonus,result.Tier);
+            string breakdown = knownPayout ? (firstBonus?"Base  ":"Replay base  ") + baseOffer.ToString("N0") + " CR   +   Bonuses  " +
+                (result.Reward-baseOffer).ToString("N0")+" CR" : "Recovery finished";
+            if (firstBonus) breakdown += "  ·  First recovery +25%";
             Text(card, breakdown, 36, 407, 768, 31, 15, Muted);
 
             var next = ResultInset(card, "Recovery next step", 32, 448, 776, 36);

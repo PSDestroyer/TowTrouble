@@ -217,3 +217,11 @@ Cablurile rămân11kN inclus,14kN200CR,18kN700CR,26kN1.400CR,36kN3.400CR. Două 
 Profilul v4 păstrează progresul, banii, inventarul, configurațiile și accesul deja deținut din salvările existente. Un profil vechi fără progres sau investiții primește ecranul de alegere. Nu reseta profilul real pentru test: folosește o salvare separată. Detalii: `Docs/Design/StarterProgression.md`.
 
 Vehicles și confirmarea folosesc WASD/săgeți sau D-pad/LS pentru navigare, Enter/Confirm pentru butonul evidențiat și Esc/Back pentru anulare. Nintendo A est confirmă/B sud anulează; Xbox A/B și PlayStation Cross/Circle urmează aceleași acțiuni. Alegerea gratuită nu se repetă la revenirea în meniul principal.
+
+## Economia integrată și începutul campaniei — actualizare 2026-11-06
+
+Această secțiune înlocuiește prețurile și bugetele independente de mai sus. Primele șase intervenții sunt Workshop meadow, Forest ruts, Fishing shore, Reed bank, Gravel bend, Below the mountain road. Cele trei carduri Available și lista Completed se păstrează. Apoi ofertele cresc după dificultate; completările existente rămân valide.
+
+Primele două oferă împreună2375CR la prima finalizare chiar fără bonusurile de performanță. Body1400 sau motor800+roți de noroi600 sunt două căi de pregătire verificate. Motor3 costă2600 total,1800 după Motor2; reductor/suspensie1000; troliu14kN1600; cabluri14/18/26/36kN200/1200/2000/4200. Rejucările rămân plătite, cu baza redusă afișată înainte de acceptare și proporție mai bună la dificultăți mari.
+
+Recompensele includ distanța reală pe drum, urcarea, livrarea și pregătirea estimată. Timpul jucătorului nu mărește plata și nu există cronometru-limită. Estimarea este calibrată cu trei drumuri și o extragere/livrare reală Ranger; toate24 încă nu au cronometrare completă cu fiecare mașină. Detalii și limite: `Docs/Validation/CareerEconomy/README.md`.

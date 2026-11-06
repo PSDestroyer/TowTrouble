@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 namespace TowTrouble
 {
     public static class RecoveryBoardEntries
@@ -7,7 +8,9 @@ namespace TowTrouble
         public static List<int> Select(RecoveryContract[] contracts,int completedMask,bool completed)
         {
             var list=new List<int>();
-            for(int i=0;i<contracts.Length;i++)
+            var order=Enumerable.Range(0,contracts.Length);
+            if(!completed)order=order.OrderBy(i=>contracts[i].CareerOrder<0?i:contracts[i].CareerOrder);
+            foreach(int i in order)
             {
                 int id=contracts[i].CompletionId;
                 bool done=id>=0&&id<31&&(completedMask&(1<<id))!=0;

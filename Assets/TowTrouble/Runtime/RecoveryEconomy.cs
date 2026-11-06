@@ -6,9 +6,13 @@ namespace TowTrouble
     public static class RecoveryEconomy
     {
         public static readonly int[] Rewards={450,800,1300,1900,2700};
-        public static int Payout(int baseReward,bool noResets,bool noSnaps,bool first)
-        {return Mathf.Max(0,baseReward)*(100+(noResets?10:0)+(noSnaps?10:0)+(first?5:0))/100;}
-        public static int Price(RecoveryProfile profile,GaragePart part)=>part.Id=="engine_3"&&profile.Owns("engine_2")?6000:part.Price;
+        public static int Payout(int baseReward,bool noResets,bool noSnaps,bool first,int tier=-1)
+        {int fee=BaseOffer(baseReward,first,tier);return fee*(100+(noResets?10:0)+(noSnaps?10:0)+(first?RecoveryCareerBalance.FirstBonus:0))/100;}
+        public static int BaseOffer(int reward,bool first,int tier=-1)=>Mathf.Max(0,reward)*(first?100:RecoveryCareerBalance.RepeatRate(tier))/100;
+        public static int BaseOffer(RecoveryContract contract,bool first)=>BaseOffer(contract.Reward,first,contract.IsOpenWorld?contract.Tier:contract.Id-1);
+        public static int Payout(RecoveryContract contract,bool noResets,bool noSnaps,bool first)=>Payout(contract.Reward,noResets,noSnaps,first,contract.IsOpenWorld?contract.Tier:contract.Id-1);
+        public static int LegacyPayout(int reward,bool noResets,bool noSnaps)=>Mathf.Max(0,reward)*(105+(noResets?10:0)+(noSnaps?10:0))/100;
+        public static int Price(RecoveryProfile profile,GaragePart part)=>part.Id=="engine_3"&&profile.Owns("engine_2")?Mathf.Max(0,part.Price-800):part.Price;
         public static int VehiclePrice(int model)=>model<0||model>=4?0:1200;
         public static bool ChooseStarter(RecoveryProfile profile,int model)
         {
@@ -48,7 +52,7 @@ namespace TowTrouble
         public static int Claim(RecoveryProfile profile,string run,RecoveryContract contract,bool noResets,bool noSnaps)
         {
             if(contract==null||string.IsNullOrEmpty(run)||profile.paidRuns.Contains(run)||contract.CompletionId<0||contract.CompletionId>26)return 0;
-            int payout=Payout(contract.Reward,noResets,noSnaps,!profile.Completed(contract.CompletionId));
+            int payout=Payout(contract,noResets,noSnaps,!profile.Completed(contract.CompletionId));
             profile.paidRuns.Add(run);if(profile.paidRuns.Count>128)profile.paidRuns.RemoveAt(0);
             profile.credits=Mathf.Min(1000000000,profile.credits+payout);profile.lastPayout=payout;
             profile.RecordFinish(contract.CompletionId,noResets,noSnaps);return payout;

@@ -230,8 +230,10 @@ namespace TowTrouble
                 var equipment = GaragePerformance.Calculate(P.Build(P.vehicle), catalog);
                 Text(detail,RecoveryAssistance.Preparation(selected,equipment),30,369,482,40,14,Amber).name="Equipment recommendation";
             }
-            var reward=Panel(detail,542,277,262,111);reward.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Paper;Icon(reward,RecoveryIcon.Coins,15,17,26,Ink);Text(reward,L("RECOMPENSĂ","REWARD"),50,12,196,27,14,Ink,true);Text(reward,selected.Reward.ToString("N0")+" CR",17,45,228,50,35,Ink,true).alignment=TextAlignmentOptions.Center;
-            Text(detail,L("BONUSURI  ·  +10% fără resetări  ·  +10% fără cablu rupt  ·  +5% prima recuperare","BONUSES  ·  +10% no resets  ·  +10% no cable breaks  ·  +5% first recovery"),30,411,774,30,14,Muted);
+            bool first=!P.Completed(selected.CompletionId);
+            var reward=Panel(detail,542,277,262,111);reward.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Paper;Icon(reward,RecoveryIcon.Coins,15,17,26,Ink);Text(reward,first?"REWARD":"REPLAY REWARD",50,12,196,27,14,Ink,true);Text(reward,RecoveryEconomy.BaseOffer(selected,first).ToString("N0")+" CR",17,45,228,50,35,Ink,true).alignment=TextAlignmentOptions.Center;
+            string estimate=selected.ExpectedSeconds>0?"~"+Mathf.CeilToInt(selected.ExpectedSeconds/60)+" min  ·  ":"";
+            Text(detail,estimate+(first?"First recovery +25%  ·  ":"Replay  ·  ")+"No resets +10%  ·  No breaks +10%",30,411,774,30,14,Muted);
             }
             else Text(detail,boardCompleted?L("Recuperările terminate vor apărea aici pentru rejucare.","Finished recoveries will appear here for replay."):L("Alege o recuperare din Finalizate pentru a o rejuca.","Choose a completed recovery to replay."),30,30,774,100,25,Paper,true);
             Text(pageRoot,visible.Count+L(boardCompleted?" recuperări finalizate":" recuperări disponibile",boardCompleted?" completed recoveries":" available recoveries"),76,708,256,30,14,Paper);

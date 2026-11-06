@@ -43,8 +43,29 @@ namespace TowTrouble
             {
                 if(contracts==null){contracts=new RecoveryContract[sites.Length];for(int i=0;i<sites.Length;i++)
                 {var s=sites[i];contracts[i]=new RecoveryContract(i+1,s.Biome,s.Name,(s.Situation??"")+" Recuperează mașina și livreaz-o la "+s.DeliveryName+".",BiomeName(s.Biome),"Alege un unghi bun și trage progresiv.",s.Position-Vector3.up*s.Depth,s.Delivery,8+s.Tier,0)
-                {IsOpenWorld=true,ProgressId=3+i,Tier=s.Tier,EnglishTitle=s.English,EnglishDescription=(s.EnglishSituation??"")+" Recover the car and deliver it to "+s.DeliveryEnglish+".",DeliveryName=s.DeliveryName,DeliveryEnglish=s.DeliveryEnglish,Heading=s.Heading,Pitch=s.Pitch,Roll=s.Roll,BreakoutResistance=s.Resistance,ExitDirection=s.ExitDirection,ExtractionProfile=s.Extraction,SituationKind=s.Kind,TargetModel=s.TargetModel,TargetPaint=s.TargetPaint,Load=s.Load};}}
+                {IsOpenWorld=true,ProgressId=3+i,Tier=s.Tier,EnglishTitle=s.English,EnglishDescription=(s.EnglishSituation??"")+" Recover the car and deliver it to "+s.DeliveryEnglish+".",DeliveryName=s.DeliveryName,DeliveryEnglish=s.DeliveryEnglish,Heading=s.Heading,Pitch=s.Pitch,Roll=s.Roll,BreakoutResistance=s.Resistance,ExitDirection=s.ExitDirection,ExtractionProfile=s.Extraction,SituationKind=s.Kind,TargetModel=s.TargetModel,TargetPaint=s.TargetPaint,Load=s.Load,CareerOrder=RecoveryCareerBalance.Order(i,s.Tier)};}ConfigureContractOffers();}
                 return contracts;
+            }
+        }
+        private void ConfigureContractOffers()
+        {
+            RecoveryWorld world=null;
+            foreach(var candidate in UnityEngine.Object.FindObjectsByType<RecoveryWorld>(FindObjectsSortMode.None))
+                if(candidate.Map==this){world=candidate;break;}
+            if(world==null)return; // Standalone maps/tests keep the tier fallback.
+            var path=new List<Vector3>();
+            var obstacles=UnityEngine.Object.FindObjectsByType<RecoveryTowObstacle>(FindObjectsInactive.Include,FindObjectsSortMode.None);
+            float Length(Vector3 from,Vector3 to,out float climb)
+            {
+                climb=0;
+                if(!TryGetRoadRoute(from,to,path))return Vector3.Distance(from,to)*1.25f;
+                float length=0;for(int j=1;j<path.Count;j++){length+=Vector3.Distance(path[j-1],path[j]);climb+=Mathf.Max(0,path[j].y-path[j-1].y);}return length;
+            }
+            for(int i=0;i<contracts.Length;i++)
+            {
+                var c=contracts[i];c.OutboundMetres=Length(world.GaragePosition,c.Target,out c.OutboundClimb);c.TowingMetres=Length(c.Target,c.Delivery,out c.TowingClimb);
+                bool obstacle=System.Array.Exists(obstacles,o=>o.SiteIndex==i);
+                c.ExpectedSeconds=RecoveryCareerBalance.ExpectedSeconds(c.OutboundMetres,c.TowingMetres,c.Tier,c.ExtractionProfile?.BreakawayForce??0,obstacle,c.OutboundClimb,c.TowingClimb);
             }
         }
         public void Configure(RecoverySite[] values,RecoveryDropoff[] bays,Vector3[] roads){sites=values;deliveries=bays;roadCheckpoints=roads;contracts=null;roadNetwork=null;}

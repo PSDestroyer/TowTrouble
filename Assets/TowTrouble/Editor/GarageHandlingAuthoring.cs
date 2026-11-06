@@ -23,6 +23,7 @@ namespace TowTrouble.Editor
             {
                 if(p.Slot==GarageSlot.Wheels)Wheel(p);
                 else if(p.Slot==GarageSlot.Assembly)Body(p);
+                p.Price=RecoveryCareerBalance.Price(p);
             }
         }
         private static void Tire(GaragePart p,GarageTireKind role,float dry,float mud,float sand,float snow,float resistance=1,float mass=0,float speed=1)

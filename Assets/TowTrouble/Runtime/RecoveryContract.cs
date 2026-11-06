@@ -10,6 +10,8 @@ namespace TowTrouble
         public readonly float Extraction, MudDrag;
         public bool IsOpenWorld;
         public int Tier,ProgressId=-1;
+        public int CareerOrder=-1;
+        public float ExpectedSeconds,OutboundMetres,TowingMetres,OutboundClimb,TowingClimb;
         public int TargetModel,TargetPaint;
         public RecoveryLoadSettings Load;
         public float Heading,Pitch,Roll,BreakoutResistance;public Vector3 ExitDirection;
@@ -19,7 +21,7 @@ namespace TowTrouble
         public bool IsExtracted(Vector3 position)=>IsOpenWorld?(Vector2.Distance(new Vector2(position.x,position.z),new Vector2(Target.x,Target.z))>=Extraction):position.z>=Extraction;
         public bool ContainsDelivery(Vector3 position)=>Vector2.Distance(new Vector2(position.x,position.z),new Vector2(Delivery.x,Delivery.z))<7&&Mathf.Abs(position.y-Delivery.y)<4;
         public int CompletionId=>ProgressId>=0?ProgressId:Id-1;
-        public int Reward=>RecoveryEconomy.Rewards[Mathf.Clamp(IsOpenWorld?Tier:Id-1,0,4)];
+        public int Reward=>IsOpenWorld&&ExpectedSeconds>0?RecoveryCareerBalance.WorldReward(Tier,ExpectedSeconds):RecoveryEconomy.Rewards[Mathf.Clamp(IsOpenWorld?Tier:Id-1,0,4)];
         public string Difficulty(RecoveryProfile p)=>p.L(new[]{"Local","Standard","Specializat","Greu","Expert"}[Mathf.Clamp(IsOpenWorld?Tier:Id-1,0,4)],new[]{"Local","Standard","Specialist","Hard","Expert"}[Mathf.Clamp(IsOpenWorld?Tier:Id-1,0,4)]);
         public RecoveryContract(int id, int zone, string title, string description, string terrain, string tip, Vector3 target, Vector3 delivery, float extraction, float drag)
         { Id=id; Zone=zone; Title=title; Description=description; Terrain=terrain; Tip=tip; Target=target; Delivery=delivery; Extraction=extraction; MudDrag=drag; }
