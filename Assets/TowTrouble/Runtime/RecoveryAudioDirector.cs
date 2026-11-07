@@ -180,7 +180,10 @@ namespace TowTrouble
             wasEngine[slot]=ignition;
             float throttle=Mathf.Abs(car.ControlInput.y),speed=car.Speed;
             var slip=car.WheelSlip;float average=(slip.x+slip.y+slip.z+slip.w)*.25f;
-            float pitch=RecoveryAudioPolicy.EnginePitch(speed,throttle,average,car.Body.mass);
+            // A hidden lobby preview may not have run Awake yet. Its audio is muted,
+            // but pitch evaluation must still tolerate the uninitialized physics cache.
+            float mass=car.Body!=null?car.Body.mass:RecoveryBodyBalance.StockMass(car.ModelIndex);
+            float pitch=RecoveryAudioPolicy.EnginePitch(speed,throttle,average,mass);
             float gain=running?BusGain(RecoveryAudioBus.Vehicles):0;
             for(int layer=0;layer<3;layer++)
             {

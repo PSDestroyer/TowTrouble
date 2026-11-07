@@ -118,10 +118,10 @@ namespace TowTrouble
             focusName=MenuRememberedFocus(target);
             if(pageRoot!=null){foreach(var t in pageRoot.GetComponentsInChildren<TMP_Text>(true))textSizes.Remove(t);EventSystem.current?.SetSelectedGameObject(null);Destroy(pageRoot.gameObject);pageRoot=null;}
             if(target=="Garage"&&page!="Garage")PrepareGarage();
-            page=target;session.View=target;pendingBinding=null;BeginMenuPage();session.World.ShowSinglePreview(target!="Title"&&target!="Lobby"&&(!session.Connected||session.World.Phase==RecoveryPhase.Lobby),Mathf.Max(0,session.LocalSlot));
+            page=target;session.View=target;pendingBinding=null;BeginMenuPage();session.World.ShowSinglePreview(target!="Lobby"&&(!session.Connected||session.World.Phase==RecoveryPhase.Lobby),Mathf.Max(0,session.LocalSlot));
             if(target=="Gameplay"){gameplay.SetActive(true);return;}
             gameplay.SetActive(false);pageRoot=Node(target,root,0,0,1600,900);pageRoot.anchorMin=pageRoot.anchorMax=pageRoot.pivot=Vector2.one*.5f;pageRoot.anchoredPosition=Vector2.zero;RefreshScreenLayout(true);
-            if(target=="Main")session.PreviewFittedRide();
+            if(target=="Main"||target=="Title")session.PreviewFittedRide();
             if(target!="Title"&&target!="Main"&&target!="Lobby"&&target!="Starter"&&target!="Garage")Panel(pageRoot,0,0,1600,900,new Color(.03f,.04f,.035f,.42f));
             switch(target){case "Garage":BuildGarage();break;case "Board":BuildBoard();break;case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Help":BuildHelp();break;case "Starter":BuildVehicles();break;case "TutorialOffer":BuildTutorialOffer();break;case "TutorialDone":case "TrainingComplete":BuildTutorialDone();break;case "TextEntry":BuildTextEntry();break;case "Busy":BuildBusy();break;case "Confirm":BuildConfirmation();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;}
             ConfigureMenuPage();

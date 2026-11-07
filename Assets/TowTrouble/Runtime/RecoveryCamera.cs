@@ -20,9 +20,11 @@ namespace TowTrouble
         }
         private void LateUpdate()
         {
-            if(session==null)return;
+            if(session==null){DisableTitleLighting();return;}
             if(!session.GarageOpen)garageCameraActive=false;
             var p=session.Profile;bool lobby=!session.Connected||session.World.Phase==RecoveryPhase.Lobby;
+            bool title=session.View=="Title";
+            bool enteringTitle=title&&!titleCameraActive;titleCameraActive=title;
             bool choosingStarter=session.View=="Starter"||session.View=="Confirm"&&!p.starterChosen;
             if(!choosingStarter)starterCameraActive=false;
             bool frameWheel=session.World.HasContract&&!session.World.ClearingObstacle&&(session.World.UsesArcadeExtraction||(session.World.FreeRoam&&(session.World.Contract.SituationKind==RecoverySituationKind.Ditch||session.World.Contract.SituationKind==RecoverySituationKind.Embankment)));
@@ -31,7 +33,8 @@ namespace TowTrouble
             if(lobby||session.GarageOpen)
             {
                 var car=session.World.Drivers[Mathf.Max(0,session.LocalSlot)].transform;var center=car.position;
-                if(choosingStarter||session.GarageOpen)
+                if(title)TitleCameraPose(session.World.Drivers[Mathf.Max(0,session.LocalSlot)],out position,out look);
+                else if(choosingStarter||session.GarageOpen)
                 {
                     float rotationInput=0;
                     if(!session.GarageCameraInputBlocked&&Mouse.current!=null&&Mouse.current.leftButton.isPressed&&(UnityEngine.EventSystems.EventSystem.current==null||!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()))rotationInput+=Mouse.current.delta.x.ReadValue()*.16f*p.cameraSensitivity;
@@ -78,9 +81,11 @@ namespace TowTrouble
             }
             // Preview modes own their framing and circular orbit. A second position
             // interpolation could cut through the car during a front/rear transition.
-            transform.position=session.GarageOpen||choosingStarter?position:Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
+            if(enteringTitle)velocity=Vector3.zero;
+            transform.position=title||session.GarageOpen||choosingStarter?position:Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
             var targetRotation=Quaternion.LookRotation(look-transform.position);
-            transform.rotation=choosingStarter?targetRotation:Quaternion.Slerp(transform.rotation,targetRotation,1-Mathf.Exp(-7*Time.unscaledDeltaTime));
+            transform.rotation=title||choosingStarter?targetRotation:Quaternion.Slerp(transform.rotation,targetRotation,1-Mathf.Exp(-7*Time.unscaledDeltaTime));
+            UpdateTitleLighting(title);
             UpdateTreeVisibility(lobby);
         }
     }

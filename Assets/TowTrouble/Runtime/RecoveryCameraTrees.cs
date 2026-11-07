@@ -148,6 +148,6 @@ namespace TowTrouble
             if (session != null) IndexCameraTrees();
         }
 
-        private void OnDisable() => ClearCameraTrees();
+        private void OnDisable() { DisableTitleLighting(); ClearCameraTrees(); }
     }
 }

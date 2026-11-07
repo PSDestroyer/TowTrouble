@@ -564,3 +564,19 @@ Network appearance invalidation now includes JSON, fallback paint and base model
 
 - PlatformSpecifics SaveManagerEditor again opens via Window/Save File Deletion Window; Tow Trouble/Save Data is an alias for the same window. Uses actual SaveManager.SavePath, confirmation and Edit Mode only; deletes primary, backup and two atomic temp files, then invalidates Editor cache. No PlayerPrefs and no arbitrary or recursive user-data deletion.
 - Docs/Validation/SaveDeletion: compile clean,11 native temporary-file checks passed; real save byte-preserved, scene clean, Play stopped. Menu alias and native window verified; no actual user save deletion or platform build.
+
+## Title scene composition — 2026-11-07
+
+- Title now uses one preview car and dedicated cached bounds-based front three-quarter camera toward existing workshop/mountain. Saved fitted ride previews on Title as well as Main; unchosen starters keep the default. Logo/prompt/text unchanged, no new scene props or serialized assets. Camera snaps to its authored title pose on entry; other menu/garage/follow branches remain separate.
+- Hiding driver1 before Awake exposed audio pitch reading Body.mass on the inactive vehicle. RecoveryAudioDirector uses stock model mass until that physics cache initializes; no mute or driving policy change.
+- Docs/Validation/TitleComposition:16 starter/aspect +114 body/aspect checks, Lobby/Main/Starter visibility, actual-frame capture and cold-start hidden-body audio check passed. Compile clean; final current Console zero errors (Metal depth/AI account warnings remain). Real save artifacts unchanged, isolated scope restored, scene clean and Play stopped. No build/commit/hardware multiplayer claims.
+
+## Workshop forecourt and title scale — 2026-11-07
+
+- User requested larger title car and visible workshop detail. Title fitted frame enlarged/minimum distance reduced; approved logo/text/prompt unchanged. OpenWorldWorkshopForecourt native authoring adds9 exterior props in3 clusters under Workshop forecourt working details; shared existing meshes/materials,28 renderers,9 distance LOD groups,9 simple colliders. No interiors/lights/runtime scripts/new geometry assets. Both bay/approach envelopes reserved. Menu: Tow Trouble/Visuals/Dress Workshop Forecourt; rerunning replaces only its owned root.
+- Docs/Validation/WorkshopTitle:16 starter/aspect and114 body/aspect checks passed, actual-frame screenshot inspected, Console current errors0 (Metal depth warnings remain), frames132→3785. Scene saved clean; Play stopped, isolated scope restored, real save artifacts unchanged. Generated font changes rolled back; no build/commit or hardware/peer validation.
+
+## Warm title lighting — 2026-11-07
+
+- RecoveryCameraLighting partial owns a temporary Title-only override of the existing RenderSettings.sun and authored Soft sky fill: warm front-side sunlight and warm-neutral fill reveal the car/workshop. Values are cached on entry and restored on leaving Title, session loss and camera disable. No extra lights, material/grade/pipeline changes or new serialized scene data. Discarded local-spot prototype left no runtime rig.
+- Docs/Validation/TitleLighting:16 model/paint native renders +8 restoration/allocation checks passed (3 lights before/after). Actual Game-view Final.png inspected; frames7457→10717; compile clean/current Console errors0, existing depth/AI account warnings remain. Scene clean, Play stopped, scope restored, real save artifacts unchanged. No build/commit/platform or real-peer validation; no measured GPU-performance claim.
