@@ -15,7 +15,7 @@ namespace TowTrouble
     public sealed class RecoveryPaintSlot { public Renderer Renderer; public int Slot; public Material[] Colors; }
 
     [RequireComponent(typeof(Rigidbody))]
-    public sealed class RecoveryVehicle : MonoBehaviour
+    public sealed partial class RecoveryVehicle : MonoBehaviour
     {
         [SerializeField] private WheelCollider[] wheels;
         [SerializeField] private Transform[] wheelVisuals;
@@ -287,6 +287,7 @@ namespace TowTrouble
 
         private void ResetWheelPresentation()
         {
+            ResetSteeringPresentation();
             for(int i=0;i<wheels.Length;i++)
                 previousSuspensionOffsets[i]=suspensionOffsets[i]=-Mathf.Min(.12f,wheels[i].suspensionDistance);
         }
@@ -300,6 +301,7 @@ namespace TowTrouble
             }
             var controls=ControlInput;var rates=WheelAngularVelocity;
             float steer=controls.x*Mathf.Lerp(steering,15,Speed/14);
+            UpdateSteeringPresentation(steer,Time.deltaTime);
             float poseBlend=RecoveryWheelPose.InterpolationAlpha(Time.timeAsDouble,Time.fixedTimeAsDouble,Time.fixedDeltaTime);
             for(int i=0;i<wheels.Length;i++)
             {

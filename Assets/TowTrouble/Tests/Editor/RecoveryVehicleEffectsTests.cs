@@ -20,9 +20,9 @@ namespace TowTrouble.Tests
         {
             Assert.That(RecoveryVehicleEffects.SmokeRate(false,1,1,2),Is.Zero);
             Assert.That(RecoveryVehicleEffects.SmokeRate(true,1,1,0),Is.Zero);
-            Assert.That(RecoveryVehicleEffects.SmokeRate(true,0,0,1),Is.EqualTo(2));
-            Assert.That(RecoveryVehicleEffects.SmokeRate(true,1,1,8)*8,Is.EqualTo(16));
-            Assert.That(RecoveryVehicleEffects.SmokeRate(true,-1,0,2),Is.EqualTo(8));
+            Assert.That(RecoveryVehicleEffects.SmokeRate(true,0,0,1),Is.EqualTo(4));
+            Assert.That(RecoveryVehicleEffects.SmokeRate(true,1,1,8)*8,Is.EqualTo(18));
+            Assert.That(RecoveryVehicleEffects.SmokeRate(true,-1,0,2),Is.EqualTo(9));
         }
         [Test] public void BrakingAtlasOnlyChangesTheNativeRearLampCells()
         {
@@ -65,7 +65,18 @@ namespace TowTrouble.Tests
                 foreach(var ps in systems)if(ps.name=="Exhaust vapor"){exhaustCount++;Assert.That(ps.main.playOnAwake,Is.False);Assert.That(ps.isPlaying,Is.False);Assert.That(ps.main.maxParticles,Is.EqualTo(20));}
                 Assert.That(exhaustCount,Is.GreaterThan(0));
                 effects.Rebind();int second=0;foreach(var ps in root.GetComponentsInChildren<ParticleSystem>(true))if(ps.name=="Exhaust vapor")second++;Assert.That(second,Is.EqualTo(exhaustCount));
-                car.SetModel(0);effects.Rebind();foreach(var ps in root.GetComponentsInChildren<ParticleSystem>(true))Assert.That(ps.name,Is.Not.EqualTo("Exhaust vapor"));
+                for(int model=0;model<car.ModelCount;model++)
+                {
+                    car.SetModel(model);effects.Rebind();int count=0;
+                    foreach(var ps in root.GetComponentsInChildren<ParticleSystem>(true))if(ps.name=="Exhaust vapor")
+                    {
+                        count++;Assert.That(ps.isPlaying,Is.False);Assert.That(ps.main.maxParticles,Is.EqualTo(20));
+                    }
+                    Assert.That(count,Is.InRange(1,8),"Every stock model needs an exhaust outlet");
+                }
+                effects.ApplyState(false,false,0,0);
+                Assert.That(car.EngineRunning,Is.False);
+                foreach(var ps in root.GetComponentsInChildren<ParticleSystem>(true))if(ps.name=="Exhaust vapor")Assert.That(ps.emission.rateOverTime.constant,Is.Zero);
             }
             finally{if(root!=null)Object.DestroyImmediate(root);EditorSceneManager.ClosePreviewScene(scene);}
         }

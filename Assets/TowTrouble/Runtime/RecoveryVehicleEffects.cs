@@ -22,7 +22,7 @@ namespace TowTrouble
         public static bool ShouldBrake(float throttle,bool brake,float signedSpeed)
         {return brake||(Mathf.Abs(throttle)>.1f&&Mathf.Abs(signedSpeed)>.3f&&throttle*signedSpeed<0);}
         public static float SmokeRate(bool engine,float throttle,float effort,int outlets)
-        {return !engine||outlets<=0?0:Mathf.Lerp(2,16,Mathf.Clamp01(Mathf.Max(Mathf.Abs(throttle),effort)))/outlets;}
+        {return !engine||outlets<=0?0:Mathf.Lerp(4,18,Mathf.Clamp01(Mathf.Max(Mathf.Abs(throttle),effort)))/outlets;}
         public static bool VisiblePart(Transform part,Transform vehicleRoot)
         {for(var t=part;t!=null&&t!=vehicleRoot;t=t.parent)if(!t.gameObject.activeSelf)return false;return true;}
         private void LateUpdate()
@@ -84,6 +84,19 @@ namespace TowTrouble
                     break;
                 }
             }
+            // Factory bodies without a separate pipe mesh need a stock rear outlet.
+            // Measured ports on a fitted exhaust always take precedence.
+            if(exhausts.Count==0)
+            {
+                var custom=vehicle.GetComponent<RecoveryCustomization>();
+                Bounds body;
+                if(custom!=null)custom.GarageBounds(GarageSlot.Assembly,null,out body,out _);
+                else body=new Bounds(new Vector3(0,1,0),new Vector3(2.2f,2,4.5f));
+                float rearHeight=vehicle.transform.InverseTransformPoint(vehicle.RearHitch).y;
+                float height=Mathf.Max(body.min.y+.35f,rearHeight-.18f);
+                var outlet=new Vector3(body.center.x-body.extents.x*.75f,height,body.min.z+.06f);
+                CreateExhaust(vehicle.transform,outlet,new Vector3(-.35f,.12f,-1));
+            }
             ApplyState(false,false,0,0);
         }
         private void CreateExhaust(Transform parent,Vector3 point,Vector3 direction)
@@ -91,9 +104,13 @@ namespace TowTrouble
             var go=new GameObject("Exhaust vapor");go.SetActive(false);go.transform.SetParent(parent,false);
             go.transform.localPosition=point+direction.normalized*.012f;go.transform.localRotation=Quaternion.LookRotation(direction);
             var ps=go.AddComponent<ParticleSystem>();var main=ps.main;
-            main.playOnAwake=false;main.loop=true;main.duration=1;main.simulationSpace=ParticleSystemSimulationSpace.World;main.maxParticles=20;
-            main.startLifetime=new ParticleSystem.MinMaxCurve(.45f,.9f);main.startSize=new ParticleSystem.MinMaxCurve(.08f,.15f);main.startSpeed=.35f;main.startRotation=new ParticleSystem.MinMaxCurve(0,Mathf.PI*2);
-            main.startColor=new Color(.45f,.48f,.5f,.22f);main.gravityModifier=-.025f;
+            main.playOnAwake=false;main.loop=true;main.duration=1;main.simulationSpace=ParticleSystemSimulationSpace.World;main.scalingMode=ParticleSystemScalingMode.Shape;main.maxParticles=20;
+            main.startLifetime=new ParticleSystem.MinMaxCurve(1.1f,1.7f);main.startSize=new ParticleSystem.MinMaxCurve(.17f,.28f);main.startSpeed=.35f;main.startRotation=new ParticleSystem.MinMaxCurve(0,Mathf.PI*2);
+            main.startColor=new Color(.42f,.44f,.45f,.50f);main.gravityModifier=-.015f;
+            // Gentle world-up drift lets vapor clear the bumper instead of dying
+            // inside the car silhouette at normal gameplay camera distance.
+            var drift=ps.velocityOverLifetime;drift.enabled=true;drift.space=ParticleSystemSimulationSpace.World;
+            drift.x=.06f;drift.y=.35f;drift.z=-.03f;
             var emission=ps.emission;emission.rateOverTime=0;
             var shape=ps.shape;shape.shapeType=ParticleSystemShapeType.Cone;shape.angle=12;shape.radius=.025f;
             var color=ps.colorOverLifetime;color.enabled=true;var gradient=new Gradient();gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(Color.white,1)},new[]{new GradientAlphaKey(0,0),new GradientAlphaKey(1,.12f),new GradientAlphaKey(0,1)});color.color=gradient;
