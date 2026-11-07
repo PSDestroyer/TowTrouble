@@ -24,7 +24,8 @@ namespace TowTrouble
             var rotation=Quaternion.LookRotation(-direction,Vector3.up);var inverse=Quaternion.Inverse(rotation);
             var camera=GetComponent<Camera>();float fov=camera!=null?camera.fieldOfView:57,aspect=camera!=null?camera.aspect:16f/9;
             float tangent=Mathf.Tan(fov*.5f*Mathf.Deg2Rad);
-            float safeWidth=Mathf.Min(1,(16f/9)/aspect),safeHeight=Mathf.Min(1,aspect/(16f/9));
+            var content=RecoveryScreenLayout.Content(aspect,RecoveryScreenLayout.CameraSafeArea(camera));
+            float safeWidth=content.width,safeHeight=content.height;
             float widthFraction=.54f*safeWidth,heightFraction=.47f*safeHeight,distance=4;
             for(int i=0;i<8;i++)
             {
@@ -35,7 +36,8 @@ namespace TowTrouble
             distance+=.35f;
             var focus=car.transform.TransformPoint(starterBounds.center);float halfHeight=distance*tangent;
             // Move the camera and aim together: keep the complete car above the summary and beside the choices.
-            var offset=rotation*new Vector3(-2*.148f*safeWidth*halfHeight*aspect,-2*.060f*safeHeight*halfHeight,0);
+            var center=content.position+Vector2.Scale(new Vector2(.648f,.560f),content.size);
+            var offset=rotation*new Vector3((1-2*center.x)*halfHeight*aspect,(1-2*center.y)*halfHeight,0);
             position=focus+direction*distance+offset;look=focus+offset;
         }
         private void MenuPose(RecoveryVehicle car,out Vector3 position,out Vector3 look)
@@ -45,11 +47,13 @@ namespace TowTrouble
                 if(renderer.enabled&&renderer.gameObject.activeInHierarchy&&renderer.bounds.size.sqrMagnitude<400){if(!found){bounds=renderer.bounds;found=true;}else bounds.Encapsulate(renderer.bounds);}
             var camera=GetComponent<Camera>();float fov=camera!=null?camera.fieldOfView:50,aspect=camera!=null?camera.aspect:16f/9;
             float tangent=Mathf.Tan(fov*.5f*Mathf.Deg2Rad);
+            var content=RecoveryScreenLayout.Content(aspect,RecoveryScreenLayout.CameraSafeArea(camera));
             float span=Mathf.Max(bounds.size.x,bounds.size.z);
-            float distance=Mathf.Max(8,Mathf.Max(bounds.size.y/(2*tangent*.39f),span/(2*tangent*aspect*.27f))+1.3f);
+            float distance=Mathf.Max(8,Mathf.Max(bounds.size.y/(2*tangent*.39f*content.height),span/(2*tangent*aspect*.27f*content.width))+1.3f);
             Vector3 direction=new Vector3(12,5,7).normalized;position=bounds.center+direction*distance;
             Quaternion rotation=Quaternion.LookRotation(-direction);float halfHeight=distance*tangent;
-            look=bounds.center+rotation*Vector3.right*(halfHeight*aspect*(1-2*(.5f+.15f*Mathf.Min(1,(16f/9f)/aspect))));
+            var center=content.position+Vector2.Scale(new Vector2(.65f,.5f),content.size);
+            look=bounds.center+rotation*Vector3.right*(halfHeight*aspect*(1-2*center.x))+rotation*Vector3.up*(halfHeight*(1-2*center.y));
             if(!session.Profile.reducedMotion)position.x+=Mathf.Sin(Time.unscaledTime*.12f)*.12f;
         }
     }

@@ -32,7 +32,8 @@ namespace TowTrouble
                 else {garageBody=new Bounds(new Vector3(0,1,0),new Vector3(2,2,4));garageDetail=RecoveryGarageView.Fallback(focusedGarageSlot,garageBody);}
             }
             float fov=garageLens!=null?garageLens.fieldOfView:57,aspect=garageLens!=null?garageLens.aspect:16f/9;
-            var target=RecoveryGarageView.Frame(focusedGarageSlot,garageBody,garageDetail,fov,aspect);
+            var viewport=RecoveryGarageView.Viewport(aspect,RecoveryScreenLayout.CameraSafeArea(garageLens));
+            var target=RecoveryGarageView.Frame(focusedGarageSlot,garageBody,garageDetail,fov,aspect,viewport);
             if(entering)
             {
                 garageFocus=garageBody.center;var start=car.transform.InverseTransformPoint(transform.position)-garageFocus;
@@ -46,9 +47,11 @@ namespace TowTrouble
             garageFocus=Vector3.SmoothDamp(garageFocus,target.Focus,ref garageFocusVelocity,smooth,Mathf.Infinity,dt);
             var local=RecoveryGarageView.OutsideBody(garageFocus+RecoveryGarageView.Direction(garageYaw,garageElevation)*garageDistance,garageBody);
             var focus=car.transform.TransformPoint(garageFocus);position=car.transform.TransformPoint(local);
-            // Environment clipping uses the actual workpiece, independently of the UI look offset.
+            RecoveryGarageView.Pose(focus,(position-focus).normalized,Vector3.Distance(position,focus),fov,aspect,viewport,out position,out look);
+            var safePosition=car.transform.TransformPoint(RecoveryGarageView.OutsideBody(car.transform.InverseTransformPoint(position),garageBody));
+            look+=safePosition-position;position=safePosition;
+            // Test the final camera position after the viewport offset, rather than an intermediate pose.
             if(CameraObstruction(focus,position,out var hit,QueryTriggerInteraction.Ignore))position=hit.point+hit.normal*.45f;
-            RecoveryGarageView.Pose(focus,(position-focus).normalized,Vector3.Distance(position,focus),fov,aspect,out position,out look);
         }
     }
 }

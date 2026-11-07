@@ -1,0 +1,17 @@
+{
+  "checks": [
+    "Deletes primary, recovery backup and both atomic temporary files",
+    "All four save artifacts are absent",
+    "Unrelated neighboring files remain intact",
+    "Fresh load cannot restore deleted progress or recreate a file",
+    "Repeated deletion and missing save directory are harmless",
+    "Deletes an orphan backup when the main save is already missing",
+    "Recovery-file failure is reported before deleting the primary save",
+    "Retry succeeds after the obstructing recovery path is removed",
+    "Editor deletion can discard the cached store",
+    "Original Window entry and Tow Trouble alias are both registered",
+    "Real user save bytes were not changed"
+  ],
+  "savePreserved": true,
+  "sceneDirty": false
+}

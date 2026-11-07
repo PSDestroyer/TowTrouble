@@ -37,26 +37,43 @@ namespace TowTrouble
         private string MenuFocusKey(string target)=>target=="Settings"?target+":"+(firstSetup?"First":settingsTab):target;
         private string MenuRememberedFocus(string target)=>target=="Confirm"?null:menuFocus.TryGetValue(MenuFocusKey(target),out var value)?value:null;
         private void BeginMenuPage()
-        {menuTabs.Clear();menuHints.Clear();menuDescriptions.Clear();menuScroll=null;menuHelp=null;menuFooter=null;preferredMenuFocus=null;}
+        {screenShades.Clear();screenBands.Clear();menuTabs.Clear();menuHints.Clear();menuDescriptions.Clear();menuScroll=null;menuHelp=null;menuFooter=null;preferredMenuFocus=null;}
         private TMP_Text BuildMenuFooter()
         {
-            Panel(pageRoot,76,864,1448,34,new Color(.03f,.04f,.05f,.88f));
-            menuFooter=ControlText(Text(pageRoot,"",94,866,740,28,15,Paper));
-            MenuHint(pageRoot,"confirm","Select",1050,866,230);
-            MenuHint(pageRoot,"back","Back",1330,866,190);
+            Panel(pageRoot,76,838,1448,48,new Color(.03f,.04f,.05f,.88f));
+            NavigationHint(94,"nav-primary");
+            Text(pageRoot,"/",176,842,16,40,20,Muted).alignment=TextAlignmentOptions.Midline;
+            NavigationHint(196,"nav-secondary");
+            menuFooter=Text(pageRoot,"Navigate",292,842,480,40,20,Paper);menuFooter.alignment=TextAlignmentOptions.MidlineLeft;
+            MenuHint(pageRoot,"confirm","Select",1050,842,230);
+            MenuHint(pageRoot,"back","Back",1330,842,190);
             return menuFooter;
+        }
+        private void NavigationHint(float x,string kind)
+        {
+            var cap=Panel(pageRoot,x,842,78,40,Paper);cap.name="Menu control hint";
+            var key=Text(cap,MenuKey(kind),0,0,78,40,16,Ink,true);key.alignment=TextAlignmentOptions.Center;
+            menuHints.Add(Tuple.Create(key,kind));
         }
         private void MenuHint(Transform parent,string kind,string label,float x,float y,float width)
         {
-            var cap=Panel(parent,x,y,46,30,Paper);cap.name="Menu control hint";
-            var text=Text(cap,"",0,0,46,30,12,Ink,true);text.alignment=TextAlignmentOptions.Center;
-
-            menuHints.Add(Tuple.Create(text,kind));
-            Text(parent,label,x+54,y,width-54,30,14,Muted).alignment=TextAlignmentOptions.MidlineLeft;
+            MenuGlyph(parent,kind,x,y);
+            Text(parent,label,x+68,y,width-68,40,18,Muted).alignment=TextAlignmentOptions.MidlineLeft;
+        }
+        private TMP_Text MenuGlyph(Transform parent,string kind,float x,float y,float width=60,float height=40)
+        {
+            var cap=Panel(parent,x,y,width,height,Paper);cap.name="Menu control hint";
+            var key=Text(cap,MenuKey(kind),0,0,width,height,16,Ink,true);key.alignment=TextAlignmentOptions.Center;
+            menuHints.Add(Tuple.Create(key,kind));return key;
         }
         private string MenuKey(string kind)
         {
             var f=RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
+            if(kind=="nav-primary")return session.UsingGamepad?"D-pad":"WASD";
+            if(kind=="nav-secondary")return session.UsingGamepad?"Left stick":"Arrows";
+            if(kind=="rotate")return session.UsingGamepad?"Right stick":"LMB";
+            if(kind=="tire-previous")return session.UsingGamepad?RecoveryInputPrompts.TriggerLabels(f).Split('/')[0].Trim():"T";
+            if(kind=="tire-next")return session.UsingGamepad?RecoveryInputPrompts.TriggerLabels(f).Split('/')[1].Trim():"R";
             if(!session.UsingGamepad)return kind=="back"?"Esc":kind=="previous"?"Q":kind=="next"?"E":"Enter";
             return kind=="back"?RecoveryInputPrompts.CancelLabel(f):kind=="previous"?RecoveryInputPrompts.PreviousTabLabel(f):kind=="next"?RecoveryInputPrompts.NextTabLabel(f):RecoveryInputPrompts.ConfirmLabel(f);
         }
@@ -177,23 +194,41 @@ namespace TowTrouble
         private void BuildConfirmation()
         {
             var shade=Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.75f));shade.GetComponent<UnityEngine.UI.Image>().raycastTarget=true;
-            var card=Panel(pageRoot,425,235,750,430);Icon(card,RecoveryIcon.Flag,28,28,30,Amber);
-            Text(card,displayPending?"KEEP DISPLAY SETTINGS?":"PLEASE CONFIRM",76,26,644,40,26,Paper,true);
-            Text(card,confirmationQuestion,30,97,690,210,23,Muted);
-            Button(card,confirmationAction,30,337,335,()=>{var action=pendingConfirmation;pendingConfirmation=null;action?.Invoke();},true);
-            Button(card,"CANCEL",385,337,335,()=>MenuBack());
+            const float width=700,padding=28,gap=16;
+            var card=Panel(pageRoot,450,0,width,300);card.name="Confirmation card";
+            Icon(card,RecoveryIcon.Flag,padding,26,30,Amber);
+            Text(card,displayPending?"KEEP DISPLAY SETTINGS?":"PLEASE CONFIRM",76,24,width-104,42,26,Paper,true);
+            var message=Text(card,confirmationQuestion,padding,86,width-padding*2,300,23,Muted);
+            message.enableAutoSizing=false;
+            float messageHeight=Mathf.Clamp(Mathf.Ceil(message.GetPreferredValues(confirmationQuestion,width-padding*2,float.PositiveInfinity).y)+8,40,300);
+            message.rectTransform.sizeDelta=new Vector2(width-padding*2,messageHeight);message.enableAutoSizing=true;
+            float buttonY=86+messageHeight+24,height=buttonY+64+padding;
+            card.sizeDelta=new Vector2(width,height);card.anchoredPosition=new Vector2((1600-width)*.5f,-(900-height)*.5f);
+            float buttonWidth=(width-padding*2-gap)*.5f;
+            var confirm=Button(card,confirmationAction,padding,buttonY,buttonWidth,()=>{var action=pendingConfirmation;pendingConfirmation=null;action?.Invoke();},true,64);
+            var cancel=Button(card,"CANCEL",padding+buttonWidth+gap,buttonY,buttonWidth,()=>MenuBack(),false,64);
             preferredMenuFocus="CANCEL";
             if(confirmationReturn=="Board")ConfigureBoardDialog();
-            BuildMenuFooter();
+            else {ConfirmationHint(confirm,"confirm");ConfirmationHint(cancel,"back");}
+        }
+        private void ConfirmationHint(UnityEngine.UI.Button button,string kind)
+        {
+            foreach(var icon in button.GetComponentsInChildren<RecoveryIconGraphic>())icon.gameObject.SetActive(false);
+            var label=button.GetComponentInChildren<TMP_Text>();
+            var cap=Panel(button.transform,12,11,60,42,Ink);cap.name="Menu control hint";
+            var key=Text(cap,MenuKey(kind),0,0,60,42,16,Paper,true);key.alignment=TextAlignmentOptions.Center;
+            menuHints.Add(Tuple.Create(key,kind));
+            label.rectTransform.anchoredPosition=new Vector2(86,0);
+            label.rectTransform.sizeDelta=new Vector2(((RectTransform)button.transform).rect.width-100,64);
         }
         private void UpdateMenuPresentation()
         {
             string deviceStyle=session.UsingGamepad+":"+RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
             if(menuDeviceStyle!=deviceStyle){menuDeviceStyle=deviceStyle;if(page=="Help"||page=="Credits"||page=="Settings"&&settingsTab=="Comenzi") {float y=menuScroll!=null?menuScroll.content.anchoredPosition.y:0;Show(page);if(menuScroll!=null)menuScroll.content.anchoredPosition=new Vector2(0,y);return;} }
-            if(page=="Results"&&resultInputHint!=null&&resultInputHost)resultInputHint.text=MenuKey("confirm")+" · Continue";
+            if(page=="Results"&&resultInputHint!=null&&resultInputHost)resultInputHint.text=MenuKey("confirm");
             UpdateStarterHints();
             foreach(var hint in menuHints)if(hint.Item1!=null)hint.Item1.text=MenuKey(hint.Item2);
-            if(menuFooter!=null)menuFooter.text=session.UsingGamepad?"D-pad / Left stick · Navigate":"WASD / Arrows · Navigate";
+            if(menuFooter!=null)menuFooter.text="Navigate";
             if(menuHelp!=null&&EventSystem.current?.currentSelectedGameObject!=null&&menuDescriptions.TryGetValue(EventSystem.current.currentSelectedGameObject,out var help))menuHelp.text=help;
             if(page=="Pause"&&session.Connected)RefreshCableDetails(session.World,session.LocalSlot);
             RefreshMenuConnection();

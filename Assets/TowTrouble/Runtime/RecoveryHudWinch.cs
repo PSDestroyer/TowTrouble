@@ -167,7 +167,7 @@ namespace TowTrouble
 
         private void BuildCableDetails(RectTransform card)
         {
-            cableDetails = ControlText(Text(card, "", 32, 548, 496, 55, 16, Muted));
+            cableDetails = ControlText(Text(card, "", 32, 548, 536, 76, 18, Muted));
             cableDetails.alignment = TextAlignmentOptions.MidlineLeft;
             RefreshCableDetails(session.World, session.LocalSlot);
         }

@@ -26,6 +26,10 @@ namespace TowTrouble
             return new Bounds(p,size);
         }
         public static GarageViewFrame Frame(GarageSlot slot,Bounds body,Bounds detail,float fov,float aspect)
+            =>Frame(slot,body,detail,fov,aspect,Viewport(aspect,new Rect(0,0,1,1)));
+        public static Rect Viewport(float aspect,Rect safe)=>RecoveryScreenLayout.ReferenceViewport(
+            new Rect(RecoveryGarageLayout.PreviewX+12,364,RecoveryGarageLayout.PreviewWidth-24,218),aspect,safe);
+        public static GarageViewFrame Frame(GarageSlot slot,Bounds body,Bounds detail,float fov,float aspect,Rect viewport)
         {
             float yaw=-38,elevation=19;
             switch(slot)
@@ -41,8 +45,7 @@ namespace TowTrouble
                 case GarageSlot.Engine:case GarageSlot.Intake:yaw=-48;elevation=32;break;
             }
             var frame=new GarageViewFrame{Focus=detail.center,Yaw=yaw,Elevation=elevation};
-            float height=slot==GarageSlot.Assembly||slot==GarageSlot.Paint?.30f:slot==GarageSlot.Wheels||slot==GarageSlot.Roof?.26f:.28f;
-            frame.Distance=Distance(detail,Direction(yaw,elevation),fov,aspect,height);
+            frame.Distance=FitDistance(detail,Direction(yaw,elevation),fov,aspect,viewport);
             return frame;
         }
         public static Vector3 Direction(float yaw,float elevation)
@@ -59,12 +62,33 @@ namespace TowTrouble
             float widthFraction=.29f*RecoveryGarageLayout.PreviewWidth/538f;
             return Mathf.Max(3.2f,Mathf.Max(width/(tangent*Mathf.Max(.6f,aspect)*widthFraction),vertical/(tangent*height))+depth*.6f);
         }
-        public static void Pose(Vector3 focus,Vector3 direction,float distance,float fov,float aspect,out Vector3 position,out Vector3 look)
+        private static float FitDistance(Bounds detail,Vector3 direction,float fov,float aspect,Rect viewport)
         {
-            position=focus+direction.normalized*distance;var rotation=Quaternion.LookRotation(-direction,Vector3.up);
-            float halfHeight=distance*Mathf.Tan(fov*.5f*Mathf.Deg2Rad);
-            // Keep the workpiece in the open centre column, below the part description.
-            look=focus+rotation*Vector3.right*(halfHeight*aspect*(1-2*RecoveryGarageLayout.PreviewCenter))+rotation*Vector3.up*(halfHeight*.08f);
+            float tangent=Mathf.Tan(Mathf.Clamp(fov,20,100)*.5f*Mathf.Deg2Rad),horizontal=tangent*Mathf.Max(.1f,aspect);
+            var inverse=Quaternion.Inverse(Quaternion.LookRotation(-direction,Vector3.up));var center=viewport.center;
+            float axial=1f;
+            // Fit all eight corners, including their depth, to the actual unobstructed UI rectangle.
+            for(int i=0;i<8;i++)
+            {
+                var p=inverse*Vector3.Scale(detail.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1));
+                float horizontalFit=Mathf.Max(((2*viewport.xMin-1)*p.z*horizontal-p.x)/(viewport.width*horizontal),
+                    (p.x-(2*viewport.xMax-1)*p.z*horizontal)/(viewport.width*horizontal));
+                float verticalFit=Mathf.Max(((2*viewport.yMin-1)*p.z*tangent-p.y)/(viewport.height*tangent),
+                    (p.y-(2*viewport.yMax-1)*p.z*tangent)/(viewport.height*tangent));
+                axial=Mathf.Max(axial,Mathf.Max(horizontalFit,verticalFit));
+            }
+            float x=(1-2*center.x)*tangent*aspect,y=(1-2*center.y)*tangent;
+            return Mathf.Max(3.2f,axial*Mathf.Sqrt(1+x*x+y*y)+.15f);
+        }
+        public static void Pose(Vector3 focus,Vector3 direction,float distance,float fov,float aspect,out Vector3 position,out Vector3 look)
+            =>Pose(focus,direction,distance,fov,aspect,Viewport(aspect,new Rect(0,0,1,1)),out position,out look);
+        public static void Pose(Vector3 focus,Vector3 direction,float distance,float fov,float aspect,Rect viewport,out Vector3 position,out Vector3 look)
+        {
+            var rotation=Quaternion.LookRotation(-direction,Vector3.up);float tangent=Mathf.Tan(fov*.5f*Mathf.Deg2Rad);
+            float x=(1-2*viewport.center.x)*tangent*aspect,y=(1-2*viewport.center.y)*tangent;
+            float axial=distance/Mathf.Sqrt(1+x*x+y*y);
+            var offset=rotation*new Vector3(x*axial,y*axial,0);
+            position=focus+direction.normalized*axial+offset;look=focus+offset;
         }
         public static Vector3 OutsideBody(Vector3 camera,Bounds body)
         {

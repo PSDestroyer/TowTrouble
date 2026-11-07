@@ -32,7 +32,7 @@ namespace TowTrouble
             int selected=Mathf.Clamp(vehiclePreview,0,3);
             if(Application.isPlaying){session.World.PreviewVehicle(selected);session.World.PreviewPaint(starterPaint);}
             starterCompareHint=ControlText(Text(pageRoot,"",80,178,432,26,16,Paper));
-            Text(pageRoot,"Pull · Weight · Top speed",80,205,432,20,13,Muted);
+            Text(pageRoot,"Pull · Weight · Top speed",80,205,432,22,15,Muted);
             starterChoices=new UnityEngine.UI.Button[4];
             for(int i=0;i<4;i++)
             {
@@ -49,21 +49,21 @@ namespace TowTrouble
             }
             var hint=Panel(pageRoot,550,184,620,38,new Color(.03f,.04f,.05f,.72f));
             starterRotateHint=ControlText(Text(hint,"",18,3,584,30,16,Paper));
-            var details=Panel(pageRoot,550,624,974,108);
-            Text(details,RecoveryVehicle.ModelNames[selected],24,11,926,38,29,Paper,true);
-            Text(details,StarterDescriptions[selected],24,57,926,34,20,Muted);
-            var paintRow=Panel(pageRoot,550,748,974,46);
-            Text(paintRow,"PAINT",18,8,104,30,16,Muted,true);
+            var details=Panel(pageRoot,550,598,974,96);
+            Text(details,RecoveryVehicle.ModelNames[selected],24,9,926,38,29,Paper,true);
+            Text(details,StarterDescriptions[selected],24,50,926,34,20,Muted);
+            var paintRow=Panel(pageRoot,550,710,974,52);
+            Text(paintRow,"PAINT",18,11,104,30,16,Muted,true);
             starterPaintChoices=new UnityEngine.UI.Button[4];
             for(int i=0;i<4;i++)
             {
-                int paint=i;var swatch=Button(paintRow,"",126+i*68,1,58,()=>PreviewStarterPaint(paint),starterPaint==i,44);
+                int paint=i;var swatch=Button(paintRow,"",126+i*68,4,58,()=>PreviewStarterPaint(paint),starterPaint==i,44);
                 swatch.name="Paint "+i;starterPaintChoices[i]=swatch;
                 Panel(swatch.transform,10,8,38,28,RecoveryPaintPalette.Swatch(i,selected));
                 swatch.gameObject.AddComponent<RecoveryMenuPreviewFocus>().Configure(()=>PreviewStarterPaint(paint));
             }
-            Text(paintRow,StarterPaintNames[starterPaint],420,8,212,30,19,Paper,true);
-            Text(paintRow,"You can repaint it later",654,8,302,30,16,Muted).alignment=TextAlignmentOptions.MidlineRight;
+            Text(paintRow,StarterPaintNames[starterPaint],420,11,212,30,19,Paper,true);
+            Text(paintRow,"You can repaint it later",654,11,302,30,16,Muted).alignment=TextAlignmentOptions.MidlineRight;
             starterConfirm=Button(pageRoot,"CHOOSE "+RecoveryVehicle.ModelNames[selected].ToUpperInvariant(),1004,808,520,UseVehicleChoice,true);
             starterBack=Button(pageRoot,"BACK",76,808,230,()=>MenuBack());BuildMenuFooter();
             preferredMenuFocus="Starter "+selected;

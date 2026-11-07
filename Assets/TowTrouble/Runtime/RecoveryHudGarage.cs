@@ -66,13 +66,13 @@ namespace TowTrouble
         private void BuildGarageCategories(GarageSlot[] slots)
         {
             var panel=Panel(pageRoot,36,212,GarageCategoryWidth,548);
-            Text(panel,garageCategoryFocus?"CUSTOMIZE  >":"CUSTOMIZE",16,12,268,30,18,garageCategoryFocus?Amber:Paper,true);
-            garageTabHint=ControlText(Text(panel,"",155,38,130,20,11,Muted));garageTabHint.alignment=TextAlignmentOptions.Right;
+            Text(panel,garageCategoryFocus?"CUSTOMIZE  >":"CUSTOMIZE",16,12,144,30,18,garageCategoryFocus?Amber:Paper,true);
+            MenuGlyph(panel,"previous",168,11,60,32);MenuGlyph(panel,"next",236,11,60,32);
             string[] names={"STYLE","TECH","TOWING"};
             for(int i=0;i<3;i++)
             {
-                int section=i;var tab=GarageButton(panel,names[i],12+i*94,61,88,()=>SelectGarageSection(section),garageSection==i,32);
-                GarageFont(tab.GetComponentInChildren<TMP_Text>(),13);
+                int section=i;var tab=GarageButton(panel,names[i],12+i*94,61,88,()=>SelectGarageSection(section),garageSection==i,36);
+                GarageFont(tab.GetComponentInChildren<TMP_Text>(),15);
             }
             for(int i=0;i<slots.Length;i++)
             {
@@ -84,14 +84,14 @@ namespace TowTrouble
             {
                 Panel(panel,16,395,268,2,Amber);
                 var contract=GarageAdviceContract();
-                Text(panel,contract!=null?"PREPARING FOR":"WORKSHOP TIP",16,406,268,23,13,Amber,true);
+                Text(panel,contract!=null?"PREPARING FOR":"WORKSHOP TIP",16,406,268,23,15,Amber,true);
                 string advice=garageRecommendation!=null?contract.TitleFor(P)+"\nRecommended: "+GarageName(garageRecommendation)
                     :contract!=null?contract.TitleFor(P)+"\nTerrain and positioning still matter.":"Choose a recovery for equipment advice. More power needs matching grip and cable strength.";
-                Text(panel,advice,16,433,268,57,14,Paper);
+                Text(panel,advice,16,433,268,57,16,Paper);
                 if(garageRecommendation!=null)
                 {
-                    var recommend=GarageButton(panel,"RECOMMENDED PART",16,498,268,JumpGarageRecommendation,false,34);
-                    GarageFont(recommend.GetComponentInChildren<TMP_Text>(),13);AddGarageHint(recommend,"recommend");
+                    var recommend=GarageButton(panel,"RECOMMENDED PART",16,494,268,JumpGarageRecommendation,false,40);
+                    GarageFont(recommend.GetComponentInChildren<TMP_Text>(),15);AddGarageHint(recommend,"recommend");
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace TowTrouble
                 float width=(GaragePreviewWidth-24)/3;
                 if(garageSlot==GarageSlot.Assembly)
                 {
-                    GarageCompareTile(GaragePreviewX,650,width,"MASS",before.Mass,after.Mass,"0"," kg","More weight helps anchoring",true);
+                    GarageCompareTile(GaragePreviewX,650,width,"MASS",before.Mass,after.Mass,"0"," kg","Helps anchoring",true);
                     GarageCompareTile(GaragePreviewX+width+12,650,width,"RATED PULL",before.Drive*.004f,after.Drive*.004f,"0.0"," kN","Grip still limits usable pull");
                     GarageCompareTile(GaragePreviewX+2*(width+12),650,width,"TOP SPEED",before.Speed*3.6f,after.Speed*3.6f,"0"," km/h","On firm, flat ground");
                 }
@@ -160,11 +160,11 @@ namespace TowTrouble
         }
         private void GarageCompareTile(float x,float y,float width,string title,float before,float after,string format,string unit,string note,bool neutral=false)
         {
-            var panel=Panel(pageRoot,x,y,width,110);Text(panel,title,12,8,width-24,25,12,Muted,true);
+            var panel=Panel(pageRoot,x,y,width,126);Text(panel,title,12,8,width-24,25,15,Muted,true);
             bool changed=Mathf.Abs(before-after)>.001f;string value=changed?before.ToString(format)+" → "+after.ToString(format)+unit:after.ToString(format)+unit;
             Text(panel,value,12,36,width-24,38,changed?(width<180?16:20):26,changed&&!neutral?(after>before?new Color(.65f,.9f,.58f):Amber):Paper,true);
             string detail=changed?(after-before).ToString("+0.##;-0.##")+unit+" · Fitted → preview":note;
-            Text(panel,detail,12,78,width-24,26,11,Muted);
+            Text(panel,detail,12,78,width-24,40,15,Muted);
         }
         private void BuildGarageActions(GaragePart selected)
         {
@@ -174,24 +174,33 @@ namespace TowTrouble
             {
                 string reason=RecoveryGarageWorkflow.InUseReason(P,selected.Id);
                 var sell=GarageButton(pageRoot,reason??("SELL · "+(selected.Price*70/100).ToString("N0")+" CR"),GarageCatalogX,858,GarageCatalogWidth,RequestGarageSale,false,32);
-                sell.name="Garage sell action";sell.interactable=reason==null;GarageFont(sell.GetComponentInChildren<TMP_Text>(),13);
+                sell.name="Garage sell action";sell.interactable=reason==null;GarageFont(sell.GetComponentInChildren<TMP_Text>(),15);
                 if(reason==null)AddGarageHint(sell,"sell");
             }
         }
         private void BuildGarageFooter()
         {
             var back=GarageButton(pageRoot,session.Training?"FINISH TRAINING":"BACK TO DRIVING",36,792,GarageCategoryWidth,CloseGarage,false,56);AddGarageHint(back,"back");
-            Text(pageRoot,"Preview resets on exit. Fitted parts stay saved.",40,852,GarageCategoryWidth-8,40,12,Muted);
+            Text(pageRoot,"Fitted parts stay saved.",40,852,GarageCategoryWidth-8,40,15,Muted);
             var presets=GarageButton(pageRoot,"SAVED SETUPS",GaragePreviewX,792,GaragePreviewWidth*.53f,()=>OpenGarageOverlay(GarageOverlay.Setups),false,44);AddGarageHint(presets,"setups");
             var reset=GarageButton(pageRoot,"RESET VIEW",GaragePreviewX+GaragePreviewWidth*.53f+12,792,GaragePreviewWidth*.47f-12,ResetGarageView,false,44);AddGarageHint(reset,"reset");
-            garageControlHint=ControlText(Text(pageRoot,"",GaragePreviewX,844,GaragePreviewWidth,50,11,Muted));
+            MenuHint(pageRoot,"nav-primary","Select",GaragePreviewX,846,190);
+            MenuHint(pageRoot,"rotate","Rotate",GaragePreviewX+195,846,190);
+            if(garageSlot==GarageSlot.Wheels)
+            {
+                MenuGlyph(pageRoot,"tire-previous",GaragePreviewX+390,846,48);
+                MenuGlyph(pageRoot,"tire-next",GaragePreviewX+440,846,48);
+                Text(pageRoot,"Tires",GaragePreviewX+496,846,GaragePreviewWidth-496,40,18,Muted).alignment=TextAlignmentOptions.MidlineLeft;
+            }
         }
         private void FitNewPanelText()
         {
             foreach(var text in pageRoot.GetComponentsInChildren<TMP_Text>())
             {
-                if(text.fontSize>=48){text.rectTransform.anchoredPosition=new Vector2(text.rectTransform.anchoredPosition.x,-50);text.rectTransform.sizeDelta=new Vector2(text.rectTransform.sizeDelta.x,80);}
-                text.enableAutoSizing=true;text.fontSizeMax=text.fontSize;text.fontSizeMin=text.gameObject.name=="Garage item name"?13:text.fontSize/Mathf.Max(1,P.textScale);
+                // Canvas layout may already have auto-sized the text. Keep its authored size as the floor.
+                if(!textSizes.TryGetValue(text,out float size)||!text.enableAutoSizing)continue;
+                if(size*P.textScale>=48){text.rectTransform.anchoredPosition=new Vector2(text.rectTransform.anchoredPosition.x,-50);text.rectTransform.sizeDelta=new Vector2(text.rectTransform.sizeDelta.x,80);}
+                text.fontSizeMax=size*P.textScale;text.fontSizeMin=(text.gameObject.name=="Garage item name"?15:size)*Mathf.Min(1,P.textScale);
             }
         }
         private bool UsedPart(string id)=>RecoveryGarageWorkflow.InUseReason(P,id)!=null;
@@ -229,22 +238,22 @@ namespace TowTrouble
             if (catalog != null)
             {
                 var equipment = GaragePerformance.Calculate(P.Build(P.vehicle), catalog);
-                Text(detail,RecoveryAssistance.Preparation(selected,equipment),30,369,482,40,14,Amber).name="Equipment recommendation";
+                Text(detail,RecoveryAssistance.Preparation(selected,equipment),30,369,482,40,16,Amber).name="Equipment recommendation";
             }
             bool first=!P.Completed(selected.CompletionId);
-            var reward=Panel(detail,542,277,262,111);reward.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Paper;Icon(reward,RecoveryIcon.Coins,15,17,26,Ink);Text(reward,first?"REWARD":"REPLAY REWARD",50,12,196,27,14,Ink,true);Text(reward,RecoveryEconomy.BaseOffer(selected,first).ToString("N0")+" CR",17,45,228,50,35,Ink,true).alignment=TextAlignmentOptions.Center;
+            var reward=Panel(detail,542,277,262,111);reward.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Paper;Icon(reward,RecoveryIcon.Coins,15,17,26,Ink);Text(reward,first?"REWARD":"REPLAY REWARD",50,12,196,27,16,Ink,true);Text(reward,RecoveryEconomy.BaseOffer(selected,first).ToString("N0")+" CR",17,45,228,50,35,Ink,true).alignment=TextAlignmentOptions.Center;
             string estimate=selected.ExpectedSeconds>0?"~"+Mathf.CeilToInt(selected.ExpectedSeconds/60)+" min  ·  ":"";
-            Text(detail,estimate+(first?"First recovery +25%  ·  ":"Replay  ·  ")+"No resets +10%  ·  No breaks +10%",30,411,774,30,14,Muted);
+            Text(detail,estimate+(first?"First recovery +25%  ·  ":"Replay  ·  ")+"No resets +10%  ·  No breaks +10%",30,411,774,36,16,Muted);
             }
             else Text(detail,boardCompleted?L("Recuperările terminate vor apărea aici pentru rejucare.","Finished recoveries will appear here for replay."):L("Alege o recuperare din Finalizate pentru a o rejuca.","Choose a completed recovery to replay."),30,30,774,100,25,Paper,true);
-            Text(pageRoot,visible.Count+L(boardCompleted?" recuperări finalizate":" recuperări disponibile",boardCompleted?" completed recoveries":" available recoveries"),76,708,256,30,14,Paper);
-            boardSelectionHint=ControlText(Text(pageRoot,"",340,708,316,30,14,Muted));
+            Text(pageRoot,visible.Count+L(boardCompleted?" recuperări finalizate":" recuperări disponibile",boardCompleted?" completed recoveries":" available recoveries"),76,708,256,36,16,Paper);
+            boardSelectionHint=ControlText(Text(pageRoot,"",340,708,316,36,16,Muted));
             var statusCard=Panel(pageRoot,76,w.Map!=null?750:720,1448,w.Map!=null?40:50);Icon(statusCard,w.HasContract?RecoveryIcon.Hook:RecoveryIcon.Flag,18,13,25,Amber);Text(statusCard,w.HasContract?L("ÎN DESFĂȘURARE: ","IN PROGRESS: ")+w.Contract.TitleFor(P):L("Nicio intervenție activă. Alege unde mergem mai departe.","No active recovery. Choose where we go next."),60,0,1368,50,18,Paper).alignment=TextAlignmentOptions.MidlineLeft;
             startButton=Button(pageRoot,w.HasContract?L("ABANDONEAZĂ INTERVENȚIA","ABANDON RECOVERY"):L("ACCEPTĂ INTERVENȚIA","ACCEPT RECOVERY"),1004,805,520,BoardPrimaryAction,true,62);
             startButton.interactable=CanUseBoardPrimary();AddBoardHint(startButton,2,false);
             var backToDriving=Button(pageRoot,L("ÎNAPOI ÎN JOC","BACK TO DRIVING"),76,805,340,CloseBoard,false,62);
             AddBoardHint(backToDriving,3,false);
-            if(!session.IsHost)Text(pageRoot,L("Gazda acceptă intervenția pentru echipă.","The host accepts the recovery for the crew."),690,874,834,24,14,Muted);FitNewPanelText();
+            if(!session.IsHost)Text(pageRoot,L("Gazda acceptă intervenția pentru echipă.","The host accepts the recovery for the crew."),690,874,834,24,16,Muted);FitNewPanelText();
             if (boardDescription != null) boardDescription.fontSizeMin = 14f;
             RefreshBoardHints();
         }

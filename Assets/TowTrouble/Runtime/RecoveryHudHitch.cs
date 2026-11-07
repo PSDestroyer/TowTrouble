@@ -83,8 +83,9 @@ namespace TowTrouble
 
             Vector2 size = ((RectTransform)gameplay.transform).rect.size;
             float margin = hitchPrompt.rect.width * .5f + 8f;
-            hitchPrompt.anchoredPosition = new Vector2(Mathf.Clamp(viewport.x * size.x, margin, size.x - margin),
-                Mathf.Clamp(viewport.y * size.y + 8f, 10f, size.y - hitchPrompt.rect.height - 10f));
+            var safe=ScreenSafeBounds;
+            hitchPrompt.anchoredPosition = new Vector2(Mathf.Clamp(viewport.x * size.x, safe.xMin+margin, safe.xMax-margin),
+                Mathf.Clamp(viewport.y * size.y + 8f, safe.yMin+10f, safe.yMax-hitchPrompt.rect.height-10f));
             hitchWanted = true;
             return true;
         }

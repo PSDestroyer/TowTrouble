@@ -67,10 +67,10 @@ namespace TowTrouble
             missionStatusScale = scale;
             float preferred = Mathf.Max(missionStatusTitle.GetPreferredValues(title).x,
                 missionStatusAction.GetPreferredValues(action).x);
-            float width = Mathf.Clamp(Mathf.Ceil(preferred) + 76f * scale, 260f * scale, 440f * scale);
+            float width = Mathf.Clamp(Mathf.Ceil(preferred) + 88f * scale, 260f * scale, 440f * scale);
             float textWidth = width - 76f * scale;
             float actionHeight = Mathf.Max(26f * scale,
-                Mathf.Ceil(missionStatusAction.GetPreferredValues(action, textWidth, 1000f).y) + 2f * scale);
+                Mathf.Ceil(missionStatusAction.GetPreferredValues(action, textWidth, 1000f).y) + 8f * scale);
             float height = 27f * scale + actionHeight + 8f * scale;
             missionStatusPanel.sizeDelta = new Vector2(width, height);
             missionStatusTitle.rectTransform.anchoredPosition = new Vector2(64, -7) * scale;

@@ -54,8 +54,11 @@ namespace TowTrouble
             // Allow a small dead band at the edge so camera or chassis motion cannot flicker between labels.
             float inset = localCaptionVisible ? 0f : 14f;
             float side = Mathf.Max(size.x * .06f, extractionTextHalfWidth + 8f) + inset;
-            localCaptionVisible = viewport.z > 0 && position.x > side && position.x < size.x - side
-                && position.y > size.y * .12f + inset && position.y < size.y * .88f - inset;
+            var safe=ScreenSafeBounds;
+            localCaptionVisible = viewport.z > 0 && position.x > Mathf.Max(side,safe.xMin+extractionTextHalfWidth+8f)
+                && position.x < Mathf.Min(size.x-side,safe.xMax-extractionTextHalfWidth-8f)
+                && position.y > Mathf.Max(size.y*.12f+inset,safe.yMin+8f)
+                && position.y < Mathf.Min(size.y*.88f-inset,safe.yMax-marker.rectTransform.rect.height-8f);
             if (!localCaptionVisible) return false;
             var rect = marker.rectTransform;
             rect.anchorMin = rect.anchorMax = Vector2.zero;

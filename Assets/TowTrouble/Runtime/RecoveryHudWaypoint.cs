@@ -134,7 +134,8 @@ namespace TowTrouble
             float bottom = Mathf.Min(lowerHud + half.y + 8f, size.y * .45f);
             float top = Mathf.Min(upperHud + half.y + 8f, size.y * .45f);
             float side = Mathf.Min(half.x + 14f, size.x * .45f);
-            var safe = Rect.MinMaxRect(side, bottom, size.x - side, size.y - top);
+            var bounds=ScreenSafeBounds;
+            var safe = Rect.MinMaxRect(bounds.xMin+side, bounds.yMin+bottom, bounds.xMax-side, bounds.yMax-top);
             bool edge = RecoveryWaypointProjection.Place(camera.WorldToViewportPoint(point),
                 camera.transform.InverseTransformPoint(point), size, safe, out var position, out var angle);
             waypointBadge.anchoredPosition = position;

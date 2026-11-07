@@ -36,7 +36,7 @@ namespace TowTrouble
         private void BuildResultsSummary(ResultSummary result)
         {
             float actionY = result.Cooperative ? 548f : 504f;
-            float height = actionY + (result.FreeRoam ? 102f : 180f);
+            float height = actionY + (result.FreeRoam ? 124f : 180f);
             var card = Panel(pageRoot, 380, (900 - height) * .5f, 840, height);
             card.name = "Recovery result";
             Icon(card, RecoveryIcon.FinishFlag, 32, 26, 30, Amber);
@@ -51,7 +51,7 @@ namespace TowTrouble
             var payout = Panel(card, 32, 232, 494, 164);
             payout.name = "Recovery payout";
             payout.GetComponentInChildren<RecoveryPlateGraphic>().Style = RecoveryPlateStyle.Paper;
-            Text(payout, L("RECOMPENSA TA", "YOUR PAYOUT"), 20, 14, 454, 27, 14, Ink, true);
+            Text(payout, L("RECOMPENSA TA", "YOUR PAYOUT"), 20, 14, 454, 27, 16, Ink, true);
             Icon(payout, RecoveryIcon.Coins, 20, 51, 40, Ink);
             Text(payout, "+" + result.Reward.ToString("N0") + " CR", 74, 40, 400, 70, 44, Ink, true);
             Text(payout, L("Sold  ", "Balance  ") + result.Balance.ToString("N0") + " CR", 20, 117, 454, 29, 17, Ink);
@@ -80,7 +80,7 @@ namespace TowTrouble
             if (result.Cooperative)
             {
                 Icon(card, RecoveryIcon.Crew, 36, 499, 22, Muted);
-                Text(card, result.Crew, 70, 492, 734, 42, 14, Muted);
+                Text(card, result.Crew, 70, 492, 734, 42, 16, Muted);
             }
 
             if (result.FreeRoam)
@@ -102,8 +102,13 @@ namespace TowTrouble
                 string footer = result.Host ? (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : "Enter") + L(" · Continuă", " · Continue")
                     : L("Așteptăm gazda să continue", "Waiting for the host to continue");
                 resultInputHost=result.Host;
-                var hint = resultInputHint = ControlText(Text(card, footer, 32, actionY + 66, 776, 25, 13, Muted));
-                hint.alignment = TextAlignmentOptions.Center;
+                if(result.Host)
+                {
+                    var row=Node("Continue control",card,310,actionY+66,220,40);
+                    resultInputHint=MenuGlyph(row,"confirm",0,0);
+                    Text(row,"Continue",68,0,152,40,18,Muted).alignment=TextAlignmentOptions.MidlineLeft;
+                }
+                else Text(card,footer,32,actionY+66,776,40,18,Muted).alignment=TextAlignmentOptions.Center;
             }
         }
 
@@ -124,12 +129,12 @@ namespace TowTrouble
             star.raycastTarget = false;
             star.color = earned ? Amber : new Color(.36f, .39f, .38f);
             Text(tile, title, 72, 16, 164, 32, 16, earned ? Paper : Muted, true);
-            Text(tile, detail, 72, 50, 164, 28, 13, earned ? Amber : Muted);
+            Text(tile, detail, 72, 50, 164, 32, 16, earned ? Amber : Muted);
         }
 
         private void ResultStat(Transform parent, float top, string label, string value)
         {
-            Text(parent, label, 16, top, 136, 40, 14, Muted).alignment = TextAlignmentOptions.MidlineLeft;
+            Text(parent, label, 16, top, 136, 40, 16, Muted).alignment = TextAlignmentOptions.MidlineLeft;
             Text(parent, value, 150, top, 100, 40, 22, Paper, true).alignment = TextAlignmentOptions.MidlineRight;
         }
     }

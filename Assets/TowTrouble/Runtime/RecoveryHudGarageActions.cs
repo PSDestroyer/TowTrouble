@@ -144,7 +144,7 @@ namespace TowTrouble
         {
             var shade=Panel(pageRoot,0,0,1600,900,new Color(0,0,0,.72f));shade.name="Garage modal blocker";shade.GetComponent<UnityEngine.UI.Image>().raycastTarget=true;
             if(garageOverlay==GarageOverlay.Setups){BuildGarageSetups();return;}
-            var panel=Panel(pageRoot,375,210,850,500);string title,body;
+            string title,body;
             if(garageOverlay==GarageOverlay.Compatibility)
             {
                 title="REVIEW BODY CHANGE";
@@ -154,16 +154,22 @@ namespace TowTrouble
             else if(garageOverlay==GarageOverlay.Sell)
             {var p=session.GarageCatalog.Find(garageSelected);title="SELL PART";body="Sell "+GarageName(p)+" for "+(p.Price*70/100).ToString("N0")+" CR?\n\nYou'll need to buy it again to use it later.";}
             else{title="REPLACE SAVED SETUP";body="Replace setup "+(garageSetupIndex+1)+" ("+RecoveryGarageWorkflow.SetupLabel(GarageSaved(garageSetupIndex),garageSetupIndex)+") with your currently fitted setup?\n\nThe part you're only previewing will not be saved.";}
+            var panel=Panel(pageRoot,375,0,850,500);panel.name="Garage review";
             Text(panel,title,28,24,794,45,29,Paper,true);
             var scrollRoot=Node("Review details",panel,28,88,794,286);var scroll=scrollRoot.gameObject.AddComponent<UnityEngine.UI.ScrollRect>();scroll.horizontal=false;scroll.vertical=true;scroll.movementType=UnityEngine.UI.ScrollRect.MovementType.Clamped;
             var viewport=Node("Review viewport",scrollRoot,0,0,794,286);viewport.gameObject.AddComponent<UnityEngine.UI.Image>().color=Color.white;viewport.gameObject.AddComponent<UnityEngine.UI.Mask>().showMaskGraphic=false;
-            var content=Node("Review text",viewport,0,0,774,286);var text=Text(content,body,0,0,774,286,18,Muted);text.enableAutoSizing=false;float height=Mathf.Max(286,text.GetPreferredValues(body,774,0).y);content.sizeDelta=new Vector2(774,height);text.rectTransform.sizeDelta=content.sizeDelta;scroll.viewport=viewport;scroll.content=content;
+            var content=Node("Review text",viewport,0,0,774,286);var text=Text(content,body,0,0,774,286,20,Muted);text.enableAutoSizing=false;
+            float height=Mathf.Ceil(text.GetPreferredValues(body,774,float.PositiveInfinity).y)+8,viewHeight=Mathf.Clamp(height,64,286);
+            scrollRoot.sizeDelta=viewport.sizeDelta=new Vector2(794,viewHeight);content.sizeDelta=text.rectTransform.sizeDelta=new Vector2(774,Mathf.Max(viewHeight,height));scroll.viewport=viewport;scroll.content=content;
             garageReviewScroll=scroll;
-            garageDialogHint=ControlText(Text(panel,"",28,386,794,24,12,Muted));
+            bool scrolling=height>viewHeight;
+            float actionY=88+viewHeight+24+(scrolling?44:0),panelHeight=actionY+48+28;
+            panel.sizeDelta=new Vector2(850,panelHeight);panel.anchoredPosition=new Vector2(375,-(900-panelHeight)*.5f);
+            if(scrolling)garageDialogHint=ControlText(Text(panel,"",28,88+viewHeight+8,794,36,18,Muted));
             Action yes=garageOverlay==GarageOverlay.Compatibility?(Action)FitGaragePart:garageOverlay==GarageOverlay.Sell?SellGaragePart:SaveGarageSetup;
-            var confirm=GarageOverlayButton(panel,garageOverlay==GarageOverlay.Compatibility?GaragePrimaryLabel(session.GarageCatalog.Find(garageSelected)):"CONFIRM",28,418,385,yes,true);
+            var confirm=GarageOverlayButton(panel,garageOverlay==GarageOverlay.Compatibility?GaragePrimaryLabel(session.GarageCatalog.Find(garageSelected)):"CONFIRM",28,actionY,385,yes,true);
             AddGarageHint(confirm,"confirm");
-            var cancel=GarageOverlayButton(panel,"CANCEL",437,418,385,()=>{if(garageOverlay==GarageOverlay.Overwrite){garageOverlay=GarageOverlay.Setups;garageSubmitRelease=true;Show("Garage");}else CloseGarageOverlay();});AddGarageHint(cancel,"back");
+            var cancel=GarageOverlayButton(panel,"CANCEL",437,actionY,385,()=>{if(garageOverlay==GarageOverlay.Overwrite){garageOverlay=GarageOverlay.Setups;garageSubmitRelease=true;Show("Garage");}else CloseGarageOverlay();});AddGarageHint(cancel,"back");
         }
         private void BuildGarageSetups()
         {
@@ -179,14 +185,14 @@ namespace TowTrouble
                 var row=Panel(panel,24,126+i*100,1022,90);Text(row,(i+1)+" · "+label+" · "+(saved?.Build==null?"Empty":active?"Active":"Saved"),16,8,370,25,18,active?Amber:Paper,true);
                 string summary="No saved equipment";
                 if(saved?.Build!=null){var perf=GaragePerformance.Calculate(saved.Build,session.GarageCatalog);var tire=session.GarageCatalog.Find(saved.Build.Item(GarageSlot.Wheels,session.GarageCatalog));summary=(tire!=null?GarageName(tire):"Stock tires")+" · "+(perf.Cable/1000).ToString("0")+" kN cable";}
-                Text(row,summary,16,41,370,37,13,Muted);
+                Text(row,summary,16,41,370,42,15,Muted);
                 var rename=GarageOverlayButton(row,"NAME",400,23,140,()=>RenameGarageSetup(index));rename.interactable=CanTransactGarage;
                 var save=GarageOverlayButton(row,"SAVE FITTED",550,23,232,()=>RequestSaveGarageSetup(index));save.interactable=CanTransactGarage;
                 var apply=GarageOverlayButton(row,active?"ACTIVE":"APPLY",792,23,214,()=>ApplyGarageSetup(index),active);apply.interactable=CanTransactGarage&&saved?.Build!=null&&!active;
                 foreach(var button in new[]{rename,save,apply})GarageFont(button.GetComponentInChildren<TMP_Text>(),15);
             }
             var back=GarageOverlayButton(panel,"BACK TO GARAGE",24,552,400,CloseGarageOverlay);AddGarageHint(back,"back");
-            garageDialogHint=ControlText(Text(panel,"",446,548,598,54,13,Muted));
+            garageDialogHint=ControlText(Text(panel,"",446,548,598,54,18,Muted));
         }
     }
 }

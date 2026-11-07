@@ -1,0 +1,7 @@
+# Settings slider focus — 2026-11-07
+
+The previous Slider used the same gold handle for idle and selected states, with no row treatment. The existing RecoveryUiFeedback now supports sliders: selected rows show a framed background and left accent, amber label, cream fill and gold handle; idle handles are charcoal. Hover only changes the label/rim, keeping the primary selection unique. Selection is driven by the same EventSystem events used by keyboard/controller navigation. Disabled rows hide their focus treatment. The handle keeps a28px height despite Slider's stretched anchors.
+
+The shared production Slider factory applies this to Audio, Display, Controls, Accessibility, Game and first setup, without changing bindings, ranges or values. The label is parented to the slider so it draws above the focus background. Button feedback keeps its existing behavior.
+
+Compilation passed. An Edit Mode preview scene used the actual production factory, a temporary suppressed profile and EventSystem select/deselect/hover events. Seven native checks passed: idle backgrounds hidden, a unique selected row, distinct handle styles, hover distinct from selection, clean selection transfer, unchanged values and no label overflow at130%. Selected-130.png was rendered through a preview camera and visually inspected. This was event-level UI verification, not physical-controller hardware testing. Temporary objects and profile references were restored; no settings/save writes were made by the fixture. No new unit tests, builds or commits.

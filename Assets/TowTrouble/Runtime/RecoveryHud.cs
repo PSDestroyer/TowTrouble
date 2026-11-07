@@ -48,7 +48,7 @@ namespace TowTrouble
             if(EventSystem.current==null)new GameObject("UI Event System",typeof(EventSystem),typeof(InputSystemUIInputModule));
             var canvas=new GameObject("Tow Trouble UI",typeof(RectTransform),typeof(Canvas),typeof(UnityEngine.UI.CanvasScaler),typeof(UnityEngine.UI.GraphicRaycaster));canvas.transform.SetParent(transform,false);canvas.GetComponent<Canvas>().renderMode=RenderMode.ScreenSpaceOverlay;
             var scaler=canvas.GetComponent<UnityEngine.UI.CanvasScaler>();scaler.uiScaleMode=UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1600,900);scaler.screenMatchMode=UnityEngine.UI.CanvasScaler.ScreenMatchMode.Expand;scaler.matchWidthOrHeight=.5f;root=(RectTransform)canvas.transform;
-            BuildGameplay();BuildPersistenceHint();Show(session.ConsumeReturnToMain()?"Main":"Title");
+            BuildGameplay();ConfigureHudScreen();BuildPersistenceHint();Show(session.ConsumeReturnToMain()?"Main":"Title");
         }
         private void OnDestroy(){SetMenuNavigation(false);SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();}
         private RectTransform Node(string name,Transform parent,float x,float y,float width,float height)
@@ -57,6 +57,8 @@ namespace TowTrouble
         {var rt=Node(name,parent,0,0,0,0);rt.anchorMin=Vector2.zero;rt.anchorMax=Vector2.one;rt.offsetMin=rt.offsetMax=Vector2.zero;return rt;}
         private RectTransform Panel(Transform parent,float x,float y,float width,float height,Color? color=null)
         {
+            if(parent==pageRoot&&x==0&&y==0&&width==1600&&height==900)return ScreenShade(parent,color??Ink);
+            if(parent==pageRoot&&x==0&&y==0&&width==1600&&(height==196||height==164))return ScreenBand(parent,height,color??Ink);
             var rt=Node("Panel",parent,x,y,width,height);var image=rt.gameObject.AddComponent<UnityEngine.UI.Image>();var tint=color??Ink;image.color=tint;image.raycastTarget=false;
             if(height>28&&width>100){image.color=Color.clear;Plate(rt,tint);}
             return rt;
@@ -66,6 +68,8 @@ namespace TowTrouble
         {var rt=Node(text,parent,x,y,width,height);var t=rt.gameObject.AddComponent<TextMeshProUGUI>();t.font=bold&&size>=26&&displayFont!=null?displayFont:font;t.text=text;t.fontSize=size*P.textScale;t.enableAutoSizing=true;t.fontSizeMin=size*Mathf.Min(1,P.textScale);t.fontSizeMax=size*P.textScale;t.color=color??Paper;t.fontStyle=bold&&t.font!=displayFont?FontStyles.Bold:FontStyles.Normal;t.textWrappingMode=TextWrappingModes.Normal;t.raycastTarget=false;textSizes[t]=size;if(parent.name.Contains("control hint")||parent.name=="Control hint")t.gameObject.AddComponent<RecoveryControlGlyph>().Configure(session);return t;}
         private UnityEngine.UI.Button Button(Transform parent,string label,float x,float y,float width,Action action,bool primary=false,float height=54)
         {
+            // Keep general-menu actions above the larger, 720p-readable control strip.
+            if(parent==pageRoot&&page!="Board"&&page!="Garage"&&page!="Confirm"&&y>=780&&y+height>830)y=830-height;
             var rt=Panel(parent,x,y,width,height);rt.name=label;var img=rt.GetComponent<UnityEngine.UI.Image>();img.raycastTarget=true;img.color=Color.clear;
             var plate=rt.GetComponentInChildren<RecoveryPlateGraphic>();if(plate==null)plate=Plate(rt,Ink,primary);plate.Style=primary?RecoveryPlateStyle.Gold:RecoveryPlateStyle.Charcoal;
             var button=rt.gameObject.AddComponent<UnityEngine.UI.Button>();button.targetGraphic=plate;
@@ -116,7 +120,7 @@ namespace TowTrouble
             if(target=="Garage"&&page!="Garage")PrepareGarage();
             page=target;session.View=target;pendingBinding=null;BeginMenuPage();session.World.ShowSinglePreview(target!="Title"&&target!="Lobby"&&(!session.Connected||session.World.Phase==RecoveryPhase.Lobby),Mathf.Max(0,session.LocalSlot));
             if(target=="Gameplay"){gameplay.SetActive(true);return;}
-            gameplay.SetActive(false);pageRoot=Node(target,root,0,0,1600,900);pageRoot.anchorMin=pageRoot.anchorMax=pageRoot.pivot=Vector2.one*.5f;pageRoot.anchoredPosition=Vector2.zero;
+            gameplay.SetActive(false);pageRoot=Node(target,root,0,0,1600,900);pageRoot.anchorMin=pageRoot.anchorMax=pageRoot.pivot=Vector2.one*.5f;pageRoot.anchoredPosition=Vector2.zero;RefreshScreenLayout(true);
             if(target=="Main")session.PreviewFittedRide();
             if(target!="Title"&&target!="Main"&&target!="Lobby"&&target!="Starter"&&target!="Garage")Panel(pageRoot,0,0,1600,900,new Color(.03f,.04f,.035f,.42f));
             switch(target){case "Garage":BuildGarage();break;case "Board":BuildBoard();break;case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Help":BuildHelp();break;case "Starter":BuildVehicles();break;case "TutorialOffer":BuildTutorialOffer();break;case "TutorialDone":case "TrainingComplete":BuildTutorialDone();break;case "TextEntry":BuildTextEntry();break;case "Busy":BuildBusy();break;case "Confirm":BuildConfirmation();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;}
@@ -139,7 +143,7 @@ namespace TowTrouble
             Logo(pageRoot,100,70,96);Text(pageRoot,L("DRUMURI GRELE. PRIETENI BUNI.","BAD ROADS. GOOD COMPANY."),108,333,700,40,21,Paper,true);
             var titlePrompt=Panel(pageRoot,450,738,700,72);titlePrompt.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Gold;
             prompt=Text(pageRoot,"",0,750,1600,48,26,Ink,true);prompt.alignment=TextAlignmentOptions.Center;
-            Text(pageRoot,"TOW TROUBLE  •  SOLO / CO-OP",76,847,1000,25,13,Muted);
+            Text(pageRoot,"TOW TROUBLE  •  SOLO / CO-OP",76,847,1000,25,15,Muted);
         }
 
 
@@ -189,6 +193,12 @@ namespace TowTrouble
             var text=Text(parent,label+"   "+Mathf.RoundToInt(value*100)+"%",30,y,770,32,22,Paper,true);var rt=Node(label,parent,30,y+48,750,20);var bg=Panel(rt,0,7,750,6,new Color(.25f,.3f,.26f));var fill=Stretch("Fill",bg);var fg=fill.gameObject.AddComponent<UnityEngine.UI.Image>();fg.color=Amber;
             var handle=Node("Handle",rt,0,-4,25,28);var hg=handle.gameObject.AddComponent<UnityEngine.UI.Image>();hg.color=Color.clear;var knob=Plate(handle,Amber,true);
             var slider=rt.gameObject.AddComponent<UnityEngine.UI.Slider>();slider.fillRect=fill;slider.handleRect=handle;slider.targetGraphic=knob;slider.direction=UnityEngine.UI.Slider.Direction.LeftToRight;slider.minValue=min;slider.maxValue=max;slider.value=value;
+            handle.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,28);
+            var focus=Node("Slider focus",rt,-14,-50,790,82);focus.SetAsFirstSibling();
+            var frame=Plate(focus,Ink);frame.Style=RecoveryPlateStyle.Custom;frame.Tint=new Color(.15f,.18f,.20f);
+            Panel(focus,8,14,4,54,Amber);
+            text.rectTransform.SetParent(rt,false);text.rectTransform.anchoredPosition=new Vector2(0,48);
+            rt.gameObject.AddComponent<RecoveryUiFeedback>().ConfigureSlider(text,fg,frame,knob);
             slider.onValueChanged.AddListener(v=>{if(!Application.isPlaying)return;change(v);text.text=label+"   "+Mathf.RoundToInt(v*100)+"%";foreach(var entry in textSizes)if(entry.Key!=null){entry.Key.fontSize=entry.Value*P.textScale;entry.Key.fontSizeMax=entry.Value*P.textScale;entry.Key.fontSizeMin=entry.Value*Mathf.Min(1,P.textScale);}session.ApplySettings();P.Save();});
         }
 
@@ -196,7 +206,7 @@ namespace TowTrouble
 
         private void Update()
         {
-            if(root==null)return;bool online=session.Connected&&session.LocalSlot>=0;var w=session.World;
+            if(root==null)return;MaintainReadableWindow();RefreshScreenLayout();bool online=session.Connected&&session.LocalSlot>=0;var w=session.World;
             if(!online&&session.View=="Starter"&&page!="Starter"&&page!="Confirm")Show("Starter");
             RefreshPersistenceHint();UpdateMenuPresentation();
             if (online) ObserveAssistance(w, session.LocalSlot);
@@ -379,6 +389,10 @@ namespace TowTrouble
                 {
                     var point = camera.WorldToViewportPoint(world.Drivers[i].transform.position + Vector3.up * 3.2f);
                     visible = point.z > 0f && point.x > .08f && point.x < .92f && point.y > .14f && point.y < .88f;
+                    var safe=ScreenSafeBounds;var size=((RectTransform)gameplay.transform).rect.size;
+                    float x=point.x*size.x,y=point.y*size.y,halfWidth=tag.rect.width*.5f;
+                    visible=visible&&x-halfWidth>=safe.xMin+8&&x+halfWidth<=safe.xMax-8
+                        &&y>=safe.yMin+8&&y+tag.rect.height<=safe.yMax-8;
                     if (visible)
                     {
                         tag.anchorMin = tag.anchorMax = new Vector2(point.x, point.y);

@@ -33,7 +33,11 @@ namespace TowTrouble
             result.language = "en";
         }
         public static Vector2Int[] Resolutions(Resolution[] values, int currentWidth, int currentHeight)
-            => values.Select(r => new Vector2Int(r.width, r.height)).Append(new Vector2Int(currentWidth, currentHeight))
-                .Where(v => v.x >= 800 && v.y >= 600).Distinct().OrderBy(v => v.x).ThenBy(v => v.y).ToArray();
+        {
+            var result=values.Select(r=>new Vector2Int(r.width,r.height)).Append(new Vector2Int(currentWidth,currentHeight))
+                .Where(RecoveryScreenLayout.Readable).Distinct().OrderBy(v=>v.x).ThenBy(v=>v.y).ToArray();
+            // Preserve an escape route on an unusually small display instead of offering an unsupported mode.
+            return result.Length>0?result:new[]{new Vector2Int(Mathf.Max(1,currentWidth),Mathf.Max(1,currentHeight))};
+        }
     }
 }

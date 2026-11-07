@@ -21,7 +21,7 @@ namespace TowTrouble
             Header("SETTINGS","Adjust your comfort. Audio and controls save automatically; display changes need confirmation.");
             string[] keys={"Audio","Imagine","Comenzi","Accesibilitate","Joc"};string[] labels={"Audio","Display","Controls","Accessibility","Game"};
             for(int i=0;i<keys.Length;i++){string tab=keys[i];menuTabs.Add(Button(pageRoot,labels[i],76+i*292,196,272,()=>{settingsTab=tab;settingsMessage="";Show("Settings");},settingsTab==tab));}
-            var body=Panel(pageRoot,76,278,866,480);var details=Panel(pageRoot,966,278,558,480);
+            var body=Panel(pageRoot,76,278,866,settingsTab=="Accesibilitate"?330:480);var details=Panel(pageRoot,966,278,558,480);
             Icon(details,RecoveryIcon.Settings,28,28,32,Amber);Text(details,"MAKE IT COMFORTABLE",76,24,454,48,25,Paper,true);
             menuHelp=Text(details,SettingsDescription(),28,106,502,266,20,Muted);menuHelp.fontSizeMin=16;
             status=Text(details,settingsMessage,28,385,502,68,16,Amber);
@@ -75,6 +75,13 @@ namespace TowTrouble
                     if(session.Connected)Text(body,"Return to the main menu to reset progress.",30,430,806,36,14,Muted);
                     break;
             }
+            // Reserve room for the longest focus description, rather than an empty fixed-height card.
+            float helpHeight=menuHelp.GetPreferredValues(SettingsDescription(),502,float.PositiveInfinity).y;
+            foreach(var description in menuDescriptions.Values)helpHeight=Mathf.Max(helpHeight,menuHelp.GetPreferredValues(description,502,float.PositiveInfinity).y);
+            float detailsHeight=Mathf.Clamp(Mathf.Ceil(helpHeight)+202,300,480);
+            details.sizeDelta=new Vector2(558,detailsHeight);
+            menuHelp.rectTransform.sizeDelta=new Vector2(502,detailsHeight-202);
+            status.rectTransform.anchoredPosition=new Vector2(28,-(detailsHeight-84));
             Button(pageRoot,"RESTORE TAB DEFAULTS",1100,808,424,()=>ConfirmAction("Restore the default "+labels[Array.IndexOf(keys,settingsTab)].ToLowerInvariant()+" settings? Career progress is kept.",RestoreSettingsTab,"Settings","RESTORE DEFAULTS"));
             Footer(returnPage);
             MenuHint(pageRoot,"previous","Previous tab",440,790,280);MenuHint(pageRoot,"next","Next tab",760,790,250);
@@ -82,17 +89,17 @@ namespace TowTrouble
         private void BuildFirstSetup()
         {
             Header("WELCOME TO TOW TROUBLE","A few comfort settings, then choose your first ride.");
-            var panel=Panel(pageRoot,236,248,1128,460);
+            var panel=Panel(pageRoot,236,248,1128,354);
             Text(panel,"TAKE YOUR TIME",30,24,1068,48,29,Paper,true);
             Text(panel,"You can change these settings later. Your first car comes next.",30,84,1068,48,20,Muted);
-            Slider(panel,"Brightness",P.brightness,.7f,1.4f,161,v=>P.brightness=v);
-            Slider(panel,"Text / HUD size",P.textScale,.85f,1.3f,291,v=>P.textScale=v);
+            Slider(panel,"Brightness",P.brightness,.7f,1.4f,146,v=>P.brightness=v);
+            Slider(panel,"Text / HUD size",P.textScale,.85f,1.3f,250,v=>P.textScale=v);
             Button(pageRoot,"CHOOSE YOUR FIRST RIDE",960,790,564,()=>{P.onboarded=true;P.language="en";P.Save();firstSetup=false;Show("Starter");},true);
             Button(pageRoot,"BACK",76,790,230,()=>Show("Title"));BuildMenuFooter();
         }
         private UnityEngine.UI.Button SettingButton(RectTransform body,string label,float y,Action action,string description)
         {var button=Button(body,label,30,y,806,action);menuDescriptions[button.gameObject]=description;return button;}
-        private string SettingsDescription()=>settingsTab=="Audio"?"Set the sound to suit your space. Vehicle effects, music, environment and interface have separate controls. Muting audio never removes visual feedback.":settingsTab=="Imagine"?"Choose your display settings on the left, then Apply. Keep the result within 15 seconds or the previous settings return automatically.":settingsTab=="Comenzi"?(session.UsingGamepad?"Controls follow your connected controller automatically. Switch to your keyboard or mouse whenever you prefer.\n\nAdjust camera sensitivity below, or invert its vertical movement.":"Select an action to change its keyboard binding. Each key can have one action; menu navigation keys stay reserved.\n\nConnect a controller to see its button layout."):settingsTab=="Accesibilitate"?"Choose readable text and comfortable camera movement. Cable warnings can include symbols as well as colour.":"Contextual hints help you learn at your own pace. Reset Progress starts a new career and keeps your preferences.";
+        private string SettingsDescription()=>settingsTab=="Audio"?"Set the sound to suit your space. Vehicle effects, music, environment and interface have separate controls. Muting audio never removes visual feedback.":settingsTab=="Imagine"?"Choose your display settings on the left, then Apply. Keep the result within 15 seconds or the previous settings return automatically.":settingsTab=="Comenzi"?(session.UsingGamepad?"Controls follow your connected controller automatically. Switch to your keyboard or mouse whenever you prefer.\n\nAdjust camera sensitivity below, or invert its vertical movement.":"Select an action to change its keyboard binding. Each key can have one action; menu navigation keys stay reserved.\n\nConnect a controller to see its button layout."):settingsTab=="Accesibilitate"?"Choose readable text and comfortable camera movement. On a small screen, try 120–130% text size. Cable warnings can include symbols as well as colour.":"Contextual hints help you learn at your own pace. Reset Progress starts a new career and keeps your preferences.";
         private static string OnOff(bool value)=>value?"ON":"OFF";
         private void SaveMenuPreference(){session.ApplySettings();P.Save();Show("Settings");}
         private string ControllerGuide()

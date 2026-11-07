@@ -19,19 +19,19 @@ namespace TowTrouble
         private UnityEngine.UI.ScrollRect menuScroll;
         private void BuildMain()
         {
-            Panel(pageRoot,48,35,460,812);Logo(pageRoot,76,58,63);
-            Text(pageRoot,"BAD ROADS. GOOD COMPANY.",82,235,392,30,14,Muted,true);Wallet(pageRoot,P.credits);
+            Panel(pageRoot,48,35,460,746);Logo(pageRoot,76,58,63);
+            Text(pageRoot,"BAD ROADS. GOOD COMPANY.",82,235,392,30,15,Muted,true);Wallet(pageRoot,P.credits);
             Button(pageRoot,"PLAY SOLO",80,300,396,()=>StartMenuSession(true),true,62);
             Button(pageRoot,"PLAY CO-OP",80,380,396,()=>Show("Coop"));
             Button(pageRoot,"HOW TO PLAY",80,450,396,()=>Show("Help"));
             Button(pageRoot,"SETTINGS",80,520,396,()=>{returnPage="Main";firstSetup=false;Show("Settings");});
-            Button(pageRoot,"CREDITS",80,716,190,()=>Show("Credits"),false,42);
-            Button(pageRoot,"QUIT",286,716,190,()=>Application.Quit(),false,42);
-            Text(pageRoot,"TOW COUNTY · RECOVERY SERVICE",82,800,394,28,12,Muted);
+            Button(pageRoot,"CREDITS",80,634,190,()=>Show("Credits"),false,42);
+            Button(pageRoot,"QUIT",286,634,190,()=>Application.Quit(),false,42);
+            Text(pageRoot,"TOW COUNTY · RECOVERY SERVICE",82,728,394,28,15,Muted);
             var catalog=session.GarageCatalog;var build=P.Build(P.vehicle);var body=catalog?.Find(build.Item(GarageSlot.Assembly,catalog));
             bool modified=build.Items!=null&&build.Items.Any(id=>!string.IsNullOrEmpty(id)&&!id.StartsWith("stock_",StringComparison.Ordinal)&&!id.StartsWith("paint_",StringComparison.Ordinal));
-            var card=Panel(pageRoot,1064,686,460,154);Icon(card,RecoveryIcon.Body,18,15,28,Amber);
-            Text(card,modified?"YOUR RIDE · MODIFIED":"YOUR RIDE · STOCK",58,14,382,26,13,Muted,true);
+            var card=Panel(pageRoot,1064,664,460,154);Icon(card,RecoveryIcon.Body,18,15,28,Amber);
+            Text(card,modified?"YOUR RIDE · MODIFIED":"YOUR RIDE · STOCK",58,14,382,26,15,Muted,true);
             Text(card,body!=null?RecoveryGarageWorkflow.DisplayName(body,P,catalog):RecoveryVehicle.ModelNames[P.vehicle],20,48,420,44,27,Paper,true);
             if(catalog!=null){var perf=GaragePerformance.Calculate(build,catalog);Text(card,(perf.Drive*.004f).ToString("0.0")+" kN pull   ·   "+(perf.Cable/1000).ToString("0")+" kN cable",20,106,420,30,16,Paper);}
             BuildMenuFooter();
@@ -63,7 +63,7 @@ namespace TowTrouble
             address=Input(join,"HOST ADDRESS",RecoveryProfile.Storage.GetString(LastHostPreference,""),28,94,658,v=>{if(Application.isPlaying&&!P.SuppressSaving){RecoveryProfile.Storage.SetString(LastHostPreference,v.Trim());SaveLocalPreferences();}});
             Text(join,"Ask the host for their IP address. 127.0.0.1 connects to this computer only.",28,221,658,60,16,Muted);
             Button(join,"JOIN SESSION",28,301,658,()=>{if(string.IsNullOrWhiteSpace(address.text)){status.text="Enter your friend's host address first.";return;}busyJoin=true;textEntryOriginal=address.text.Trim();session.Join(textEntryOriginal);Show("Busy");});
-            status=Text(pageRoot,session.Status,76,750,1448,42,17,Muted);Footer();
+            status=Text(pageRoot,session.Status,326,770,1198,50,17,Muted);Footer();
         }
         private static void SaveLocalPreferences() {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -108,7 +108,9 @@ namespace TowTrouble
         private string busyStatus;
         private void BuildPause()
         {
-            var card=Panel(pageRoot,500,105,600,690);Text(card,"PAUSED",30,24,540,56,38,Paper,true);
+            bool cable=session.World!=null&&session.World.HasContract&&session.LocalSlot>=0&&session.World.Attached(session.LocalSlot);
+            float height=cable?650:552;
+            var card=Panel(pageRoot,500,(900-height)*.5f,600,height);Text(card,"PAUSED",30,24,540,56,38,Paper,true);
             Text(card,session.Training?"Practice mode · your career equipment and money are safe.":session.Solo?"Take your time. Solo play is paused.":"Your car stays braked. Your crew keeps playing.",30,96,540,76,20,Muted);
             Button(card,"RESUME",30,194,540,()=>{session.ConsumeMenuInput();session.ToggleMenu();Show("Gameplay");},true);
             Button(card,session.Training?"HOW TO PLAY":"RECOVERIES",30,262,540,()=>{if(session.Training){Show("Help");return;}session.CloseOverlay();session.ToggleBoard();Show("Board");});
@@ -126,7 +128,12 @@ namespace TowTrouble
         private void BuildTextEntry()
         {
             Header(textEntryLabel,"Select letters with the D-pad or left stick. Choose Done to save, or Back to cancel.");
-            var panel=Panel(pageRoot,250,220,1100,540);Text(panel,textEntryDraft+"│",30,22,1040,64,25,Paper,true);
+            var panel=Panel(pageRoot,250,220,1100,480);
+            var entry=Text(panel,"",30,22,1040,64,25,Paper,true);entry.enableAutoSizing=false;entry.textWrappingMode=TextWrappingModes.NoWrap;
+            string draft=textEntryDraft??"",visible=draft+"│";
+            // Keep the caret and the end being edited readable even for a long host address.
+            while(draft.Length>0&&entry.GetPreferredValues(visible).x>1040){draft=draft.Substring(1);visible="…"+draft+"│";}
+            entry.text=visible;
             const string letters="1234567890abcdefghijklmnopqrstuvwxyz.-:_";
             for(int i=0;i<letters.Length;i++){char ch=letters[i];Button(panel,ch.ToString(),30+i%10*104,112+i/10*66,94,()=>{if(textEntryDraft.Length<textEntryLimit)textEntryDraft+=ch;Show("TextEntry");},false,52);}
             Button(panel,"SPACE",30,390,220,()=>{if(textEntryLabel=="YOUR NAME"&&textEntryDraft.Length<textEntryLimit)textEntryDraft+=" ";Show("TextEntry");});
@@ -137,26 +144,29 @@ namespace TowTrouble
         private void BuildCredits()
         {
             Header("CREDITS","Tow Trouble · Bad roads. Good company.");
-            var card=Panel(pageRoot,176,224,1248,488);Icon(card,RecoveryIcon.Crew,38,40,40,Amber);
-            Text(card,"TOW TROUBLE",98,36,1106,54,37,Paper,true);
-            Text(card,"An independent vehicle recovery game",42,145,1164,100,25,Paper);
-            Text(card,"Thank you for exploring Tow County and bringing its stranded drivers home.",42,284,1164,92,22,Muted);
-            Button(card,"THIRD-PARTY NOTICES",42,400,650,()=>{creditsNotices=true;Show("Credits");});
-            if(creditsNotices){foreach(var text in card.GetComponentsInChildren<TMP_Text>(true))textSizes.Remove(text);foreach(Transform t in card){t.gameObject.SetActive(false);Destroy(t.gameObject);}BuildNotices(card);}
+            if(creditsNotices)BuildNotices(Panel(pageRoot,176,224,1248,488));
+            else
+            {
+                var card=Panel(pageRoot,250,258,1100,368);Icon(card,RecoveryIcon.Crew,30,30,40,Amber);
+                Text(card,"TOW TROUBLE",86,24,984,54,37,Paper,true);
+                Text(card,"An independent vehicle recovery game",30,106,1040,48,25,Paper);
+                Text(card,"Thank you for exploring Tow County and bringing its stranded drivers home.",30,182,1040,68,22,Muted);
+                Button(card,"THIRD-PARTY NOTICES",30,286,650,()=>{creditsNotices=true;Show("Credits");});
+            }
             Footer();
         }
         private bool creditsNotices;
         private void BuildNotices(RectTransform card)
         {
             // Separate the scrollable legal text from the readable game credits.
-            var scrollRoot=Node("Third-party notices",card,28,24,1192,420);menuScroll=scrollRoot.gameObject.AddComponent<RecoverySmoothScrollRect>();
+            var scrollRoot=Node("Third-party notices",card,28,24,1192,408);menuScroll=scrollRoot.gameObject.AddComponent<RecoverySmoothScrollRect>();
             menuScroll.horizontal=false;menuScroll.scrollSensitivity=45;menuScroll.movementType=UnityEngine.UI.ScrollRect.MovementType.Clamped;
             var viewport=Stretch("Viewport",scrollRoot);viewport.gameObject.AddComponent<UnityEngine.UI.Image>().color=Color.white;viewport.gameObject.AddComponent<UnityEngine.UI.Mask>().showMaskGraphic=false;
             string notices=Resources.Load<TextAsset>("TowThirdPartyNotices")?.text??"Third-party notices could not be loaded.";
             var content=Node("Notices content",viewport,0,0,1150,500);var text=Text(content,notices,0,0,1150,500,16,Muted);text.enableAutoSizing=false;
             float height=Mathf.Max(420,text.GetPreferredValues(notices,1150,0).y+20);content.sizeDelta=new Vector2(1150,height);text.rectTransform.sizeDelta=content.sizeDelta;
             menuScroll.content=content;menuScroll.viewport=viewport;
-            ControlText(Text(card,session.UsingGamepad?"Right stick · Scroll":"Page Up / Page Down / Mouse wheel · Scroll",28,451,1192,27,14,Muted));
+            ControlText(Text(card,session.UsingGamepad?"Right stick · Scroll":"Page Up / Page Down / Mouse wheel · Scroll",28,440,1192,36,18,Muted));
         }
     }
 }

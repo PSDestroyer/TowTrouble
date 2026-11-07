@@ -204,8 +204,8 @@ namespace TowTrouble
                 if (hint.Key.text == key) continue;
                 hint.Key.text = key;
                 var rect = (RectTransform)hint.Button.transform;
-                float width = Mathf.Max(26f, Mathf.Ceil(hint.Key.GetPreferredValues(key).x) + 12f);
-                float height = Mathf.Min(30f, rect.rect.height - 8f);
+                float width = page=="Confirm"?60f:Mathf.Max(64f, Mathf.Ceil(hint.Key.GetPreferredValues(key).x) + 12f);
+                float height = page=="Confirm"?42f:rect.rect.height<=36?36f:40f;
                 bool gold = hint.Button.GetComponentInChildren<RecoveryPlateGraphic>().Style == RecoveryPlateStyle.Gold;
                 hint.Cap.GetComponent<UnityEngine.UI.Image>().color = gold ? Ink : Paper;
                 hint.Key.color = gold ? Paper : Ink;
@@ -215,7 +215,7 @@ namespace TowTrouble
                 hint.Action.rectTransform.anchoredPosition = new Vector2(left, 0);
                 hint.Action.rectTransform.sizeDelta = new Vector2(rect.rect.width - left - (hint.Right ? width + 20f : 14f), rect.rect.height);
             }
-            if (boardSelectionHint != null) boardSelectionHint.text = gamepad ? "D-pad / Left stick · Select" : "W / S or Up / Down · Select";
+            if (boardSelectionHint != null) boardSelectionHint.text = gamepad ? "D-pad / Left stick · Select" : "W / S · Select";
         }
     }
 }

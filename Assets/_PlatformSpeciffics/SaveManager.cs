@@ -34,6 +34,14 @@ namespace HalvaStudio.Save
                 return store;
             }
         }
+#if UNITY_EDITOR
+        // Editor deletion must invalidate the loaded store as well as removing its files.
+        public static void InvalidateEditorCache()
+        {
+            if (Application.isPlaying) throw new InvalidOperationException("Stop Play Mode before clearing the save cache.");
+            store = null;
+        }
+#endif
         // Validation never touches the user's save file, including its backup.
         public static SaveStore Isolated(string name)
         { if (!isolated.TryGetValue(name, out var value)) isolated[name] = value = new SaveStore(new MemorySaveStorage()); return value; }

@@ -41,7 +41,7 @@ namespace TowTrouble
             var nav=button.navigation;nav.mode=UnityEngine.UI.Navigation.Mode.None;button.navigation=nav;return button;
         }
         private void GarageFont(TMP_Text text,float size)
-        {text.fontSize=text.fontSizeMax=size*P.textScale;text.fontSizeMin=size;}
+        {textSizes[text]=size;text.fontSize=text.fontSizeMax=size*P.textScale;text.fontSizeMin=size*Mathf.Min(1,P.textScale);}
         private UnityEngine.UI.Button GarageOverlayButton(Transform parent,string label,float x,float y,float width,Action action,bool primary=false)
         {
             int index=garageModalButtons.Count;
@@ -91,8 +91,8 @@ namespace TowTrouble
             foreach(var hint in garageHints)
             {
                 string key=GarageBinding(hint.Kind);hint.Key.text=key;
-                var rect=(RectTransform)hint.Button.transform;float width=Mathf.Max(25,Mathf.Ceil(hint.Key.GetPreferredValues(key).x)+12);
-                float height=Mathf.Min(28,rect.rect.height-8);bool gold=hint.Button.GetComponentInChildren<RecoveryPlateGraphic>().Style==RecoveryPlateStyle.Gold;
+                var rect=(RectTransform)hint.Button.transform;float width=Mathf.Max(48,Mathf.Ceil(hint.Key.GetPreferredValues(key).x)+12);
+                float height=Mathf.Min(40,rect.rect.height);bool gold=hint.Button.GetComponentInChildren<RecoveryPlateGraphic>().Style==RecoveryPlateStyle.Gold;
                 hint.Cap.GetComponent<UnityEngine.UI.Image>().color=gold?Ink:Paper;hint.Key.color=gold?Paper:Ink;
                 hint.Cap.anchoredPosition=new Vector2(9,-(rect.rect.height-height)*.5f);hint.Cap.sizeDelta=hint.Key.rectTransform.sizeDelta=new Vector2(width,height);
                 hint.Caption.rectTransform.anchoredPosition=new Vector2(width+20,0);hint.Caption.rectTransform.sizeDelta=new Vector2(Mathf.Max(20,rect.rect.width-width-30),rect.rect.height);
@@ -106,7 +106,7 @@ namespace TowTrouble
             }
             if(garageDialogHint!=null)garageDialogHint.text=garageOverlay==GarageOverlay.Setups
                 ?GarageBinding("confirm")+": Activate highlighted button · "+GarageBinding("back")+": Back"
-                :gamepad?"Right stick: Scroll review · "+GarageBinding("back")+": Cancel":"Mouse wheel / Page Up / Down: Scroll review";
+                :gamepad?"Right stick: Scroll review · "+GarageBinding("back")+": Cancel":"Mouse wheel · Scroll review";
         }
         private bool HandleGarageControls(bool online)
         {

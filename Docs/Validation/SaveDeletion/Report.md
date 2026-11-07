@@ -1,0 +1,5 @@
+# Save deletion Editor tool — 2026-11-07
+
+Restored `Window > Save File Deletion Window`; `Tow Trouble > Save Data` opens the same EditorWindow. The path is the current SaveManager.SavePath, not an arbitrary file field. Delete Save File requires confirmation and Edit Mode. It removes save.json, .backup, .tmp and .backup.tmp, then discards the Editor store cache so removed data cannot be flushed back. Unrelated files and isolated validation stores are not cleared. No PlayerPrefs calls or buttons.
+
+Unity 6000.3.19f1 compilation: zero errors/warnings. Eleven native reflection checks passed against a uniquely owned temporary directory (see Checks.json). Includes orphan backup, repeat deletion, missing directory, obstruction failure/retry, neighboring files, clean reload and cache invalidation. The actual local save remained byte-identical. Both menu commands opened the same titled window; its native display was inspected. Confirmation/delete was not invoked on the user's save. Editor remained stopped and the active scene clean. No build or console-platform validation was needed for this Editor-only tool.
