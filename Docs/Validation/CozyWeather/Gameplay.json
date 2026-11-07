@@ -1,0 +1,54 @@
+{
+  "success": true,
+  "results": [
+    {
+      "state": "noon",
+      "DayPercentage": 0.5,
+      "NightAmount": 0.0,
+      "lamps": 2
+    },
+    {
+      "state": "night",
+      "DayPercentage": 0.9583333,
+      "NightAmount": 1.0,
+      "litPixels": 43576,
+      "energy": 3717309
+    },
+    {
+      "state": "dusk",
+      "DayPercentage": 0.7916667,
+      "NightAmount": 0.393586,
+      "intensity": 9.446064
+    },
+    {
+      "state": "snow region",
+      "SnowAmount": 0.4,
+      "RainAmount": 0.0,
+      "live": 120
+    },
+    {
+      "state": "rain region",
+      "RainAmount": 0.7,
+      "SnowAmount": 0.0,
+      "live": 98
+    },
+    {
+      "state": "forecast midpoint",
+      "weights": [
+        {
+          "name": "County Partly Cloudy",
+          "weight": 0.499899983
+        },
+        {
+          "name": "County Light Precipitation",
+          "weight": 0.5001
+        }
+      ]
+    },
+    {
+      "state": "pause/resume",
+      "EnvironmentSeconds": 285.5966,
+      "DayPercentage": 0.5487413
+    }
+  ]
+}

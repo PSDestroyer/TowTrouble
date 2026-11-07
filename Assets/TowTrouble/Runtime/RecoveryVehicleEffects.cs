@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 namespace TowTrouble
 {
     [DefaultExecutionOrder(140),DisallowMultipleComponent]
-    public sealed class RecoveryVehicleEffects : MonoBehaviour
+    public sealed partial class RecoveryVehicleEffects : MonoBehaviour
     {
         [SerializeField] private RecoveryVehicle vehicle;
         [SerializeField] private RecoveryVehicleEffectsProfile profile;
@@ -17,6 +17,7 @@ namespace TowTrouble
         {
             public Renderer Renderer;public int Slot;public VehicleEmissionAtlas Atlas;
             public Material Original,Owned;public MaterialPropertyBlock Previous;
+            public bool Headlight;
         }
         public void Configure(RecoveryVehicle owner,RecoveryVehicleEffectsProfile settings){vehicle=owner;profile=settings;geometry=-1;}
         public static bool ShouldBrake(float throttle,bool brake,float signedSpeed)
@@ -30,6 +31,7 @@ namespace TowTrouble
             if(vehicle==null||profile==null)return;
             if(geometry!=vehicle.GeometryVersion)Rebind();
             ApplyState(vehicle.BrakeLights,vehicle.EngineRunning,vehicle.ControlInput.y,vehicle.EngineEffort);
+            UpdateHeadlights();
         }
         // Also usable by static Editor previews. Never starts particles outside Play Mode.
         public void ApplyState(bool braking,bool running,float throttle,float effort)
@@ -39,7 +41,7 @@ namespace TowTrouble
                 if(lamp.Renderer==null)continue;
                 lamp.Renderer.GetPropertyBlock(block,lamp.Slot);
                 block.SetTexture(EmissionMap,braking?lamp.Atlas.Braking:lamp.Atlas.Running);
-                block.SetColor(EmissionColor,Color.white);lamp.Renderer.SetPropertyBlock(block,lamp.Slot);
+                block.SetColor(EmissionColor,Color.white*(lamp.Headlight?Mathf.Lerp(.15f,2.5f,nightAmount*(running?1:0)):1));lamp.Renderer.SetPropertyBlock(block,lamp.Slot);
             }
             float rate=SmokeRate(running,throttle,effort,exhausts.Count);
             foreach(var ps in exhausts)
@@ -97,7 +99,7 @@ namespace TowTrouble
                 var outlet=new Vector3(body.center.x-body.extents.x*.75f,height,body.min.z+.06f);
                 CreateExhaust(vehicle.transform,outlet,new Vector3(-.35f,.12f,-1));
             }
-            ApplyState(false,false,0,0);
+            BindHeadlights();ApplyState(false,false,0,0);
         }
         private void CreateExhaust(Transform parent,Vector3 point,Vector3 direction)
         {
@@ -122,6 +124,7 @@ namespace TowTrouble
         private void OnDestroy(){Clear();}
         private void Clear()
         {
+            ClearHeadlights();
             foreach(var lamp in lamps)
             {
                 if(lamp.Renderer!=null)

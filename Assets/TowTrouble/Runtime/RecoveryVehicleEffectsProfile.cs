@@ -14,10 +14,13 @@ namespace TowTrouble
         public Vector3[] Positions;
         public Vector3[] Directions;
     }
+    [Serializable] public sealed class VehicleHeadlampPorts
+    {public Mesh Mesh;public Vector3[] Positions=Array.Empty<Vector3>();}
     public sealed class RecoveryVehicleEffectsProfile : ScriptableObject
     {
         public VehicleEmissionAtlas[] Atlases=Array.Empty<VehicleEmissionAtlas>();
         public VehicleExhaustPorts[] Exhausts=Array.Empty<VehicleExhaustPorts>();
         public Material Smoke;
+        public VehicleHeadlampPorts[] Headlights=Array.Empty<VehicleHeadlampPorts>();
     }
 }

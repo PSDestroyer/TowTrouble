@@ -41,6 +41,8 @@ namespace TowTrouble
         private bool musicMenu,trackStarted;
         private int uiFrame=-1,uiPriority=999;
         private float musicBlend,musicDuck=1;
+        private float environmentNight,environmentRain;
+        public void SetEnvironment(float night,float rain){environmentNight=Mathf.Clamp01(night);environmentRain=Mathf.Clamp01(rain);}
         public int PlayingOneShots { get { int n=0;foreach(var s in voices)if(s!=null&&s.isPlaying)n++;return n; } }
         public RecoveryAudioBank Bank=>bank;
         public void Configure(DemoSession owner,RecoveryAudioBank value)
@@ -239,7 +241,8 @@ namespace TowTrouble
             var wanted=mountain>.55f?bank.MountainWind:bank.Wind;
             if(wind.clip!=wanted){Loop(wind,0,1,1);if(wind.volume<.002f){wind.Stop();wind.clip=wanted;}}
             else Loop(wind,gain*(.10f+.13f*mountain+.05f*desert),1,.12f);
-            Loop(birds,gain*.15f*forest,1,.12f);Loop(insects,gain*.055f*forest,1,.12f);Loop(water,gain*.15f*lake,1,.12f);
+            Loop(birds,gain*.15f*forest*Mathf.Lerp(1,.08f,environmentNight)*(1-environmentRain*.65f),1,.12f);
+            Loop(insects,gain*.055f*forest*Mathf.Lerp(.25f,1,environmentNight)*(1-environmentRain*.7f),1,.12f);Loop(water,gain*.15f*lake,1,.12f);
             float best=float.MaxValue;Vector3 fall=Vector3.zero;foreach(var point in bank.Waterfalls){float distance=(point-p).sqrMagnitude;if(distance<best){best=distance;fall=point;}}
             waterfall.transform.position=fall;Loop(waterfall,best<10000?gain*.25f:0,1,.18f);
             garage.transform.position=world.GaragePosition;garage.volume=gain*.13f;

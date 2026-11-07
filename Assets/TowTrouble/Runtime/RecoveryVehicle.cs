@@ -81,6 +81,7 @@ namespace TowTrouble
         private bool hasRemote;
         private AudioSource engine;
         public bool ExternalAudio {get;set;}
+        public bool ExternalWheelEffects {get;set;}
         private ParticleSystem dust;
         private readonly float[] suspensionOffsets=new float[4],previousSuspensionOffsets=new float[4];
         private readonly float[] wheelAngles=new float[4],wheelRates=new float[4],wheelSlips=new float[4],wheelLoads=new float[4];
@@ -332,7 +333,7 @@ namespace TowTrouble
             if(dust!=null)
             {
                 var emission=dust.emission;
-                emission.rateOverTime=Speed>1?Mathf.Min(Speed*2,22)*(1-MudFraction):0;
+                emission.rateOverTime=!ExternalWheelEffects&&Speed>1?Mathf.Min(Speed*2,22)*(1-MudFraction):0;
             }
         }
     }

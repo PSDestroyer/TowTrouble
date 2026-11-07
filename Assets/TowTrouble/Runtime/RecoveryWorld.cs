@@ -26,6 +26,8 @@ namespace TowTrouble
         public RecoveryHapticEvents Haptic0,Haptic1;
         public bool Cable0, Cable1;
         public float Tension0, Tension1, Elapsed;
+        public float EnvironmentSeconds;
+        public uint EnvironmentSeed;
         public int Snaps, Resets0, Resets1;
         public float Pull0, Pull1;
         public WinchFrame Winch0, Winch1;
@@ -135,6 +137,7 @@ namespace TowTrouble
         public override void OnStartServer()
         {
             base.OnStartServer();
+            ResetEnvironment();
             NetworkManager.SceneManager.OnClientLoadedStartScenes += ClientLoaded;
             NetworkManager.ServerManager.OnRemoteConnectionState += RemoteChanged;
             receivedHaptics=false;hapticSequence=receivedHapticSequence=0;System.Array.Clear(hapticEvents,0,2);
@@ -387,6 +390,7 @@ namespace TowTrouble
 
         private void Update()
         {
+            TickEnvironment();
             PresentObstacle();
             PresentExtraction();
             PresentWinches();
@@ -400,7 +404,7 @@ namespace TowTrouble
             if (IsServerInitialized && Time.unscaledTime >= nextSnapshot)
             {
                 nextSnapshot = Time.unscaledTime + 1f / 15f;
-                Snapshot(new RecoveryFrame { HapticSequence=unchecked(++hapticSequence),Haptic0=HapticEvents(0),Haptic1=HapticEvents(1),Driver0 = new VehicleFrame(drivers[0]), Driver1 = new VehicleFrame(drivers[1]), Casualty = new VehicleFrame(casualty),
+                Snapshot(new RecoveryFrame { EnvironmentSeconds=environmentSeconds,EnvironmentSeed=environmentSeed,HapticSequence=unchecked(++hapticSequence),Haptic0=HapticEvents(0),Haptic1=HapticEvents(1),Driver0 = new VehicleFrame(drivers[0]), Driver1 = new VehicleFrame(drivers[1]), Casualty = new VehicleFrame(casualty),
                     Cable0 = connected[0], Cable1 = connected[1], Tension0 = tensions[0], Tension1 = tensions[1], Elapsed = elapsed, Snaps = snaps,Resets0=resets[0],Resets1=resets[1],Pull0=pullSeconds[0],Pull1=pullSeconds[1],Winch0=winchFrames[0],Winch1=winchFrames[1],ObstaclePosition=activeObstacle!=null?activeObstacle.transform.position:Vector3.zero,ObstacleRotation=activeObstacle!=null?activeObstacle.transform.rotation:Quaternion.identity,
                     ExtractionStage=(byte)ExtractionStage,ExtractionProgress=ExtractionProgress,ExtractionAlignment=ExtractionAlignment,ExtractionStalled=ExtractionStalled,ExtractionReleasedSeconds=ExtractionReleasedSeconds });
             }
@@ -410,6 +414,7 @@ namespace TowTrouble
         private void Snapshot(RecoveryFrame frame, Channel channel = Channel.Unreliable)
         {
             if (IsServerInitialized) return;
+            ReceiveEnvironment(frame.EnvironmentSeconds,frame.EnvironmentSeed);
             ReceiveHaptics(frame.HapticSequence,frame.Haptic0,frame.Haptic1);
             ReceiveObstacle(frame.ObstaclePosition,frame.ObstacleRotation);
             ExtractionStage=(ExtractionStage)frame.ExtractionStage;ExtractionProgress=frame.ExtractionProgress;ExtractionAlignment=frame.ExtractionAlignment;ExtractionStalled=frame.ExtractionStalled;ExtractionReleasedSeconds=frame.ExtractionReleasedSeconds;
