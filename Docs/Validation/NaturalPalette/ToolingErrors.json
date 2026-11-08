@@ -1,0 +1,142 @@
+[
+  {
+    "level": "error",
+    "message": "Failed to handle /api/commands request: Unable to write data to the transport connection: The socket has been shut down.",
+    "stack": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1289)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n"
+  },
+  {
+    "level": "error",
+    "message": "Failed to handle /api/commands request: Unable to write data to the transport connection: The socket has been shut down.",
+    "stack": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1289)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n"
+  },
+  {
+    "level": "error",
+    "message": "Pipeline: unhandled error serving GET /api/commands: System.InvalidOperationException: Cannot be changed after headers are sent.\n  at System.Net.HttpListenerResponse.set_StatusCode (System.Int32 value) [0x00021] in <e312637755254ec3aaf4851c4dc24af6>:0 \n  at Unity.Pipeline.BasePipelineServer.HandleCommandsRequest (System.Net.HttpListenerRequest request, System.Net.HttpListenerResponse response) [0x00bb5] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1292 \n  at Unity.Pipeline.BasePipelineServer.ProcessRequest (System.Net.HttpListenerContext context) [0x0060d] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:794 ",
+    "stack": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<ProcessRequest>d__95:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:831)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1301)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n"
+  },
+  {
+    "level": "error",
+    "message": "Pipeline: unhandled error serving GET /api/commands: System.InvalidOperationException: Cannot be changed after headers are sent.\n  at System.Net.HttpListenerResponse.set_StatusCode (System.Int32 value) [0x00021] in <e312637755254ec3aaf4851c4dc24af6>:0 \n  at Unity.Pipeline.BasePipelineServer.HandleCommandsRequest (System.Net.HttpListenerRequest request, System.Net.HttpListenerResponse response) [0x00bb5] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1292 \n  at Unity.Pipeline.BasePipelineServer.ProcessRequest (System.Net.HttpListenerContext context) [0x0060d] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:794 ",
+    "stack": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<ProcessRequest>d__95:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:831)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1301)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n"
+  },
+  {
+    "level": "error",
+    "message": "Failed to handle /api/commands request: Unable to write data to the transport connection: Connection reset by peer.",
+    "stack": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1289)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n"
+  },
+  {
+    "level": "error",
+    "message": "Failed to handle /api/commands request: Unable to write data to the transport connection: Connection reset by peer.",
+    "stack": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1289)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n"
+  },
+  {
+    "level": "error",
+    "message": "Pipeline: unhandled error serving GET /api/commands: System.InvalidOperationException: Cannot be changed after headers are sent.\n  at System.Net.HttpListenerResponse.set_StatusCode (System.Int32 value) [0x00021] in <e312637755254ec3aaf4851c4dc24af6>:0 \n  at Unity.Pipeline.BasePipelineServer.HandleCommandsRequest (System.Net.HttpListenerRequest request, System.Net.HttpListenerResponse response) [0x00bb5] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1292 \n  at Unity.Pipeline.BasePipelineServer.ProcessRequest (System.Net.HttpListenerContext context) [0x0060d] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:794 ",
+    "stack": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<ProcessRequest>d__95:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:831)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1301)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n"
+  },
+  {
+    "level": "error",
+    "message": "Pipeline: unhandled error serving GET /api/commands: System.InvalidOperationException: Cannot be changed after headers are sent.\n  at System.Net.HttpListenerResponse.set_StatusCode (System.Int32 value) [0x00021] in <e312637755254ec3aaf4851c4dc24af6>:0 \n  at Unity.Pipeline.BasePipelineServer.HandleCommandsRequest (System.Net.HttpListenerRequest request, System.Net.HttpListenerResponse response) [0x00bb5] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1292 \n  at Unity.Pipeline.BasePipelineServer.ProcessRequest (System.Net.HttpListenerContext context) [0x0060d] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:794 ",
+    "stack": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<ProcessRequest>d__95:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:831)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1301)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n"
+  },
+  {
+    "level": "error",
+    "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+    "stack": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n"
+  }
+]

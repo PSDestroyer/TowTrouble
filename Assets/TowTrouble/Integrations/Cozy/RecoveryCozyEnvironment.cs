@@ -25,6 +25,8 @@ namespace TowTrouble
         public float SnowAmount {get;private set;}
         public float NightAmount {get;private set;}
         public float DayPercentage {get;private set;}
+        public float WetAmount {get;private set;}
+        public float SnowRegionAmount=>snowWeight;
         public void Configure(RecoveryWorld owner,DemoSession local,CozyWeather sphere,RecoveryGroundMap map,WeatherProfile[] sky,ParticleFX rain,ParticleFX snow,AudioFX audio,Light fill)
         {world=owner;session=local;cozy=sphere;ground=map;profiles=sky;rainParticles=rain;snowParticles=snow;rainAudio=audio;skyFill=fill;}
         private void Awake()
@@ -63,7 +65,8 @@ namespace TowTrouble
             float alpine=Mathf.SmoothStep(0,1,Mathf.InverseLerp(115,150,position.y))*Mathf.InverseLerp(180,240,position.z);
             float target=live?Mathf.Max(onSnow?1:0,alpine):0;
             snowWeight=Mathf.MoveTowards(snowWeight,target,Time.deltaTime/7);
-            RecoveryWeatherRules.Precipitation(RecoveryWeatherRules.Wet(from,to,blend),snowWeight,out float rain,out float snow);
+            WetAmount=RecoveryWeatherRules.Wet(from,to,blend);
+            RecoveryWeatherRules.Precipitation(WetAmount,snowWeight,out float rain,out float snow);
             if(Time.time>=nextRoofCheck)
             {
                 nextRoofCheck=Time.time+.25f;

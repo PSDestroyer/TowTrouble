@@ -20,9 +20,9 @@ RenderSettings:
   m_FogDensity: 0.003
   m_LinearFogStart: 150
   m_LinearFogEnd: 1050
-  m_AmbientSkyColor: {r: 0.63919544, g: 0.9581202, b: 1.018868, a: 1.5}
-  m_AmbientEquatorColor: {r: 0.63583124, g: 0.8300802, b: 0.9169811, a: 1.3499999}
-  m_AmbientGroundColor: {r: 0.31791562, g: 0.4150401, b: 0.45849055, a: 1.3499999}
+  m_AmbientSkyColor: {r: 0.7185389, g: 0.9438, b: 1.0729157, a: 1.5}
+  m_AmbientEquatorColor: {r: 0.7408428, g: 0.8662625, b: 0.93406767, a: 1.3499999}
+  m_AmbientGroundColor: {r: 0.3704214, g: 0.43313125, b: 0.46703383, a: 1.3499999}
   m_AmbientIntensity: 1
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
@@ -1102638,6 +1102638,7 @@ GameObject:
   - component: {fileID: 1573073358}
   - component: {fileID: 1573073357}
   - component: {fileID: 1573073359}
+  - component: {fileID: 1573073360}
   m_Layer: 0
   m_Name: Tow Trouble - COZY Weather
   m_TagString: Untagged
@@ -1102699,6 +1102700,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: TowTrouble.Cozy::TowTrouble.RecoveryCozyVisibility
   environment: {fileID: 1573073357}
+--- !u!114 &1573073360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573073356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7d7452a6d1e64165aa68050b75f3a97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowTrouble.RecoveryAtmospherePresentation
+  environment: {fileID: 1573073357}
+  sky: {fileID: 8922759213610845530}
+  session: {fileID: 1143746720}
+  volume: {fileID: 1413712057}
+  fill: {fileID: 1301985176}
+  clearDensity: 0.00105
+  rainDensity: 0.00145
+  clearDistance: 110
 --- !u!1001 &1573816633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1481775,7 +1481796,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.7964425, g: 0.7964425, b: 0.7964425, a: 1}
+      maxColor: {r: 1.08, g: 1.1, b: 1.12, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1485580,7 +1485601,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.7964425, g: 0.7964425, b: 0.7964425, a: 1}
+      maxColor: {r: 1.08, g: 1.1, b: 1.12, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1498009,15 +1498030,15 @@ MonoBehaviour:
   sunDirection: 120
   sunPitch: 0
   moonDirection: {x: -0.6544327, y: 0.6559293, z: 0.3761314}
-  skyZenithColor: {r: 0.109831154, g: 0.16082005, b: 0.27448845, a: 1}
-  skyHorizonColor: {r: 0.47675428, g: 0.69260484, b: 0.8245107, a: 1}
-  cloudColor: {r: 0.7964425, g: 0.7964425, b: 0.7964425, a: 1}
-  cloudHighlightColor: {r: 4.9193516, g: 4.204114, b: 3.5502865, a: 1}
+  skyZenithColor: {r: 0.025, g: 0.25, b: 0.69, a: 1}
+  skyHorizonColor: {r: 0.25717565, g: 0.60657215, b: 0.93173504, a: 1}
+  cloudColor: {r: 1.08, g: 1.1, b: 1.12, a: 1}
+  cloudHighlightColor: {r: 2.1305823, g: 1.9291356, b: 1.7130619, a: 1}
   highAltitudeCloudColor: {r: 1.0833969, g: 1.3920008, b: 1.382235, a: 1}
   sunlightColor: {r: 1.375392, g: 1.3476623, b: 1.1535546, a: 1}
   starColor: {r: 0, g: 0, b: 0, a: 1}
-  ambientLightHorizonColor: {r: 0.47098613, g: 0.61487424, b: 0.6792453, a: 1}
-  ambientLightZenithColor: {r: 0.4261303, g: 0.6387468, b: 0.6792453, a: 1}
+  ambientLightHorizonColor: {r: 0.54877245, g: 0.64167595, b: 0.691902, a: 1}
+  ambientLightZenithColor: {r: 0.47902593, g: 0.6292, b: 0.71527714, a: 1}
   ambientLightMultiplier: 1.5
   galaxyIntensity: 0
   fogColor1: {r: 0, g: 0, b: 0, a: 0.007843138}
@@ -1498112,7 +1498133,7 @@ MonoBehaviour:
   midNimbusLuxuryClouds: {fileID: 2800000, guid: aafa15e7fb9760b4d93ef145502eab4b, type: 3}
   highNimbusLuxuryClouds: {fileID: 2800000, guid: cf1e011d4126f5b45af1e0c5c8162509, type: 3}
   luxuryVariation: {fileID: 2800000, guid: c4666b12d12d34d45b89ea8d2fe52b01, type: 3}
-  skyFogAmount: 0.697
+  skyFogAmount: 0.18
   cloudsFogAmount: 0.509
   cloudsFogLightAmount: 1
   separateSunLightAndTransform: 0
@@ -1498242,7 +1498263,7 @@ MonoBehaviour:
   thunderFXParent: {fileID: 2066461491721019246}
   visualFXParent: {fileID: 2066461492490151100}
   skyStyle: 0
-  cloudStyle: 1
+  cloudStyle: 2
   fogStyle: 0
   overrideWeather: {fileID: 0}
   moduleHolder: {fileID: 7484162620235914855}
@@ -1498417,7 +1498438,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7542948010966628329}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 0, g: 0, b: 0, a: 0}

@@ -1,0 +1,221 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "console get",
+    "parameters": {
+      "tail": "20"
+    },
+    "result": {
+      "entries": [
+        {
+          "seq": 55176,
+          "timestampUtc": "2026-11-07T19:47:21.584896Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Default prefab generator found 0 prefabs in 109ms.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Editing.PrefabCollectionGenerator.Generator:GenerateFull (FishNet.Configuring.PrefabGeneratorConfigurations,bool,bool) (at Assets/FishNet/Runtime/Editor/PrefabCollectionGenerator/Generator.cs:369)\nFishNet.Editing.PrefabCollectionGenerator.Generator:OnPostprocessAllAssets (string[],string[],string[],string[]) (at Assets/FishNet/Runtime/Editor/PrefabCollectionGenerator/Generator.cs:611)\nUnityEditor.SceneManagement.EditorSceneManager:SaveScene (UnityEngine.SceneManagement.Scene)\nPipelineEvaluation.PipelineEval_b3037fa8:Execute ()\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Compilation.EvalCodeCompiler:ExecuteCompiledAssembly (System.Reflection.Assembly) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:190)\nUnity.Pipeline.Compilation.EvalCodeCompiler:CompileAndExecuteOnMainThread (string,System.TimeSpan,System.Diagnostics.Stopwatch) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:54)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:EvaluateSource (string,System.TimeSpan,string) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:97)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:EvalFile (string,double) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:56)\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Commands.DefaultCommandQueue:InvokeDirect (Unity.Pipeline.Commands.CommandContext,Unity.Pipeline.Commands.CommandInfo,object[]) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:487)\nUnity.Pipeline.Commands.DefaultCommandQueue/<>c__DisplayClass19_0:<Invoke>b__1 () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:409)\nUnity.Pipeline.Threading.Dispatcher/WorkItem`1<object>:ExecuteCore () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:342)\nUnity.Pipeline.Threading.Dispatcher/WorkItem:Execute () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:285)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue (int) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:251)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:266)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /Users/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:392)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55177,
+          "timestampUtc": "2026-11-07T19:47:25.082474Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Account API did not become accessible within 30 seconds. This may be due to network issues or editor focus.",
+          "stackTrace": "UnityEngine.Debug:LogWarning (object)\nUnity.AI.Toolkit.Accounts.Services.States.ApiAccessibleState/<WaitForCloudProjectSettings>d__4:MoveNext () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.Toolkit.Accounts/Services/States/ApiAccessibleState.cs:46)\nSystem.Threading.Tasks.TaskCompletionSource`1<bool>:TrySetResult (bool)\nUnity.AI.Toolkit.EditorTask/<>c__DisplayClass22_0:<WaitForCondition>b__0 () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.Toolkit.Async/EditorTask.cs:420)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /Users/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:392)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55178,
+          "timestampUtc": "2026-11-07T19:48:10.845514Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55179,
+          "timestampUtc": "2026-11-07T19:48:11.780286Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55180,
+          "timestampUtc": "2026-11-07T19:48:12.489376Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55181,
+          "timestampUtc": "2026-11-07T19:48:12.58542Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55182,
+          "timestampUtc": "2026-11-07T19:48:12.899805Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55183,
+          "timestampUtc": "2026-11-07T19:48:46.512875Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Local server is starting for Tugboat. Listening on port 7777.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Managing.Logging.LevelLoggingConfiguration:Log (string) (at Assets/FishNet/Runtime/Managing/Logging/LevelLoggingConfiguration.cs:130)\nFishNet.Managing.NetworkManager:InternalLog (string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:53)\nFishNet.Managing.NetworkManagerExtensions:Log (FishNet.Managing.NetworkManager,string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:118)\nFishNet.Managing.Server.ServerManager:Transport_OnServerConnectionState (FishNet.Transporting.ServerConnectionStateArgs) (at Assets/FishNet/Runtime/Managing/Server/ServerManager.cs:549)\nFishNet.Transporting.Tugboat.Tugboat:HandleServerConnectionState (FishNet.Transporting.ServerConnectionStateArgs) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:193)\nFishNet.Transporting.Tugboat.CommonSocket:SetConnectionState (FishNet.Transporting.LocalConnectionState,bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/CommonSocket.cs:39)\nFishNet.Transporting.Tugboat.Server.ServerSocket:IterateIncoming () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/ServerSocket.cs:435)\nFishNet.Transporting.Tugboat.Server.ServerSocket:StartConnection (uint16,int,string,string) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/ServerSocket.cs:253)\nFishNet.Transporting.Tugboat.Tugboat:StartServer () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:514)\nFishNet.Transporting.Tugboat.Tugboat:StartConnection (bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:455)\nFishNet.Managing.Server.ServerManager:StartConnection () (at Assets/FishNet/Runtime/Managing/Server/ServerManager.cs:359)\nTowTrouble.DemoSession:Host (bool,bool) (at Assets/TowTrouble/Runtime/DemoSession.cs:148)\nPipelineEvaluation.PipelineEval_73c91adc:Execute ()\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Compilation.EvalCodeCompiler:ExecuteCompiledAssembly (System.Reflection.Assembly) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:190)\nUnity.Pipeline.Compilation.EvalCodeCompiler:CompileAndExecuteOnMainThread (string,System.TimeSpan,System.Diagnostics.Stopwatch) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:54)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:EvaluateSource (string,System.TimeSpan,string) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:97)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:EvalFile (string,double) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:56)\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Commands.DefaultCommandQueue:InvokeDirect (Unity.Pipeline.Commands.CommandContext,Unity.Pipeline.Commands.CommandInfo,object[]) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:487)\nUnity.Pipeline.Commands.DefaultCommandQueue/<>c__DisplayClass19_0:<Invoke>b__1 () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:409)\nUnity.Pipeline.Threading.Dispatcher/WorkItem`1<object>:ExecuteCore () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:342)\nUnity.Pipeline.Threading.Dispatcher/WorkItem:Execute () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:285)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue (int) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:251)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:266)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /Users/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:392)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55184,
+          "timestampUtc": "2026-11-07T19:48:46.800627Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Local client is starting for Tugboat. Server IP is 127.0.0.1, port is 7777.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Managing.Logging.LevelLoggingConfiguration:Log (string) (at Assets/FishNet/Runtime/Managing/Logging/LevelLoggingConfiguration.cs:130)\nFishNet.Managing.NetworkManager:InternalLog (string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:53)\nFishNet.Managing.NetworkManagerExtensions:Log (FishNet.Managing.NetworkManager,string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:118)\nFishNet.Managing.Client.ClientManager:Transport_OnClientConnectionState (FishNet.Transporting.ClientConnectionStateArgs) (at Assets/FishNet/Runtime/Managing/Client/ClientManager.cs:383)\nFishNet.Transporting.Tugboat.Tugboat:HandleClientConnectionState (FishNet.Transporting.ClientConnectionStateArgs) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:184)\nFishNet.Transporting.Tugboat.CommonSocket:SetConnectionState (FishNet.Transporting.LocalConnectionState,bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/CommonSocket.cs:41)\nFishNet.Transporting.Tugboat.Client.ClientSocket:IterateIncoming () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/ClientSocket.cs:233)\nFishNet.Transporting.Tugboat.Client.ClientSocket:StartConnection (string,uint16) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/ClientSocket.cs:113)\nFishNet.Transporting.Tugboat.Tugboat:StartClient (string) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:536)\nFishNet.Transporting.Tugboat.Tugboat:StartConnection (bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:457)\nFishNet.Managing.Client.ClientManager:StartConnection () (at Assets/FishNet/Runtime/Managing/Client/ClientManager.cs:325)\nTowTrouble.DemoSession:Host (bool,bool) (at Assets/TowTrouble/Runtime/DemoSession.cs:149)\nPipelineEvaluation.PipelineEval_73c91adc:Execute ()\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Compilation.EvalCodeCompiler:ExecuteCompiledAssembly (System.Reflection.Assembly) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:190)\nUnity.Pipeline.Compilation.EvalCodeCompiler:CompileAndExecuteOnMainThread (string,System.TimeSpan,System.Diagnostics.Stopwatch) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:54)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:EvaluateSource (string,System.TimeSpan,string) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:97)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:EvalFile (string,double) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:56)\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Commands.DefaultCommandQueue:InvokeDirect (Unity.Pipeline.Commands.CommandContext,Unity.Pipeline.Commands.CommandInfo,object[]) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:487)\nUnity.Pipeline.Commands.DefaultCommandQueue/<>c__DisplayClass19_0:<Invoke>b__1 () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:409)\nUnity.Pipeline.Threading.Dispatcher/WorkItem`1<object>:ExecuteCore () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:342)\nUnity.Pipeline.Threading.Dispatcher/WorkItem:Execute () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:285)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue (int) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:251)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:266)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /Users/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:392)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55185,
+          "timestampUtc": "2026-11-07T19:48:46.856541Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Account API did not become accessible within 30 seconds. This may be due to network issues or editor focus.",
+          "stackTrace": "UnityEngine.Debug:LogWarning (object)\nUnity.AI.Toolkit.Accounts.Services.States.ApiAccessibleState/<WaitForCloudProjectSettings>d__4:MoveNext () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.Toolkit.Accounts/Services/States/ApiAccessibleState.cs:46)\nSystem.Threading.Tasks.TaskCompletionSource`1<bool>:TrySetResult (bool)\nUnity.AI.Toolkit.EditorTask/<>c__DisplayClass22_0:<WaitForCondition>b__0 () (at ./Library/PackageCache/com.unity.ai.assistant@890548b66362/Modules/Unity.AI.Toolkit.Async/EditorTask.cs:420)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /Users/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:392)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55186,
+          "timestampUtc": "2026-11-07T19:48:47.170545Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Local server is started for Tugboat.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Managing.Logging.LevelLoggingConfiguration:Log (string) (at Assets/FishNet/Runtime/Managing/Logging/LevelLoggingConfiguration.cs:130)\nFishNet.Managing.NetworkManager:InternalLog (string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:53)\nFishNet.Managing.NetworkManagerExtensions:Log (FishNet.Managing.NetworkManager,string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:118)\nFishNet.Managing.Server.ServerManager:Transport_OnServerConnectionState (FishNet.Transporting.ServerConnectionStateArgs) (at Assets/FishNet/Runtime/Managing/Server/ServerManager.cs:549)\nFishNet.Transporting.Tugboat.Tugboat:HandleServerConnectionState (FishNet.Transporting.ServerConnectionStateArgs) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:193)\nFishNet.Transporting.Tugboat.CommonSocket:SetConnectionState (FishNet.Transporting.LocalConnectionState,bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/CommonSocket.cs:39)\nFishNet.Transporting.Tugboat.Server.ServerSocket:IterateIncoming () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/ServerSocket.cs:435)\nFishNet.Transporting.Tugboat.Tugboat:IterateIncoming (bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:223)\nFishNet.Managing.Transporting.TransportManager:IterateIncoming (bool) (at Assets/FishNet/Runtime/Managing/Transporting/TransportManager.cs:636)\nFishNet.Managing.Timing.TimeManager:TryIterateData (bool) (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:1120)\nFishNet.Managing.Timing.TimeManager:IncreaseTick () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:739)\nFishNet.Managing.Timing.TimeManager:<TickUpdate>g__MethodLogic|114_0 () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:394)\nFishNet.Managing.Timing.TimeManager:TickUpdate () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:382)\nFishNet.Transporting.NetworkReaderLoop:Update () (at Assets/FishNet/Runtime/Transporting/NetworkReaderLoop.cs:29)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55187,
+          "timestampUtc": "2026-11-07T19:48:47.632286Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Remote connection started for Id 0.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Managing.Logging.LevelLoggingConfiguration:Log (string) (at Assets/FishNet/Runtime/Managing/Logging/LevelLoggingConfiguration.cs:130)\nFishNet.Managing.NetworkManager:InternalLog (string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:53)\nFishNet.Managing.NetworkManagerExtensions:Log (FishNet.Managing.NetworkManager,string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:118)\nFishNet.Managing.Server.ServerManager:Transport_OnRemoteConnectionState (FishNet.Transporting.RemoteConnectionStateArgs) (at Assets/FishNet/Runtime/Managing/Server/ServerManager.cs:620)\nFishNet.Transporting.Tugboat.Tugboat:HandleRemoteConnectionState (FishNet.Transporting.RemoteConnectionStateArgs) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:202)\nFishNet.Transporting.Tugboat.Server.ServerSocket:IterateIncoming () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/ServerSocket.cs:454)\nFishNet.Transporting.Tugboat.Tugboat:IterateIncoming (bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:223)\nFishNet.Managing.Transporting.TransportManager:IterateIncoming (bool) (at Assets/FishNet/Runtime/Managing/Transporting/TransportManager.cs:636)\nFishNet.Managing.Timing.TimeManager:TryIterateData (bool) (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:1120)\nFishNet.Managing.Timing.TimeManager:IncreaseTick () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:739)\nFishNet.Managing.Timing.TimeManager:<TickUpdate>g__MethodLogic|114_0 () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:394)\nFishNet.Managing.Timing.TimeManager:TickUpdate () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:382)\nFishNet.Transporting.NetworkReaderLoop:Update () (at Assets/FishNet/Runtime/Transporting/NetworkReaderLoop.cs:29)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55188,
+          "timestampUtc": "2026-11-07T19:48:47.635378Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Local client is started for Tugboat.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Managing.Logging.LevelLoggingConfiguration:Log (string) (at Assets/FishNet/Runtime/Managing/Logging/LevelLoggingConfiguration.cs:130)\nFishNet.Managing.NetworkManager:InternalLog (string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:53)\nFishNet.Managing.NetworkManagerExtensions:Log (FishNet.Managing.NetworkManager,string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:118)\nFishNet.Managing.Client.ClientManager:Transport_OnClientConnectionState (FishNet.Transporting.ClientConnectionStateArgs) (at Assets/FishNet/Runtime/Managing/Client/ClientManager.cs:383)\nFishNet.Transporting.Tugboat.Tugboat:HandleClientConnectionState (FishNet.Transporting.ClientConnectionStateArgs) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:184)\nFishNet.Transporting.Tugboat.CommonSocket:SetConnectionState (FishNet.Transporting.LocalConnectionState,bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/CommonSocket.cs:41)\nFishNet.Transporting.Tugboat.Client.ClientSocket:IterateIncoming () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/ClientSocket.cs:233)\nFishNet.Transporting.Tugboat.Tugboat:IterateIncoming (bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:225)\nFishNet.Managing.Transporting.TransportManager:IterateIncoming (bool) (at Assets/FishNet/Runtime/Managing/Transporting/TransportManager.cs:636)\nFishNet.Managing.Timing.TimeManager:TryIterateData (bool) (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:1121)\nFishNet.Managing.Timing.TimeManager:IncreaseTick () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:739)\nFishNet.Managing.Timing.TimeManager:<TickUpdate>g__MethodLogic|114_0 () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:394)\nFishNet.Managing.Timing.TimeManager:TickUpdate () (at Assets/FishNet/Runtime/Managing/Timing/TimeManager.cs:382)\nFishNet.Transporting.NetworkReaderLoop:Update () (at Assets/FishNet/Runtime/Transporting/NetworkReaderLoop.cs:29)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55189,
+          "timestampUtc": "2026-11-07T19:52:13.643821Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Local client is stopping for Tugboat.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Managing.Logging.LevelLoggingConfiguration:Log (string) (at Assets/FishNet/Runtime/Managing/Logging/LevelLoggingConfiguration.cs:130)\nFishNet.Managing.NetworkManager:InternalLog (string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:53)\nFishNet.Managing.NetworkManagerExtensions:Log (FishNet.Managing.NetworkManager,string) (at Assets/FishNet/Runtime/Managing/NetworkManager.Logging.cs:118)\nFishNet.Managing.Client.ClientManager:Transport_OnClientConnectionState (FishNet.Transporting.ClientConnectionStateArgs) (at Assets/FishNet/Runtime/Managing/Client/ClientManager.cs:383)\nFishNet.Transporting.Tugboat.Tugboat:HandleClientConnectionState (FishNet.Transporting.ClientConnectionStateArgs) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:184)\nFishNet.Transporting.Tugboat.CommonSocket:SetConnectionState (FishNet.Transporting.LocalConnectionState,bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/CommonSocket.cs:41)\nFishNet.Transporting.Tugboat.Client.ClientSocket:StopConnection (System.Nullable`1<LiteNetLib.DisconnectInfo>) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Core/ClientSocket.cs:138)\nFishNet.Transporting.Tugboat.Tugboat:StopClient () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:556)\nFishNet.Transporting.Tugboat.Tugboat:StopConnection (bool) (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:469)\nFishNet.Transporting.Tugboat.Tugboat:Shutdown () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:491)\nFishNet.Transporting.Tugboat.Tugboat:OnDestroy () (at Assets/FishNet/Runtime/Transporting/Transports/Tugboat/Tugboat.cs:127)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55190,
+          "timestampUtc": "2026-11-07T19:54:23.533763Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "Failed to handle /api/commands request: Unable to write data to the transport connection: Connection reset by peer.",
+          "stackTrace": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1289)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n",
+          "seeded": false
+        },
+        {
+          "seq": 55191,
+          "timestampUtc": "2026-11-07T19:54:23.66228Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "Pipeline: unhandled error serving GET /api/commands: System.InvalidOperationException: Cannot be changed after headers are sent.\n  at System.Net.HttpListenerResponse.set_StatusCode (System.Int32 value) [0x00021] in <e312637755254ec3aaf4851c4dc24af6>:0 \n  at Unity.Pipeline.BasePipelineServer.HandleCommandsRequest (System.Net.HttpListenerRequest request, System.Net.HttpListenerResponse response) [0x00bb5] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1292 \n  at Unity.Pipeline.BasePipelineServer.ProcessRequest (System.Net.HttpListenerContext context) [0x0060d] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:794 ",
+          "stackTrace": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<ProcessRequest>d__95:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:831)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1301)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n",
+          "seeded": false
+        },
+        {
+          "seq": 55192,
+          "timestampUtc": "2026-11-07T19:54:23.749721Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "Failed to handle /api/commands request: Unable to write data to the transport connection: Connection reset by peer.",
+          "stackTrace": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1289)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n",
+          "seeded": false
+        },
+        {
+          "seq": 55193,
+          "timestampUtc": "2026-11-07T19:54:23.752546Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "Pipeline: unhandled error serving GET /api/commands: System.InvalidOperationException: Cannot be changed after headers are sent.\n  at System.Net.HttpListenerResponse.set_StatusCode (System.Int32 value) [0x00021] in <e312637755254ec3aaf4851c4dc24af6>:0 \n  at Unity.Pipeline.BasePipelineServer.HandleCommandsRequest (System.Net.HttpListenerRequest request, System.Net.HttpListenerResponse response) [0x00bb5] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1292 \n  at Unity.Pipeline.BasePipelineServer.ProcessRequest (System.Net.HttpListenerContext context) [0x0060d] in ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:794 ",
+          "stackTrace": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<ProcessRequest>d__95:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:831)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<HandleCommandsRequest>d__105:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1301)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<SendJsonPayload>d__107:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/BasePipelineServer.cs:1332)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n",
+          "seeded": false
+        },
+        {
+          "seq": 55194,
+          "timestampUtc": "2026-11-07T19:54:35.633918Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Default prefab generator found 0 prefabs in 28435ms.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Editing.PrefabCollectionGenerator.Generator:GenerateFull (FishNet.Configuring.PrefabGeneratorConfigurations,bool,bool) (at Assets/FishNet/Runtime/Editor/PrefabCollectionGenerator/Generator.cs:369)\nFishNet.Editing.PrefabCollectionGenerator.Generator:OnPostprocessAllAssets (string[],string[],string[],string[]) (at Assets/FishNet/Runtime/Editor/PrefabCollectionGenerator/Generator.cs:611)\nUnityEditor.SceneManagement.EditorSceneManager:SaveScene (UnityEngine.SceneManagement.Scene)\nPipelineEvaluation.PipelineEval_858cc155:Execute ()\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Compilation.EvalCodeCompiler:ExecuteCompiledAssembly (System.Reflection.Assembly) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:190)\nUnity.Pipeline.Compilation.EvalCodeCompiler:CompileAndExecuteOnMainThread (string,System.TimeSpan,System.Diagnostics.Stopwatch) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:54)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:EvaluateSource (string,System.TimeSpan,string) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:97)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:Eval (string,double) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:26)\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Commands.DefaultCommandQueue:InvokeDirect (Unity.Pipeline.Commands.CommandContext,Unity.Pipeline.Commands.CommandInfo,object[]) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:487)\nUnity.Pipeline.Commands.DefaultCommandQueue/<>c__DisplayClass19_0:<Invoke>b__1 () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:409)\nUnity.Pipeline.Threading.Dispatcher/WorkItem`1<object>:ExecuteCore () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:342)\nUnity.Pipeline.Threading.Dispatcher/WorkItem:Execute () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:285)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue (int) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:251)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:266)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /Users/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:392)\n",
+          "seeded": false
+        },
+        {
+          "seq": 55195,
+          "timestampUtc": "2026-11-07T19:55:02.953172Z",
+          "level": "log",
+          "logType": "Log",
+          "message": "Default prefab generator found 0 prefabs in 1334ms.",
+          "stackTrace": "UnityEngine.Debug:Log (object)\nFishNet.Editing.PrefabCollectionGenerator.Generator:GenerateFull (FishNet.Configuring.PrefabGeneratorConfigurations,bool,bool) (at Assets/FishNet/Runtime/Editor/PrefabCollectionGenerator/Generator.cs:369)\nFishNet.Editing.PrefabCollectionGenerator.Generator:OnPostprocessAllAssets (string[],string[],string[],string[]) (at Assets/FishNet/Runtime/Editor/PrefabCollectionGenerator/Generator.cs:611)\nUnityEditor.SceneManagement.EditorSceneManager:SaveScene (UnityEngine.SceneManagement.Scene)\nPipelineEvaluation.PipelineEval_858cc155:Execute ()\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Compilation.EvalCodeCompiler:ExecuteCompiledAssembly (System.Reflection.Assembly) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:190)\nUnity.Pipeline.Compilation.EvalCodeCompiler:CompileAndExecuteOnMainThread (string,System.TimeSpan,System.Diagnostics.Stopwatch) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Compilation/EvalCodeCompiler.cs:54)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:EvaluateSource (string,System.TimeSpan,string) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:97)\nUnity.Pipeline.Runtime.Commands.CodeEvalCommand:Eval (string,double) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Commands/CodeEvalCommand.cs:26)\nSystem.Reflection.MethodBase:Invoke (object,object[])\nUnity.Pipeline.Commands.DefaultCommandQueue:InvokeDirect (Unity.Pipeline.Commands.CommandContext,Unity.Pipeline.Commands.CommandInfo,object[]) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:487)\nUnity.Pipeline.Commands.DefaultCommandQueue/<>c__DisplayClass19_0:<Invoke>b__1 () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/CommandExecution/CommandQueue/DefaultCommandQueue.cs:409)\nUnity.Pipeline.Threading.Dispatcher/WorkItem`1<object>:ExecuteCore () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:342)\nUnity.Pipeline.Threading.Dispatcher/WorkItem:Execute () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:285)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue (int) (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:251)\nUnity.Pipeline.Threading.Dispatcher:ProcessWorkQueue () (at ./Library/PackageCache/com.unity.pipeline@363b8bb9e91d/Runtime/Common/Dispatcher.cs:266)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions () (at /Users/bokken/build/output/unity/unity/Editor/Mono/EditorApplication.cs:392)\n",
+          "seeded": false
+        }
+      ],
+      "cursor": 55195,
+      "session": "ce6ffee623f6499aa5bfbb4f9ab57171",
+      "returned": 20,
+      "dropped": false,
+      "reset": false,
+      "counts": {
+        "error": 32,
+        "warn": 31,
+        "log": 129
+      },
+      "groundTruth": {
+        "sampledUtc": "2026-11-07T19:56:27.863607Z",
+        "ageMs": 585,
+        "compilationFailed": false,
+        "compiling": false,
+        "consoleErrors": 2,
+        "consoleWarnings": 0,
+        "consoleLogs": 2,
+        "seeded": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

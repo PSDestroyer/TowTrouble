@@ -1,0 +1,188 @@
+--- BetterFog.cs (vendor URP 6)
++++ BetterFog.cs (Tow Trouble URP17 integration)
+@@ -4,7 +4,9 @@
+ using UnityEngine.Rendering;
+ using UnityEngine.Rendering.Universal;
+ using System.Collections.Generic;
++#if UNITY_EDITOR
+ using UnityEditor;
++#endif
+ 
+ using INab.BetterFog.Core;
+ 
+@@ -59,6 +61,7 @@
+             temporaryBlitPass = new TemporaryBlitPass();
+             fogBlendBlit = new FogBlendBlit();
+             fogFactorBlit = new FogFactorBlit();
++            fogFactorBlit.ConfigureInput(ScriptableRenderPassInput.Depth);
+ 
+             smssPass = new SMSSPass();
+             customDepthPass = new CustomDepthPass();
+@@ -90,9 +93,9 @@
+             if (m_CustomDepthPassMaterial == null) m_CustomDepthPassMaterial = CoreUtils.CreateEngineMaterial(Shader.Find("Shader Graphs/DepthBlit"));
+ 
+             // Get custom renderers
+-            if (renderingData.cameraData.cameraType == CameraType.Game)
+-            {
+-                var sceneCamera = FindFirstObjectByType<Camera>();
++            if (renderingData.cameraData.cameraType == CameraType.Game && (m_Settings._UseCustomDepthTexture || m_Settings._UseFogOffsetTexture))
++            {
++                var sceneCamera = renderingData.cameraData.camera;
+                 var set = sceneCamera.GetComponent<BetterFogRenderers>();
+ 
+                 if (set != null)
+@@ -112,7 +115,7 @@
+             fogBlendBlit.renderPassEvent = m_Settings.Event;
+             smssPass.renderPassEvent = m_Settings.Event;
+ 
+-            temporaryBlitPass.Setup(m_UseSMSS);
++            temporaryBlitPass.Setup(m_UseSMSS, m_Settings._UseCustomDepthTexture, m_Settings._UseFogOffsetTexture);
+             if(m_Settings._UseCustomDepthTexture) customDepthPass.Setup(m_CustomDepthPassMaterial, m_DepthRenderers);
+             if(m_Settings._UseFogOffsetTexture) fogOffsetPass.Setup(m_FogOffsetRenderers);
+             fogFactorBlit.Setup(m_FogFactorMaterial);
+@@ -429,55 +432,36 @@
+ 
+         private static MaterialPropertyBlock s_SharedPropertyBlock = new MaterialPropertyBlock();
+ 
+-        private RTHandle m_FogFactor;
+         TextureHandle m_FogFactorHandle;
+ 
+-        private RTHandle m_Temporary;
+         TextureHandle m_TemporaryHandle;
+ 
+         // SMSS
+ 
+-        private RTHandle m_TemporaryAfterBlend;
+         TextureHandle m_TemporaryAfterBlendHandle;
+ 
+         // Custom Depth
+-        private RTHandle m_CustomDepth;
+         TextureHandle m_CustomDepthHandle;
+ 
+         // Fog Offset
+-        private RTHandle m_FogOffset;
+         TextureHandle m_FogOffsetHandle;
+ 
+ 
+-        public void Init(RenderGraph renderGraph, RenderTextureDescriptor targetDescriptor, bool useSMSS)
+-        {
+-            RenderingUtils.ReAllocateHandleIfNeeded(ref m_Temporary, targetDescriptor, FilterMode.Point, TextureWrapMode.Clamp, name: "_TemporaryTexture");
+-            m_TemporaryHandle = renderGraph.ImportTexture(m_Temporary);
+-
+-            if(useSMSS)
+-            {
+-                RenderingUtils.ReAllocateHandleIfNeeded(ref m_TemporaryAfterBlend, targetDescriptor, FilterMode.Point, TextureWrapMode.Clamp, name: "_TemporaryTextureAfterBlend");
+-                m_TemporaryAfterBlendHandle = renderGraph.ImportTexture(m_TemporaryAfterBlend);
+-            }
+-
+-            // if sue fog offset
+-            if (true)
+-            {
+-                RenderingUtils.ReAllocateHandleIfNeeded(ref m_FogOffset, targetDescriptor, FilterMode.Point, TextureWrapMode.Clamp, name: "_FogOffset");
+-                m_FogOffsetHandle = renderGraph.ImportTexture(m_FogOffset);
+-            }
+-
+-            // if sue custom depth
+-            if (true)
+-            {
+-                targetDescriptor.colorFormat = RenderTextureFormat.RFloat;
+-                RenderingUtils.ReAllocateHandleIfNeeded(ref m_CustomDepth, targetDescriptor, FilterMode.Point, TextureWrapMode.Clamp, name: "_CustomDepth");
+-                m_CustomDepthHandle = renderGraph.ImportTexture(m_CustomDepth);
+-            }
+-
+-            targetDescriptor.colorFormat = RenderTextureFormat.RFloat;
+-            RenderingUtils.ReAllocateHandleIfNeeded(ref m_FogFactor, targetDescriptor, FilterMode.Point, TextureWrapMode.Clamp, name: "_FogFactor");
+-            m_FogFactorHandle = renderGraph.ImportTexture(m_FogFactor);
++        // Tow Trouble integration: graph-owned textures avoid unused persistent targets
++        // and remain valid only for the current camera/frame (URP17 Render Graph).
++        public void Init(RenderGraph renderGraph, TextureDesc descriptor, bool useSMSS, bool useCustomDepth, bool useOffset)
++        {
++            descriptor.depthBufferBits = DepthBits.None;
++            descriptor.msaaSamples = MSAASamples.None;
++            descriptor.clearBuffer = false;
++            descriptor.name = "Better Fog scene copy";
++            m_TemporaryHandle = renderGraph.CreateTexture(descriptor);
++            if (useSMSS) { descriptor.name = "Better Fog scattering"; m_TemporaryAfterBlendHandle = renderGraph.CreateTexture(descriptor); }
++            if (useOffset) { descriptor.name = "Better Fog offset"; m_FogOffsetHandle = renderGraph.CreateTexture(descriptor); }
++            descriptor.colorFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.R32_SFloat;
++            if (useCustomDepth) { descriptor.name = "Better Fog custom depth"; m_CustomDepthHandle = renderGraph.CreateTexture(descriptor); }
++            descriptor.name = "Better Fog factor";
++            m_FogFactorHandle = renderGraph.CreateTexture(descriptor);
+         }
+ 
+         public override void Reset()
+@@ -485,6 +469,8 @@
+             m_FogFactorHandle = TextureHandle.nullHandle;
+             m_TemporaryHandle = TextureHandle.nullHandle;
+             m_TemporaryAfterBlendHandle = TextureHandle.nullHandle;
++            m_CustomDepthHandle = TextureHandle.nullHandle;
++            m_FogOffsetHandle = TextureHandle.nullHandle;
+         }
+ 
+         ///////////////////////////////////////
+@@ -634,17 +620,13 @@
+         // Temporary Blit
+         ///////////////////////////////////////
+ 
+-        public void RecordTemporaryBlit(RenderGraph renderGraph, ContextContainer frameData,bool useSMSS)
++        public void RecordTemporaryBlit(RenderGraph renderGraph, ContextContainer frameData,bool useSMSS, bool useCustomDepth, bool useOffset)
+         {
+             var cameraData = frameData.Get<UniversalCameraData>();
+-            var descriptor = cameraData.cameraTargetDescriptor;
++            var descriptor = frameData.Get<UniversalResourceData>().activeColorTexture.GetDescriptor(renderGraph);
+ 
+             if (!m_TemporaryHandle.IsValid())
+-            {
+-                descriptor.msaaSamples = 1;
+-                descriptor.depthBufferBits = 0;
+-                Init(renderGraph, descriptor, useSMSS);
+-            }
++                Init(renderGraph, descriptor, useSMSS, useCustomDepth, useOffset);
+ 
+             using (var builder = renderGraph.AddRasterRenderPass<PassData>("Better Fog Temporary Blit", out var passData))
+             {
+@@ -683,6 +665,9 @@
+                 passData.m_FogFactorMaterial = material;
+                 passData.customDepthHandle = m_CustomDepthHandle;
+                 passData.fogOffsetHandle = m_FogOffsetHandle;
++                if (resourceData.cameraDepthTexture.IsValid()) builder.UseTexture(resourceData.cameraDepthTexture);
++                if (m_CustomDepthHandle.IsValid()) builder.UseTexture(m_CustomDepthHandle);
++                if (m_FogOffsetHandle.IsValid()) builder.UseTexture(m_FogOffsetHandle);
+                 
+                 //passData.source = resourceData.activeColorTexture;
+                 passData.destination = m_FogFactorHandle;
+@@ -885,11 +870,6 @@
+ 
+         public void Dispose()
+         {
+-            m_FogFactor?.Release();
+-            m_Temporary?.Release();
+-            m_TemporaryAfterBlend?.Release();
+-            m_CustomDepth?.Release();
+-            m_FogOffset?.Release();
+         }
+ 
+     }
+@@ -938,17 +918,18 @@
+ 
+     class TemporaryBlitPass : ScriptableRenderPass
+     {
+-        private bool m_UseSMSS;
+-
+-        public void Setup(bool useSMSS)
++        private bool m_UseSMSS, m_UseCustomDepth, m_UseOffset;
++
++        public void Setup(bool useSMSS, bool useCustomDepth, bool useOffset)
+         {
+             m_UseSMSS = useSMSS;
++            m_UseCustomDepth = useCustomDepth; m_UseOffset = useOffset;
+         }
+ 
+         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
+         {
+             var blitTextureData = frameData.GetOrCreate<BetterFogPassData>();
+-            blitTextureData.RecordTemporaryBlit(renderGraph, frameData, m_UseSMSS);
++            blitTextureData.RecordTemporaryBlit(renderGraph, frameData, m_UseSMSS, m_UseCustomDepth, m_UseOffset);
+         }
+     }
+ 

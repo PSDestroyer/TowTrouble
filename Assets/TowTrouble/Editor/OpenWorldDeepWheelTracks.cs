@@ -22,8 +22,9 @@ namespace TowTrouble.Editor
                 if(mat.shader.name=="TowTrouble/Wheel Impressions")
                 {
                     Undo.RecordObject(mat,"Recessed wheel track shading");bool snow=mat.name.EndsWith(" 2")||mat.name=="Roadside skid 4";bool sand=mat.name.EndsWith(" 1")||mat.name=="Roadside skid 5";
-                    mat.renderQueue=3005;bool hard=mat.GetFloat("_HardSurface")>.5f;mat.SetFloat("_RutDepth",hard?0:snow?.115f:sand?.085f:.06f);
-                    if(!hard){var c=mat.GetColor("_BaseColor");c.a=mat.name.StartsWith("Dynamic")?.88f:c.a;mat.SetColor("_BaseColor",c);}
+                    bool grass=mat.name=="Dynamic wheel tracks 3";
+                    mat.renderQueue=3005;bool hard=mat.GetFloat("_HardSurface")>.5f;mat.SetFloat("_RutDepth",hard?0:grass?.004f:snow?.115f:sand?.085f:.06f);
+                    if(!hard){var c=mat.GetColor("_BaseColor");c.a=grass?.46f:mat.name.StartsWith("Dynamic")?.88f:c.a;mat.SetColor("_BaseColor",c);}
                     EditorUtility.SetDirty(mat);materials++;
                 }
                 else if(mat.HasProperty("_Dynamic_Normal_Amount")&&mat.HasProperty("_Stamp_Darken"))
