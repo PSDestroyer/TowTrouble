@@ -22,9 +22,10 @@ namespace TowTrouble
             Panel(pageRoot,48,35,460,746);Logo(pageRoot,76,58,63);
             Text(pageRoot,"BAD ROADS. GOOD COMPANY.",82,235,392,30,15,Muted,true);Wallet(pageRoot,P.credits);
             Button(pageRoot,"PLAY SOLO",80,300,396,()=>StartMenuSession(true),true,62);
-            Button(pageRoot,"PLAY CO-OP",80,380,396,()=>Show("Coop"));
-            Button(pageRoot,"HOW TO PLAY",80,450,396,()=>Show("Help"));
-            Button(pageRoot,"SETTINGS",80,520,396,()=>{returnPage="Main";firstSetup=false;Show("Settings");});
+            bool multiplayer=RecoveryPlatform.MultiplayerAvailable;
+            if(multiplayer)Button(pageRoot,"PLAY CO-OP",80,380,396,()=>Show("Coop"));
+            Button(pageRoot,"HOW TO PLAY",80,multiplayer?450:380,396,()=>Show("Help"));
+            Button(pageRoot,"SETTINGS",80,multiplayer?520:450,396,()=>{returnPage="Main";firstSetup=false;Show("Settings");});
             Button(pageRoot,"CREDITS",80,634,190,()=>Show("Credits"),false,42);
             Button(pageRoot,"QUIT",286,634,190,()=>Application.Quit(),false,42);
             Text(pageRoot,"TOW COUNTY · RECOVERY SERVICE",82,728,394,28,15,Muted);
@@ -38,6 +39,7 @@ namespace TowTrouble
         }
         private void StartMenuSession(bool solo)
         {
+            if(!solo&&!RecoveryPlatform.MultiplayerAvailable){Show("Main");return;}
             busySolo=solo;busyJoin=busyTraining=false;session.Host(solo,true);Show("Busy");
         }
         private void StartMenuTraining()
@@ -52,6 +54,7 @@ namespace TowTrouble
         }
         private void BuildCoop()
         {
+            if(!RecoveryPlatform.MultiplayerAvailable)return;
             Header("PLAY CO-OP","Two drivers. One recovery. Connect directly using the host's address.");
             Input(pageRoot,"YOUR NAME",P.name,76,218,1448,v=>{P.name=CleanName(v);P.Save();});
             var host=Panel(pageRoot,76,346,710,390);var join=Panel(pageRoot,810,346,714,390);
@@ -81,6 +84,7 @@ namespace TowTrouble
         private static string CleanName(string value){value=(value??"").Replace("<","").Replace(">","").Trim();return string.IsNullOrEmpty(value)?"Driver":value.Substring(0,Mathf.Min(20,value.Length));}
         private void BuildLobby()
         {
+            if(!RecoveryPlatform.MultiplayerAvailable)return;
             Header("YOUR CREW","Get ready, then head out into Tow County together.");
             var side=Panel(pageRoot,76,224,430,504);
             Text(side,"WORKSHOP YARD",28,25,374,45,28,Paper,true);

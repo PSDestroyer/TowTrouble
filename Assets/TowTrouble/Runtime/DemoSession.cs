@@ -125,32 +125,44 @@ namespace TowTrouble
         private void ClientState(ClientConnectionStateArgs args)
         {
             if (args.ConnectionState == LocalConnectionState.Started)
-            { Connecting = false; wasConnected = true; status = "Connected. Get your crew ready."; }
+            { Connecting = false; wasConnected = true; status = !RecoveryPlatform.MultiplayerAvailable?"Your solo session is ready.":"Connected. Get your crew ready."; }
             else if (args.ConnectionState == LocalConnectionState.Stopped && !leaving)
             {
                 Connecting = false; MenuConnectionFailed();
-                status = wasConnected ? "Connection closed. Return to the menu to reconnect." : "Could not connect. Check the host address and UDP port 7777.";
+                status = !RecoveryPlatform.MultiplayerAvailable?"Your solo session could not start. Please try again.":wasConnected ? "Connection closed. Return to the menu to reconnect." : "Could not connect. Check the host address and UDP port 7777.";
                 if (IsHost) network.ServerManager.StopConnection(true);
             }
         }
 
         public void Host(bool solo,bool exploration=false)
         {
+            if(!solo&&!RecoveryPlatform.MultiplayerAvailable){status="Only solo play is available on this platform.";return;}
             if(!Profile.starterChosen){View="Starter";return;}
             if (Connecting || Connected || leaving) return;
             if(exploration&&world.Map==null){TravelTo("OpenWorldRecovery",solo?1:2,null);return;}
             Solo=solo;explorationRequested=exploration;garageIdentitySent=false;identitySent=false;recorded=false;
             quickStart = solo; readySent = false; Connecting = true; connectDeadline = Time.unscaledTime + 12f;
             status = "Starting your session…";
-            network.TransportManager.Transport.SetMaximumClients(2);
-            network.TransportManager.Transport.SetPort(7777);
-            network.TransportManager.Transport.SetClientAddress("127.0.0.1");
-            if (!network.ServerManager.StartConnection()) { Connecting = false; status = "Port 7777 is unavailable."; return; }
+            ConfigureHostTransport(network.TransportManager.Transport);
+            if (!network.ServerManager.StartConnection()) { Connecting = false; status = RecoveryPlatform.MultiplayerAvailable?"Port 7777 is unavailable.":"Could not start solo play. Please try again."; return; }
             network.ClientManager.StartConnection();
+        }
+
+        private static void ConfigureHostTransport(Transport transport)
+        {
+            transport.SetMaximumClients(RecoveryPlatform.MultiplayerAvailable?2:1);
+            if(!RecoveryPlatform.MultiplayerAvailable)
+            {
+                transport.SetServerBindAddress("127.0.0.1",IPAddressType.IPv4);
+                transport.SetServerBindAddress("::1",IPAddressType.IPv6);
+            }
+            transport.SetPort(7777);
+            transport.SetClientAddress("127.0.0.1");
         }
 
         public void Join(string address)
         {
+            if(!RecoveryPlatform.MultiplayerAvailable){status="Only solo play is available on this platform.";return;}
             if(!Profile.starterChosen){View="Starter";return;}
             if (Connecting || Connected || leaving) return;
             if(world.Map==null){TravelTo("OpenWorldRecovery",3,address);return;}
@@ -229,7 +241,7 @@ namespace TowTrouble
             {
                 Connecting = false; network.ClientManager.StopConnection();
                 if (IsHost) network.ServerManager.StopConnection(true);
-                MenuConnectionFailed();status = "Connection timed out. Check the host address and try again.";
+                MenuConnectionFailed();status = RecoveryPlatform.MultiplayerAvailable?"Connection timed out. Check the host address and try again.":"Starting solo play timed out. Please try again.";
             }
             if (!Connected || LocalSlot < 0) return;
             if(!identitySent){identitySent=true;if(IsHost)world.ConfigureSession(world.Map!=null?0:SelectedContract,!Solo,explorationRequested||world.Map!=null);world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);}
@@ -262,7 +274,7 @@ namespace TowTrouble
                 if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.F)].wasPressedThisFrame) || (pad != null && RecoveryInputPrompts.Confirm(pad).wasPressedThisFrame)) world.ToggleCable();
                 if ((keyboard != null && keyboard[Profile.ReadKey(Profile.resetKey,Key.R)].wasPressedThisFrame) || (pad != null && pad.selectButton.wasPressedThisFrame)) world.Unstuck();
             }
-            if(!menuOpen){if(keyboard!=null){if(keyboard.digit1Key.wasPressedThisFrame)world.SendSignal(1);if(keyboard.digit2Key.wasPressedThisFrame)world.SendSignal(2);if(keyboard.digit3Key.wasPressedThisFrame)world.SendSignal(3);}if(pad!=null&&pad.dpad.up.wasPressedThisFrame)world.SendSignal(1);if(pad!=null&&pad.dpad.right.wasPressedThisFrame)world.SendSignal(2);if(pad!=null&&pad.dpad.down.wasPressedThisFrame)world.SendSignal(3);}
+            if(RecoveryPlatform.MultiplayerAvailable&&!menuOpen){if(keyboard!=null){if(keyboard.digit1Key.wasPressedThisFrame)world.SendSignal(1);if(keyboard.digit2Key.wasPressedThisFrame)world.SendSignal(2);if(keyboard.digit3Key.wasPressedThisFrame)world.SendSignal(3);}if(pad!=null&&pad.dpad.up.wasPressedThisFrame)world.SendSignal(1);if(pad!=null&&pad.dpad.right.wasPressedThisFrame)world.SendSignal(2);if(pad!=null&&pad.dpad.down.wasPressedThisFrame)world.SendSignal(3);}
             if (Time.unscaledTime < nextInput) return;
             nextInput = Time.unscaledTime + .05f;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

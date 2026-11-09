@@ -116,7 +116,7 @@ namespace TowTrouble
         public bool CanStart => Occupied > 0 && ready0.Value && (!cooperative.Value || Occupied==2) && (driver1Id.Value < 0 || ready1.Value);
         public RecoveryContract Contract=>trainingContract??(map!=null&&FreeRoam?map.Contracts[Mathf.Clamp(contractId.Value,0,map.Contracts.Length-1)]:RecoveryContract.Get(contractId.Value));
         public int ContractIndex=>contractId.Value;
-        public bool Cooperative=>cooperative.Value;
+        public bool Cooperative=>RecoveryPlatform.MultiplayerAvailable&&cooperative.Value;
         public string DriverName(int slot)=>slot==0?name0.Value:name1.Value;
         public int VehicleIndex(int slot)=>slot==0?vehicle0.Value:vehicle1.Value;
         public int Resets(int slot)=>resets[Mathf.Clamp(slot,0,1)];
@@ -155,6 +155,7 @@ namespace TowTrouble
         private void ClientLoaded(NetworkConnection connection, bool asServer)
         {
             if (!asServer || Slot(connection.ClientId) >= 0) return;
+            if(!RecoveryPlatform.MultiplayerAvailable&&!connection.IsLocalClient){connection.Disconnect(true);return;}
             // Reserve driver 01 for the host even when a remote peer finishes loading first.
             if (connection.IsLocalClient)
             {
@@ -183,7 +184,7 @@ namespace TowTrouble
         public void ConfigureSession(int contract,bool coop,bool roam=false,NetworkConnection sender=null)
         {
             if(sender==null||Slot(sender.ClientId)!=0||Phase!=RecoveryPhase.Lobby)return;
-            contractId.Value=Mathf.Clamp(contract,0,(roam?AvailableContracts:RecoveryContract.All).Length-1);cooperative.Value=coop;freeRoam.Value=roam;ResetRecovery();
+            contractId.Value=Mathf.Clamp(contract,0,(roam?AvailableContracts:RecoveryContract.All).Length-1);cooperative.Value=coop&&RecoveryPlatform.MultiplayerAvailable;freeRoam.Value=roam;ResetRecovery();
         }
 
         [ServerRpc(RequireOwnership=false)]

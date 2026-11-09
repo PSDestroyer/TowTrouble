@@ -91,6 +91,7 @@ namespace TowTrouble
         }
         public void Show(string target)
         {
+            target=RecoveryPlatform.MenuPage(target);
             if(target=="Help"&&page!="Help")helpReturn=page=="Settings"?"Settings":session.Connected?"Pause":"Main";
             if(target=="Vehicles")target=P.starterChosen?"Main":"Starter";
             if(target=="Contracts")target="Help";
@@ -143,7 +144,7 @@ namespace TowTrouble
             Logo(pageRoot,100,70,96);Text(pageRoot,L("DRUMURI GRELE. PRIETENI BUNI.","BAD ROADS. GOOD COMPANY."),108,333,700,40,21,Paper,true);
             var titlePrompt=Panel(pageRoot,450,738,700,72);titlePrompt.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Gold;
             prompt=Text(pageRoot,"",0,750,1600,48,26,Ink,true);prompt.alignment=TextAlignmentOptions.Center;
-            Text(pageRoot,"TOW TROUBLE  •  SOLO / CO-OP",76,847,1000,25,15,Muted);
+            Text(pageRoot,RecoveryPlatform.MultiplayerAvailable?"TOW TROUBLE  •  SOLO / CO-OP":"TOW TROUBLE  •  SOLO",76,847,1000,25,15,Muted);
         }
 
 
@@ -222,7 +223,7 @@ namespace TowTrouble
                 {if(P.onboarded)Show("Main");else{firstSetup=true;Show("Settings");}}return;
             }
             if(online&&!wasOnline)Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");
-            if(!online&&wasOnline&&!session.Leaving)Show("Coop");
+            if(!online&&wasOnline&&!session.Leaving)Show(RecoveryPlatform.MultiplayerAvailable?"Coop":"Main");
             if(online)
             {
                 if(w.Phase==RecoveryPhase.Complete&&!wasComplete)Show(session.Training?"TutorialDone":"Results");
