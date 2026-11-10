@@ -1,0 +1,295 @@
+{
+  "compile": {
+    "status": "completed",
+    "compiling": false,
+    "failed": false,
+    "compilationFailed": false,
+    "errors": [],
+    "warnings": [],
+    "summary": {
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "tests": {
+    "results": [
+      {
+        "test": "ManualRockLodSelectsOneLevelAndHonoursFinalCullThreshold",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "RockInstancingRestoresSourceLodAndVisibilityWithoutChangingMaterials",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DynamicObjectsAndPerObjectMaterialOverridesKeepNativeRendering",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "PcDoesNotIndexOrAlterEnvironmentRenderers",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "TerrainOcclusionRequiresCoverageOfTheWholeExpandedBounds",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchQualityToggleNeverSelectsPcOrMutatesAuthoredPipelines",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DesktopSelectsPcByNameEvenWhenSwitchIsTheLastQualityLevel",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SessionDisposalRestoresEntryQualityPipelineAndLod",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchBuildIncludesOnlyItsDedicatedQualityAndKeepsDepthForWater",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchPresetCutsGpuCostWhileDesktopKeepsItsAuthoredFeatures",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "VegetationOverridesAreConfinedToTheSwitchQualityLevel",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchTerrainBudgetIsPersistedInTheNativeSettingsFile",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchGraphicsPreviewIsIndependentOfTheOfflinePreviewAndRestores",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "CameraRangeIsUnchangedOnPcAndRestoredAfterSwitchScope",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "GraphicsPolicyUsesBuildTargetWithoutFollowingMultiplayerPreview",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SinglePlayerTargetRedirectsOnlyMultiplayerScreens",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "MultiplayerEntryPointsReturnBeforeProfileOrNetworkAccessOnSinglePlayerTarget",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DesktopKeepsItsMultiplayerScreens",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "RecommendedActionIsGreyWhenCancelHasTheRealSelection",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DirectionalNavigationTransfersTheGoldFillInBothDirections",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "PointerFocusAndKeyboardFocusCannotLeaveTwoGoldButtons",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DisabledButtonLosesGoldAndCannotStealPointerFocus",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "HintContrastFollowsSelectionWhileInsetBadgesKeepTheirOwnColors",
+        "passed": true,
+        "error": ""
+      }
+    ],
+    "failures": 0,
+    "errors": [],
+    "qualityRestored": true,
+    "terrainRestored": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true,
+    "playing": false
+  },
+  "ui": {
+    "results": [
+      {
+        "isSwitch": false,
+        "resolution": 1,
+        "mode": 1,
+        "quality": 1,
+        "apply": 1,
+        "displayTab": 1
+      },
+      {
+        "isSwitch": true,
+        "resolution": 0,
+        "mode": 0,
+        "quality": 0,
+        "apply": 0,
+        "displayTab": 0
+      }
+    ],
+    "playing": false
+  },
+  "scene": {
+    "result": {
+      "ManagedGroups": 7899,
+      "ManagedRenderers": 13892,
+      "InstancedGroups": 2064,
+      "hidden": 11174,
+      "LastHiddenGroups": 6525,
+      "LastVisibleInstances": 58,
+      "LastInstanceDraws": 24,
+      "initMs": 286.5916
+    },
+    "restored": true,
+    "errors": [],
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "garage": {
+    "samples": [
+      {
+        "name": "PC",
+        "path": "/private/tmp/tow-switch-culling-PC.png",
+        "hidden": 0,
+        "instancedGroups": 0,
+        "instances": 0,
+        "instanceDraws": 0,
+        "renderScale": 1,
+        "supportsHDR": true,
+        "shadowDistance": 110,
+        "grass": 80,
+        "trees": 5000,
+        "farClipPlane": 2300,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (Soft)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Desktop",
+        "nativeFog": false,
+        "bloom": 0.08,
+        "betterFog": 0.68,
+        "shaderErrors": false
+      },
+      {
+        "name": "Switch-Fixed",
+        "path": "/private/tmp/tow-switch-culling-Switch-Fixed.png",
+        "hidden": 6565,
+        "instancedGroups": 2064,
+        "instances": 17,
+        "instanceDraws": 14,
+        "renderScale": 0.8,
+        "supportsHDR": false,
+        "shadowDistance": 18,
+        "grass": 40,
+        "trees": 300,
+        "farClipPlane": 600,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (COZY Mobile)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Mobile",
+        "nativeFog": true,
+        "bloom": 0,
+        "betterFog": 0,
+        "shaderErrors": false
+      }
+    ],
+    "errors": [],
+    "materialAssetsUnchanged": true,
+    "skyRestored": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "lake": {
+    "samples": [
+      {
+        "name": "PC",
+        "path": "/private/tmp/tow-switch-culling-water-PC.png",
+        "hidden": 0,
+        "instancedGroups": 0,
+        "instances": 0,
+        "instanceDraws": 0,
+        "renderScale": 1,
+        "supportsHDR": true,
+        "shadowDistance": 110,
+        "grass": 80,
+        "trees": 5000,
+        "farClipPlane": 2300,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (Soft)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Desktop",
+        "nativeFog": false,
+        "bloom": 0.08,
+        "betterFog": 0.68,
+        "shaderErrors": false
+      },
+      {
+        "name": "Switch-Fixed",
+        "path": "/private/tmp/tow-switch-culling-water-Switch-Fixed.png",
+        "hidden": 6621,
+        "instancedGroups": 2064,
+        "instances": 21,
+        "instanceDraws": 10,
+        "renderScale": 0.8,
+        "supportsHDR": false,
+        "shadowDistance": 18,
+        "grass": 40,
+        "trees": 300,
+        "farClipPlane": 600,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (COZY Mobile)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Mobile",
+        "nativeFog": true,
+        "bloom": 0,
+        "betterFog": 0,
+        "shaderErrors": false
+      }
+    ],
+    "errors": [],
+    "materialAssetsUnchanged": true,
+    "skyRestored": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "finalState": {
+    "playing": false,
+    "target": "StandaloneOSX",
+    "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+    "dirty": true,
+    "quality": "PC",
+    "pipeline": "PC_RPAsset",
+    "graphicsPreview": false,
+    "offlinePreview": false,
+    "farClipPlane": 2300,
+    "cloud": "Distant Lands/Cozy/URP/Stylized Clouds (Soft)",
+    "sky": "Distant Lands/Cozy/URP/Stylized Sky Desktop",
+    "temporaryMaterials": 0,
+    "temporaryPipelines": 0,
+    "temporaryRoots": 0,
+    "sceneBudgets": 0,
+    "shaderErrors": []
+  },
+  "protectedHashesUnchanged": true,
+  "protectedFileCount": 18
+}

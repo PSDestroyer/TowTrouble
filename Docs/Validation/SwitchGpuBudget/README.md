@@ -1,5 +1,7 @@
 # Nintendo Switch GPU budget — 2026-11-10
 
+Historical first pass. The user subsequently measured about26 FPS with default settings but reported excessive blur. The current fixed profile and scene optimizations are documented in [SwitchSceneRendering](../SwitchSceneRendering/README.md); the settings and retest steps below describe the superseded first pass.
+
 User measured the installed game on the console's own screen. Visible log samples: 9.97 FPS / GPU98.39ms / CPU-render14.55ms and13.01 FPS / GPU76.56ms / CPU-render12.28ms. The earlier photo also contains GPU waits. These indicate a likely GPU bottleneck; CPU-render is not a complete main-thread profile. Target30 FPS has33.3ms per frame. No post-change console measurements are available, so stable30 FPS is not verified or guaranteed by this report.
 
 ## Dedicated Switch budget

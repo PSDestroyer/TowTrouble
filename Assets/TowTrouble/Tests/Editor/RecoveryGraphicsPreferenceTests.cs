@@ -15,7 +15,7 @@ namespace TowTrouble.Tests
             var pc = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>("Assets/Settings/PC_RPAsset.asset");
             string before = EditorJsonUtility.ToJson(pipeline), pcBefore = EditorJsonUtility.ToJson(pc);
             var preference = new RecoveryGraphicsPreference();
-            UniversalRenderPipelineAsset copy = null;
+
             try
             {
                 preference.Apply("Switch", false);
@@ -25,11 +25,11 @@ namespace TowTrouble.Tests
                 {
                     preference.Apply("Switch", true);
                     var current = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
-                    Assert.That(current, Is.Not.SameAs(pipeline));
+                    Assert.That(current, Is.SameAs(pipeline));
                     Assert.That(current, Is.Not.SameAs(pc));
-                    if (copy == null) copy = current; else Assert.That(current, Is.SameAs(copy));
-                    Assert.That(current.renderScale, Is.LessThan(pipeline.renderScale));
-                    Assert.That(current.shadowDistance, Is.LessThan(pipeline.shadowDistance));
+
+                    Assert.That(current.renderScale, Is.EqualTo(pipeline.renderScale));
+                    Assert.That(current.shadowDistance, Is.EqualTo(pipeline.shadowDistance));
                     Assert.That(current.supportsCameraDepthTexture, Is.True);
                     Assert.That(QualitySettings.names[QualitySettings.GetQualityLevel()], Is.EqualTo("Switch"));
                     preference.Apply("Switch", false);
@@ -39,7 +39,6 @@ namespace TowTrouble.Tests
                 Assert.That(EditorJsonUtility.ToJson(pc), Is.EqualTo(pcBefore));
             }
             finally { preference.Dispose(); }
-            Assert.That(copy == null, Is.True); // Native runtime copy released on disposal.
         }
 
         [Test] public void DesktopSelectsPcByNameEvenWhenSwitchIsTheLastQualityLevel()
@@ -119,7 +118,7 @@ namespace TowTrouble.Tests
             Assert.That(pipeline.renderScale,Is.EqualTo(RecoverySwitchGraphics.RenderScale));
             Assert.That(pipeline.supportsHDR,Is.False);Assert.That(pipeline.supportsCameraDepthTexture,Is.True);
             Assert.That(pipeline.mainLightShadowmapResolution,Is.EqualTo(512));Assert.That(pipeline.maxAdditionalLightsCount,Is.EqualTo(2));
-            Assert.That(pipeline.upscalingFilter,Is.EqualTo(UpscalingFilterSelection.Linear));
+            Assert.That(pipeline.upscalingFilter,Is.EqualTo(UpscalingFilterSelection.FSR));
             Assert.That(pc.supportsHDR,Is.True);Assert.That(pc.renderScale,Is.EqualTo(1));
         }
 
@@ -143,7 +142,7 @@ namespace TowTrouble.Tests
                 Assert.That(QualitySettings.terrainDetailDensityScale,Is.EqualTo(RecoverySwitchGraphics.GrassDensity));
                 Assert.That(QualitySettings.terrainTreeDistance,Is.EqualTo(RecoverySwitchGraphics.TreeDistance));
                 Assert.That(QualitySettings.lodBias,Is.EqualTo(RecoverySwitchGraphics.LodBias));
-                preference.Apply("Switch",true);Assert.That(QualitySettings.lodBias,Is.EqualTo(RecoverySwitchGraphics.PerformanceLodBias));
+                preference.Apply("Switch",true);Assert.That(QualitySettings.lodBias,Is.EqualTo(RecoverySwitchGraphics.LodBias));
             }
         }
 

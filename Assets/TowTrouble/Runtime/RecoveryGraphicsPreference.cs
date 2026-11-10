@@ -32,21 +32,22 @@ namespace TowTrouble
                 initialized = true;
             }
             if (platformPipeline == null) return;
+            // Switch has one fixed profile; ignore legacy desktop quality preferences.
+            if (platformQuality == "Switch") performance = false;
             if (performance)
             {
                 if (performancePipeline == null)
                 {
-                    bool switchQuality = platformQuality == "Switch";
                     performancePipeline = UnityEngine.Object.Instantiate(platformPipeline);
                     performancePipeline.name = "Tow Trouble " + platformQuality + " Performance (runtime)";
                     performancePipeline.hideFlags = HideFlags.DontSave;
-                    performancePipeline.renderScale = Mathf.Min(switchQuality ? RecoverySwitchGraphics.PerformanceRenderScale : .85f, platformPipeline.renderScale);
+                    performancePipeline.renderScale = Mathf.Min(.85f, platformPipeline.renderScale);
                     performancePipeline.msaaSampleCount = 1;
-                    performancePipeline.shadowDistance = Mathf.Min(switchQuality ? RecoverySwitchGraphics.PerformanceShadowDistance : 35, platformPipeline.shadowDistance);
+                    performancePipeline.shadowDistance = Mathf.Min(35, platformPipeline.shadowDistance);
                     performancePipeline.shadowCascadeCount = 1;
                 }
                 if (QualitySettings.renderPipeline != performancePipeline) QualitySettings.renderPipeline = performancePipeline;
-                QualitySettings.lodBias = Mathf.Min(platformQuality == "Switch" ? RecoverySwitchGraphics.PerformanceLodBias : 1, platformLodBias);
+                QualitySettings.lodBias = Mathf.Min(1, platformLodBias);
             }
             else
             {

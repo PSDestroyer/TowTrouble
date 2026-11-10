@@ -52,7 +52,7 @@ namespace TowTrouble
             {
                 switchGraphicsLogged=true;
                 var pipeline=UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset;
-                Debug.Log($"[Tow Trouble Switch] target=30fps output={Screen.width}x{Screen.height} quality={QualitySettings.names[QualitySettings.GetQualityLevel()]} scale={pipeline?.renderScale:0.00} HDR={pipeline?.supportsHDR} shadow={pipeline?.shadowDistance:0}m grass={QualitySettings.terrainDetailDistance:0}m trees={QualitySettings.terrainTreeDistance:0}m far={switchLens.farClipPlane:0}m");
+                Debug.Log($"[Tow Trouble Switch] target=30fps output={Screen.width}x{Screen.height} quality={QualitySettings.names[QualitySettings.GetQualityLevel()]} scale={pipeline?.renderScale:0.00} upscale={pipeline?.upscalingFilter} HDR={pipeline?.supportsHDR} shadow={pipeline?.shadowDistance:0}m grass={QualitySettings.terrainDetailDistance:0}m trees={QualitySettings.terrainTreeDistance:0}m far={switchLens.farClipPlane:0}m");
             }
 #endif
         }

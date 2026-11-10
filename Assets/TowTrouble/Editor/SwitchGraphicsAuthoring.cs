@@ -15,7 +15,8 @@ namespace TowTrouble.Editor
             var renderer=AssetDatabase.LoadAssetAtPath<UniversalRendererData>("Assets/Settings/Switch_Renderer.asset");
             if(pipeline==null||renderer==null)throw new InvalidOperationException("Dedicated Switch pipeline/renderer is missing.");
             pipeline.renderScale=RecoverySwitchGraphics.RenderScale;
-            pipeline.upscalingFilter=UpscalingFilterSelection.Linear;
+            pipeline.upscalingFilter=UpscalingFilterSelection.FSR;
+            pipeline.fsrOverrideSharpness=true;pipeline.fsrSharpness=.75f;
             pipeline.supportsHDR=false;pipeline.msaaSampleCount=1;
             // Water intersections and other authored surface shaders still sample scene depth.
             pipeline.supportsCameraDepthTexture=true;pipeline.supportsCameraOpaqueTexture=false;
