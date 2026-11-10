@@ -1,0 +1,54 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "script eval",
+    "parameters": {
+      "code": "var type=System.AppDomain.CurrentDomain.GetAssemblies().Select(a=>a.GetType(\"TowTrouble.Tests.RecoveryWheelDebrisTests\")).First(t=>t!=null);var fixture=System.Activator.CreateInstance(type);var results=new System.Collections.Generic.List<object>();foreach(var m in type.GetMethods().Where(m=>m.GetCustomAttributes(false).Any(a=>a.GetType().Name==\"TestAttribute\"))){try{m.Invoke(fixture,null);results.Add(new {name=m.Name,passed=true,error=\"\"});}catch(System.Exception e){results.Add(new {name=m.Name,passed=false,error=(e.InnerException??e).ToString()});}}return results;"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": [
+        {
+          "name": "StationaryAirborneAndWoodDoNotThrowDebris",
+          "passed": true,
+          "error": ""
+        },
+        {
+          "name": "ActualWheelspinInLooseGroundThrowsMoreWithABoundedRate",
+          "passed": true,
+          "error": ""
+        },
+        {
+          "name": "SurfaceColorsAndTrackMappingsRemainDistinct",
+          "passed": true,
+          "error": ""
+        },
+        {
+          "name": "EjectionFollowsRollingDirectionEvenWhileBrakingAndReversing",
+          "passed": true,
+          "error": ""
+        },
+        {
+          "name": "PowderRequiresRealGroundedMovementOrWheelspin",
+          "passed": true,
+          "error": ""
+        },
+        {
+          "name": "OrdinaryDryDrivingSustainsVisibleDustWithinTheParticleBudget",
+          "passed": true,
+          "error": ""
+        }
+      ]
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

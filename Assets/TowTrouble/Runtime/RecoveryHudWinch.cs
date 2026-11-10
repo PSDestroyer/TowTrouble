@@ -78,7 +78,7 @@ namespace TowTrouble
             if (visible)
             {
                 RefreshCableControlHints();
-                string label = WinchLabel(frame.State, P.language == "en");
+                string label = WinchLabel(frame.State, true);
                 string hint = null;
                 if (cableWarning)
                 {

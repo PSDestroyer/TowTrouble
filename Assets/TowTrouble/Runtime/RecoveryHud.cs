@@ -48,6 +48,8 @@ namespace TowTrouble
             if(EventSystem.current==null)new GameObject("UI Event System",typeof(EventSystem),typeof(InputSystemUIInputModule));
             var canvas=new GameObject("Tow Trouble UI",typeof(RectTransform),typeof(Canvas),typeof(UnityEngine.UI.CanvasScaler),typeof(UnityEngine.UI.GraphicRaycaster));canvas.transform.SetParent(transform,false);canvas.GetComponent<Canvas>().renderMode=RenderMode.ScreenSpaceOverlay;
             var scaler=canvas.GetComponent<UnityEngine.UI.CanvasScaler>();scaler.uiScaleMode=UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1600,900);scaler.screenMatchMode=UnityEngine.UI.CanvasScaler.ScreenMatchMode.Expand;scaler.matchWidthOrHeight=.5f;root=(RectTransform)canvas.transform;
+            foreach(var label in FindObjectsByType<TMP_Text>(FindObjectsInactive.Include,FindObjectsSortMode.None))
+                if(label.gameObject.scene==gameObject.scene)RecoveryLocalizedText.Bind(label);
             BuildGameplay();ConfigureHudScreen();BuildPersistenceHint();Show(session.ConsumeReturnToMain()?"Main":"Title");
         }
         private void OnDestroy(){SetMenuNavigation(false);SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();}
@@ -65,7 +67,7 @@ namespace TowTrouble
         }
         private TMP_Text ControlText(TMP_Text value) { RecoveryPromptText.Bind(value); return value; }
         private TMP_Text Text(Transform parent,string text,float x,float y,float width,float height,float size=22,Color? color=null,bool bold=false)
-        {var rt=Node(text,parent,x,y,width,height);var t=rt.gameObject.AddComponent<TextMeshProUGUI>();t.font=bold&&size>=26&&displayFont!=null?displayFont:font;t.text=text;t.fontSize=size*P.textScale;t.enableAutoSizing=true;t.fontSizeMin=size*Mathf.Min(1,P.textScale);t.fontSizeMax=size*P.textScale;t.color=color??Paper;t.fontStyle=bold&&t.font!=displayFont?FontStyles.Bold:FontStyles.Normal;t.textWrappingMode=TextWrappingModes.Normal;t.raycastTarget=false;textSizes[t]=size;if(parent.name.Contains("control hint")||parent.name=="Control hint")t.gameObject.AddComponent<RecoveryControlGlyph>().Configure(session);return t;}
+        {var rt=Node(text,parent,x,y,width,height);var t=rt.gameObject.AddComponent<TextMeshProUGUI>();t.font=bold&&size>=26&&displayFont!=null?displayFont:font;t.text=text;t.fontSize=size*P.textScale;t.enableAutoSizing=true;t.fontSizeMin=size*Mathf.Min(1,P.textScale)*(RecoveryLocalization.Code=="en"?1f:.72f);t.fontSizeMax=size*P.textScale;t.color=color??Paper;t.fontStyle=bold&&t.font!=displayFont?FontStyles.Bold:FontStyles.Normal;t.textWrappingMode=TextWrappingModes.Normal;t.raycastTarget=false;textSizes[t]=size;RecoveryLocalizedText.Bind(t);if(parent.name.Contains("control hint")||parent.name=="Control hint")t.gameObject.AddComponent<RecoveryControlGlyph>().Configure(session);return t;}
         private UnityEngine.UI.Button Button(Transform parent,string label,float x,float y,float width,Action action,bool primary=false,float height=54)
         {
             // Keep general-menu actions above the larger, 720p-readable control strip.
@@ -153,7 +155,7 @@ namespace TowTrouble
         private TMP_InputField Input(Transform parent,string label,string value,float x,float y,float width,Action<string> changed)
         {
             Text(parent,label,x,y,width,30,17,Muted,true);var rt=Panel(parent,x,y+34,width,54,new Color(.03f,.045f,.04f));rt.GetComponent<UnityEngine.UI.Image>().raycastTarget=true;
-            var input=rt.gameObject.AddComponent<TMP_InputField>();var viewport=Node("Viewport",rt,14,4,width-28,46);var text=Text(viewport,"",0,0,width-28,46,23);text.alignment=TextAlignmentOptions.MidlineLeft;input.textViewport=viewport;input.textComponent=(TextMeshProUGUI)text;input.text=value;input.characterLimit=label.Contains("ADDRESS")||label.Contains("IP")?253:20;input.richText=false;input.shouldActivateOnSelect=false;rt.name=label;input.onEndEdit.AddListener(v=>changed(v));return input;
+            var input=rt.gameObject.AddComponent<TMP_InputField>();var viewport=Node("Viewport",rt,14,4,width-28,46);var text=Text(viewport,"",0,0,width-28,46,23);text.alignment=TextAlignmentOptions.MidlineLeft;input.textViewport=viewport;input.textComponent=(TextMeshProUGUI)text;RecoveryLocalizedText.Bind(text,false);input.text=value;input.characterLimit=label.Contains("ADDRESS")||label.Contains("IP")?253:20;input.richText=false;input.shouldActivateOnSelect=false;rt.name=label;input.onEndEdit.AddListener(v=>changed(v));return input;
         }
 
 
@@ -182,7 +184,7 @@ namespace TowTrouble
                 hudPlates[i].gameObject.SetActive(false);
                 var plate=Panel(hudPlates[i],0,0,300,56,i==0?Blue:Orange);
                 var arrow=Panel(hudPlates[i],143,49,14,14,i==0?Blue:Orange);arrow.localRotation=Quaternion.Euler(0,0,45);
-                hudNames[i]=Text(plate,"",8,0,284,56,18,Paper,true);hudNames[i].alignment=TextAlignmentOptions.Center;
+                hudNames[i]=Text(plate,"",8,0,284,56,18,Paper,true);hudNames[i].alignment=TextAlignmentOptions.Center;RecoveryLocalizedText.Bind(hudNames[i],false);
             }
         }
 

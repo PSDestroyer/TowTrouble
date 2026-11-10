@@ -30,7 +30,7 @@ namespace TowTrouble
         {
             foreach (string name in BindingFields.Concat(new[] { "name", "master", "effects", "ui", "music", "ambience", "brightness", "textScale", "cameraSensitivity", "quality", "reducedMotion", "invertCamera", "vibration", "vibrationIntensity", "tutorial", "colorHelp", "controllerFamily", "displayWidth", "displayHeight", "displayMode" }))
             { var field = typeof(RecoveryProfile).GetField(name); field.SetValue(result, field.GetValue(source)); }
-            result.language = "en";
+            result.language = RecoveryLanguage.Normalize(source.language);
         }
         public static Vector2Int[] Resolutions(Resolution[] values, int currentWidth, int currentHeight)
         {

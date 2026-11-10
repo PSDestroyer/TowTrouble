@@ -68,6 +68,7 @@ namespace TowTrouble
             var movement=transform.position-lastPosition;
             debrisVelocity=Time.deltaTime>.0001f&&movement.sqrMagnitude<=100?movement/Time.deltaTime:Vector3.zero;
             float travel=Mathf.Min(movement.magnitude,1);lastPosition=transform.position;if(world!=null)lastElapsed=world.Elapsed;
+            debrisGain=debrisCamera==null?1:RecoveryWheelDebrisRules.DistanceGain(Vector3.Distance(transform.position,debrisCamera.transform.position),RecoveryPlatform.UsesSwitchRendering);
             for(int wheel=0;wheel<4;wheel++)
             {
                 if(vehicle.TryGetWheelContact(wheel,out var hit))
@@ -82,7 +83,17 @@ namespace TowTrouble
                 Apply(wheel,coverage[wheel]);touching[wheel]=false;
             }
         }
-        private void OnEnable(){if(vehicle!=null)vehicle.ExternalWheelEffects=HasWheelDebris;}
+        private void OnEnable()
+        {
+            if(Application.isPlaying)
+            {
+                debrisCamera=Camera.main;
+                bool limited=RecoveryPlatform.UsesSwitchRendering;
+                if(powders!=null)foreach(var powder in powders)if(powder!=null)RecoveryWheelDebrisRules.ConfigurePowder(powder,limited);
+                if(limited&&splashes!=null)foreach(var spray in splashes)if(spray!=null){var main=spray.main;main.maxParticles=16;}
+            }
+            if(vehicle!=null)vehicle.ExternalWheelEffects=HasWheelDebris;
+        }
         private void OnDisable(){ClearMud();if(vehicle!=null)vehicle.ExternalWheelEffects=false;}
     }
 }

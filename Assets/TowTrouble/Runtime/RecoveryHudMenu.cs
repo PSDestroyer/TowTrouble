@@ -111,7 +111,7 @@ namespace TowTrouble
             summary=Text(side,"Explore together. The host chooses recoveries after departure.",28,101,374,100,22,Muted);
             slots=Text(side,"",28,226,374,70,19,Paper);
             lobbyState=Text(side,"",28,336,374,122,23,Amber,true);
-            for(int i=0;i<2;i++){var card=Panel(pageRoot,540+i*496,568,470,156);Icon(card,RecoveryIcon.Body,20,18,28,i==0?Blue:Orange);Text(card,"DRIVER "+(i+1),62,16,384,32,17,Muted,true);worldNames[i]=Text(card,"",20,61,430,78,21,Paper,true);}
+            for(int i=0;i<2;i++){var card=Panel(pageRoot,540+i*496,568,470,156);Icon(card,RecoveryIcon.Body,20,18,28,i==0?Blue:Orange);Text(card,"DRIVER "+(i+1),62,16,384,32,17,Muted,true);worldNames[i]=Text(card,"",20,61,430,78,21,Paper,true);RecoveryLocalizedText.Bind(worldNames[i],false);}
             lobbyReady=Button(pageRoot,"READY",540,756,410,()=>session.ToggleReady(),true);readyText=lobbyReady.GetComponentInChildren<TMP_Text>();
             startButton=Button(pageRoot,"START EXPLORING",974,756,536,()=>session.Deploy());
             Button(pageRoot,"LEAVE SESSION",76,808,360,()=>ConfirmAction("Leave this session and return to the main menu?",()=>{session.LeaveToMain();Show("Busy");},"Lobby","LEAVE SESSION"));
@@ -124,7 +124,7 @@ namespace TowTrouble
             if(page!="Lobby"||!session.Connected)return;
             var world=session.World;
             slots.text=world.Occupied+" / 2 drivers\n"+(session.IsHost?"You are hosting":"Connected to host");
-            for(int i=0;i<2;i++)worldNames[i].text=world.OccupiedSlot(i)?world.DriverName(i)+"\n"+(world.Ready(i)?"Ready to depart":"Getting ready"):"Waiting for a friend…";
+            for(int i=0;i<2;i++)worldNames[i].text=world.OccupiedSlot(i)?world.DriverName(i)+"\n"+RecoveryLocalization.Translate(world.Ready(i)?"Ready to depart":"Getting ready"):RecoveryLocalization.Translate("Waiting for a friend…");
             readyText.text=world.Ready(session.LocalSlot)?"NOT READY":"READY";
             startButton.interactable=session.IsHost&&world.CanStart;
             lobbyState.text=world.Occupied<2?"Waiting for another driver":!world.Ready(session.LocalSlot)?"Mark yourself ready":!world.CanStart?"Waiting for your friend":session.IsHost?"Your crew is ready":"Waiting for the host to depart";
@@ -157,7 +157,7 @@ namespace TowTrouble
             string draft=textEntryDraft??"",visible=draft+"│";
             // Keep the caret and the end being edited readable even for a long host address.
             while(draft.Length>0&&entry.GetPreferredValues(visible).x>1040){draft=draft.Substring(1);visible="…"+draft+"│";}
-            entry.text=visible;
+            RecoveryLocalizedText.Bind(entry,false);entry.text=visible;
             const string letters="1234567890abcdefghijklmnopqrstuvwxyz.-:_";
             for(int i=0;i<letters.Length;i++){char ch=letters[i];Button(panel,ch.ToString(),30+i%10*104,112+i/10*66,94,()=>{if(textEntryDraft.Length<textEntryLimit)textEntryDraft+=ch;Show("TextEntry");},false,52);}
             Button(panel,"SPACE",30,390,220,()=>{if(textEntryLabel=="YOUR NAME"&&textEntryDraft.Length<textEntryLimit)textEntryDraft+=" ";Show("TextEntry");});
@@ -187,7 +187,7 @@ namespace TowTrouble
             menuScroll.horizontal=false;menuScroll.scrollSensitivity=45;menuScroll.movementType=UnityEngine.UI.ScrollRect.MovementType.Clamped;
             var viewport=Stretch("Viewport",scrollRoot);viewport.gameObject.AddComponent<UnityEngine.UI.Image>().color=Color.white;viewport.gameObject.AddComponent<UnityEngine.UI.Mask>().showMaskGraphic=false;
             string notices=Resources.Load<TextAsset>("TowThirdPartyNotices")?.text??"Third-party notices could not be loaded.";
-            var content=Node("Notices content",viewport,0,0,1150,500);var text=Text(content,notices,0,0,1150,500,16,Muted);text.enableAutoSizing=false;
+            var content=Node("Notices content",viewport,0,0,1150,500);var text=Text(content,notices,0,0,1150,500,16,Muted);text.enableAutoSizing=false;RecoveryLocalizedText.Bind(text,false);
             float height=Mathf.Max(420,text.GetPreferredValues(notices,1150,0).y+20);content.sizeDelta=new Vector2(1150,height);text.rectTransform.sizeDelta=content.sizeDelta;
             menuScroll.content=content;menuScroll.viewport=viewport;
             ControlText(Text(card,session.UsingGamepad?"Right stick · Scroll":"Page Up / Page Down / Mouse wheel · Scroll",28,440,1192,36,18,Muted));

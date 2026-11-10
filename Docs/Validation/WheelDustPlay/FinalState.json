@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "script eval",
+    "parameters": {
+      "code": "return new {playing=UnityEditor.EditorApplication.isPlaying,dirty=UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty,pipeline=UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline.name,quality=QualitySettings.names[QualitySettings.GetQualityLevel()],lod=QualitySettings.lodBias,far=Camera.main.farClipPlane,switchPreview=TowTrouble.RecoveryPlatform.PreviewSwitchRendering,scope=TowTrouble.RecoveryProfile.ValidationStorageKey,temporary=UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include,FindObjectsSortMode.None).Where(t=>t.name.StartsWith(\"Temporary dust\")||t.name.StartsWith(\"Comparison powder\")).Select(t=>t.name).ToArray()};"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "playing": false,
+        "dirty": true,
+        "pipeline": "PC_RPAsset",
+        "quality": "PC",
+        "lod": 2,
+        "far": 2300,
+        "switchPreview": false,
+        "scope": null,
+        "temporary": []
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

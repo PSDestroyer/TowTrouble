@@ -1,0 +1,98 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "console get",
+    "parameters": {
+      "tail": "100",
+      "level": "error",
+      "since": "11138",
+      "since_session": "833d5b02cd5d4d5cb0ad6d8a88eac77b"
+    },
+    "result": {
+      "entries": [
+        {
+          "seq": 11139,
+          "timestampUtc": "2026-11-10T20:11:17.760041Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n",
+          "seeded": false
+        },
+        {
+          "seq": 11140,
+          "timestampUtc": "2026-11-10T20:11:19.236381Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.ColorCurvesEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/ColorCurvesEditor.cs:56)\n",
+          "seeded": false
+        },
+        {
+          "seq": 11141,
+          "timestampUtc": "2026-11-10T20:11:26.008425Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 11142,
+          "timestampUtc": "2026-11-10T20:11:26.03845Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 11143,
+          "timestampUtc": "2026-11-10T20:11:26.518492Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 11144,
+          "timestampUtc": "2026-11-10T20:11:26.601725Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        }
+      ],
+      "cursor": 11181,
+      "session": "833d5b02cd5d4d5cb0ad6d8a88eac77b",
+      "returned": 6,
+      "dropped": false,
+      "reset": false,
+      "counts": {
+        "error": 774,
+        "warn": 194,
+        "log": 1032
+      },
+      "groundTruth": {
+        "sampledUtc": "2026-11-10T20:13:43.230313Z",
+        "ageMs": 158,
+        "compilationFailed": false,
+        "compiling": false,
+        "consoleErrors": 6,
+        "consoleWarnings": 37,
+        "consoleLogs": 0,
+        "seeded": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

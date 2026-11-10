@@ -186,6 +186,7 @@ namespace TowTrouble
             if(page=="Busy"){session.CancelConnection();if(session.Training)session.EndTraining(false);Show("Main");return;}
             if(page=="Lobby"){ConfirmAction("Leave this session?",session.LeaveToMain,"Lobby","LEAVE SESSION");return;}
             if(page=="Pause"){session.ConsumeMenuInput();session.ToggleMenu();Show("Gameplay");return;}
+            if(page=="Settings"&&firstSetup&&settingsTab=="Language"){settingsTab="Audio";Show("Settings");return;}
             if(page=="Starter"||firstSetup){Show("Title");return;}
             if(page=="TutorialOffer"){SkipTutorialOffer();return;}
             if(page=="TutorialDone"||page=="TrainingComplete"){ContinueTutorial();return;}

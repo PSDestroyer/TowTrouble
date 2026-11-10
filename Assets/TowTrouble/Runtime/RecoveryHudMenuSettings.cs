@@ -17,14 +17,15 @@ namespace TowTrouble
         private float displayDeadline;
         private void BuildSettings()
         {
-            if(firstSetup){BuildFirstSetup();return;}
+            if(firstSetup&&settingsTab!="Language"){BuildFirstSetup();return;}
             if(RecoveryPlatform.UsesSwitchRendering&&settingsTab=="Imagine")settingsTab="Audio";
             Header("SETTINGS",RecoveryPlatform.UsesSwitchRendering?"Adjust your comfort. Audio, controls and accessibility save automatically.":"Adjust your comfort. Audio and controls save automatically; display changes need confirmation.");
             bool fixedGraphics=RecoveryPlatform.UsesSwitchRendering;
-            string[] keys=fixedGraphics?new[]{"Audio","Comenzi","Accesibilitate","Joc"}:new[]{"Audio","Imagine","Comenzi","Accesibilitate","Joc"};
-            string[] labels=fixedGraphics?new[]{"Audio","Controls","Accessibility","Game"}:new[]{"Audio","Display","Controls","Accessibility","Game"};
-            float stride=fixedGraphics?365:292,tabWidth=fixedGraphics?345:272;
+            string[] keys=fixedGraphics?new[]{"Audio","Comenzi","Accesibilitate","Joc","Language"}:new[]{"Audio","Imagine","Comenzi","Accesibilitate","Joc","Language"};
+            string[] labels=fixedGraphics?new[]{"Audio","Controls","Accessibility","Game","Language"}:new[]{"Audio","Display","Controls","Accessibility","Game","Language"};
+            float stride=1448f/keys.Length,tabWidth=stride-20;
             for(int i=0;i<keys.Length;i++){string tab=keys[i];menuTabs.Add(Button(pageRoot,labels[i],76+i*stride,196,tabWidth,()=>{settingsTab=tab;settingsMessage="";Show("Settings");},settingsTab==tab));}
+            if(settingsTab=="Language"){BuildLanguageSettings();return;}
             var body=Panel(pageRoot,76,278,866,settingsTab=="Accesibilitate"?330:480);var details=Panel(pageRoot,966,278,558,480);
             Icon(details,RecoveryIcon.Settings,28,28,32,Amber);Text(details,"MAKE IT COMFORTABLE",76,24,454,48,25,Paper,true);
             menuHelp=Text(details,SettingsDescription(),28,106,502,266,20,Muted);menuHelp.fontSizeMin=16;
@@ -97,12 +98,13 @@ namespace TowTrouble
         private void BuildFirstSetup()
         {
             Header("WELCOME TO TOW TROUBLE","A few comfort settings, then choose your first ride.");
-            var panel=Panel(pageRoot,236,248,1128,RecoveryPlatform.UsesSwitchRendering?250:354);
+            var panel=Panel(pageRoot,236,248,1128,RecoveryPlatform.UsesSwitchRendering?340:450);
             Text(panel,"TAKE YOUR TIME",30,24,1068,48,29,Paper,true);
             Text(panel,"You can change these settings later. Your first car comes next.",30,84,1068,48,20,Muted);
-            if(!RecoveryPlatform.UsesSwitchRendering)Slider(panel,"Brightness",P.brightness,.7f,1.4f,146,v=>P.brightness=v);
-            Slider(panel,"Text / HUD size",P.textScale,.85f,1.3f,RecoveryPlatform.UsesSwitchRendering?146:250,v=>P.textScale=v);
-            Button(pageRoot,"CHOOSE YOUR FIRST RIDE",960,790,564,()=>{P.onboarded=true;P.language="en";P.Save();firstSetup=false;Show("Starter");},true);
+            Button(panel,"LANGUAGE: "+RecoveryLanguage.Name(P.language),30,146,1068,()=>{settingsTab="Language";Show("Settings");});
+            if(!RecoveryPlatform.UsesSwitchRendering)Slider(panel,"Brightness",P.brightness,.7f,1.4f,230,v=>P.brightness=v);
+            Slider(panel,"Text / HUD size",P.textScale,.85f,1.3f,RecoveryPlatform.UsesSwitchRendering?230:334,v=>P.textScale=v);
+            Button(pageRoot,"CHOOSE YOUR FIRST RIDE",960,790,564,()=>{P.onboarded=true;P.Save();firstSetup=false;Show("Starter");},true);
             Button(pageRoot,"BACK",76,790,230,()=>Show("Title"));BuildMenuFooter();
         }
         private UnityEngine.UI.Button SettingButton(RectTransform body,string label,float y,Action action,string description)

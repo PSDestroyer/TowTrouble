@@ -110,7 +110,7 @@ namespace TowTrouble
                 }
                 p.paintSelectionRevision=1;
             }
-            p.language = string.Equals(p.language, "ro", StringComparison.OrdinalIgnoreCase) ? "ro" : "en";
+            p.language = RecoveryLanguage.Normalize(p.language);
             p.EnsureGarage();p.Clamp();return p;
         }
         public static SaveStore Storage { get {
@@ -148,6 +148,7 @@ namespace TowTrouble
         public void RecordFinish(int id,bool noResets,bool noSnaps){completedMask|=1<<id;if(noResets)noResetMask|=1<<id;if(noSnaps)noSnapMask|=1<<id;if(noResets&&noSnaps)medalMask|=1<<id;if(id<3)lastContract=Mathf.Min(2,id+1);}
         public void Finish(int id,bool noResets,bool noSnaps){RecordFinish(id,noResets,noSnaps);Save();}
         public Key ReadKey(string binding,Key fallback)=>Enum.TryParse(binding,true,out Key parsed)&&Enum.IsDefined(typeof(Key),parsed)&&parsed!=UnityEngine.InputSystem.Key.None?parsed:fallback;
-        public string L(string ro,string en)=>language=="en"?en:ro;
+        // Canonical source stays stable for sorting, focus and glyph identities; rendering uses Unity SelectedLocale.
+        public string L(string ro,string en)=>en;
     }
 }

@@ -200,7 +200,7 @@ namespace TowTrouble
                 // Canvas layout may already have auto-sized the text. Keep its authored size as the floor.
                 if(!textSizes.TryGetValue(text,out float size)||!text.enableAutoSizing)continue;
                 if(size*P.textScale>=48){text.rectTransform.anchoredPosition=new Vector2(text.rectTransform.anchoredPosition.x,-50);text.rectTransform.sizeDelta=new Vector2(text.rectTransform.sizeDelta.x,80);}
-                text.fontSizeMax=size*P.textScale;text.fontSizeMin=(text.gameObject.name=="Garage item name"?15:size)*Mathf.Min(1,P.textScale);
+                text.fontSizeMax=size*P.textScale;text.fontSizeMin=(text.gameObject.name=="Garage item name"?15:size)*Mathf.Min(1,P.textScale)*(RecoveryLocalization.Code=="en"?1f:.72f);
             }
         }
         private bool UsedPart(string id)=>RecoveryGarageWorkflow.InUseReason(P,id)!=null;

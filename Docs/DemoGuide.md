@@ -251,3 +251,15 @@ Dovezi: `Docs/Validation/PaintAudit` — 266 teste trecute, 164 combinații de a
 ### Vibrații controller
 
 Settings → Game include Controller Vibration și Vibration intensity (70% implicit). Cablul sub sarcină, limita cablului și troliul au feedback progresiv; conectarea, detașarea, ruperea, eliberarea mașinii și impacturile relevante au impulsuri scurte. Meniurile, pauza și trecerea la tastatură opresc vibrațiile. Disponibilitatea efectivă depinde de controller, driver și platformă.
+
+### Praf vizibil de la roți — 2026-11-10
+
+Praful fin are acum nori mai mari, mai denși și mai persistenți pe pământ și nisip, pulbere albă pe zăpadă și un efect discret pe iarbă. Noroiul păstrează predominant bulgării. Efectul pornește din contactele roților la mers sau patinare și nu emite la staționare, în aer ori pe lemn. Configurația se aplică automat la următoarea pornire a jocului, fără regenerarea hărții.
+
+Compilare curată, șase verificări de reguli și 12 verificări native de emitere trecute; comparațiile vizuale statice din unghiul camerei de urmărire sunt în `Docs/Validation/WheelDustVisibility`. Mișcarea reală, vizibilitatea și FPS pe Switch rămân de verificat în joc; această schimbare nu a fost testată în Play Mode și nu s-a creat build.
+
+### Colb în creștere și verificare Play — 2026-11-10
+
+Norii pornesc compact, se ridică și cresc înainte să se risipească; silueta este neregulată. Praful la patinare pe loc a fost întărit. În Play Mode pe nisip s-au verificat mersul normal fără slip, patinarea fizică și dispariția la oprire. Pe Switch se păstrează doar două surse de praf fin simultan, cu limite și durată reduse; bulgării rămân la toate roțile aflate în contact.
+
+Nouă verificări de reguli trecute și compilare curată. În editorul Mac, cu pipeline-ul Switch, testul pornit/oprit a rămas la aproximativ 30 FPS; acesta nu confirmă FPS-ul pe consola reală. Dovezi și capturi: `Docs/Validation/WheelDustPlay`. Play a fost oprit, profilul de test eliminat și salvările reale verificate identice. Fără build.

@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "script eval_file",
+    "parameters": {
+      "file": "/private/tmp/TowLocalization/PlayCheck.cs"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "languageButtons": 29,
+        "selected": "ja",
+        "reloaded": "ja",
+        "headingSource": "SETTINGS",
+        "headingRendered": "設定",
+        "font": "Japanese",
+        "settingsType": "RecoveryLocalizationSettings",
+        "initializationDone": true,
+        "addressableLocators": 0,
+        "offline": true,
+        "transport": "RecoveryOfflineTransport",
+        "menuActions": [
+          "PLAY",
+          "HOW TO PLAY",
+          "SETTINGS",
+          "CREDITS",
+          "QUIT"
+        ]
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

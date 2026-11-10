@@ -1,0 +1,538 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "console get",
+    "parameters": {
+      "since": "10172",
+      "level": "error",
+      "tail": "200"
+    },
+    "result": {
+      "entries": [
+        {
+          "seq": 10174,
+          "timestampUtc": "2026-11-10T18:42:53.335796Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10175,
+          "timestampUtc": "2026-11-10T18:42:53.68155Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10176,
+          "timestampUtc": "2026-11-10T18:42:53.684423Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.ColorCurvesEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/ColorCurvesEditor.cs:56)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10177,
+          "timestampUtc": "2026-11-10T18:42:53.887529Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10178,
+          "timestampUtc": "2026-11-10T18:42:54.931629Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10179,
+          "timestampUtc": "2026-11-10T18:42:55.033373Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10181,
+          "timestampUtc": "2026-11-10T18:43:00.49365Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "System.Exception: Invalid path in TextDataProvider : 'Library/com.unity.addressables/aa/OSX/settings.json'.",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:22)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10182,
+          "timestampUtc": "2026-11-10T18:43:00.50214Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "RuntimeData is null.  Please ensure you have built the correct Player Content.",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:22)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10184,
+          "timestampUtc": "2026-11-10T18:43:00.50399Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "OperationException : Addressables - Unable to load runtime data at location UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1[[UnityEngine.AddressableAssets.Initialization.ResourceManagerRuntimeData, Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]].\n",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:22)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10185,
+          "timestampUtc": "2026-11-10T18:43:00.521835Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "UnityEngine.AddressableAssets.InvalidKeyException: Exception of type 'UnityEngine.AddressableAssets.InvalidKeyException' was thrown. No Location found for Key=System.Collections.Generic.List`1[System.String]",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:22)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10186,
+          "timestampUtc": "2026-11-10T18:43:00.530975Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "OperationException : ChainOperation failed because dependent operation failed\nUnityEngine.AddressableAssets.InvalidKeyException: Exception of type 'UnityEngine.AddressableAssets.InvalidKeyException' was thrown. No Location found for Key=System.Collections.Generic.List`1[System.String]",
+          "stackTrace": "UnityEngine.ResourceManagement.ChainOperationTypelessDepedency`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>:OnWrappedCompleted (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>)\nDelegateList`1<UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>>:Invoke (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>) (at ./Library/PackageCache/com.unity.addressables@8460f1c9c927/Runtime/ResourceManager/Util/DelegateList.cs:75)\nUnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:22)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10187,
+          "timestampUtc": "2026-11-10T18:43:00.539763Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "No Locale could be selected:\nNo Locales were available. Did you build the Addressables?\nThe following (3) IStartupLocaleSelectors were used:\n\tUnityEngine.Localization.Settings.CommandLineLocaleSelector\n\tUnityEngine.Localization.Settings.SystemLocaleSelector\n\tUnityEngine.Localization.Settings.SpecificLocaleSelector\n",
+          "stackTrace": "UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1/<>c__DisplayClass60_0<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>:<add_CompletedTypeless>b__0 (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>)\nDelegateList`1<UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>>:Invoke (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>) (at ./Library/PackageCache/com.unity.addressables@8460f1c9c927/Runtime/ResourceManager/Util/DelegateList.cs:75)\nUnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:22)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10199,
+          "timestampUtc": "2026-11-10T18:45:28.117625Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10200,
+          "timestampUtc": "2026-11-10T18:45:28.318852Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10201,
+          "timestampUtc": "2026-11-10T18:45:28.322168Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.ColorCurvesEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/ColorCurvesEditor.cs:56)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10202,
+          "timestampUtc": "2026-11-10T18:45:28.550303Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10203,
+          "timestampUtc": "2026-11-10T18:45:29.629388Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10204,
+          "timestampUtc": "2026-11-10T18:45:29.728295Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10207,
+          "timestampUtc": "2026-11-10T18:47:20.43588Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "Assets/TowTrouble/Runtime/RecoveryHudMenuSettings.cs(28,41): error CS0103: The name 'BuildLanguageSettings' does not exist in the current context",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 10209,
+          "timestampUtc": "2026-11-10T18:47:30.756628Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10210,
+          "timestampUtc": "2026-11-10T18:47:30.957611Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10211,
+          "timestampUtc": "2026-11-10T18:47:30.960434Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.ColorCurvesEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/ColorCurvesEditor.cs:56)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10212,
+          "timestampUtc": "2026-11-10T18:47:31.173919Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10213,
+          "timestampUtc": "2026-11-10T18:47:32.467748Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10214,
+          "timestampUtc": "2026-11-10T18:47:32.569208Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10218,
+          "timestampUtc": "2026-11-10T18:49:05.898776Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10219,
+          "timestampUtc": "2026-11-10T18:49:07.350247Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10220,
+          "timestampUtc": "2026-11-10T18:49:07.366712Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.ColorCurvesEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/ColorCurvesEditor.cs:56)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10221,
+          "timestampUtc": "2026-11-10T18:49:08.256379Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10222,
+          "timestampUtc": "2026-11-10T18:49:14.094994Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10223,
+          "timestampUtc": "2026-11-10T18:49:14.567776Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10224,
+          "timestampUtc": "2026-11-10T18:49:24.429899Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "System.Exception: Invalid path in TextDataProvider : 'Library/com.unity.addressables/aa/OSX/settings.json'.",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10225,
+          "timestampUtc": "2026-11-10T18:49:24.431339Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "RuntimeData is null.  Please ensure you have built the correct Player Content.",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10227,
+          "timestampUtc": "2026-11-10T18:49:24.432912Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "OperationException : Addressables - Unable to load runtime data at location UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1[[UnityEngine.AddressableAssets.Initialization.ResourceManagerRuntimeData, Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]].\n",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10228,
+          "timestampUtc": "2026-11-10T18:49:24.450953Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "UnityEngine.AddressableAssets.InvalidKeyException: Exception of type 'UnityEngine.AddressableAssets.InvalidKeyException' was thrown. No Location found for Key=System.Collections.Generic.List`1[System.String]",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10229,
+          "timestampUtc": "2026-11-10T18:49:24.460518Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "OperationException : ChainOperation failed because dependent operation failed\nUnityEngine.AddressableAssets.InvalidKeyException: Exception of type 'UnityEngine.AddressableAssets.InvalidKeyException' was thrown. No Location found for Key=System.Collections.Generic.List`1[System.String]",
+          "stackTrace": "UnityEngine.ResourceManagement.ChainOperationTypelessDepedency`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>:OnWrappedCompleted (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>)\nDelegateList`1<UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>>:Invoke (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>) (at ./Library/PackageCache/com.unity.addressables@8460f1c9c927/Runtime/ResourceManager/Util/DelegateList.cs:75)\nUnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10230,
+          "timestampUtc": "2026-11-10T18:49:24.469675Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "No Locale could be selected:\nNo Locales were available. Did you build the Addressables?\nThe following (3) IStartupLocaleSelectors were used:\n\tUnityEngine.Localization.Settings.CommandLineLocaleSelector\n\tUnityEngine.Localization.Settings.SystemLocaleSelector\n\tUnityEngine.Localization.Settings.SpecificLocaleSelector\n",
+          "stackTrace": "UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1/<>c__DisplayClass60_0<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>:<add_CompletedTypeless>b__0 (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>)\nDelegateList`1<UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>>:Invoke (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>) (at ./Library/PackageCache/com.unity.addressables@8460f1c9c927/Runtime/ResourceManager/Util/DelegateList.cs:75)\nUnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10246,
+          "timestampUtc": "2026-11-10T18:53:56.117546Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10247,
+          "timestampUtc": "2026-11-10T18:53:56.346678Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10248,
+          "timestampUtc": "2026-11-10T18:53:56.349799Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.ColorCurvesEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/ColorCurvesEditor.cs:56)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10249,
+          "timestampUtc": "2026-11-10T18:53:56.591025Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10250,
+          "timestampUtc": "2026-11-10T18:53:57.70022Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10251,
+          "timestampUtc": "2026-11-10T18:53:57.807981Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10252,
+          "timestampUtc": "2026-11-10T18:54:14.815782Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nINab.BetterFog.URP.BetterFogVolumeComponentEditor.OnEnable () (at Assets/INab Studio/Post Processing Assets/Better Fog/Core URP 6/Scripts/Editor/BetterFogVolumeComponentEditor.cs:66)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10253,
+          "timestampUtc": "2026-11-10T18:54:15.107587Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10254,
+          "timestampUtc": "2026-11-10T18:54:15.110955Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.ColorCurvesEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/ColorCurvesEditor.cs:56)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10255,
+          "timestampUtc": "2026-11-10T18:54:15.332158Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10256,
+          "timestampUtc": "2026-11-10T18:54:16.454042Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.VolumeComponentEditor.GetFields (System.Object o, System.Collections.Generic.List`1[T] infos, UnityEditor.SerializedProperty prop) (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:318)\nUnityEditor.Rendering.VolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.core@c3bbbae46ff1/Editor/Volume/VolumeComponentEditor.cs:334)\nUnityEditor.Rendering.Universal.UniversalRenderPipelineVolumeComponentEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/UniversalRenderPipelineVolumeComponentEditor.cs:47)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10257,
+          "timestampUtc": "2026-11-10T18:54:16.559571Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10258,
+          "timestampUtc": "2026-11-10T18:54:19.124773Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "System.Exception: Invalid path in TextDataProvider : 'Library/com.unity.addressables/aa/OSX/settings.json'.",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10259,
+          "timestampUtc": "2026-11-10T18:54:19.126363Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "RuntimeData is null.  Please ensure you have built the correct Player Content.",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10261,
+          "timestampUtc": "2026-11-10T18:54:19.128146Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "OperationException : Addressables - Unable to load runtime data at location UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1[[UnityEngine.AddressableAssets.Initialization.ResourceManagerRuntimeData, Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]].\n",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10262,
+          "timestampUtc": "2026-11-10T18:54:19.148612Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "UnityEngine.AddressableAssets.InvalidKeyException: Exception of type 'UnityEngine.AddressableAssets.InvalidKeyException' was thrown. No Location found for Key=System.Collections.Generic.List`1[System.String]",
+          "stackTrace": "UnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10263,
+          "timestampUtc": "2026-11-10T18:54:19.160267Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "OperationException : ChainOperation failed because dependent operation failed\nUnityEngine.AddressableAssets.InvalidKeyException: Exception of type 'UnityEngine.AddressableAssets.InvalidKeyException' was thrown. No Location found for Key=System.Collections.Generic.List`1[System.String]",
+          "stackTrace": "UnityEngine.ResourceManagement.ChainOperationTypelessDepedency`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>:OnWrappedCompleted (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>)\nDelegateList`1<UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>>:Invoke (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>) (at ./Library/PackageCache/com.unity.addressables@8460f1c9c927/Runtime/ResourceManager/Util/DelegateList.cs:75)\nUnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        },
+        {
+          "seq": 10264,
+          "timestampUtc": "2026-11-10T18:54:19.170747Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "No Locale could be selected:\nNo Locales were available. Did you build the Addressables?\nThe following (3) IStartupLocaleSelectors were used:\n\tUnityEngine.Localization.Settings.CommandLineLocaleSelector\n\tUnityEngine.Localization.Settings.SystemLocaleSelector\n\tUnityEngine.Localization.Settings.SpecificLocaleSelector\n",
+          "stackTrace": "UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1/<>c__DisplayClass60_0<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>:<add_CompletedTypeless>b__0 (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>)\nDelegateList`1<UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>>:Invoke (UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1<System.Collections.Generic.IList`1<UnityEngine.Localization.Locale>>) (at ./Library/PackageCache/com.unity.addressables@8460f1c9c927/Runtime/ResourceManager/Util/DelegateList.cs:75)\nUnityEngine.Localization.Settings.LocalizationSettings:get_SelectedLocale ()\nTowTrouble.RecoveryLocalization:get_Code () (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:36)\nTowTrouble.RecoveryLocalization:Shape (string) (at Assets/TowTrouble/Runtime/RecoveryLocalization.cs:130)\nTowTrouble.RecoveryLocalizedText:PreprocessText (string) (at Assets/TowTrouble/Runtime/RecoveryLocalizedText.cs:21)\nTMPro.TMP_Text:ParseInputText () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_Text.cs:2024)\nTMPro.TextMeshPro:OnPreRenderObject () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:2144)\nTMPro.TextMeshPro:Rebuild (UnityEngine.UI.CanvasUpdate) (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TextMeshPro.cs:294)\nTMPro.TMP_UpdateManager:DoRebuilds () (at ./Library/PackageCache/com.unity.ugui@b95364aab964/Runtime/TMP/TMP_UpdateManager.cs:177)\nUnityEngine.Canvas:ForceUpdateCanvases ()\nTowTrouble.RecoveryHud:ConfigureMenuPage () (at Assets/TowTrouble/Runtime/RecoveryHudMenuControls.cs:87)\nTowTrouble.RecoveryHud:Show (string) (at Assets/TowTrouble/Runtime/RecoveryHud.cs:132)\nTowTrouble.RecoveryHud:Start () (at Assets/TowTrouble/Runtime/RecoveryHud.cs:53)\n",
+          "seeded": false
+        }
+      ],
+      "cursor": 10278,
+      "session": "833d5b02cd5d4d5cb0ad6d8a88eac77b",
+      "returned": 55,
+      "dropped": false,
+      "reset": false,
+      "counts": {
+        "error": 1617,
+        "warn": 110,
+        "log": 273
+      },
+      "groundTruth": {
+        "sampledUtc": "2026-11-10T19:00:08.088319Z",
+        "ageMs": 133,
+        "compilationFailed": false,
+        "compiling": false,
+        "consoleErrors": 12,
+        "consoleWarnings": 5,
+        "consoleLogs": 12,
+        "seeded": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

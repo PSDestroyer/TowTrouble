@@ -60,7 +60,13 @@ namespace TowTrouble
             result = result.Replace("[<sprite", "<sprite").Replace("tint=0>]", "tint=0>");
             return result.Replace("tint=0>", "tint=0></size>").Replace("<sprite name=", "<size=145%><sprite name=");
         }
-        public string PreprocessText(string text) => Format(text, RecoveryInputDevices.UsingGamepad, RecoveryInputPrompts.Family(RecoveryInputDevices.Pad), single);
+        public string PreprocessText(string text)
+        {
+            // Resolve input glyphs before translation so bound keys and stick names stay intact.
+            var value=RecoveryLocalization.Translate(Format(text,RecoveryInputDevices.UsingGamepad,RecoveryInputPrompts.Family(RecoveryInputDevices.Pad),single));
+            if(label!=null)label.isRightToLeftText=RecoveryLocalization.Code=="ar"&&RTLTMPro.TextUtils.IsRTLInput(value??"");
+            return RecoveryLocalization.Shape(value);
+        }
         private void LateUpdate()
         {
             if (label == null) return;

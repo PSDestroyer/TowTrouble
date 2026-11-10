@@ -19,7 +19,7 @@ namespace TowTrouble.Editor
             var tracks=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<RecoveryWheelTracks>(true)).Single();
             var mesh=Grain();
             var clods=Material("Wheel debris", "Universal Render Pipeline/Particles/Lit");
-            var powder=Material("Wheel powder", "TowTrouble/Exhaust Vapor");
+            var powder=Material("Wheel powder", "TowTrouble/Wheel Dust");
             foreach(var car in world.Drivers.Concat(new[]{world.Casualty}))
             {
                 var coating=car.GetComponent<RecoveryWheelMud>();
@@ -50,15 +50,16 @@ namespace TowTrouble.Editor
         private static Material Material(string name,string shaderName)
         {
             string path=Root+name+".mat";
+            var shader=Shader.Find(shaderName);if(shader==null)throw new InvalidOperationException("Missing shader "+shaderName);
             var value=AssetDatabase.LoadAssetAtPath<Material>(path);
             if(value==null)
             {
-                var shader=Shader.Find(shaderName);if(shader==null)throw new InvalidOperationException("Missing shader "+shaderName);
                 value=new Material(shader){name=name};value.SetColor("_BaseColor",Color.white);
                 if(value.HasProperty("_Smoothness"))value.SetFloat("_Smoothness",.05f);
                 if(value.HasProperty("_Metallic"))value.SetFloat("_Metallic",0);
                 AssetDatabase.CreateAsset(value,path);
             }
+            if(value.shader!=shader)value.shader=shader;
             return value;
         }
         private static ParticleSystem Configure(Transform owner,string name,Material material,Mesh mesh)
@@ -81,6 +82,7 @@ namespace TowTrouble.Editor
             if(mesh!=null){rotation.x=new ParticleSystem.MinMaxCurve(-5,5);rotation.y=new ParticleSystem.MinMaxCurve(-4,4);rotation.z=new ParticleSystem.MinMaxCurve(-5,5);}
             var renderer=ps.GetComponent<ParticleSystemRenderer>();Undo.RecordObject(renderer,"Bind shared wheel debris material");renderer.renderMode=mesh!=null?ParticleSystemRenderMode.Mesh:ParticleSystemRenderMode.Billboard;
             if(mesh!=null)renderer.mesh=mesh;renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;renderer.motionVectorGenerationMode=MotionVectorGenerationMode.ForceNoMotion;
+            if(mesh==null)RecoveryWheelDebrisRules.ConfigurePowder(ps);
             EditorUtility.SetDirty(ps);EditorUtility.SetDirty(renderer);child.gameObject.SetActive(true);return ps;
         }
     }

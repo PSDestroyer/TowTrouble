@@ -1,0 +1,86 @@
+{
+  "Cost-PC.json": {
+    "off": {
+      "samples": 354,
+      "frameMedianMs": 16.5914373,
+      "renderMedianMs": 6.654729185,
+      "gpuMedianMs": 18.675479193916544,
+      "drawCallsMedian": 3466.0,
+      "particlesMean": 25.268361581920903,
+      "projectedQuadAreaMean": 0.15534166956497175
+    },
+    "on": {
+      "samples": 359,
+      "frameMedianMs": 16.5145054,
+      "renderMedianMs": 6.66120863,
+      "gpuMedianMs": 19.154500012518838,
+      "drawCallsMedian": 3469,
+      "particlesMean": 25.573816155988858,
+      "projectedQuadAreaMean": 0.15760034813649024
+    },
+    "device": "Apple M2 Pro",
+    "renderScale": 1.0,
+    "frames": [
+      2578,
+      3709
+    ],
+    "youngSizeMultiplierMin": 0.319999963,
+    "oldSizeMultiplierMax": 2.49993515
+  },
+  "FourWheels-Cost-SwitchPreview.json": {
+    "off": {
+      "samples": 180,
+      "frameMedianMs": 33.2995436,
+      "renderMedianMs": 3.532624435,
+      "gpuMedianMs": 21.44577079161536,
+      "drawCallsMedian": 418.0,
+      "particlesMean": 21.177777777777777,
+      "projectedQuadAreaMean": 0.1264971810611111
+    },
+    "on": {
+      "samples": 179,
+      "frameMedianMs": 33.32663,
+      "renderMedianMs": 3.52237916,
+      "gpuMedianMs": 22.219458245672286,
+      "drawCallsMedian": 422,
+      "particlesMean": 21.391061452513966,
+      "projectedQuadAreaMean": 0.12280881762402235
+    },
+    "device": "Apple M2 Pro",
+    "renderScale": 0.8,
+    "frames": [
+      7264,
+      7838
+    ],
+    "youngSizeMultiplierMin": 0.319999963,
+    "oldSizeMultiplierMax": 2.49951625
+  },
+  "Cost-SwitchPreview.json": {
+    "off": {
+      "samples": 181,
+      "frameMedianMs": 33.3878326,
+      "renderMedianMs": 3.47549987,
+      "gpuMedianMs": 22.62520822114311,
+      "drawCallsMedian": 419,
+      "particlesMean": 16.87845303867403,
+      "projectedQuadAreaMean": 0.09930784610165747
+    },
+    "on": {
+      "samples": 179,
+      "frameMedianMs": 33.3667526,
+      "renderMedianMs": 3.503625,
+      "gpuMedianMs": 22.709750046487898,
+      "drawCallsMedian": 421,
+      "particlesMean": 16.98324022346369,
+      "projectedQuadAreaMean": 0.10083108578994414
+    },
+    "device": "Apple M2 Pro",
+    "renderScale": 0.8,
+    "frames": [
+      3296,
+      3872
+    ],
+    "youngSizeMultiplierMin": 0.319999963,
+    "oldSizeMultiplierMax": 2.49953
+  }
+}

@@ -9,6 +9,8 @@ namespace TowTrouble
         private readonly float[] splashBudget=new float[4],powderBudget=new float[4];
         private readonly RecoveryWheelDebrisKind[] debrisKinds=new RecoveryWheelDebrisKind[4];
         private Vector3 debrisVelocity;
+        private Camera debrisCamera;
+        private float debrisGain=1;
         private bool HasWheelDebris=>splashes!=null&&splashes.Length==4&&powders!=null&&powders.Length==4;
         public void ConfigureDebris(RecoveryWheelTracks tracks,ParticleSystem[] fineParticles)
         {trackSurfaces=tracks;powders=fineParticles;}
@@ -35,11 +37,12 @@ namespace TowTrouble
         }
         private void ThrowDebris(int wheel,RaycastHit hit)
         {
+            if(debrisGain<=0){ResetDebrisBudget(wheel);return;}
             if(splashes==null||wheel>=splashes.Length||splashes[wheel]==null)return;
             var kind=DebrisSurface(hit,out var point);
             if(debrisKinds[wheel]!=kind){ResetDebrisBudget(wheel);debrisKinds[wheel]=kind;}
             float angular=vehicle.WheelAngularVelocity[wheel],slip=vehicle.SlipAtWheel(wheel),speed=vehicle.Speed;
-            float rate=RecoveryWheelDebrisRules.Rate(kind,speed,slip,angular,true)*Mathf.Clamp01(RecoveryVehicle.VisualEffectsGain);
+            float rate=RecoveryWheelDebrisRules.Rate(kind,speed,slip,angular,true)*Mathf.Clamp01(RecoveryVehicle.VisualEffectsGain)*debrisGain;
             float dt=Mathf.Min(Time.deltaTime,.05f);
             splashBudget[wheel]=Mathf.Min(3,splashBudget[wheel]+rate*dt);
             int count=(int)splashBudget[wheel];splashBudget[wheel]-=count;
@@ -66,15 +69,21 @@ namespace TowTrouble
                 }
             }
             if(powders==null||wheel>=powders.Length||powders[wheel]==null)return;
-            bool loose=kind==RecoveryWheelDebrisKind.Mud||kind==RecoveryWheelDebrisKind.Sand||kind==RecoveryWheelDebrisKind.Snow||kind==RecoveryWheelDebrisKind.Dirt;
-            powderBudget[wheel]=Mathf.Min(2,powderBudget[wheel]+(loose?rate*.32f:0)*dt);
+            bool limited=RecoveryPlatform.UsesSwitchRendering;
+            if(!RecoveryWheelDebrisRules.PowderWheel(wheel,vehicle.WheelSlip,limited)){powderBudget[wheel]=0;return;}
+            float powderRate=RecoveryWheelDebrisRules.PowderRate(kind,speed,slip,angular,true,limited)*Mathf.Clamp01(RecoveryVehicle.VisualEffectsGain)*debrisGain;
+            powderBudget[wheel]=powderRate>0?Mathf.Min(2,powderBudget[wheel]+powderRate*dt):0;
             int fine=(int)powderBudget[wheel];powderBudget[wheel]-=fine;
             if(fine==0)return;
             var powder=powders[wheel];if(!powder.isPlaying)powder.Play(false);
-            color.a=kind==RecoveryWheelDebrisKind.Snow?.38f:.24f;
-            var puff=new ParticleSystem.EmitParams{position=point+normal*.10f,velocity=back*(.35f+speed*.1f)+normal*(.4f+slip*.6f)+side*.25f,
-                startColor=color,startSize=Random.Range(.12f,.24f),startLifetime=kind==RecoveryWheelDebrisKind.Snow?.85f:.65f};
-            powder.Emit(puff,fine);
+            for(int i=0;i<fine;i++)
+            {
+                var puff=new ParticleSystem.EmitParams{position=point+normal*.18f+back*Random.Range(.05f,.18f)+side*Random.Range(-.08f,.16f),
+                    velocity=back*(.45f+speed*.12f)+normal*(.40f+slip*.55f)+side*Random.Range(.08f,.30f),
+                    startColor=RecoveryWheelDebrisRules.PowderColor(kind),startSize=RecoveryWheelDebrisRules.PowderSize(kind,speed,slip,limited)*Random.Range(.85f,1.15f),
+                    startLifetime=RecoveryWheelDebrisRules.PowderLifetime(kind,limited)*Random.Range(.9f,1.1f)};
+                powder.Emit(puff,1);
+            }
         }
     }
 }
