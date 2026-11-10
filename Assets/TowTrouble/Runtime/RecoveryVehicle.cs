@@ -51,10 +51,12 @@ namespace TowTrouble
             foreach(var m in models)m.Root.SetActive(false);wheelVisuals=assembly.Wheels;radius=assembly.Radius;
             if(body==null)body=GetComponent<Rigidbody>();body.mass=performance.Mass;driveForce=performance.Drive;maxSpeed=performance.Speed;dryGripScale=performance.DryGrip;mudGripScale=performance.MudGrip;sandGripScale=performance.SandGrip;snowGripScale=performance.SnowGrip;mudResistanceScale=performance.MudResistance;suspensionLift=performance.Lift;
             CableStrength=performance.Cable;WinchSpeed=performance.Winch;WinchForce=performance.WinchForce;
-            for(int i=0;i<4;i++){var anchor=assembly.Anchors[i];anchor.x*=performance.Track;anchor.y+=performance.Lift;wheels[i].transform.localPosition=anchor;wheels[i].radius=assembly.Radii!=null&&assembly.Radii.Length==4?assembly.Radii[i]:radius;wheelVisuals[i].position=transform.TransformPoint(anchor-Vector3.up*.12f);}
+            // Extend wheels below the chassis: ground support then raises the body.
+            // Body collider and hitches remain in the authored chassis coordinate frame.
+            for(int i=0;i<4;i++){var anchor=assembly.Anchors[i];anchor.x*=performance.Track;anchor.y-=performance.Lift;wheels[i].transform.localPosition=anchor;wheels[i].radius=assembly.Radii!=null&&assembly.Radii.Length==4?assembly.Radii[i]:radius;wheelVisuals[i].position=transform.TransformPoint(anchor-Vector3.up*.12f);}
             ResetWheelPresentation();
             frontHitch.localPosition=assembly.FrontHitch;rearHitch.localPosition=assembly.RearHitch;
-            var collision=GetComponent<BoxCollider>();collision.center=assembly.ColliderCenter+Vector3.up*performance.Lift;collision.size=assembly.ColliderSize;geometryVersion++;
+            var collision=GetComponent<BoxCollider>();collision.center=assembly.ColliderCenter;collision.size=assembly.ColliderSize;geometryVersion++;
         }
         public uint HapticImpactSerial {get;private set;}
         public float HapticImpactStrength {get;private set;}

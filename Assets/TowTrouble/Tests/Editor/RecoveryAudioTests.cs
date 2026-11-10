@@ -38,6 +38,20 @@ namespace TowTrouble.Tests
                 Assert.That((layers.x+layers.y+layers.z)*.85f*RecoveryAudioPolicy.EngineBoost(6),Is.LessThan(1),"Engine-only gain budget");
             }
         }
+        [Test] public void ImportedEngineLoopsRetainAudibleMidrangeAtLowPitch()
+        {
+            foreach(string name in new[]{"Engine Idle","Engine Drive"})
+            {
+                var clip=UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/TowTrouble/Art/Audio/Library/Vehicles/"+name+".wav");
+                Assert.That(clip,Is.Not.Null);clip.LoadAudioData();
+                var samples=new float[clip.samples*clip.channels];Assert.That(clip.GetData(samples,0),Is.True);
+                Assert.That(clip.channels,Is.EqualTo(1));
+                // 310 Hz in the source remains about 200 Hz at the lowest idle pitch.
+                double alpha=System.Math.Exp(-2*System.Math.PI*310/clip.frequency),previous=0,high=0,total=0,mid=0;
+                foreach(float value in samples){high=alpha*(high+value-previous);previous=value;total+=value*value;mid+=high*high;Assert.That(Mathf.Abs(value),Is.LessThan(.95f));}
+                Assert.That(mid/total,Is.GreaterThan(.15),name+" is dominated by inaudible sub-bass");
+            }
+        }
         [Test] public void CosmeticCounterHandlesWrapWithoutReplayingOldEvents()
         {Assert.That(RecoveryAudioPolicy.Changed(0,uint.MaxValue),Is.True);Assert.That(RecoveryAudioPolicy.Changed(2,3),Is.False);Assert.That(RecoveryAudioPolicy.Changed(3,3),Is.False);}
         [Test] public void CriticalRecoveryFeedbackDucksMusicGently()

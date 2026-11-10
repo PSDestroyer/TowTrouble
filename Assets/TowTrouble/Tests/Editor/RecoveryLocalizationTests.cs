@@ -65,6 +65,25 @@ namespace TowTrouble.Tests
             }
             finally{RecoveryLocalization.Select(before);}
         }
+        [Test] public void DeliveryProgressIsLocalizedAndDistinctFromTheStopInstruction()
+        {
+            string before=RecoveryLocalization.Code;
+            try
+            {
+                foreach(string code in RecoveryLanguage.Codes)
+                {
+                    RecoveryLocalization.Select(code);
+                    foreach(string source in new[]{"Delivering…","Delivering the vehicle…"})
+                    {
+                        string translated=RecoveryLocalization.Translate(source);
+                        if(code!="en")Assert.AreNotEqual(source,translated,code);
+                        Assert.AreNotEqual(RecoveryLocalization.Translate("Stop to deliver"),translated,code);
+                        StringAssert.Contains("…",translated,code);
+                    }
+                }
+            }
+            finally{RecoveryLocalization.Select(before);}
+        }
         [Test] public void DynamicValuesAndMandatoryTreeStepSurviveLocalization()
         {
             string before=RecoveryLocalization.Code;

@@ -767,3 +767,15 @@ Network appearance invalidation now includes JSON, fallback paint and base model
 ## Engine audibility and load mix — 2026-11-11
 - RecoveryAudioBank EngineBoostDb=6 applies only to engine loops. Idle steady pitch; drive throttle/coasting separation; load ramps from actual EngineEffort and throttle, using lower-pitched EngineDrive instead of winch clip. Existing source count, music/winch/UI/ambience levels unchanged. Editor authoring assignment updated.
 - Compile clean;14 direct audio tests plus native routing/effects-mute/app-pause checks passed. No build/Play/profile or scene changes; actual driving/console audition pending. Evidence Docs/Validation/EngineMix.
+
+## Delivery progress localization — 2026-11-11
+- Added missing waypoint `Delivering…` and corrected `Delivering the vehicle…` (previously mapped to the stop instruction) in28 authored translations/29 native locales. Indonesian approach wording shortened after actual HUD overflow check. Canonical UI/gameplay logic unchanged.
+-6 direct localization tests passed; compile clean;145 actual HUD fixtures (29 locales×5 text scales) finished with0overflow/errors; original scene/dirty state preserved. No build/Play/save mutation. Evidence Docs/Validation/DeliveryLocalization.
+
+## Engine midrange presence — 2026-11-11
+- User still barely hears engine on both PC/Switch after +6dB. Measured original idle/drive:99.98%/99.97% power below200Hz, main43Hz; idle pitch lowered further. Reworked the existing WAVs offline with band-limited harmonics/midrange balance (not new recordings); now76%/89% power above200Hz, peak .70. Kept GUIDs/import settings,6dB boost and other audio unchanged. Original preserved Docs/Audio/EngineSource, provenance/hashes/signal audit updated.
+- Imported UnityPCM checked; compilation clean. New regression checks imported low-pitch midrange/headroom. No live listening/hardware guarantee, build/Play/scene/save changes. Evidence Docs/Validation/EnginePresence.
+
+## Offroad suspension sign correction — 2026-11-11
+- Confirmed UseAssembly applied +Lift to wheel anchors (lowering supported chassis) and independently moved collider above mesh. Changed wheel anchors to -Lift; collider remains at authored center with body/hitches. Existing +15cm item, stiffness/mass/cost unchanged.
+- Native before/after probe and regression across four base models/catalogue bodies, repeated apply and Stock restore passed; five garage/camera tests and compilation clean. Level-ground static spring balance predicts raised chassis; no live physics/console validation, build/Play/scene/save changes. Evidence Docs/Validation/OffroadSuspension.

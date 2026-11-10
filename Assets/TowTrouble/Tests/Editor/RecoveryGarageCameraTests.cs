@@ -102,6 +102,22 @@ namespace TowTrouble.Tests
             }
             finally{EditorSceneManager.CloseScene(scene,true);SceneManager.SetActiveScene(previousScene);}
         }
+        [Test] public void OffroadSuspensionRaisesEveryBodyAndStockRestoresItsGeometry()
+        {
+            using(var f=new Fixture())
+            {
+                var bodies=f.Catalog.Parts.Where(p=>p.Slot==GarageSlot.Assembly&&!p.Id.StartsWith("stock_")).ToArray();
+                for(int model=0;model<4;model++)
+                {
+                    f.Car.SetModel(model);
+                    f.CheckSuspension(new RecoveryBuild{Model=model});
+                }
+                foreach(var part in bodies)
+                {
+                    var build=new RecoveryBuild{Model=3};f.Car.SetModel(3);build.Set(part,f.Catalog);f.CheckSuspension(build);
+                }
+            }
+        }
         private static void SameBounds(Bounds expected,Bounds actual,string label)
         {
             Assert.That(Vector3.Distance(actual.center,expected.center),Is.LessThan(.0001f),label+" center");
@@ -147,6 +163,36 @@ namespace TowTrouble.Tests
                 camera.transform.SetPositionAndRotation(p,Quaternion.LookRotation(look-p));
                 Assert.That(p.y,Is.GreaterThan(Car.transform.position.y));
                 Assert.That(Vector3.Distance(p,Car.transform.TransformPoint(frame.Focus)),Is.EqualTo(frame.Distance).Within(.03f));
+            }
+            public void CheckSuspension(RecoveryBuild stock)
+            {
+                Custom.Apply(stock,0,true);
+                var anchors=Enumerable.Range(0,4).Select(i=>Car.transform.InverseTransformPoint(Car.WheelAnchor(i))).ToArray();
+                var hubs=Enumerable.Range(0,4).Select(i=>Car.transform.InverseTransformPoint(Car.WheelVisual(i).position)).ToArray();
+                var collider=Car.GetComponent<BoxCollider>();var center=collider.center;var size=collider.size;
+                var front=Car.transform.InverseTransformPoint(Car.FrontHitch);var rear=Car.transform.InverseTransformPoint(Car.RearHitch);
+                var baseline=GaragePerformance.Calculate(stock,Catalog);var lifted=stock.Copy();lifted.Set(Catalog.Find("suspension_offroad"),Catalog);
+                var performance=GaragePerformance.Calculate(lifted,Catalog);Assert.That(performance.Lift,Is.EqualTo(.15f).Within(.001f));
+                for(int repeat=0;repeat<2;repeat++)
+                {
+                    Custom.Apply(lifted,0,true);
+                    for(int i=0;i<4;i++)
+                    {
+                        var actual=Car.transform.InverseTransformPoint(Car.WheelAnchor(i));
+                        Assert.That(Vector3.Distance(actual,anchors[i]-Vector3.up*.15f),Is.LessThan(.003f));
+                        Assert.That(Vector3.Distance(Car.transform.InverseTransformPoint(Car.WheelVisual(i).position),hubs[i]-Vector3.up*.15f),Is.LessThan(.003f));
+                        // Static spring balance with the runtime support constants, including upgrade mass.
+                        float stockCompression=baseline.Mass*Physics.gravity.magnitude/(4*37000);
+                        float offroadCompression=performance.Mass*Physics.gravity.magnitude/(4*37000*(1+performance.Lift));
+                        float rise=anchors[i].y-actual.y+stockCompression-offroadCompression;
+                        Assert.That(rise,Is.InRange(.145f,.18f),"Offroad must settle above Stock");
+                    }
+                    Assert.That(collider.center,Is.EqualTo(center));Assert.That(collider.size,Is.EqualTo(size));
+                    Assert.That(Vector3.Distance(Car.transform.InverseTransformPoint(Car.FrontHitch),front),Is.LessThan(.003f));
+                    Assert.That(Vector3.Distance(Car.transform.InverseTransformPoint(Car.RearHitch),rear),Is.LessThan(.003f));
+                }
+                Custom.Apply(stock,0,true);
+                for(int i=0;i<4;i++)Assert.That(Vector3.Distance(Car.transform.InverseTransformPoint(Car.WheelAnchor(i)),anchors[i]),Is.LessThan(.003f));
             }
             public int InflateEffectBounds()
             {
