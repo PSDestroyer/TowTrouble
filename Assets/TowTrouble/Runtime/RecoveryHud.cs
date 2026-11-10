@@ -71,14 +71,14 @@ namespace TowTrouble
             // Keep general-menu actions above the larger, 720p-readable control strip.
             if(parent==pageRoot&&page!="Board"&&page!="Garage"&&page!="Confirm"&&y>=780&&y+height>830)y=830-height;
             var rt=Panel(parent,x,y,width,height);rt.name=label;var img=rt.GetComponent<UnityEngine.UI.Image>();img.raycastTarget=true;img.color=Color.clear;
-            var plate=rt.GetComponentInChildren<RecoveryPlateGraphic>();if(plate==null)plate=Plate(rt,Ink,primary);plate.Style=primary?RecoveryPlateStyle.Gold:RecoveryPlateStyle.Charcoal;
+            var plate=rt.GetComponentInChildren<RecoveryPlateGraphic>();if(plate==null)plate=Plate(rt,Ink,primary);plate.Style=RecoveryPlateStyle.Charcoal;
             var button=rt.gameObject.AddComponent<UnityEngine.UI.Button>();button.targetGraphic=plate;
             var colors=button.colors;colors.normalColor=Color.white;colors.highlightedColor=new Color(1,.97f,.87f);colors.selectedColor=Color.white;colors.pressedColor=new Color(.85f,.77f,.62f);colors.disabledColor=new Color(.9f,.9f,.9f,1);colors.fadeDuration=.1f;button.colors=colors;
-            float padding=width<150?8:22;var text=Text(rt,label,padding,0,width-padding*2,height,21,primary?Ink:Paper,true);text.alignment=TextAlignmentOptions.MidlineLeft;
+            float padding=width<150?8:22;var text=Text(rt,label,padding,0,width-padding*2,height,21,Paper,true);text.alignment=TextAlignmentOptions.MidlineLeft;
             if(displayFont!=null){text.font=displayFont;text.fontStyle=FontStyles.Normal;}
             text.enableAutoSizing=true;text.fontSizeMin=14;text.fontSizeMax=21*P.textScale;
-            var icon=ActionIcon(label);if(icon.HasValue&&width>260&&height>=48)ButtonIcon(button,icon.Value,primary);
-            rt.gameObject.AddComponent<RecoveryUiFeedback>();button.onClick.AddListener(()=>{PlayUi(label.StartsWith("BACK",StringComparison.Ordinal)?RecoverySound.Back:RecoverySound.Confirm);action();});return button;
+            var icon=ActionIcon(label);if(icon.HasValue&&width>260&&height>=48)ButtonIcon(button,icon.Value);
+            rt.gameObject.AddComponent<RecoveryUiFeedback>().ConfigureButton(primary);button.onClick.AddListener(()=>{PlayUi(label.StartsWith("BACK",StringComparison.Ordinal)?RecoverySound.Back:RecoverySound.Confirm);action();});return button;
         }
         private void Header(string title,string sub)
         {Panel(pageRoot,0,0,1600,196,new Color(.03f,.04f,.05f,.64f));Icon(pageRoot,RecoveryIcon.Hook,28,65,34,Amber);Text(pageRoot,title,80,58,1120,76,46,Paper,true);Panel(pageRoot,82,136,82,4,Amber);Text(pageRoot,sub,82,151,1400,40,18,Muted);}
@@ -136,7 +136,7 @@ namespace TowTrouble
             if (IsGeneralMenu) { FocusMenuControl(); yield break; }
             var controls=target.GetComponentsInChildren<UnityEngine.UI.Selectable>();UnityEngine.UI.Selectable preferred=null;
             foreach(var control in controls)if(control.IsInteractable())
-            {if(control.name==remembered){preferred=control;break;}if(preferred==null)preferred=control;var plate=control.GetComponentInChildren<RecoveryPlateGraphic>();if(remembered==null&&plate!=null&&plate.Style==RecoveryPlateStyle.Gold){preferred=control;break;}}
+            {if(control.name==remembered){preferred=control;break;}if(preferred==null)preferred=control;var feedback=control.GetComponent<RecoveryUiFeedback>();if(remembered==null&&feedback!=null&&feedback.PreferredFocus){preferred=control;break;}}
             if(preferred!=null&&EventSystem.current!=null)EventSystem.current.SetSelectedGameObject(preferred.gameObject);
         }
         private void BuildTitle()
@@ -144,7 +144,7 @@ namespace TowTrouble
             Logo(pageRoot,100,70,96);Text(pageRoot,L("DRUMURI GRELE. PRIETENI BUNI.","BAD ROADS. GOOD COMPANY."),108,333,700,40,21,Paper,true);
             var titlePrompt=Panel(pageRoot,450,738,700,72);titlePrompt.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Gold;
             prompt=Text(pageRoot,"",0,750,1600,48,26,Ink,true);prompt.alignment=TextAlignmentOptions.Center;
-            Text(pageRoot,RecoveryPlatform.MultiplayerAvailable?"TOW TROUBLE  •  SOLO / CO-OP":"TOW TROUBLE  •  SOLO",76,847,1000,25,15,Muted);
+            Text(pageRoot,RecoveryPlatform.MultiplayerAvailable?"TOW TROUBLE  •  SOLO / CO-OP":"TOW TROUBLE",76,847,1000,25,15,Muted);
         }
 
 
@@ -207,7 +207,7 @@ namespace TowTrouble
 
         private void Update()
         {
-            if(root==null)return;MaintainReadableWindow();RefreshScreenLayout();bool online=session.Connected&&session.LocalSlot>=0;var w=session.World;
+            if(root==null)return;MaintainReadableWindow();RefreshScreenLayout();bool online=session.ReadyForPresentation;var w=session.World;
             if(!online&&session.View=="Starter"&&page!="Starter"&&page!="Confirm")Show("Starter");
             RefreshPersistenceHint();UpdateMenuPresentation();
             if (online) ObserveAssistance(w, session.LocalSlot);

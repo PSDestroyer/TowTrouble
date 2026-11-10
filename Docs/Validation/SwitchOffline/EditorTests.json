@@ -1,0 +1,85 @@
+{
+  "results": [
+    {
+      "test": "OnlyOneInProcessPlayerCanStartWithoutAnyAddressOrPort",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "PacketsPreserveOffsetsChannelsOrderAndTransportIndexAfterCallerReusesBuffer",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "RestartDropsPreviousSessionPacketsAndEmitsOneDisconnect",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "DisconnectFromReceiveCallbackDiscardsTheRestOfTheBatch",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "OfflinePolicyInstallsBeforeInitializationAndDesktopKeepsItsExistingTransport",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "OfflineSoloRefusesSocketTransportBeforeStartingAnyManager",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "SwitchDoesNotAutoInitializeSocketsOrNetworkInterfaces",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "SinglePlayerTargetRedirectsOnlyMultiplayerScreens",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "MultiplayerEntryPointsReturnBeforeProfileOrNetworkAccessOnSinglePlayerTarget",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "DesktopKeepsItsMultiplayerScreens",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "SwitchQualityToggleNeverSelectsPcOrMutatesAuthoredPipelines",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "DesktopSelectsPcByNameEvenWhenSwitchIsTheLastQualityLevel",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "SessionDisposalRestoresEntryQualityPipelineAndLod",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "SwitchBuildIncludesOnlyItsDedicatedQualityAndKeepsFogRenderer",
+      "passed": true,
+      "error": ""
+    },
+    {
+      "test": "GraphicsPolicyUsesBuildTargetWithoutFollowingMultiplayerPreview",
+      "passed": true,
+      "error": ""
+    }
+  ],
+  "failures": 0,
+  "scenePreserved": true,
+  "playing": false,
+  "previewRestored": true,
+  "socketAutoInit": false,
+  "networkAutoInit": false
+}

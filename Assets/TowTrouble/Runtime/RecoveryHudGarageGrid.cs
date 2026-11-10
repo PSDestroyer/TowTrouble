@@ -78,10 +78,10 @@ namespace TowTrouble
             if(badge!=null){var strip=Panel(imageBack,0,0,width-18,26,new Color(.06f,.08f,.09f,.96f));Text(strip,badge,5,0,width-28,26,15,badge=="PREVIEW"?Amber:Paper,true);}
             if(garageRecommendation?.Id==part.Id)Text(imageBack,"SUGGESTED",5,62,width-28,26,15,Amber,true);
             string price=owned?(part.Price==0?L("STOCK","STOCK"):L("DEȚINUT","OWNED")):RecoveryEconomy.Price(P,part).ToString("N0")+" CR";
-            Text(card.transform,price,12,184,width-24,28,17,active?Ink:Amber,true).alignment=TextAlignmentOptions.MidlineLeft;
+            Text(card.transform,price,12,184,width-24,28,17,Amber,true).alignment=TextAlignmentOptions.MidlineLeft;
             string performance=RecoveryGarageWorkflow.AppearanceOnly(part)?"Appearance only":RecoveryGarageCardInfo.Performance(part,true,P.vehicle);
             if(part.Slot==GarageSlot.Assembly)performance=performance.Replace(" kg · "," kg\n").Replace("Top speed: ","");
-            if(!string.IsNullOrEmpty(performance))Text(card.transform,performance,12,216,width-24,part.Slot==GarageSlot.Assembly?70:48,15,active?Ink:Muted,true);
+            if(!string.IsNullOrEmpty(performance))Text(card.transform,performance,12,216,width-24,part.Slot==GarageSlot.Assembly?70:48,15,Muted,true);
             card.gameObject.AddComponent<RecoveryGarageCardFocus>().Configure(scroll);
         }
     }

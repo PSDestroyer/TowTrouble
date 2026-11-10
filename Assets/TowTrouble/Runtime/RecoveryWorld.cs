@@ -326,11 +326,13 @@ namespace TowTrouble
             elapsed = 0; snaps = 0; deliveryHold = 0;
             ResetWinches();
             drivers[0].SetModel(vehicle0.Value);drivers[1].SetModel(vehicle1.Value);
+            // The map's lobby already belongs at its garage, before ConfigureSession sets FreeRoam.
+            bool garageSpawn = map != null || FreeRoam;
             for (int i = 0; i < 2; i++)
             {
                 connected[i] = false; tensions[i] = 0; winching[i] = false; lastInput[i] = Time.time;
                 resets[i]=0;pullSeconds[i]=0;extending[i]=false;cableStress[i]=0;
-                drivers[i].SetSpawn(FreeRoam?garagePosition+new Vector3(i==0?-2.5f:2.5f,.05f,-2):new Vector3(i==0?-2.3f:2.5f,.05f,30f),FreeRoam?Quaternion.Euler(0,180,0):Quaternion.identity);drivers[i].SetSimulation(false);appliedBuild[i]=null;ApplyBuild(i);
+                drivers[i].SetSpawn(garageSpawn?garagePosition+new Vector3(i==0?-2.5f:2.5f,.05f,-2):new Vector3(i==0?-2.3f:2.5f,.05f,30f),garageSpawn?Quaternion.Euler(0,180,0):Quaternion.identity);drivers[i].SetSimulation(false);appliedBuild[i]=null;ApplyBuild(i);
             }
             casualty.SetSpawn(Contract.Target,Quaternion.Euler(Contract.Pitch,Contract.Heading,Contract.Roll),Contract.MudDrag,Contract.Extraction-2f,!Contract.IsOpenWorld&&ContractIndex==2); casualty.SetSimulation(false);
         }

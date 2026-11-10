@@ -40,12 +40,12 @@ namespace TowTrouble
                 var choice=Button(pageRoot,"",76,228+i*130,440,()=>PreviewVehicleChoice(model),active,112);
                 choice.name="Starter "+i;starterChoices[i]=choice;
                 choice.gameObject.AddComponent<RecoveryMenuPreviewFocus>().Configure(()=>PreviewVehicleChoice(model));
-                Color title=active?Ink:Paper,secondary=active?new Color(.27f,.22f,.14f):Muted;
+                Color title=Paper,secondary=Muted;
                 Text(choice.transform,RecoveryVehicle.ModelNames[i],22,9,346,38,28,title,true);
                 Text(choice.transform,StarterRoles[i],22,48,396,25,17,secondary);
                 string stats=(RecoveryBodyBalance.StockDrive(i)*.004f).ToString("0.0")+" kN   ·   "+RecoveryBodyBalance.StockMass(i).ToString("0")+" kg   ·   "+(RecoveryBodyBalance.StockSpeed(i)*3.6f).ToString("0")+" km/h";
                 Text(choice.transform,stats,22,79,396,27,17,title,true);
-                if(active)Icon(choice.transform,RecoveryIcon.Check,394,18,22,Ink);
+                if(active)Icon(choice.transform,RecoveryIcon.Check,394,18,22,Amber);
             }
             var hint=Panel(pageRoot,550,184,620,38,new Color(.03f,.04f,.05f,.72f));
             starterRotateHint=ControlText(Text(hint,"",18,3,584,30,16,Paper));

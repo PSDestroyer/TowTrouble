@@ -21,7 +21,7 @@ namespace TowTrouble
         {
             Panel(pageRoot,48,35,460,746);Logo(pageRoot,76,58,63);
             Text(pageRoot,"BAD ROADS. GOOD COMPANY.",82,235,392,30,15,Muted,true);Wallet(pageRoot,P.credits);
-            Button(pageRoot,"PLAY SOLO",80,300,396,()=>StartMenuSession(true),true,62);
+            Button(pageRoot,RecoveryPlatform.MultiplayerAvailable?"PLAY SOLO":"PLAY",80,300,396,()=>StartMenuSession(true),true,62);
             bool multiplayer=RecoveryPlatform.MultiplayerAvailable;
             if(multiplayer)Button(pageRoot,"PLAY CO-OP",80,380,396,()=>Show("Coop"));
             Button(pageRoot,"HOW TO PLAY",80,multiplayer?450:380,396,()=>Show("Help"));
@@ -115,7 +115,7 @@ namespace TowTrouble
             bool cable=session.World!=null&&session.World.HasContract&&session.LocalSlot>=0&&session.World.Attached(session.LocalSlot);
             float height=cable?650:552;
             var card=Panel(pageRoot,500,(900-height)*.5f,600,height);Text(card,"PAUSED",30,24,540,56,38,Paper,true);
-            Text(card,session.Training?"Practice mode · your career equipment and money are safe.":session.Solo?"Take your time. Solo play is paused.":"Your car stays braked. Your crew keeps playing.",30,96,540,76,20,Muted);
+            Text(card,session.Training?"Practice mode · your career equipment and money are safe.":session.Solo?(RecoveryPlatform.MultiplayerAvailable?"Take your time. Solo play is paused.":"Take your time. The game is paused."):"Your car stays braked. Your crew keeps playing.",30,96,540,76,20,Muted);
             Button(card,"RESUME",30,194,540,()=>{session.ConsumeMenuInput();session.ToggleMenu();Show("Gameplay");},true);
             Button(card,session.Training?"HOW TO PLAY":"RECOVERIES",30,262,540,()=>{if(session.Training){Show("Help");return;}session.CloseOverlay();session.ToggleBoard();Show("Board");});
             Button(card,"SETTINGS",30,330,540,()=>{returnPage="Pause";firstSetup=false;Show("Settings");});

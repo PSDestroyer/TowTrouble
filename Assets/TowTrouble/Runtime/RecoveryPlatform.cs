@@ -32,6 +32,8 @@ namespace TowTrouble
 #endif
             }
         }
+        public static bool OfflineOnly => !MultiplayerAvailable;
+
         public static string MenuPage(string page)
             => !MultiplayerAvailable && (page == "Coop" || page == "Lobby" || page == "TextEntry") ? "Main" : page;
     }

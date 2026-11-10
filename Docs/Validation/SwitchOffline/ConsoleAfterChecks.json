@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "console get",
+    "parameters": {
+      "tail": "3",
+      "level": "error"
+    },
+    "result": {
+      "entries": [
+        {
+          "seq": 9510,
+          "timestampUtc": "2026-11-10T11:45:49.449948Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.ColorCurvesEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/ColorCurvesEditor.cs:56)\n",
+          "seeded": false
+        },
+        {
+          "seq": 9511,
+          "timestampUtc": "2026-11-10T11:45:49.599326Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        },
+        {
+          "seq": 9512,
+          "timestampUtc": "2026-11-10T11:45:49.611023Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.BloomEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/BloomEditor.cs:24)\n",
+          "seeded": false
+        }
+      ],
+      "cursor": 9512,
+      "session": "833d5b02cd5d4d5cb0ad6d8a88eac77b",
+      "returned": 3,
+      "dropped": false,
+      "reset": false,
+      "counts": {
+        "error": 1948,
+        "warn": 18,
+        "log": 34
+      },
+      "groundTruth": {
+        "sampledUtc": "2026-11-10T11:45:58.447504Z",
+        "ageMs": 208,
+        "compilationFailed": false,
+        "compiling": false,
+        "consoleErrors": 6,
+        "consoleWarnings": 0,
+        "consoleLogs": 0,
+        "seeded": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

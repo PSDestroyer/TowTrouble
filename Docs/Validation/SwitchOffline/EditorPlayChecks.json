@@ -1,0 +1,112 @@
+{
+  "firstStart": {
+    "transport": "RecoveryOfflineTransport",
+    "socketTransportUninitialized": true,
+    "offline": true,
+    "isolated": "TowTrouble.Validation.SwitchOffline",
+    "status": "Your solo session is ready.",
+    "Connected": false,
+    "Connecting": false,
+    "LocalSlot": -1,
+    "phase": "Lobby"
+  },
+  "explore": {
+    "playing": true,
+    "Connected": true,
+    "Connecting": false,
+    "IsHost": true,
+    "LocalSlot": 0,
+    "Solo": true,
+    "phase": "Explore",
+    "FreeRoam": true,
+    "Cooperative": false,
+    "Occupied": 1,
+    "transport": "RecoveryOfflineTransport",
+    "socketTransportUninitialized": true,
+    "clientPort": 0,
+    "memoryProfile": "TowTrouble.Validation.SwitchOffline",
+    "driverSpeed": 0.0292487163,
+    "atGarage": true,
+    "status": "Your solo session is ready.",
+    "attached": false
+  },
+  "garage": {
+    "garage": true,
+    "Connected": true,
+    "LocalSlot": 0,
+    "profileSuppressed": true,
+    "transport": "RecoveryOfflineTransport"
+  },
+  "contract": {
+    "boardAccepted": true,
+    "Connected": true,
+    "LocalSlot": 0,
+    "overlayClosed": true
+  },
+  "towAndSave": {
+    "ContractIndex": 0,
+    "phase": "HookUp",
+    "towRequested": true,
+    "localSaveRoundtrip": true,
+    "offlineTransport": true,
+    "socketTransportUninitialized": true
+  },
+  "attached": {
+    "playing": true,
+    "Connected": true,
+    "Connecting": false,
+    "IsHost": true,
+    "LocalSlot": 0,
+    "Solo": true,
+    "phase": "Recover",
+    "FreeRoam": true,
+    "Cooperative": false,
+    "Occupied": 1,
+    "transport": "RecoveryOfflineTransport",
+    "socketTransportUninitialized": true,
+    "clientPort": 0,
+    "memoryProfile": "TowTrouble.Validation.SwitchOffline",
+    "driverSpeed": 0.0324284732,
+    "atGarage": false,
+    "status": "Your solo session is ready.",
+    "attached": true
+  },
+  "leave": {
+    "leaveRequested": true
+  },
+  "restart": {
+    "playing": true,
+    "Connected": true,
+    "Connecting": false,
+    "IsHost": true,
+    "LocalSlot": 0,
+    "Solo": true,
+    "phase": "Explore",
+    "FreeRoam": true,
+    "Cooperative": false,
+    "Occupied": 1,
+    "transport": "RecoveryOfflineTransport",
+    "socketTransportUninitialized": true,
+    "clientPort": 0,
+    "memoryProfile": "TowTrouble.Validation.SwitchOffline",
+    "driverSpeed": 0.0292613413,
+    "atGarage": true,
+    "status": "Your solo session is ready.",
+    "attached": false
+  },
+  "cleanup": {
+    "playing": false,
+    "scenePreserved": true,
+    "dirtyStatePreserved": true,
+    "realSaveUnchanged": true,
+    "saveArtifacts": [
+      "save.json:unchanged",
+      "save.json.backup:unchanged",
+      "save.json.previous:unchanged"
+    ],
+    "previewOffline": false,
+    "validationKeyCleared": true,
+    "socketAutoInit": false,
+    "networkAutoInit": false
+  }
+}

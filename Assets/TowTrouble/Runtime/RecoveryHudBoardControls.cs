@@ -190,6 +190,7 @@ namespace TowTrouble
             cap.name = "Control hint";
             var text = Text(cap, "", 0, 0, 26, 22, 13, Ink, true); text.alignment = TextAlignmentOptions.Center;
             boardHints.Add(new BoardHint { Button = button, Cap = cap, Key = text, Action = action, Kind = kind, Right = right });
+            button.GetComponent<RecoveryUiFeedback>().ConfigureHint(cap.GetComponent<UnityEngine.UI.Image>(),text);
         }
         private void RefreshBoardHints()
         {
@@ -206,9 +207,6 @@ namespace TowTrouble
                 var rect = (RectTransform)hint.Button.transform;
                 float width = page=="Confirm"?60f:Mathf.Max(64f, Mathf.Ceil(hint.Key.GetPreferredValues(key).x) + 12f);
                 float height = page=="Confirm"?42f:rect.rect.height<=36?36f:40f;
-                bool gold = hint.Button.GetComponentInChildren<RecoveryPlateGraphic>().Style == RecoveryPlateStyle.Gold;
-                hint.Cap.GetComponent<UnityEngine.UI.Image>().color = gold ? Ink : Paper;
-                hint.Key.color = gold ? Paper : Ink;
                 hint.Cap.anchoredPosition = new Vector2(hint.Right ? rect.rect.width - width - 8f : 12f, -(rect.rect.height - height) * .5f);
                 hint.Cap.sizeDelta = hint.Key.rectTransform.sizeDelta = new Vector2(width, height);
                 float left = hint.Right ? 16f : width + 24f;

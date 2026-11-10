@@ -102,7 +102,7 @@ namespace TowTrouble
                 }
                 nav.selectOnLeft=Find(-1,0);nav.selectOnRight=Find(1,0);nav.selectOnUp=Find(0,1);nav.selectOnDown=Find(0,-1);
                 if(menuTabs.Contains(control as UnityEngine.UI.Button))nav.selectOnDown=body.OrderByDescending(c=>Center(c).y).FirstOrDefault();
-                else if(nav.selectOnUp==null&&menuTabs.Count>0)nav.selectOnUp=menuTabs.FirstOrDefault(c=>c.GetComponentInChildren<RecoveryPlateGraphic>().Style==RecoveryPlateStyle.Gold)??menuTabs[0];
+                else if(nav.selectOnUp==null&&menuTabs.Count>0)nav.selectOnUp=menuTabs.FirstOrDefault(c=>c.GetComponent<RecoveryUiFeedback>()?.PreferredFocus==true)??menuTabs[0];
                 control.navigation=nav;
             }
             ConfigureStarterNavigation();
@@ -118,7 +118,7 @@ namespace TowTrouble
         {
             if(EventSystem.current==null)return;
             var preferred=menuControls.FirstOrDefault(c=>c!=null&&c.IsInteractable()&&c.name==(focusName??preferredMenuFocus));
-            if(preferred==null)preferred=menuControls.FirstOrDefault(c=>c!=null&&c.IsInteractable()&&c.GetComponentInChildren<RecoveryPlateGraphic>()?.Style==RecoveryPlateStyle.Gold);
+            if(preferred==null)preferred=menuControls.FirstOrDefault(c=>c!=null&&c.IsInteractable()&&c.GetComponent<RecoveryUiFeedback>()?.PreferredFocus==true);
             if(preferred==null)preferred=menuControls.FirstOrDefault(c=>c!=null&&c.IsInteractable());
             if(preferred!=null)EventSystem.current.SetSelectedGameObject(preferred.gameObject);
         }
@@ -139,7 +139,7 @@ namespace TowTrouble
             if(cancel){session.ConsumeMenuInput();MenuBack();return true;}
             if(menuTabs.Count>1&&(keyboard?.qKey.wasPressedThisFrame==true||pad?.leftShoulder.wasPressedThisFrame==true||keyboard?.eKey.wasPressedThisFrame==true||pad?.rightShoulder.wasPressedThisFrame==true))
             {
-                int index=menuTabs.FindIndex(b=>b.GetComponentInChildren<RecoveryPlateGraphic>().Style==RecoveryPlateStyle.Gold);
+                int index=menuTabs.FindIndex(b=>b.GetComponent<RecoveryUiFeedback>()?.PreferredFocus==true);
                 bool next=keyboard?.eKey.wasPressedThisFrame==true||pad?.rightShoulder.wasPressedThisFrame==true;
                 menuTabs[(Mathf.Max(0,index)+(next?1:menuTabs.Count-1))%menuTabs.Count].onClick.Invoke();session.ConsumeMenuInput();return true;
             }
@@ -218,6 +218,7 @@ namespace TowTrouble
             var cap=Panel(button.transform,12,11,60,42,Ink);cap.name="Menu control hint";
             var key=Text(cap,MenuKey(kind),0,0,60,42,16,Paper,true);key.alignment=TextAlignmentOptions.Center;
             menuHints.Add(Tuple.Create(key,kind));
+            button.GetComponent<RecoveryUiFeedback>().ConfigureHint(cap.GetComponent<UnityEngine.UI.Image>(),key);
             label.rectTransform.anchoredPosition=new Vector2(86,0);
             label.rectTransform.sizeDelta=new Vector2(((RectTransform)button.transform).rect.width-100,64);
         }

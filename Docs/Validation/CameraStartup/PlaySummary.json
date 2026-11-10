@@ -1,0 +1,57 @@
+{
+  "Before": {
+    "renderedFrames": 297,
+    "belowTerrainFrames": 28,
+    "minimumTerrainClearanceMeters": -12.88915,
+    "views": [
+      "Busy",
+      "Main",
+      "Gameplay"
+    ]
+  },
+  "After-Scout": {
+    "renderedFrames": 297,
+    "belowTerrainFrames": 0,
+    "minimumTerrainClearanceMeters": 5.434788,
+    "views": [
+      "Busy",
+      "Gameplay"
+    ]
+  },
+  "After-model3": {
+    "renderedFrames": 294,
+    "belowTerrainFrames": 0,
+    "minimumTerrainClearanceMeters": 5.093153,
+    "views": [
+      "Busy",
+      "Gameplay"
+    ]
+  },
+  "menu": {
+    "menuReady": true,
+    "scope": "TowTrouble.Validation.CameraStartup",
+    "titleHasSolo": false,
+    "buttonNames": [
+      "PLAY",
+      "HOW TO PLAY",
+      "SETTINGS",
+      "CREDITS",
+      "QUIT"
+    ]
+  },
+  "cleanup": {
+    "playing": false,
+    "scenePreserved": true,
+    "dirtyStatePreserved": true,
+    "realSaveUnchanged": true,
+    "saveArtifacts": [
+      "save.json:unchanged",
+      "save.json.backup:unchanged",
+      "save.json.previous:unchanged"
+    ],
+    "previewOffline": false,
+    "validationKeyCleared": true,
+    "socketAutoInit": false,
+    "networkAutoInit": false
+  }
+}

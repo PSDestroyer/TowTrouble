@@ -1,0 +1,13 @@
+# Button selection fill — 2026-11-10
+
+The selected interactable button now uses the existing gold plate fill; other buttons use charcoal grey. Primary/recommended actions no longer stay gold when another control has focus. The existing confirmation default remains Cancel; Cancel now has the gold fill when it is selected.
+
+RecoveryUiFeedback owns plate style, direct label/icon contrast and registered input-hint contrast. Pointer entry selects the hovered interactable button through EventSystem; subsequent keyboard/controller focus deselects it even if the mouse remains parked over it. Disabled buttons stay grey. Direct foreground colors are restored on deselection; inset photo badges/panels preserve their own colors. Cached direct-child foreground and registered hint references avoid scene searches during feedback updates. Sliders retain their existing presentation.
+
+The primary flag is now stored separately as PreferredFocus. Initial focus, Settings tab cycling and upward navigation use this metadata, rather than interpreting the currently rendered plate color as application state. Starter/contract/garage cards create readable normal text colors and let feedback invert them on focus. All first-party runtime Button creation routes through the shared RecoveryHud.Button factory.
+
+Validation: Unity compiled without errors;5 directly invoked NUnit Edit Mode checks passed. Covers recommended action versus Cancel, uGUI directional navigation in both directions, mouse/keyboard handoff with no two gold fills, disabled hover/focus, hint contrast and preserved inset badge colors. Disposable preview objects, cloned font assets, no persistent save access.
+
+Actual confirmation builders were rendered in a disposable preview scene with each button focused in turn. Confirm-selected.png and Cancel-selected.png were visually reviewed. Keycap glyph LateUpdate was explicitly driven in the static fixture to avoid uninitialized white RawImage placeholders. Native Settings builders for Audio and Display confirmed that unfocused tabs remain grey and Up from the first slider returns to the active tab even when that tab was grey. The fixture explicitly activates/deactivates its EventSystem in Edit Mode; an initial unregistered fixture caused a false pointer-test failure, corrected without a runtime workaround.
+
+No Play, builds, scene/prefab/settings/save changes or physical controller/Switch test for this task. The loaded OpenWorldRecovery scene was already dirty and preserved. Earlier offline-session changes and the user's Nintendo legal/rating imports were left intact. No commit/push. Console history is retained; do not infer a clean Console from successful compilation.

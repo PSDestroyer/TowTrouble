@@ -13,16 +13,23 @@ namespace TowTrouble
         private Vector3 velocity;
         private float orbit, elevation=8f;
         private float extractionFraming;
+        private bool gameplayCameraActive;
         public void Bind(DemoSession owner)
         {
-            session = owner;
+            session = owner; velocity = Vector3.zero; gameplayCameraActive = false;
             if (isActiveAndEnabled) IndexCameraTrees();
         }
         private void LateUpdate()
         {
             if(session==null){DisableTitleLighting();return;}
+            if (session.Connecting)
+            {
+                // Keep the last valid menu view while authority, slot and spawn are being prepared.
+                velocity = Vector3.zero; gameplayCameraActive = false;
+                UpdateTitleLighting(false); return;
+            }
             if(!session.GarageOpen)garageCameraActive=false;
-            var p=session.Profile;bool lobby=!session.Connected||session.World.Phase==RecoveryPhase.Lobby;
+            var p=session.Profile;bool lobby=!session.ReadyForPresentation||session.World.Phase==RecoveryPhase.Lobby;
             bool title=session.View=="Title";
             bool enteringTitle=title&&!titleCameraActive;titleCameraActive=title;
             bool choosingStarter=session.View=="Starter"||session.View=="Confirm"&&!p.starterChosen;
@@ -82,11 +89,25 @@ namespace TowTrouble
             // Preview modes own their framing and circular orbit. A second position
             // interpolation could cut through the car during a front/rear transition.
             if(enteringTitle)velocity=Vector3.zero;
-            transform.position=title||session.GarageOpen||choosingStarter?position:Vector3.SmoothDamp(transform.position,position,ref velocity,p.reducedMotion?.1f:.24f,Mathf.Infinity,Time.unscaledDeltaTime);
-            var targetRotation=Quaternion.LookRotation(look-transform.position);
-            transform.rotation=title||choosingStarter?targetRotation:Quaternion.Slerp(transform.rotation,targetRotation,1-Mathf.Exp(-7*Time.unscaledDeltaTime));
+            ApplyPresentationPose(position, look, title||session.GarageOpen||choosingStarter,
+                !lobby&&!session.GarageOpen, p.reducedMotion, Time.unscaledDeltaTime, title||choosingStarter);
             UpdateTitleLighting(title);
             UpdateTreeVisibility(lobby);
+        }
+        private void ApplyPresentationPose(Vector3 position, Vector3 look, bool preview, bool gameplay, bool reducedMotion, float dt, bool previewRotation)
+        {
+            // Menu and gameplay poses may be on opposite sides of scenery. Enter at the final safe pose.
+            bool enteringGameplay = gameplay&&!gameplayCameraActive;
+            bool snap = preview || enteringGameplay;
+            gameplayCameraActive = gameplay;
+            if (snap) velocity = Vector3.zero;
+            var final = snap ? position : Vector3.SmoothDamp(transform.position,position,ref velocity,reducedMotion?.1f:.24f,Mathf.Infinity,dt);
+            // The smoothed position needs the same protection as the destination camera arm.
+            if (gameplay && CameraObstruction(look,final,out var hit,QueryTriggerInteraction.UseGlobal))
+            { final = hit.point+hit.normal*.5f; velocity = Vector3.zero; }
+            transform.position = final;
+            var rotation = Quaternion.LookRotation(look-final);
+            transform.rotation = enteringGameplay || preview&&previewRotation ? rotation : Quaternion.Slerp(transform.rotation,rotation,1-Mathf.Exp(-7*dt));
         }
     }
 }

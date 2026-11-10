@@ -19,7 +19,7 @@ namespace TowTrouble
         private void ButtonIcon(UnityEngine.UI.Button button,RecoveryIcon kind,bool primary=false)
         {
             var rt=(RectTransform)button.transform;var text=button.GetComponentInChildren<TMP_Text>();
-            float size=Mathf.Min(28,rt.sizeDelta.y*.48f);Icon(rt,kind,16,(rt.sizeDelta.y-size)*.5f,size,primary?Ink:Paper);
+            float size=Mathf.Min(28,rt.sizeDelta.y*.48f);Icon(rt,kind,16,(rt.sizeDelta.y-size)*.5f,size,Paper);
             text.rectTransform.anchoredPosition=new Vector2(54,0);text.rectTransform.sizeDelta=new Vector2(rt.sizeDelta.x-72,rt.sizeDelta.y);
         }
         private RecoveryIcon? ActionIcon(string label)

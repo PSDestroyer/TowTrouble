@@ -68,6 +68,7 @@ namespace TowTrouble
             var caption=button.GetComponentInChildren<TMP_Text>();var cap=Panel(button.transform,8,4,26,22,Paper);cap.name="Garage control hint";
             var key=Text(cap,"",0,0,26,22,12,Ink,true);key.alignment=TextAlignmentOptions.Center;
             garageHints.Add(new GarageHint{Button=button,Cap=cap,Key=key,Caption=caption,Kind=kind});
+            button.GetComponent<RecoveryUiFeedback>().ConfigureHint(cap.GetComponent<UnityEngine.UI.Image>(),key);
         }
         private string GarageBinding(string kind)
         {
@@ -92,8 +93,7 @@ namespace TowTrouble
             {
                 string key=GarageBinding(hint.Kind);hint.Key.text=key;
                 var rect=(RectTransform)hint.Button.transform;float width=Mathf.Max(48,Mathf.Ceil(hint.Key.GetPreferredValues(key).x)+12);
-                float height=Mathf.Min(40,rect.rect.height);bool gold=hint.Button.GetComponentInChildren<RecoveryPlateGraphic>().Style==RecoveryPlateStyle.Gold;
-                hint.Cap.GetComponent<UnityEngine.UI.Image>().color=gold?Ink:Paper;hint.Key.color=gold?Paper:Ink;
+                float height=Mathf.Min(40,rect.rect.height);
                 hint.Cap.anchoredPosition=new Vector2(9,-(rect.rect.height-height)*.5f);hint.Cap.sizeDelta=hint.Key.rectTransform.sizeDelta=new Vector2(width,height);
                 hint.Caption.rectTransform.anchoredPosition=new Vector2(width+20,0);hint.Caption.rectTransform.sizeDelta=new Vector2(Mathf.Max(20,rect.rect.width-width-30),rect.rect.height);
             }

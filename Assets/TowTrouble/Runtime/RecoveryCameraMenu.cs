@@ -73,21 +73,39 @@ namespace TowTrouble
             var offset=rotation*new Vector3((1-2*center.x)*halfHeight*aspect,(1-2*center.y)*halfHeight,0);
             position=focus+direction*distance+offset;look=focus+offset;
         }
+        private RecoveryVehicle menuVehicle;
+        private int menuGeometry=-1;
+        private Bounds menuBounds;
         private void MenuPose(RecoveryVehicle car,out Vector3 position,out Vector3 look)
         {
-            Bounds bounds=new Bounds(car.transform.position+Vector3.up,new Vector3(2.2f,2.5f,4.5f));bool found=false;
-            foreach(var renderer in car.GetComponentsInChildren<MeshRenderer>())
-                if(renderer.enabled&&renderer.gameObject.activeInHierarchy&&renderer.bounds.size.sqrMagnitude<400){if(!found){bounds=renderer.bounds;found=true;}else bounds.Encapsulate(renderer.bounds);}
-            var camera=GetComponent<Camera>();float fov=camera!=null?camera.fieldOfView:50,aspect=camera!=null?camera.aspect:16f/9;
+            if(menuVehicle!=car||menuGeometry!=car.GeometryVersion)
+            {
+                menuVehicle=car;menuGeometry=car.GeometryVersion;
+                var customization=car.GetComponent<RecoveryCustomization>();
+                if(customization!=null)customization.GarageBounds(GarageSlot.Assembly,null,out menuBounds,out _);
+                else menuBounds=new Bounds(new Vector3(0,1,0),new Vector3(2.2f,2.5f,4.5f));
+            }
+            var camera=GetComponent<Camera>();float fov=camera!=null?camera.fieldOfView:57,aspect=camera!=null?camera.aspect:16f/9;
             float tangent=Mathf.Tan(fov*.5f*Mathf.Deg2Rad);
             var content=RecoveryScreenLayout.Content(aspect,RecoveryScreenLayout.CameraSafeArea(camera));
-            float span=Mathf.Max(bounds.size.x,bounds.size.z);
-            float distance=Mathf.Max(8,Mathf.Max(bounds.size.y/(2*tangent*.39f*content.height),span/(2*tangent*aspect*.27f*content.width))+1.3f);
-            Vector3 direction=new Vector3(12,5,7).normalized;position=bounds.center+direction*distance;
-            Quaternion rotation=Quaternion.LookRotation(-direction);float halfHeight=distance*tangent;
-            var center=content.position+Vector2.Scale(new Vector2(.65f,.5f),content.size);
-            look=bounds.center+rotation*Vector3.right*(halfHeight*aspect*(1-2*center.x))+rotation*Vector3.up*(halfHeight*(1-2*center.y));
-            if(!session.Profile.reducedMotion)position.x+=Mathf.Sin(Time.unscaledTime*.12f)*.12f;
+            // Follow the car's front (+Z), including when it is parked facing the workshop.
+            // The low three-quarter angle keeps the grille, bonnet and side in view.
+            float drift=session.Profile.reducedMotion?0:Mathf.Sin(Time.unscaledTime*.12f)*.7f;
+            var direction=car.transform.TransformDirection(RecoveryGarageView.Direction(-58+drift,15));
+            var rotation=Quaternion.LookRotation(-direction,Vector3.up);var inverse=Quaternion.Inverse(rotation);
+            float distance=5;
+            for(int i=0;i<8;i++)
+            {
+                var corner=car.transform.TransformVector(Vector3.Scale(menuBounds.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1)));
+                var point=inverse*corner;
+                distance=Mathf.Max(distance,Mathf.Abs(point.x)/(tangent*aspect*.46f*content.width)-point.z,Mathf.Abs(point.y)/(tangent*.46f*content.height)-point.z);
+            }
+            distance+=.25f;
+            var focus=car.transform.TransformPoint(menuBounds.center);float halfHeight=distance*tangent;
+            // Reserve the left panel and the lower-right specification card.
+            var center=content.position+Vector2.Scale(new Vector2(.68f,.55f),content.size);
+            var offset=rotation*new Vector3((1-2*center.x)*halfHeight*aspect,(1-2*center.y)*halfHeight,0);
+            position=focus+direction*distance+offset;look=focus+offset;
         }
     }
 }

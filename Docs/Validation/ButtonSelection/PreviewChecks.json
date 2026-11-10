@@ -1,0 +1,55 @@
+{
+  "samples": [
+    {
+      "focused": "CHOOSE SCOUT",
+      "states": [
+        {
+          "name": "CHOOSE SCOUT",
+          "selected": true,
+          "style": "Gold",
+          "preferred": true
+        },
+        {
+          "name": "CANCEL",
+          "selected": false,
+          "style": "Charcoal",
+          "preferred": false
+        }
+      ],
+      "path": "/Users/gheorghe/GitHub/TowTrouble/Assets/../Docs/Validation/ButtonSelection/Confirm-selected.png"
+    },
+    {
+      "focused": "CANCEL",
+      "states": [
+        {
+          "name": "CHOOSE SCOUT",
+          "selected": false,
+          "style": "Charcoal",
+          "preferred": true
+        },
+        {
+          "name": "CANCEL",
+          "selected": true,
+          "style": "Gold",
+          "preferred": false
+        }
+      ],
+      "path": "/Users/gheorghe/GitHub/TowTrouble/Assets/../Docs/Validation/ButtonSelection/Cancel-selected.png"
+    }
+  ],
+  "settingsChecks": [
+    {
+      "tab": "Audio",
+      "unfocusedGoldTabs": 0,
+      "upSelects": "Audio",
+      "selectedStyle": "Gold"
+    },
+    {
+      "tab": "Imagine",
+      "unfocusedGoldTabs": 0,
+      "upSelects": "Display",
+      "selectedStyle": "Gold"
+    }
+  ],
+  "sceneUntouched": true
+}
