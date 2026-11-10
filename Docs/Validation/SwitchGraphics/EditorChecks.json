@@ -1,0 +1,77 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "script eval_file",
+    "parameters": {
+      "file": "/private/tmp/validate-switch-graphics.cs"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "results": [
+          {
+            "test": "SwitchQualityToggleNeverSelectsPcOrMutatesAuthoredPipelines",
+            "passed": true,
+            "error": ""
+          },
+          {
+            "test": "DesktopSelectsPcByNameEvenWhenSwitchIsTheLastQualityLevel",
+            "passed": true,
+            "error": ""
+          },
+          {
+            "test": "SessionDisposalRestoresEntryQualityPipelineAndLod",
+            "passed": true,
+            "error": ""
+          },
+          {
+            "test": "SwitchBuildIncludesOnlyItsDedicatedQualityAndKeepsFogRenderer",
+            "passed": true,
+            "error": ""
+          },
+          {
+            "test": "GraphicsPolicyUsesBuildTargetWithoutFollowingMultiplayerPreview",
+            "passed": true,
+            "error": ""
+          },
+          {
+            "test": "SinglePlayerTargetRedirectsOnlyMultiplayerScreens",
+            "passed": true,
+            "error": ""
+          },
+          {
+            "test": "MultiplayerEntryPointsReturnBeforeProfileOrNetworkAccessOnSinglePlayerTarget",
+            "passed": true,
+            "error": ""
+          },
+          {
+            "test": "DesktopKeepsItsMultiplayerScreens",
+            "passed": true,
+            "error": ""
+          }
+        ],
+        "failures": 0,
+        "qualityRestored": true,
+        "currentQuality": "PC",
+        "scenePreserved": true,
+        "sceneWasDirty": true,
+        "playing": false,
+        "target": "StandaloneOSX",
+        "policy": {
+          "quality": "PC",
+          "fps": 60
+        }
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

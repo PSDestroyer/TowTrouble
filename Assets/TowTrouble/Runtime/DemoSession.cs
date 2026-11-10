@@ -100,9 +100,10 @@ namespace TowTrouble
         {
             if (world.Map == null) { TravelTo("OpenWorldRecovery",0,null); return; }
             if(Profile.displayWidth>=800&&Profile.displayHeight>=600&&Profile.displayMode>=0&&Profile.displayMode<=3)Screen.SetResolution(Profile.displayWidth,Profile.displayHeight,(FullScreenMode)Profile.displayMode);
-            Application.targetFrameRate = 60;
-            network.ServerManager.SetFrameRate(60);
-            network.ClientManager.SetFrameRate(60);
+            Application.targetFrameRate = RecoveryPlatform.FrameRateLimit;
+            // FishNet reapplies this rendering cap on connection; its simulation tick rate stays unchanged.
+            network.ServerManager.SetFrameRate(RecoveryPlatform.FrameRateLimit);
+            network.ClientManager.SetFrameRate(RecoveryPlatform.FrameRateLimit);
             network.ClientManager.OnClientConnectionState += ClientState;
             recoveryCamera.Bind(this);PreviewFittedRide();StartAudio();
             int mode=travelMode;string destination=travelAddress;travelMode=0;travelAddress=null;

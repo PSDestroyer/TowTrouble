@@ -35,31 +35,17 @@ namespace TowTrouble
             world.PreviewPaint(Profile.paint);
             world.Drivers[0].GetComponent<RecoveryCustomization>()?.Apply(Profile.Build(Profile.vehicle), Profile.paint, true);
         }
-        private UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset originalPipeline,performancePipeline;
-        private float originalLodBias;
+        private RecoveryGraphicsPreference graphicsPreference;
         private void ApplyGraphicsPreference()
         {
-            // Desktop quality is a runtime copy; imported render assets and other platform presets stay immutable.
-            if(!Application.isPlaying)return;
-            if(originalPipeline==null)
-            {
-                int desktop=Mathf.Max(0,QualitySettings.names.Length-1);
-                if(QualitySettings.GetQualityLevel()!=desktop)QualitySettings.SetQualityLevel(desktop,true);
-                originalPipeline=UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset;
-                originalLodBias=QualitySettings.lodBias;
-            }
-            if(originalPipeline==null)return;
-            if(Profile.quality==0)
-            {
-                if(performancePipeline==null){performancePipeline=Instantiate(originalPipeline);performancePipeline.name="Tow Trouble Performance (runtime)";performancePipeline.renderScale=Mathf.Min(.85f,originalPipeline.renderScale);performancePipeline.msaaSampleCount=1;performancePipeline.shadowDistance=Mathf.Min(35,originalPipeline.shadowDistance);performancePipeline.shadowCascadeCount=1;}
-                if(QualitySettings.renderPipeline!=performancePipeline)QualitySettings.renderPipeline=performancePipeline;QualitySettings.lodBias=Mathf.Min(1,originalLodBias);
-            }
-            else {if(QualitySettings.renderPipeline!=originalPipeline)QualitySettings.renderPipeline=originalPipeline;QualitySettings.lodBias=originalLodBias;}
+            if (!Application.isPlaying) return;
+            if (graphicsPreference == null) graphicsPreference = new RecoveryGraphicsPreference();
+            graphicsPreference.Apply(RecoveryPlatform.GraphicsQuality, Profile.quality == 0);
         }
         private void RestoreGraphicsPreference()
         {
-            if(originalPipeline!=null){QualitySettings.renderPipeline=originalPipeline;QualitySettings.lodBias=originalLodBias;}
-            if(performancePipeline!=null)Destroy(performancePipeline);
+            graphicsPreference?.Dispose();
+            graphicsPreference = null;
         }
         private void MenuConnectionFailed()
         { menuOpen = false; GarageCameraInputBlocked = false; Time.timeScale = 1; }

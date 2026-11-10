@@ -1,0 +1,5 @@
+Actual RecoveryPlatform.cs compiled as a standalone C# policy harness (not a Unity player):
+PASS: UNITY_SWITCH -> Switch graphics, 30 FPS, solo only
+PASS: UNITY_EDITOR,UNITY_STANDALONE -> PC graphics, 60 FPS; solo preview independent
+PASS: no Unity platform symbol -> preserves configured graphics default, 60 FPS
+No Unity build, Switch module/SDK invocation or hardware test.

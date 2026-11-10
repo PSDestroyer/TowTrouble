@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "console get",
+    "parameters": {
+      "tail": "1",
+      "level": "error"
+    },
+    "result": {
+      "entries": [
+        {
+          "seq": 9429,
+          "timestampUtc": "2026-11-09T17:13:55.203858Z",
+          "level": "error",
+          "logType": "Exception",
+          "message": "SerializedObjectNotCreatableException: Object at index 0 is null",
+          "stackTrace": "UnityEditor.Editor.CreateSerializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:717)\nUnityEditor.Editor.GetSerializedObjectInternal () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:689)\nUnityEditor.Editor.get_serializedObject () (at /Users/bokken/build/output/unity/unity/Editor/Mono/Inspector/Editor.cs:583)\nUnityEditor.Rendering.Universal.TonemappingEditor.OnEnable () (at ./Library/PackageCache/com.unity.render-pipelines.universal@8a9b4021522a/Editor/Overrides/TonemappingEditor.cs:24)\n",
+          "seeded": false
+        }
+      ],
+      "cursor": 9430,
+      "session": "833d5b02cd5d4d5cb0ad6d8a88eac77b",
+      "returned": 1,
+      "dropped": false,
+      "reset": false,
+      "counts": {
+        "error": 1980,
+        "warn": 11,
+        "log": 9
+      },
+      "groundTruth": {
+        "sampledUtc": "2026-11-09T17:15:41.747697Z",
+        "ageMs": 200,
+        "compilationFailed": false,
+        "compiling": false,
+        "consoleErrors": 6,
+        "consoleWarnings": 1,
+        "consoleLogs": 0,
+        "seeded": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
