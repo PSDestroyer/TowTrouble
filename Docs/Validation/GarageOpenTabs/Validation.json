@@ -1,0 +1,160 @@
+{
+  "previews": {
+    "tech": {
+      "path": "tech.png",
+      "width": 1280,
+      "height": 720,
+      "section": 1,
+      "slot": "Wheels",
+      "gold": 1,
+      "marks": 4,
+      "openTabs": [
+        "TECH",
+        "WHEELS",
+        "ALL",
+        "ALL"
+      ],
+      "focused": "stock_Wheels",
+      "position": "(-6.23, 23.67, 4.16)",
+      "carLocalCamera": "(-5.27, 1.50, 2.84)",
+      "errors": [],
+      "scenePreserved": true,
+      "dirtyPreserved": true
+    },
+    "style": {
+      "path": "style.png",
+      "width": 1280,
+      "height": 720,
+      "section": 0,
+      "slot": "Bonnet",
+      "gold": 1,
+      "marks": 3,
+      "openTabs": [
+        "STYLE",
+        "BONNET",
+        "ALL"
+      ],
+      "focused": "stock_Bonnet",
+      "position": "(-5.82, 26.17, 0.27)",
+      "carLocalCamera": "(-5.68, 3.99, 6.73)",
+      "errors": [],
+      "scenePreserved": true,
+      "dirtyPreserved": true
+    },
+    "towing": {
+      "path": "towing.png",
+      "width": 1280,
+      "height": 720,
+      "section": 2,
+      "slot": "Cable",
+      "gold": 1,
+      "marks": 3,
+      "openTabs": [
+        "TOWING",
+        "CABLE",
+        "ALL"
+      ],
+      "focused": "stock_Cable",
+      "position": "(-9.76, 24.14, 13.88)",
+      "carLocalCamera": "(-1.74, 1.96, -6.88)",
+      "errors": [],
+      "scenePreserved": true,
+      "dirtyPreserved": true
+    },
+    "mud": {
+      "path": "mud.png",
+      "width": 1280,
+      "height": 720,
+      "section": 1,
+      "slot": "Wheels",
+      "gold": 1,
+      "marks": 4,
+      "openTabs": [
+        "TECH",
+        "WHEELS",
+        "ALL",
+        "MUD"
+      ],
+      "focused": "part_6c0891779a3bea94d8df676ad803fc0a",
+      "position": "(-6.23, 23.67, 4.16)",
+      "carLocalCamera": "(-5.27, 1.50, 2.84)",
+      "errors": [],
+      "scenePreserved": true,
+      "dirtyPreserved": true
+    },
+    "owned": {
+      "path": "owned.png",
+      "width": 1280,
+      "height": 720,
+      "section": 1,
+      "slot": "Wheels",
+      "gold": 1,
+      "marks": 4,
+      "openTabs": [
+        "TECH",
+        "WHEELS",
+        "OWNED",
+        "ALL"
+      ],
+      "focused": "stock_Wheels",
+      "position": "(-6.23, 23.67, 4.16)",
+      "carLocalCamera": "(-5.27, 1.50, 2.84)",
+      "errors": [],
+      "scenePreserved": true,
+      "dirtyPreserved": true
+    }
+  },
+  "focusRegressionTests": {
+    "results": [
+      {
+        "test": "RecommendedActionIsGreyWhenCancelHasTheRealSelection",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DirectionalNavigationTransfersTheGoldFillInBothDirections",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "PointerFocusAndKeyboardFocusCannotLeaveTwoGoldButtons",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DisabledButtonLosesGoldAndCannotStealPointerFocus",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "HintContrastFollowsSelectionWhileInsetBadgesKeepTheirOwnColors",
+        "passed": true,
+        "error": ""
+      }
+    ],
+    "failures": 0,
+    "loggedErrors": [],
+    "playing": false,
+    "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+    "dirty": true
+  },
+  "cleanup": {
+    "playing": false,
+    "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+    "dirty": true,
+    "temporaryRoots": 0,
+    "platformPreview": false
+  },
+  "compilation": {
+    "status": "up_to_date",
+    "compiling": false,
+    "failed": false,
+    "compilationFailed": null,
+    "errors": [],
+    "warnings": [],
+    "summary": {
+      "errors": 0,
+      "warnings": 0
+    }
+  }
+}

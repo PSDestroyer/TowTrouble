@@ -72,12 +72,12 @@ namespace TowTrouble
             for(int i=0;i<3;i++)
             {
                 int section=i;var tab=GarageButton(panel,names[i],12+i*94,61,88,()=>SelectGarageSection(section),garageSection==i,36);
-                GarageFont(tab.GetComponentInChildren<TMP_Text>(),15);
+                GarageFont(tab.GetComponentInChildren<TMP_Text>(),15);MarkOpenGarageTab(tab,garageSection==i);
             }
             for(int i=0;i<slots.Length;i++)
             {
                 var choice=slots[i];var tab=GarageButton(panel,SlotName(choice),12,103+i*46,GarageCategoryWidth-24,()=>SelectGarageSlot(choice,true),garageSlot==choice,42);
-                ButtonIcon(tab,SlotIcon(choice),garageSlot==choice);GarageFont(tab.GetComponentInChildren<TMP_Text>(),16);
+                ButtonIcon(tab,SlotIcon(choice),garageSlot==choice);GarageFont(tab.GetComponentInChildren<TMP_Text>(),16);MarkOpenGarageTab(tab,garageSlot==choice,true);
                 garageCategoryButtons[choice]=tab;
             }
             if(slots.Length<=6)

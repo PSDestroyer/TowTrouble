@@ -673,3 +673,9 @@ Network appearance invalidation now includes JSON, fallback paint and base model
 
 - RecoveryCameraMenu.MenuPose now uses car-relative front three-quarter direction (-58° yaw/15° elevation before viewport offset), local visual bounds cached by vehicle/GeometryVersion, and a shared aspect/safe-area fit beside the menu and above its specification card. Tiny .7° slow yaw drift respects Reduced Motion. Fixed world direction previously showed the rear of the garage-parked car. Other camera modes/follow distance untouched.
 - Docs/Validation/MenuCinematicCamera: native Edit Mode scene +actual BuildMain overlay previews at1280×720/1280×800 visually inspected; projected vehicle bounds clear of panels, final renders no errors, compile clean. Inactive temporary profile suppressed saving; source vehicle/world read only, original camera untouched, scene/dirty state preserved, temporary resources/keys cleaned. No Play/build/commit/device/every-body claim; historical Console retained.
+
+
+## Persistent open garage tabs — 2026-11-10
+
+- Garage-only MarkOpenGarageTab adds persistent amber underline to open Style/Tech/Towing and ownership/tire filters, and side bar/check to the open category. Dark inset edging stays readable with grey/gold fills; marks ignore raycasts and do not affect layout. Shared focus feedback remains unchanged: only navigation focus gets gold fill.
+- Docs/Validation/GarageOpenTabs: five native BuildGarage static previews (Tech/Wheels, Style/Bonnet, Towing/Cable, Mud, Owned) verify correct active marks after focus moves into catalogue, one gold card, grey unfocused tabs and noninteractive markers. Five existing focus NUnit methods passed without logged errors; compile clean. Inactive suppressed-save presenters, source car/world read only, active scene/dirty state preserved, temporary scope/resources cleaned. No Play/new tests/build/commit/hardware validation; Console history retained.

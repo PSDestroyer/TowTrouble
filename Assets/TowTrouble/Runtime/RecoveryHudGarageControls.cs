@@ -40,6 +40,22 @@ namespace TowTrouble
             var button=Button(parent,label,x,y,width,action,primary,height);
             var nav=button.navigation;nav.mode=UnityEngine.UI.Navigation.Mode.None;button.navigation=nav;return button;
         }
+        private void MarkOpenGarageTab(UnityEngine.UI.Button button,bool open,bool category=false)
+        {
+            if(!open)return;
+            // An open tab survives focus moving into the catalogue. Gold fill still means navigation focus.
+            var rect=(RectTransform)button.transform;float width=rect.sizeDelta.x,height=rect.sizeDelta.y;
+            var marker=Node("Open tab indicator",rect,category?6:12,category?7:height-6,
+                category?5:width-24,category?height-14:5);
+            var border=marker.gameObject.AddComponent<UnityEngine.UI.Image>();border.color=Ink;border.raycastTarget=false;
+            var fill=Stretch("Amber inset",marker);fill.offsetMin=Vector2.one;fill.offsetMax=-Vector2.one;
+            var stripe=fill.gameObject.AddComponent<UnityEngine.UI.Image>();stripe.color=Amber;stripe.raycastTarget=false;
+            if(category)
+            {
+                Icon(rect,RecoveryIcon.Check,width-26,(height-18)*.5f,18,Amber);
+                var label=button.GetComponentInChildren<TMP_Text>();label.rectTransform.sizeDelta-=new Vector2(20,0);
+            }
+        }
         private void GarageFont(TMP_Text text,float size)
         {textSizes[text]=size;text.fontSize=text.fontSizeMax=size*P.textScale;text.fontSizeMin=size*Mathf.Min(1,P.textScale);}
         private UnityEngine.UI.Button GarageOverlayButton(Transform parent,string label,float x,float y,float width,Action action,bool primary=false)

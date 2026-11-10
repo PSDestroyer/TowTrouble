@@ -17,12 +17,13 @@ namespace TowTrouble
             var all=GarageButton(list,"ALL",16,70,116,()=>{if(garageOwnedOnly)ToggleGarageOwned();},!garageOwnedOnly,36);
             var owned=GarageButton(list,"OWNED",140,70,188,()=>{if(!garageOwnedOnly)ToggleGarageOwned();},garageOwnedOnly,36);
             foreach(var button in new[]{all,owned})GarageFont(button.GetComponentInChildren<TMP_Text>(),15);
+            MarkOpenGarageTab(all,!garageOwnedOnly);MarkOpenGarageTab(owned,garageOwnedOnly);
             AddGarageHint(owned,"filter");
             float top=118,height=414;
             if(garageSlot==GarageSlot.Wheels)
             {
                 string[] roles={"ALL","ROAD","MIXED","MUD","SNOW","SAND"};float width=(GarageCatalogWidth-52-25)/6;
-                for(int i=0;i<roles.Length;i++){int role=i;var button=GarageButton(list,roles[i],16+i*(width+5),114,width,()=>{garageTireFilter=role;garageScrollY=0;Show("Garage");},garageTireFilter==i,32);GarageFont(button.GetComponentInChildren<TMP_Text>(),15);}
+                for(int i=0;i<roles.Length;i++){int role=i;var button=GarageButton(list,roles[i],16+i*(width+5),114,width,()=>{garageTireFilter=role;garageScrollY=0;Show("Garage");},garageTireFilter==i,32);GarageFont(button.GetComponentInChildren<TMP_Text>(),15);MarkOpenGarageTab(button,garageTireFilter==i);}
                 top=158;height=374;
             }
             var scrollRoot=Node("Continuous parts scroll",list,16,top,GarageCatalogWidth-32,height);
