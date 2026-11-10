@@ -32,8 +32,8 @@ namespace TowTrouble.Editor
             var aliases=File.Exists(Root+"/Aliases.json")?JObject.Parse(File.ReadAllText(Root+"/Aliases.json")):new JObject();
             catalog.Entries=rows.Select(r=>new RecoveryTextEntry{Key=(string)r["key"],Source=(string)r["source"],Context=string.Join("; ",r["contexts"]?.Values<string>()??Array.Empty<string>()),Aliases=aliases.Properties().Where(a=>(string)a.Value==(string)r["source"]).Select(a=>a.Name).ToArray()}).ToArray();
             var shared=Asset<SharedTableData>(Root+"/Tables/Text Shared.asset");shared.TableCollectionName="TowTrouble.Text";
-            foreach(var entry in catalog.Entries)shared.AddKey(entry.Key);
-            var fontShared=Asset<SharedTableData>(Root+"/Tables/Fonts Shared.asset");fontShared.TableCollectionName="TowTrouble.Fonts";fontShared.AddKey("Body");fontShared.AddKey("Display");
+            foreach(var entry in catalog.Entries)if(shared.GetEntry(entry.Key)==null)shared.AddKey(entry.Key);
+            var fontShared=Asset<SharedTableData>(Root+"/Tables/Fonts Shared.asset");fontShared.TableCollectionName="TowTrouble.Fonts";if(fontShared.GetEntry("Body")==null)fontShared.AddKey("Body");if(fontShared.GetEntry("Display")==null)fontShared.AddKey("Display");
             var fonts=new[]{"Greek","Arabic","Thai","Japanese","Korean","SimplifiedChinese","TraditionalChinese","Cyrillic"};
             foreach(string name in fonts)
             {
@@ -72,6 +72,14 @@ namespace TowTrouble.Editor
                 catalog.Languages[i]=new RecoveryLocaleData{Locale=locale,Strings=table,Assets=assets,FontResource=font==null?"":"RecoveryLocalizedFonts/"+font};
                 Save(locale);Save(table);Save(assets);
             }
+            // Older refreshes used AddKey unconditionally, which creates numbered duplicates.
+            // Remove only generated aliases that no locale table references; canonical IDs stay stable.
+            var textIds=new System.Collections.Generic.HashSet<long>(catalog.Languages.SelectMany(l=>l.Strings.Values).Select(e=>e.KeyId));
+            foreach(var entry in shared.Entries.ToArray())
+                if(!textIds.Contains(entry.Id)&&System.Text.RegularExpressions.Regex.IsMatch(entry.Key,@"^ui\.[0-9a-f]{16} [0-9]+$"))shared.RemoveKey(entry.Id);
+            var fontIds=new System.Collections.Generic.HashSet<long>(catalog.Languages.SelectMany(l=>l.Assets.Values).Select(e=>e.KeyId));
+            foreach(var entry in fontShared.Entries.ToArray())
+                if(!fontIds.Contains(entry.Id)&&System.Text.RegularExpressions.Regex.IsMatch(entry.Key,@"^(Body|Display) [0-9]+$"))fontShared.RemoveKey(entry.Id);
             Save(shared);Save(fontShared);Save(catalog);
             var settings=Asset<RecoveryLocalizationSettings>(Root+"/Resources/RecoveryLocalizationSettings.asset");
             settings.SetAvailableLocales(new RecoveryLocalLocales(catalog));

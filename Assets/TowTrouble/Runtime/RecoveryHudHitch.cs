@@ -72,8 +72,8 @@ namespace TowTrouble
                 hitchTextScale = P.textScale;
                 hitchBinding.text = key;
                 hitchAction.text = action;
-                float keyWidth = Mathf.Max(26f * P.textScale, hitchBinding.GetPreferredValues(key, 300, 50).x + 10f);
-                float labelWidth = hitchAction.GetPreferredValues(action, 350, 50).x + 3f;
+                float keyWidth = Mathf.Max(26f * P.textScale, hitchBinding.GetLocalizedPreferredValues(key, 300, 50).x + 10f);
+                float labelWidth = hitchAction.GetLocalizedPreferredValues(action, 350, 50).x + 3f;
                 float height = 38f * Mathf.Max(1, P.textScale);
                 hitchKeycap.sizeDelta = hitchBinding.rectTransform.sizeDelta = new Vector2(keyWidth, height - 12f);
                 hitchAction.rectTransform.anchoredPosition = new Vector2(16 + keyWidth, 0);

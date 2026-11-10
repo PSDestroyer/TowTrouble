@@ -85,8 +85,8 @@ namespace TowTrouble
                     break;
             }
             // Reserve room for the longest focus description, rather than an empty fixed-height card.
-            float helpHeight=menuHelp.GetPreferredValues(SettingsDescription(),502,float.PositiveInfinity).y;
-            foreach(var description in menuDescriptions.Values)helpHeight=Mathf.Max(helpHeight,menuHelp.GetPreferredValues(description,502,float.PositiveInfinity).y);
+            float helpHeight=menuHelp.GetLocalizedPreferredValues(SettingsDescription(),502,float.PositiveInfinity).y;
+            foreach(var description in menuDescriptions.Values)helpHeight=Mathf.Max(helpHeight,menuHelp.GetLocalizedPreferredValues(description,502,float.PositiveInfinity).y);
             float detailsHeight=Mathf.Clamp(Mathf.Ceil(helpHeight)+202,300,480);
             details.sizeDelta=new Vector2(558,detailsHeight);
             menuHelp.rectTransform.sizeDelta=new Vector2(502,detailsHeight-202);

@@ -156,7 +156,7 @@ namespace TowTrouble
             var entry=Text(panel,"",30,22,1040,64,25,Paper,true);entry.enableAutoSizing=false;entry.textWrappingMode=TextWrappingModes.NoWrap;
             string draft=textEntryDraft??"",visible=draft+"│";
             // Keep the caret and the end being edited readable even for a long host address.
-            while(draft.Length>0&&entry.GetPreferredValues(visible).x>1040){draft=draft.Substring(1);visible="…"+draft+"│";}
+            while(draft.Length>0&&entry.GetLocalizedPreferredValues(visible).x>1040){draft=draft.Substring(1);visible="…"+draft+"│";}
             RecoveryLocalizedText.Bind(entry,false);entry.text=visible;
             const string letters="1234567890abcdefghijklmnopqrstuvwxyz.-:_";
             for(int i=0;i<letters.Length;i++){char ch=letters[i];Button(panel,ch.ToString(),30+i%10*104,112+i/10*66,94,()=>{if(textEntryDraft.Length<textEntryLimit)textEntryDraft+=ch;Show("TextEntry");},false,52);}
@@ -188,7 +188,7 @@ namespace TowTrouble
             var viewport=Stretch("Viewport",scrollRoot);viewport.gameObject.AddComponent<UnityEngine.UI.Image>().color=Color.white;viewport.gameObject.AddComponent<UnityEngine.UI.Mask>().showMaskGraphic=false;
             string notices=Resources.Load<TextAsset>("TowThirdPartyNotices")?.text??"Third-party notices could not be loaded.";
             var content=Node("Notices content",viewport,0,0,1150,500);var text=Text(content,notices,0,0,1150,500,16,Muted);text.enableAutoSizing=false;RecoveryLocalizedText.Bind(text,false);
-            float height=Mathf.Max(420,text.GetPreferredValues(notices,1150,0).y+20);content.sizeDelta=new Vector2(1150,height);text.rectTransform.sizeDelta=content.sizeDelta;
+            float height=Mathf.Max(420,text.GetLocalizedPreferredValues(notices,1150,0).y+20);content.sizeDelta=new Vector2(1150,height);text.rectTransform.sizeDelta=content.sizeDelta;
             menuScroll.content=content;menuScroll.viewport=viewport;
             ControlText(Text(card,session.UsingGamepad?"Right stick · Scroll":"Page Up / Page Down / Mouse wheel · Scroll",28,440,1192,36,18,Muted));
         }

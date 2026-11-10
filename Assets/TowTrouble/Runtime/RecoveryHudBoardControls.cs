@@ -205,7 +205,7 @@ namespace TowTrouble
                 if (hint.Key.text == key) continue;
                 hint.Key.text = key;
                 var rect = (RectTransform)hint.Button.transform;
-                float width = page=="Confirm"?60f:Mathf.Max(64f, Mathf.Ceil(hint.Key.GetPreferredValues(key).x) + 12f);
+                float width = page=="Confirm"?60f:Mathf.Max(64f, Mathf.Ceil(hint.Key.GetLocalizedPreferredValues(key).x) + 12f);
                 float height = page=="Confirm"?42f:rect.rect.height<=36?36f:40f;
                 hint.Cap.anchoredPosition = new Vector2(hint.Right ? rect.rect.width - width - 8f : 12f, -(rect.rect.height - height) * .5f);
                 hint.Cap.sizeDelta = hint.Key.rectTransform.sizeDelta = new Vector2(width, height);

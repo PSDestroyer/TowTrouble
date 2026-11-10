@@ -206,7 +206,7 @@ namespace TowTrouble
             Text(card,displayPending?"KEEP DISPLAY SETTINGS?":"PLEASE CONFIRM",76,24,width-104,42,26,Paper,true);
             var message=Text(card,confirmationQuestion,padding,86,width-padding*2,300,23,Muted);
             message.enableAutoSizing=false;
-            float messageHeight=Mathf.Clamp(Mathf.Ceil(message.GetPreferredValues(confirmationQuestion,width-padding*2,float.PositiveInfinity).y)+8,40,300);
+            float messageHeight=Mathf.Clamp(Mathf.Ceil(message.GetLocalizedPreferredValues(confirmationQuestion,width-padding*2,float.PositiveInfinity).y)+8,40,300);
             message.rectTransform.sizeDelta=new Vector2(width-padding*2,messageHeight);message.enableAutoSizing=true;
             float buttonY=86+messageHeight+24,height=buttonY+64+padding;
             card.sizeDelta=new Vector2(width,height);card.anchoredPosition=new Vector2((1600-width)*.5f,-(900-height)*.5f);

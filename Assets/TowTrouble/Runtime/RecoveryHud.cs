@@ -204,7 +204,7 @@ namespace TowTrouble
             Panel(focus,8,14,4,54,Amber);
             text.rectTransform.SetParent(rt,false);text.rectTransform.anchoredPosition=new Vector2(0,48);
             rt.gameObject.AddComponent<RecoveryUiFeedback>().ConfigureSlider(text,fg,frame,knob);
-            slider.onValueChanged.AddListener(v=>{if(!Application.isPlaying)return;change(v);text.text=label+"   "+Mathf.RoundToInt(v*100)+"%";foreach(var entry in textSizes)if(entry.Key!=null){entry.Key.fontSize=entry.Value*P.textScale;entry.Key.fontSizeMax=entry.Value*P.textScale;entry.Key.fontSizeMin=entry.Value*Mathf.Min(1,P.textScale);}session.ApplySettings();P.Save();});
+            slider.onValueChanged.AddListener(v=>{if(!Application.isPlaying)return;change(v);text.text=label+"   "+Mathf.RoundToInt(v*100)+"%";foreach(var entry in textSizes)if(entry.Key!=null){entry.Key.fontSize=entry.Value*P.textScale;entry.Key.fontSizeMax=entry.Value*P.textScale;entry.Key.fontSizeMin=entry.Value*Mathf.Min(1,P.textScale)*(RecoveryLocalization.Code=="en"?1f:.72f);}session.ApplySettings();P.Save();});
         }
 
         private IEnumerator RefreshSettings(){yield return null;yield return null;if(page=="Settings")Show("Settings");}
@@ -329,11 +329,11 @@ namespace TowTrouble
             exploreHintDetail.gameObject.SetActive(hasDetail);
             float scale = Mathf.Max(1f, P.textScale), pad = 8f * scale;
             float keyHeight = 26f * scale, lineHeight = 38f * scale;
-            float keyWidth = hasKey ? Mathf.Max(keyHeight, Mathf.Ceil(exploreHintBinding.GetPreferredValues(key).x) + pad) : 0f;
-            float labelWidth = Mathf.Ceil(garagePrompt.GetPreferredValues(action).x) + 3f;
+            float keyWidth = hasKey ? Mathf.Max(keyHeight, Mathf.Ceil(exploreHintBinding.GetLocalizedPreferredValues(key).x) + pad) : 0f;
+            float labelWidth = Mathf.Ceil(garagePrompt.GetLocalizedPreferredValues(action).x) + 3f;
             float labelLeft = hasKey ? pad * 2 + keyWidth : pad;
             float width = Mathf.Max(labelLeft + labelWidth + pad,
-                hasDetail ? exploreHintDetail.GetPreferredValues(detail).x + pad * 2 : 0f);
+                hasDetail ? exploreHintDetail.GetLocalizedPreferredValues(detail).x + pad * 2 : 0f);
             exploreHintKeycap.anchoredPosition = new Vector2(pad, -(lineHeight - keyHeight) * .5f);
             exploreHintKeycap.sizeDelta = exploreHintBinding.rectTransform.sizeDelta = new Vector2(keyWidth, keyHeight);
             garagePrompt.rectTransform.anchoredPosition = new Vector2(labelLeft, 0f);

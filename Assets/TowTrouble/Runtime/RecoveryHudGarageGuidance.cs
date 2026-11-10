@@ -31,7 +31,7 @@ namespace TowTrouble
                 ? world.Attached(slot) ? "Detach cable first" : "Stop to customize"
                 : distance < 16f && Mathf.Abs(delta.y) < 3f ? "Park here" : Mathf.RoundToInt(distance) + " m";
             // Reserve one stable width while driving, stopping and switching input.
-            string sample = waypointCaption.GetPreferredValues(ready).x > waypointCaption.GetPreferredValues("Stop to customize").x
+            string sample = waypointCaption.GetLocalizedPreferredValues(ready).x > waypointCaption.GetLocalizedPreferredValues("Stop to customize").x
                 ? ready : "Stop to customize";
             waypointGarage = true;
             waypointWorld = world;

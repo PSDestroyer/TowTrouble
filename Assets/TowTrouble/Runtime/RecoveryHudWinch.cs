@@ -127,8 +127,8 @@ namespace TowTrouble
             string payoutKey = gamepad ? payout : P.ReadKey(payout, Key.E).ToString();
             reelHint.text = "[" + reelKey + "]";
             payoutHint.text = "[" + payoutKey + "]";
-            float leftWidth = Mathf.Ceil(reelHint.GetPreferredValues(reelHint.text, 1000, 40).x) + 2f;
-            float rightWidth = Mathf.Ceil(payoutHint.GetPreferredValues(payoutHint.text, 1000, 40).x) + 2f;
+            float leftWidth = Mathf.Ceil(reelHint.GetLocalizedPreferredValues(reelHint.text, 1000, 40).x) + 2f;
+            float rightWidth = Mathf.Ceil(payoutHint.GetLocalizedPreferredValues(payoutHint.text, 1000, 40).x) + 2f;
             const float padding = 12f, iconGap = 3f, trackGap = 8f, minTrackWidth = 132f;
             float iconSize = Mathf.Clamp(21f * hintScale, 19f, 24f);
             float trackLeft = padding + leftWidth + iconGap + iconSize + trackGap;

@@ -1,0 +1,60 @@
+if(UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)throw new System.Exception("Edit Mode required");
+var flags=System.Reflection.BindingFlags.Public|System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
+var sf=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static;
+var originalSettings=UnityEngine.Localization.Settings.LocalizationSettings.Instance;
+var originalCatalog=TowTrouble.RecoveryLocalization.Catalog;string oldCode=TowTrouble.RecoveryLocalization.Code;
+var source=UnityEngine.Object.FindFirstObjectByType<TowTrouble.RecoveryHud>(FindObjectsInactive.Include);
+var sessionSource=(TowTrouble.DemoSession)typeof(TowTrouble.RecoveryHud).GetField("session",flags).GetValue(source);
+var scene=UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();bool dirty=scene.isDirty;
+var errors=new System.Collections.Generic.List<string>();UnityEngine.Application.LogCallback log=(m,s,t)=>{if(t==UnityEngine.LogType.Error||t==UnityEngine.LogType.Exception)errors.Add(m);};UnityEngine.Application.logMessageReceived+=log;
+var preview=UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();var objects=new System.Collections.Generic.List<UnityEngine.Object>();var rows=new System.Collections.Generic.List<object>();
+var previousRT=RenderTexture.active;
+var catalog=UnityEngine.Object.Instantiate(originalCatalog);objects.Add(catalog);
+catalog.Languages=originalCatalog.Languages.Select(l=>new TowTrouble.RecoveryLocaleData{Locale=l.Locale,Strings=l.Strings,Assets=UnityEngine.Object.Instantiate(l.Assets),FontResource=""}).ToArray();foreach(var l in catalog.Languages)objects.Add(l.Assets);
+var settings=UnityEngine.ScriptableObject.CreateInstance<TowTrouble.RecoveryLocalizationSettings>();objects.Add(settings);
+settings.SetAvailableLocales(new TowTrouble.RecoveryLocalLocales(catalog));settings.SetStringDatabase(new UnityEngine.Localization.Settings.LocalizedStringDatabase{TableProvider=new TowTrouble.RecoveryLocalTables(catalog),DefaultTable="TowTrouble.Text"});settings.SetAssetDatabase(new UnityEngine.Localization.Settings.LocalizedAssetDatabase{TableProvider=new TowTrouble.RecoveryLocalTables(catalog),DefaultTable="TowTrouble.Fonts"});settings.GetStartupLocaleSelectors().Clear();settings.GetStartupLocaleSelectors().Add(new UnityEngine.Localization.Settings.SpecificLocaleSelector{LocaleId=new UnityEngine.Localization.LocaleIdentifier("en")});
+try{
+UnityEngine.Localization.Settings.LocalizationSettings.Instance=settings;
+typeof(TowTrouble.RecoveryLocalization).GetField("catalog",sf).SetValue(null,catalog);
+var camgo=new GameObject("Temporary localization render camera");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(camgo,preview);var cam=camgo.AddComponent<Camera>();cam.enabled=false;cam.scene=preview;cam.orthographic=true;cam.orthographicSize=450;cam.transform.position=new Vector3(800,-450,-1000);cam.nearClipPlane=.1f;cam.farClipPlane=2000;cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.17f,.23f,.25f);
+var rt=new RenderTexture(1280,720,24);objects.Add(rt);cam.targetTexture=rt;
+foreach(string code in TowTrouble.RecoveryLanguage.Codes){
+var actual=originalCatalog.Find(code);var font=string.IsNullOrEmpty(actual.FontResource)?originalCatalog.WesternBody:Resources.Load<TMPro.TMP_FontAsset>(actual.FontResource);
+var body=TMPro.TMP_FontAsset.CreateFontAsset(font.sourceFontFile,48,6,UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA,1024,1024,TMPro.AtlasPopulationMode.Dynamic,true);objects.Add(body);objects.Add(body.material);foreach(var tex in body.atlasTextures)objects.Add(tex);var display=body;if(string.IsNullOrEmpty(actual.FontResource)){display=TMPro.TMP_FontAsset.CreateFontAsset(originalCatalog.WesternDisplay.sourceFontFile,48,6,UnityEngine.TextCore.LowLevel.GlyphRenderMode.SDFAA,1024,1024,TMPro.AtlasPopulationMode.Dynamic,true);objects.Add(display);objects.Add(display.material);foreach(var tex in display.atlasTextures)objects.Add(tex);}
+catalog.WesternBody=body;catalog.WesternDisplay=display;
+TowTrouble.RecoveryLocalization.Select(code);
+var go=new GameObject("Temporary content metrics",typeof(RectTransform),typeof(Canvas));UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(go,preview);var canvas=go.GetComponent<Canvas>();canvas.renderMode=RenderMode.WorldSpace;canvas.worldCamera=cam;
+var textGO=new GameObject("Content metrics",typeof(RectTransform));textGO.transform.SetParent(go.transform,false);var text=textGO.AddComponent<TMPro.TextMeshProUGUI>();text.font=body;TowTrouble.RecoveryLocalizedText.Bind(text);text.enableAutoSizing=true;text.raycastTarget=false;
+var specs=new System.Collections.Generic.List<(string kind,string value,float width,float height,float size,float minimum,bool bold)>();
+void Spec(string kind,string value,float w,float h,float size,float min=0,bool bold=false){if(!string.IsNullOrWhiteSpace(value))specs.Add((kind,value,w,h,size,min,bold));}
+var profile=new TowTrouble.RecoveryProfile{language=code,SuppressSaving=true};profile.EnsureGarage();
+var contracts=sessionSource.World.AvailableContracts.Concat(TowTrouble.RecoveryContract.All).ToArray();
+foreach(var c in contracts){Spec("RecoveryTitle",c.TitleFor(profile),774,50,33,0,true);Spec("RecoveryDescription",c.DescriptionFor(profile)+"\nTerrain: "+c.TerrainFor(profile),482,93,18,14);Spec("MissionTitle",c.TitleFor(profile),264,26,14);Spec("Delivery",c.DeliveryEnglish,275,26,14);}
+float previewWidth=TowTrouble.RecoveryGarageLayout.PreviewWidth-40;
+float cardWidth=(TowTrouble.RecoveryGarageLayout.CatalogWidth-52-20)/3-24;
+foreach(var part in sessionSource.GarageCatalog.Parts){
+ Spec("PartName",part.EnglishName,previewWidth,40,25,0,true);Spec("CardName",part.EnglishName,cardWidth,76,17,code=="en"?15:10.8f,true);
+ Spec("PartDescription",part.EnglishDescription,previewWidth,66,16);
+ string perf=TowTrouble.RecoveryGarageWorkflow.AppearanceOnly(part)?"Appearance only":TowTrouble.RecoveryGarageCardInfo.Performance(part,true,0);
+ if(part.Slot==TowTrouble.GarageSlot.Assembly)perf=perf.Replace(" kg · "," kg\n").Replace("Top speed: ","");
+ Spec("CardStats",perf,cardWidth,part.Slot==TowTrouble.GarageSlot.Assembly?70:48,15,0,true);
+}
+foreach(TowTrouble.RecoveryPhase phase in System.Enum.GetValues(typeof(TowTrouble.RecoveryPhase)))for(int bits=0;bits<64;bits++)Spec("MissionInstruction",TowTrouble.RecoveryHud.MissionInstruction(phase,(bits&1)!=0,(bits&2)!=0,(bits&4)!=0,(bits&8)!=0,(bits&16)!=0?0:3,(bits&32)!=0,"TAB"),264,36,18,0,true);
+foreach(var hint in new[]{"Cable at risk","Ease off the throttle","Pay out cable","Cable attached","Hold Q to reel in","F · Detach cable","Reconnect cable","Attach cable","Move closer to attach","Bring recovered car here","Return to safe point","Using reset removes the no-reset bonus"," · Drive    Left stick · Steer"})Spec("GameplayHint",hint,262,36,16);
+foreach(TowTrouble.WinchState w in System.Enum.GetValues(typeof(TowTrouble.WinchState)))Spec("Winch",TowTrouble.RecoveryHud.WinchLabel(w,true),230,26,18,0,true);
+var issues=new System.Collections.Generic.List<object>();var unchanged=new System.Collections.Generic.HashSet<string>();int checkedCount=0;
+foreach(float scale in new[]{.85f,1f,1.1f,1.2f,1.3f})foreach(var spec in specs.Distinct().Where(v=>v.kind!="MissionInstruction"&&v.kind!="GameplayHint")){
+ text.font=spec.bold&&spec.size>=26?display:body;text.fontStyle=spec.bold&&text.font!=display?TMPro.FontStyles.Bold:TMPro.FontStyles.Normal;
+ text.rectTransform.sizeDelta=new Vector2(spec.width,spec.height);text.textWrappingMode=TMPro.TextWrappingModes.Normal;text.fontSize=text.fontSizeMax=spec.size*scale;text.fontSizeMin=spec.minimum>0?spec.minimum:spec.size*Mathf.Min(1,scale)*(code=="en"?1f:.72f);text.text=spec.value;text.ForceMeshUpdate(true,true);
+ checkedCount++;if(text.isTextOverflowing)issues.Add(new{spec.kind,source=spec.value,rendered=text.textPreprocessor.PreprocessText(spec.value),scale,size=text.fontSize,width=spec.width,height=spec.height});
+ if(code!="en"&&scale==1&&TowTrouble.RecoveryLocalization.Translate(spec.value)==spec.value)unchanged.Add(spec.kind+" | "+spec.value);
+}
+rows.Add(new{code,checkedCount,issues,unchanged});System.IO.File.AppendAllText("/private/tmp/TowLocalization/FastProgress.txt",code+" "+checkedCount+" issues "+issues.Count+"\n");UnityEngine.Object.DestroyImmediate(go);
+}
+System.IO.File.WriteAllText("/private/tmp/TowLocalization/FastContentReport.json",Newtonsoft.Json.JsonConvert.SerializeObject(new{rows,errors,scenePreserved=scene==UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene(),dirtyPreserved=dirty==scene.isDirty},Newtonsoft.Json.Formatting.Indented));
+return new{menus=rows.Count,errors};
+}finally{
+UnityEngine.Localization.Settings.LocalizationSettings.Instance=originalSettings;typeof(TowTrouble.RecoveryLocalization).GetField("catalog",sf).SetValue(null,originalCatalog);TowTrouble.RecoveryLocalization.Select(oldCode);RenderTexture.active=previousRT;UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(preview);
+foreach(var font in objects.OfType<TMPro.TMP_FontAsset>())if(font!=null)foreach(var atlas in font.atlasTextures)if(atlas!=null&&!objects.Contains(atlas))UnityEngine.Object.DestroyImmediate(atlas);
+foreach(var obj in objects)if(obj!=null)UnityEngine.Object.DestroyImmediate(obj);UnityEngine.Application.logMessageReceived-=log;
+}

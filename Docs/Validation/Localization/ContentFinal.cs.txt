@@ -1,0 +1,10 @@
+if(UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)throw new System.Exception("Edit Mode required");
+var scene=UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();bool dirty=scene.isDirty;
+TowTrouble.Editor.RecoveryLocalizationAuthoring.Refresh();
+var c=TowTrouble.RecoveryLocalization.Catalog;var shared=c.Languages[0].Strings.SharedData;var fonts=c.Languages[0].Assets.SharedData;
+var ids=c.Entries.Select(e=>shared.GetEntry(e.Key).Id).ToArray();int count=shared.Entries.Count;
+TowTrouble.Editor.RecoveryLocalizationAuthoring.Refresh();c=TowTrouble.RecoveryLocalization.Catalog;
+var gaps=new System.Collections.Generic.List<string>();int checkedCount=0;
+foreach(var l in c.Languages)foreach(var e in c.Entries){checkedCount++;if(string.IsNullOrWhiteSpace(l.Strings.GetEntry(e.Key)?.LocalizedValue))gaps.Add(l.Locale.Identifier.Code+"/"+e.Key);}
+var result=new{entries=c.Entries.Length,locales=c.Languages.Length,checkedCount,gaps,sharedKeys=shared.Entries.Count,fontKeys=fonts.Entries.Count,idempotent=count==shared.Entries.Count&&ids.SequenceEqual(c.Entries.Select(e=>shared.GetEntry(e.Key).Id)),scenePreserved=scene==UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene(),dirtyPreserved=scene.isDirty==dirty,playing=UnityEditor.EditorApplication.isPlaying,parts=UnityEngine.Object.FindFirstObjectByType<TowTrouble.RecoveryWorld>().Drivers[0].GetComponent<TowTrouble.RecoveryCustomization>().Catalog.Parts.Length,contracts=UnityEngine.Object.FindFirstObjectByType<TowTrouble.RecoveryWorld>().AvailableContracts.Length};
+System.IO.File.WriteAllText("/private/tmp/TowLocalization/ContentFinalReport.json",Newtonsoft.Json.JsonConvert.SerializeObject(result,Newtonsoft.Json.Formatting.Indented));return result;

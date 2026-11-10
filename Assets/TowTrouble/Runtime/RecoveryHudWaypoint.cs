@@ -53,7 +53,7 @@ namespace TowTrouble
             objective.alignment = TextAlignmentOptions.MidlineLeft;
             textSizes[objective] = 17f;
             objective.fontSize = objective.fontSizeMax = 17f * P.textScale;
-            objective.fontSizeMin = 17f * Mathf.Min(1f, P.textScale);
+            objective.fontSizeMin = 17f * Mathf.Min(1f, P.textScale) * (RecoveryLocalization.Code == "en" ? 1f : .72f);
             HideGuidanceNote();
         }
 
@@ -67,7 +67,7 @@ namespace TowTrouble
             if (objective.text != text || !guidanceNote.gameObject.activeSelf)
             {
                 objective.text = text;
-                float width = Mathf.Clamp(objective.GetPreferredValues(text).x + 28f, 125f, 540f);
+                float width = Mathf.Clamp(objective.GetLocalizedPreferredValues(text).x + 28f, 125f, 540f);
                 float height = 38f * Mathf.Max(1f, P.textScale);
                 guidanceNote.sizeDelta = new Vector2(width, height);
                 objective.rectTransform.sizeDelta = new Vector2(width - 24f, height);
@@ -101,7 +101,7 @@ namespace TowTrouble
                 float scale = Mathf.Max(1f, waypointScale);
                 // Reserve enough room for a stable three/four digit reading as the car moves.
                 string sample = captionSample ?? (instruction ? "Bring recovered car here" : showHeight ? L("999 m  <size=75%>·  199 m mai sus</size>", "999 m  <size=75%>·  199 m higher</size>") : "1,000 m");
-                float labelWidth = Mathf.Max(waypointPlace.GetPreferredValues(place).x, waypointCaption.GetPreferredValues(sample).x);
+                float labelWidth = Mathf.Max(waypointPlace.GetLocalizedPreferredValues(place).x, waypointCaption.GetLocalizedPreferredValues(sample).x);
                 labelWidth = Mathf.Clamp(Mathf.Ceil(labelWidth) + 4f, 82f, 275f * scale);
                 float width = 46f + labelWidth + 34f, height = 54f * scale;
                 waypointBadge.sizeDelta = new Vector2(width, height);

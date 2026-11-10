@@ -159,7 +159,7 @@ namespace TowTrouble
             var scrollRoot=Node("Review details",panel,28,88,794,286);var scroll=scrollRoot.gameObject.AddComponent<UnityEngine.UI.ScrollRect>();scroll.horizontal=false;scroll.vertical=true;scroll.movementType=UnityEngine.UI.ScrollRect.MovementType.Clamped;
             var viewport=Node("Review viewport",scrollRoot,0,0,794,286);viewport.gameObject.AddComponent<UnityEngine.UI.Image>().color=Color.white;viewport.gameObject.AddComponent<UnityEngine.UI.Mask>().showMaskGraphic=false;
             var content=Node("Review text",viewport,0,0,774,286);var text=Text(content,body,0,0,774,286,20,Muted);text.enableAutoSizing=false;
-            float height=Mathf.Ceil(text.GetPreferredValues(body,774,float.PositiveInfinity).y)+8,viewHeight=Mathf.Clamp(height,64,286);
+            float height=Mathf.Ceil(text.GetLocalizedPreferredValues(body,774,float.PositiveInfinity).y)+8,viewHeight=Mathf.Clamp(height,64,286);
             scrollRoot.sizeDelta=viewport.sizeDelta=new Vector2(794,viewHeight);content.sizeDelta=text.rectTransform.sizeDelta=new Vector2(774,Mathf.Max(viewHeight,height));scroll.viewport=viewport;scroll.content=content;
             garageReviewScroll=scroll;
             bool scrolling=height>viewHeight;

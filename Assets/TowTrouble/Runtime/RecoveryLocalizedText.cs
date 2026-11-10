@@ -36,4 +36,18 @@ namespace TowTrouble
             label.havePropertiesChanged=true;label.SetAllDirty();
         }
     }
+    public static class RecoveryTextMeasurement
+    {
+        // TMP's string measurement overload bypasses ITextPreprocessor. Measure the same
+        // translated/shaped string (and control glyphs) that the label will render.
+        public static Vector2 GetLocalizedPreferredValues(this TMP_Text label,string source)
+        {
+            return label.GetPreferredValues(label.textPreprocessor?.PreprocessText(source)??source);
+        }
+        public static Vector2 GetLocalizedPreferredValues(this TMP_Text label,string source,float width,float height)
+        {
+            return label.GetPreferredValues(label.textPreprocessor?.PreprocessText(source)??source,width,height);
+        }
+    }
+
 }

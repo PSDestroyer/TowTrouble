@@ -3,7 +3,7 @@ from pathlib import Path
 import json,re,hashlib
 root=Path(__file__).resolve().parents[2]/'Localization'
 source=json.loads((root/'Source.json').read_text(encoding="utf-8"));allterms={}
-for file in ['Core.json','RecoveryTerms.json','Help.json','Details.json','Critical.json','Polish.json','Compact.json']:
+for file in ['Core.json','RecoveryTerms.json','Help.json','Details.json','Critical.json','Polish.json','Compact.json','Gameplay.json']:
  p=root/'Authored'/file
  if p.exists():
   for code,items in json.loads(p.read_text(encoding="utf-8")).items():allterms.setdefault(code,{}).update(items)
@@ -50,13 +50,15 @@ for code,terms in allterms.items():
    kind='structured stats'
   elif re.match(r'^(Off-road|Utility|Light|Heavy|Balanced|Heavy-duty|Sport|Compact): ',text):
    m=re.search(r'(\d+) kg · ([\d.]+) kN · (\d+) km/h',text)
-   if m:value=t('Mass')+': '+m[1]+' kg · '+t('Pull')+': '+m[2]+' kN · '+t('Speed')+': '+m[3]+' km/h. '+helper(30);kind='structured stats'
+   if m:value=t('Mass')+': '+m[1]+' kg · '+t('Pull')+': '+m[2]+' kN · '+t('Speed')+': '+m[3]+' km/h. '+t(text.split('km/h. ',1)[1]);kind='structured stats'
   elif text.startswith('Break threshold ') or text.startswith('First cable upgrade. Break threshold '):
    m=re.search(r'(\d+) kN',text)
    if m:value=t('Break threshold')+': '+m[1]+' kN. '+helper(1);kind='structured stats'
   elif re.match(r'^\d+ kN; up to ',text):
    m=re.match(r'^(\d+) kN; up to ([\d.]+) m/s',text)
    value=t('Winch force')+': '+m[1]+' kN · '+t('Reel speed')+': '+m[2]+' m/s. '+t('The winch slows under load and stalls at its limit.')+' '+t('Grip still limits usable pull');kind='structured stats'
+   recommendation=re.search(r'Recommended: (\d+) kN cable',text)
+   if recommendation:value+=' · '+t('Recommended')+': '+t('Cable')+' '+recommendation[1]+' kN'
   elif text=='Nominal drive +20%; usable force remains grip-limited.':value=t('Pull')+' +20%. '+t('Grip still limits usable pull');kind='structured stats'
   elif text=='Nominal drive +35%. Full price from stock engine.':value=t('Pull')+' +35% · '+t('Stock')+' → '+t('Engine level')+' 3';kind='structured stats'
   elif text=='Drive +25%; top speed -20%.':value=t('Pull')+' +25% · '+t('Speed')+' -20%';kind='structured stats'
@@ -177,6 +179,7 @@ for code,terms in allterms.items():
   if '{' in text and text not in explicit and text not in ['Reverting in {0} seconds.','Already used for {0}','MODE: {0}']:
    value=patt.sub(lambda m:t(m[0]),text);values[text]=value
    if value!=text:kinds[text]='reviewed format'
+ values[' · Drive    Left stick · Steer']=' · '+t('Drive vehicle')+'    '+t('Left stick')+' · '+t('Steer')
  values={k:v.replace('\u00ad','').replace('→','>') for k,v in values.items()}
  (root/'Translations'/f'{code}.json').write_text(json.dumps(values,ensure_ascii=False,indent=2)+'\n',encoding="utf-8")
  coverage[code]={'authoredConcepts':len(terms),'translatedEntries':sum(v!=k for k,v in values.items()),'fallback':[k for k,v in values.items() if v==k],'kinds':{k:sum(v==k for v in kinds.values()) for k in sorted(set(kinds.values()))}}

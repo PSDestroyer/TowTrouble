@@ -57,7 +57,7 @@ namespace TowTrouble
             }
         }
         private void GarageFont(TMP_Text text,float size)
-        {textSizes[text]=size;text.fontSize=text.fontSizeMax=size*P.textScale;text.fontSizeMin=size*Mathf.Min(1,P.textScale);}
+        {textSizes[text]=size;text.fontSize=text.fontSizeMax=size*P.textScale;text.fontSizeMin=size*Mathf.Min(1,P.textScale)*(RecoveryLocalization.Code=="en"?1f:.72f);}
         private UnityEngine.UI.Button GarageOverlayButton(Transform parent,string label,float x,float y,float width,Action action,bool primary=false)
         {
             int index=garageModalButtons.Count;
@@ -108,7 +108,7 @@ namespace TowTrouble
             foreach(var hint in garageHints)
             {
                 string key=GarageBinding(hint.Kind);hint.Key.text=key;
-                var rect=(RectTransform)hint.Button.transform;float width=Mathf.Max(48,Mathf.Ceil(hint.Key.GetPreferredValues(key).x)+12);
+                var rect=(RectTransform)hint.Button.transform;float width=Mathf.Max(48,Mathf.Ceil(hint.Key.GetLocalizedPreferredValues(key).x)+12);
                 float height=Mathf.Min(40,rect.rect.height);
                 hint.Cap.anchoredPosition=new Vector2(9,-(rect.rect.height-height)*.5f);hint.Cap.sizeDelta=hint.Key.rectTransform.sizeDelta=new Vector2(width,height);
                 hint.Caption.rectTransform.anchoredPosition=new Vector2(width+20,0);hint.Caption.rectTransform.sizeDelta=new Vector2(Mathf.Max(20,rect.rect.width-width-30),rect.rect.height);
