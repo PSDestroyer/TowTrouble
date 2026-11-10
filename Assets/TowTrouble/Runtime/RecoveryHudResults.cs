@@ -29,7 +29,7 @@ namespace TowTrouble
                 Tier=world.Contract.IsOpenWorld?world.Contract.Tier:world.Contract.Id-1, ContractIndex = world.ContractIndex, FreeRoam = world.FreeRoam, Cooperative = world.Cooperative,
                 Host = session.IsHost, NewRecovery = world.FreeRoam && newRecoveryAvailable,
                 Crew = world.Cooperative ? world.DriverName(0) + " / " + world.DriverName(1) + "  ·  " +
-                    Mathf.RoundToInt(world.PullSeconds(0)) + "s / " + Mathf.RoundToInt(world.PullSeconds(1)) + "s pulling" : null
+                    Mathf.RoundToInt(world.PullSeconds(0)) + "s / " + Mathf.RoundToInt(world.PullSeconds(1)) + "s · " + RecoveryLocalization.Translate("Pull") : null
             });
         }
 
@@ -80,7 +80,7 @@ namespace TowTrouble
             if (result.Cooperative)
             {
                 Icon(card, RecoveryIcon.Crew, 36, 499, 22, Muted);
-                Text(card, result.Crew, 70, 492, 734, 42, 16, Muted);
+                RecoveryLocalizedText.Bind(Text(card, result.Crew, 70, 492, 734, 42, 16, Muted),false);
             }
 
             if (result.FreeRoam)

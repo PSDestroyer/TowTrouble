@@ -1,0 +1,19 @@
+if(UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)throw new System.Exception("Edit Mode required");
+var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Public;
+var type=System.AppDomain.CurrentDomain.GetAssemblies().Select(a=>a.GetType("TowTrouble.Tests.RecoveryGarageCameraTests+Fixture")).First(t=>t!=null);
+var fixture=System.Activator.CreateInstance(type,true);int cases=0;var failures=new System.Collections.Generic.List<string>();
+try{
+var car=(TowTrouble.RecoveryVehicle)type.GetField("Car",flags).GetValue(fixture);var custom=(TowTrouble.RecoveryCustomization)type.GetField("Custom",flags).GetValue(fixture);
+var camera=(Camera)type.GetField("camera",flags).GetValue(fixture);var controller=(TowTrouble.RecoveryCamera)type.GetField("controller",flags).GetValue(fixture);var session=(TowTrouble.DemoSession)type.GetField("session",flags).GetValue(fixture);
+var pose=typeof(TowTrouble.RecoveryCamera).GetMethod("GarageCameraPose",flags);
+foreach(TowTrouble.GarageSlot slot in System.Enum.GetValues(typeof(TowTrouble.GarageSlot))){session.FocusGarage(slot,null);object[] args={car,0f,false,1f/30,Vector3.zero,Vector3.zero};for(int i=0;i<180;i++)pose.Invoke(controller,args);
+custom.GarageBounds(slot,null,out var body,out var detail);
+foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(1280,720),new Vector2Int(1920,1080),new Vector2Int(1280,720),new Vector2Int(1920,1080)}){
+camera.pixelRect=new Rect(0,0,size.x,size.y);camera.aspect=(float)size.x/size.y;
+for(int frame=0;frame<3;frame++){pose.Invoke(controller,args);var p=(Vector3)args[4];var look=(Vector3)args[5];camera.transform.SetPositionAndRotation(p,Quaternion.LookRotation(look-p));
+var viewport=TowTrouble.RecoveryGarageView.Viewport(camera.aspect,TowTrouble.RecoveryScreenLayout.CameraSafeArea(camera));var focus=camera.WorldToViewportPoint(car.transform.TransformPoint(detail.center));
+if(focus.z<=0||Vector2.Distance(focus,viewport.center)>.005f)failures.Add(slot+" "+size+" frame"+frame+" focus"+focus);
+if(body.Contains(car.transform.InverseTransformPoint(p)))failures.Add(slot+" inside body");cases++;}
+}}
+return new{cases,failures};
+}finally{((System.IDisposable)fixture).Dispose();}

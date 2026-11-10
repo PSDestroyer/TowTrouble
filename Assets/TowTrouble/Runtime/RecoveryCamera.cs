@@ -96,7 +96,7 @@ namespace TowTrouble
             // interpolation could cut through the car during a front/rear transition.
             if(enteringTitle)velocity=Vector3.zero;
             ApplyPresentationPose(position, look, title||session.GarageOpen||choosingStarter,
-                !lobby&&!session.GarageOpen, p.reducedMotion, Time.unscaledDeltaTime, title||choosingStarter);
+                !lobby&&!session.GarageOpen, p.reducedMotion, Time.unscaledDeltaTime, title||choosingStarter||session.GarageOpen);
             UpdateTitleLighting(title);
             UpdateTreeVisibility(lobby);
         }

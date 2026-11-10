@@ -3,7 +3,7 @@ from pathlib import Path
 import json,re,hashlib
 root=Path(__file__).resolve().parents[2]/'Localization'
 source=json.loads((root/'Source.json').read_text(encoding="utf-8"));allterms={}
-for file in ['Core.json','RecoveryTerms.json','Help.json','Details.json','Critical.json','Polish.json','Compact.json','Gameplay.json']:
+for file in ['Core.json','RecoveryTerms.json','Help.json','Details.json','Critical.json','Polish.json','Compact.json','Gameplay.json','Results.json']:
  p=root/'Authored'/file
  if p.exists():
   for code,items in json.loads(p.read_text(encoding="utf-8")).items():allterms.setdefault(code,{}).update(items)
@@ -26,6 +26,7 @@ for terms in allterms.values():
    source.append({'source':key,'key':'ui.'+hashlib.sha256(key.encode()).hexdigest()[:16],'contexts':['authored localization concept']});existing.add(key.casefold())
 # Additional composed keys are explicit, bounded UI sentences, never arbitrary player data.
 formatkeys=['Make {0} your Stock vehicle?','Abandon "{0}" without payment?','Restore the default {0} settings? Career progress is kept.','Choose a keyboard key for {0}. Duplicate and reserved bindings are rejected.','Already used for {0}. Choose another key, or Esc to cancel.','Keep the new display settings?\n\nReverting in {0} seconds.','Replace setup {0} with your currently fitted setup?\n\nThe part you\'re only previewing will not be saved.','{0} fitted and saved','{0} fitted setup saved','{0} setup fitted and saved','Part sold · {0} CR returned','NEED {0} CR','BUY & FIT · {0} CR','Base  {0} CR   +   Bonuses  {1} CR','{0} completed recoveries','{0} available recoveries','{0} part(s) will return to Stock','Equipped on {0}','Used in {0} setup','Delivered to {0}','LANGUAGE: {0}','Sell {0} for {1} CR?\n\nYou\'ll need to buy it again to use it later.','Hold {0} to reel in','Drive a little using {0} and {1}','{0} to drive and reverse. {1} to steer. Brake before tight turns.']
+formatkeys += ['the drop-off','Replay base  {0} CR   +   Bonuses  {1} CR','Base  {0} CR   +   Bonuses  {1} CR  ·  First recovery +25%']
 for key in formatkeys:
  if key.casefold() not in existing:source.append({'source':key,'key':'ui.'+hashlib.sha256(key.encode()).hexdigest()[:16],'contexts':['composed UI template']});existing.add(key.casefold())
 (root/'Source.json').write_text(json.dumps(source,ensure_ascii=False,indent=2)+'\n',encoding="utf-8")
@@ -115,6 +116,8 @@ for code,terms in allterms.items():
   '{0} fitted and saved':'{0} · '+t('Fitted and saved'),'{0} fitted setup saved':'{0} · '+t('Saved'),'{0} setup fitted and saved':'{0} · '+t('Fitted and saved'),
   'Part sold · {0} CR returned':t('Part sold')+' · {0} CR · '+t('Returned'),
   'NEED {0} CR':t('Need')+' {0} CR','BUY & FIT · {0} CR':t('Buy & fit')+' · {0} CR',
+  'Replay base  {0} CR   +   Bonuses  {1} CR':t('Replay')+' · '+t('Base')+' {0} CR + '+t('Bonuses')+' {1} CR',
+  'Base  {0} CR   +   Bonuses  {1} CR  ·  First recovery +25%':t('Base')+' {0} CR + '+t('Bonuses')+' {1} CR · '+t('First recovery')+' +25%',
   'Base  {0} CR   +   Bonuses  {1} CR':t('Base')+' {0} CR + '+t('Bonuses')+' {1} CR',
   '{0} completed recoveries':'{0} · '+t('Completed'),'{0} available recoveries':'{0} · '+t('Available'),
   '{0} part(s) will return to Stock':'{0} · '+t('Stock'),
@@ -180,6 +183,11 @@ for code,terms in allterms.items():
    value=patt.sub(lambda m:t(m[0]),text);values[text]=value
    if value!=text:kinds[text]='reviewed format'
  values[' · Drive    Left stick · Steer']=' · '+t('Drive vehicle')+'    '+t('Left stick')+' · '+t('Steer')
+ values['+10% bonus']='+10% · '+t('Bonuses')
+ values['Bonus missed']=t('Bonus missed')
+ values['Replay base  ']=t('Replay')+' · '+t('Base')+'  '
+ values[' CR   +   Bonuses  ']=' CR + '+t('Bonuses')+'  '
+ values['the drop-off']=t('the drop-off')
  values={k:v.replace('\u00ad','').replace('→','>') for k,v in values.items()}
  (root/'Translations'/f'{code}.json').write_text(json.dumps(values,ensure_ascii=False,indent=2)+'\n',encoding="utf-8")
  coverage[code]={'authoredConcepts':len(terms),'translatedEntries':sum(v!=k for k,v in values.items()),'fallback':[k for k,v in values.items() if v==k],'kinds':{k:sum(v==k for v in kinds.values()) for k in sorted(set(kinds.values()))}}

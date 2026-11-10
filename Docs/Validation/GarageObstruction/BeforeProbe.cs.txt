@@ -1,0 +1,9 @@
+var w=UnityEngine.Object.FindFirstObjectByType<TowTrouble.RecoveryWorld>();
+var go=new GameObject("Temporary garage projection probe");go.hideFlags=HideFlags.HideAndDontSave;var cam=go.AddComponent<Camera>();cam.enabled=false;cam.fieldOfView=57;cam.aspect=16f/9;
+var rows=new System.Collections.Generic.List<object>();
+try {
+var body=new Bounds(new Vector3(0,1.1f,0),new Vector3(2.2f,2.2f,4.6f));var vp=TowTrouble.RecoveryGarageView.Viewport(cam.aspect,new Rect(0,0,1,1));var frame=TowTrouble.RecoveryGarageView.Frame(TowTrouble.GarageSlot.Assembly,body,body,57,cam.aspect,vp);
+for(int z=-6;z<=6;z+=3)for(int yaw=0;yaw<360;yaw+=30){var origin=w.GaragePosition+new Vector3(0,.1f,z);var rot=Quaternion.Euler(0,yaw,0);var focus=origin+rot*frame.Focus;TowTrouble.RecoveryGarageView.Pose(focus,rot*TowTrouble.RecoveryGarageView.Direction(frame.Yaw,frame.Elevation),frame.Distance,57,cam.aspect,vp,out var p,out var look);
+if(Physics.Linecast(focus,p,out var hit,1<<8,QueryTriggerInteraction.Ignore)){var blocked=hit.point+hit.normal*.45f;cam.transform.SetPositionAndRotation(blocked,Quaternion.LookRotation(look-blocked));var screen=cam.WorldToViewportPoint(focus);if(!vp.Contains(new Vector2(screen.x,screen.y))||screen.z<0)rows.Add(new{z,yaw,hit=hit.collider.name,screen=screen.ToString(),distance=Vector3.Distance(blocked,focus)});}}
+return new{cases=60,failures=rows.Count,examples=rows.Take(8).ToArray(),viewport=vp.ToString(),frame.Distance};
+}finally{UnityEngine.Object.DestroyImmediate(go);}

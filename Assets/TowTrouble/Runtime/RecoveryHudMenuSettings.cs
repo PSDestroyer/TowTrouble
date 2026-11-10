@@ -116,7 +116,7 @@ namespace TowTrouble
         {
             var family=RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
             if(!session.UsingGamepad)return P.forwardKey+" / "+P.reverseKey+" · Drive / reverse\n"+P.leftKey+" / "+P.rightKey+" · Steer\n"+P.hookKey+" · Cable\n"+P.brakeKey+" · Brake\n"+P.reelKey+" / "+P.extendKey+" · Reel in / pay out\nRMB · Camera\nC · Reset camera\n"+P.garageKey+" · Garage\n"+P.boardKey+" · Recoveries";
-            return RecoveryInputPrompts.TriggerLabels(family)+" · Drive / reverse\nLeft stick · Steer\n"+RecoveryInputPrompts.ConfirmLabel(family)+" · Cable\n"+RecoveryInputPrompts.CancelLabel(family)+" · Brake\n"+RecoveryInputPrompts.PreviousTabLabel(family)+" / "+RecoveryInputPrompts.NextTabLabel(family)+" · Reel in / pay out\nRight stick · Camera\n"+RecoveryInputPrompts.NorthLabel(family)+" · Reset camera\n"+RecoveryInputPrompts.WestLabel(family)+" · Garage\n"+RecoveryInputPrompts.LeftStickPressLabel(family)+" · Recoveries";
+            return RecoveryInputPrompts.TriggerLabels(family)+" · Drive / reverse\nLeft stick · Steer\n"+RecoveryInputPrompts.ConfirmLabel(family)+" · Cable\n"+RecoveryInputPrompts.CancelLabel(family)+" · Brake\n"+RecoveryInputPrompts.PreviousTabLabel(family)+" / "+RecoveryInputPrompts.NextTabLabel(family)+" · Reel in / pay out\nRight stick · Camera\n"+RecoveryInputPrompts.NorthLabel(family)+" · Reset camera\n"+RecoveryInputPrompts.WestLabel(family)+" · Garage\n"+RecoveryInputPrompts.SelectLabel(family)+" · Recoveries";
         }
         private static string QualityLabel(int index)=>index==0?"PERFORMANCE":"QUALITY";
         private void InitializeDisplayDraft()

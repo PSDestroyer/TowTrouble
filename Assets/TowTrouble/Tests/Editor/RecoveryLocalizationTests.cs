@@ -41,6 +41,30 @@ namespace TowTrouble.Tests
             }
             finally{if(go!=null)Object.DestroyImmediate(go);RecoveryLocalization.Select(before);}
         }
+        [Test] public void ResultsKeepAmountsPercentagesAndDistinctBonusOutcomes()
+        {
+            string before=RecoveryLocalization.Code;
+            try
+            {
+                foreach(string code in RecoveryLanguage.Codes)
+                {
+                    RecoveryLocalization.Select(code);
+                    foreach(string source in new[]{"Base  2,500 CR   +   Bonuses  350 CR  ·  First recovery +25%","Replay base  2,500 CR   +   Bonuses  350 CR"})
+                    {
+                        string translated=RecoveryLocalization.Translate(source);
+                        StringAssert.Contains("2,500 CR",translated,code);
+                        StringAssert.Contains("350 CR",translated,code);
+                        if(source.Contains("+25%"))StringAssert.Contains("+25%",translated,code);
+                        if(code!="en")Assert.AreNotEqual(source,translated,code);
+                    }
+                    string earned=RecoveryLocalization.Translate("+10% bonus");
+                    StringAssert.Contains("+10%",earned,code);
+                    Assert.AreNotEqual(earned,RecoveryLocalization.Translate("Bonus missed"),code);
+                    if(code!="en")Assert.AreNotEqual("the drop-off",RecoveryLocalization.Translate("the drop-off"),code);
+                }
+            }
+            finally{RecoveryLocalization.Select(before);}
+        }
         [Test] public void DynamicValuesAndMandatoryTreeStepSurviveLocalization()
         {
             string before=RecoveryLocalization.Code;

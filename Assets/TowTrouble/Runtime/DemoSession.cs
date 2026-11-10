@@ -275,7 +275,7 @@ namespace TowTrouble
             var pad = RecoveryInputDevices.Pad;
             if(world.FreeRoam&&View=="Gameplay")
             {
-                if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.boardKey,Key.Tab)].wasPressedThisFrame)||(pad!=null&&pad.leftStickButton.wasPressedThisFrame))ToggleBoard();
+                if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.boardKey,Key.Tab)].wasPressedThisFrame)||(pad!=null&&pad.selectButton.wasPressedThisFrame))ToggleBoard();
                 if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.garageKey,Key.G)].wasPressedThisFrame)||(pad!=null&&pad.buttonWest.wasPressedThisFrame))OpenGarage();
             }
             if(!overlayWasOpen&&(View=="Gameplay"||View=="Pause")&&((keyboard!=null&&keyboard.escapeKey.wasPressedThisFrame)||(pad!=null&&pad.startButton.wasPressedThisFrame)))ToggleMenu();
@@ -283,7 +283,7 @@ namespace TowTrouble
             if (!menuOpen)
             {
                 if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.F)].wasPressedThisFrame) || (pad != null && RecoveryInputPrompts.Confirm(pad).wasPressedThisFrame)) world.ToggleCable();
-                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.resetKey,Key.R)].wasPressedThisFrame) || (pad != null && pad.selectButton.wasPressedThisFrame)) world.Unstuck();
+                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.resetKey,Key.R)].wasPressedThisFrame) || (pad != null && pad.leftStickButton.wasPressedThisFrame)) world.Unstuck();
             }
             if(RecoveryPlatform.MultiplayerAvailable&&!menuOpen){if(keyboard!=null){if(keyboard.digit1Key.wasPressedThisFrame)world.SendSignal(1);if(keyboard.digit2Key.wasPressedThisFrame)world.SendSignal(2);if(keyboard.digit3Key.wasPressedThisFrame)world.SendSignal(3);}if(pad!=null&&pad.dpad.up.wasPressedThisFrame)world.SendSignal(1);if(pad!=null&&pad.dpad.right.wasPressedThisFrame)world.SendSignal(2);if(pad!=null&&pad.dpad.down.wasPressedThisFrame)world.SendSignal(3);}
             if (Time.unscaledTime < nextInput) return;

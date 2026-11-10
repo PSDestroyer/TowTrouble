@@ -36,9 +36,10 @@ namespace TowTrouble
             var target=RecoveryGarageView.Frame(focusedGarageSlot,garageBody,garageDetail,fov,aspect,viewport);
             if(entering)
             {
-                garageFocus=garageBody.center;var start=car.transform.InverseTransformPoint(transform.position)-garageFocus;
-                garageDistance=Mathf.Max(3.2f,start.magnitude);garageYaw=Mathf.Atan2(start.x,start.z)*Mathf.Rad2Deg;
-                garageElevation=Mathf.Asin(Mathf.Clamp(start.y/garageDistance,-.95f,.95f))*Mathf.Rad2Deg;
+                // Gameplay may be on the other side of a wall. Start at the framed pose,
+                // rather than orbiting through that wall on the first garage frames.
+                garageFocus=target.Focus;garageDistance=target.Distance;
+                garageYaw=target.Yaw;garageElevation=target.Elevation;
             }
             garageCameraActive=true;garageManualOrbit+=rotationInput;float smooth=reducedMotion?.14f:.34f;
             garageYaw=Mathf.SmoothDampAngle(garageYaw,target.Yaw+garageManualOrbit,ref garageYawVelocity,smooth,Mathf.Infinity,dt);
@@ -50,8 +51,31 @@ namespace TowTrouble
             RecoveryGarageView.Pose(focus,(position-focus).normalized,Vector3.Distance(position,focus),fov,aspect,viewport,out position,out look);
             var safePosition=car.transform.TransformPoint(RecoveryGarageView.OutsideBody(car.transform.InverseTransformPoint(position),garageBody));
             look+=safePosition-position;position=safePosition;
-            // Test the final camera position after the viewport offset, rather than an intermediate pose.
-            if(CameraObstruction(focus,position,out var hit,QueryTriggerInteraction.Ignore))position=hit.point+hit.normal*.45f;
+            ResolveGarageObstruction(focus,ref position,ref look);
+        }
+        private void ResolveGarageObstruction(Vector3 focus,ref Vector3 position,ref Vector3 look)
+        {
+            var arm=position-focus;var aim=look-focus;
+            float bestFraction=-1;Vector3 bestArm=arm,bestAim=aim;
+            // Keep the full framing distance whenever a neighbouring orbit is free.
+            // Evaluate only the preferred angle in the normal, unobstructed case.
+            for(int i=0;i<13;i++)
+            {
+                float angle=i==0?0:((i+1)/2)*30*(i%2==1?1:-1);
+                var turn=Quaternion.AngleAxis(angle,Vector3.up);
+                var candidateArm=turn*arm;var candidateAim=turn*aim;
+                float fraction=1;
+                if(CameraObstruction(focus,focus+candidateArm,out var hit,QueryTriggerInteraction.Ignore))
+                    fraction=Mathf.Clamp01((hit.distance-.6f)/Mathf.Max(.001f,candidateArm.magnitude));
+                // A line can miss a wall touching the lens/near plane.
+                if(fraction==1&&Physics.CheckSphere(focus+candidateArm,.35f,1<<8,QueryTriggerInteraction.Ignore))fraction=0;
+                if(fraction>bestFraction){bestFraction=fraction;bestArm=candidateArm;bestAim=candidateAim;}
+                if(fraction==1)break;
+            }
+            // Scaling both offsets preserves the car's viewport position. Moving
+            // the camera alone can turn it away from the car after a short hit.
+            position=focus+bestArm*Mathf.Max(.001f,bestFraction);
+            look=focus+bestAim*Mathf.Max(.001f,bestFraction);
         }
     }
 }

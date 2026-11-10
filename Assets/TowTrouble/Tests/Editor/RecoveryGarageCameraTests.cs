@@ -64,6 +64,44 @@ namespace TowTrouble.Tests
                 }
             }
         }
+        [Test] public void GarageEntryDoesNotInheritAnUndergroundGameplayPose()
+        {
+            using(var f=new Fixture())f.CheckEntry();
+        }
+        [Test] public void ObstructedGarageViewKeepsVehicleInThePreview()
+        {
+            var previousScene=SceneManager.GetActiveScene();
+            var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Additive);
+            var cameraObject=new GameObject("Probe",typeof(Camera),typeof(RecoveryCamera));
+            SceneManager.MoveGameObjectToScene(cameraObject,scene);
+            var camera=cameraObject.GetComponent<Camera>();camera.enabled=false;camera.aspect=16f/9;camera.fieldOfView=57;
+            var controller=cameraObject.GetComponent<RecoveryCamera>();controller.enabled=false;
+            try
+            {
+                var focus=new Vector3(10000,10000,10000);
+                var viewport=RecoveryGarageView.Viewport(camera.aspect,new Rect(0,0,1,1));
+                RecoveryGarageView.Pose(focus,RecoveryGarageView.Direction(-38,19),16,57,camera.aspect,viewport,out var position,out var look);
+                var blocker=new GameObject("Close obstruction",typeof(BoxCollider));SceneManager.MoveGameObjectToScene(blocker,scene);
+                blocker.layer=8;blocker.transform.position=focus+(position-focus).normalized*.9f;
+                blocker.transform.rotation=Quaternion.LookRotation(position-focus);
+                blocker.GetComponent<BoxCollider>().size=new Vector3(.5f,.5f,.2f);Physics.SyncTransforms();
+                Assert.That(Physics.Linecast(focus,position,out var hit,1<<8),Is.True);
+                var oldPosition=hit.point+hit.normal*.45f;
+                camera.transform.SetPositionAndRotation(oldPosition,Quaternion.LookRotation(look-oldPosition));
+                var old=camera.WorldToViewportPoint(focus);
+                Assert.That(old.z<0||!viewport.Contains(new Vector2(old.x,old.y)),Is.True,"Fixture must reproduce the old failure");
+                object[] args={focus,position,look};
+                typeof(RecoveryCamera).GetMethod("ResolveGarageObstruction",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(controller,args);
+                position=(Vector3)args[1];look=(Vector3)args[2];
+                camera.transform.SetPositionAndRotation(position,Quaternion.LookRotation(look-position));
+                var point=camera.WorldToViewportPoint(focus);
+                Assert.That(point.z,Is.GreaterThan(0));
+                Assert.That(Vector2.Distance(new Vector2(point.x,point.y),viewport.center),Is.LessThan(.001f));
+                Assert.That(Physics.Linecast(focus,position,1<<8),Is.False);
+                Assert.That(Vector3.Distance(position,focus),Is.EqualTo(16).Within(.01f));
+            }
+            finally{EditorSceneManager.CloseScene(scene,true);SceneManager.SetActiveScene(previousScene);}
+        }
         private static void SameBounds(Bounds expected,Bounds actual,string label)
         {
             Assert.That(Vector3.Distance(actual.center,expected.center),Is.LessThan(.0001f),label+" center");
@@ -97,6 +135,18 @@ namespace TowTrouble.Tests
                 var view=new GameObject("Static camera",typeof(Camera),typeof(RecoveryCamera));view.transform.SetParent(root.transform,false);camera=view.GetComponent<Camera>();camera.enabled=false;camera.fieldOfView=57;camera.aspect=16f/9;camera.scene=scene;
                 controller=view.GetComponent<RecoveryCamera>();controller.enabled=false;controller.Bind(session);view.transform.position=Car.transform.TransformPoint(new Vector3(-9,4,12));
                 root.SetActive(true);
+            }
+            public void CheckEntry()
+            {
+                camera.transform.position=Car.transform.position+Vector3.down*100;
+                session.FocusGarage(GarageSlot.Assembly,null);
+                Custom.GarageBounds(GarageSlot.Assembly,null,out var body,out var detail);
+                var frame=RecoveryGarageView.Frame(GarageSlot.Assembly,body,detail,57,16f/9);
+                object[] args={Car,0f,false,1f/30,Vector3.zero,Vector3.zero};pose.Invoke(controller,args);
+                var p=(Vector3)args[4];var look=(Vector3)args[5];
+                camera.transform.SetPositionAndRotation(p,Quaternion.LookRotation(look-p));
+                Assert.That(p.y,Is.GreaterThan(Car.transform.position.y));
+                Assert.That(Vector3.Distance(p,Car.transform.TransformPoint(frame.Focus)),Is.EqualTo(frame.Distance).Within(.03f));
             }
             public int InflateEffectBounds()
             {

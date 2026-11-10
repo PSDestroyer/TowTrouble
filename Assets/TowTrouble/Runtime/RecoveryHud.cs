@@ -280,7 +280,7 @@ namespace TowTrouble
             RefreshRecoveryGuidance(w, slot, camera, workingAtSite);
             if (UrgentAssistance) HideGuidanceNote();
         }
-        private string ContractControl()=>session.UsingGamepad ? RecoveryInputPrompts.LeftStickPressLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.boardKey, Key.Tab).ToString();
+        private string ContractControl()=>session.UsingGamepad ? RecoveryInputPrompts.SelectLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.boardKey, Key.Tab).ToString();
 
         private void BuildExploreHint()
         {

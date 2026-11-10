@@ -130,7 +130,7 @@ namespace TowTrouble
                 FocusBoardRecovery();
                 if (Time.frameCount == boardOpenFrame) return true;
                 if (keyboard != null && keyboard.tabKey.wasPressedThisFrame && P.ReadKey(P.boardKey, Key.Tab) == Key.Tab ||
-                    pad != null && pad.leftStickButton.wasPressedThisFrame)
+                    pad != null && pad.selectButton.wasPressedThisFrame)
                 { CloseBoard(); return true; }
                 bool previous = keyboard != null && keyboard.qKey.wasPressedThisFrame || pad != null && pad.leftShoulder.wasPressedThisFrame;
                 bool next = keyboard != null && keyboard.eKey.wasPressedThisFrame || pad != null && pad.rightShoulder.wasPressedThisFrame;
