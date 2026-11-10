@@ -21,6 +21,23 @@ namespace TowTrouble.Tests
             {float pitch=RecoveryAudioPolicy.EnginePitch(speed,throttle,1,mass);Assert.That(pitch,Is.InRange(.65f,1.65f));}
             Assert.That(RecoveryAudioPolicy.EnginePitch(0,0,0,2200),Is.LessThan(RecoveryAudioPolicy.EnginePitch(0,0,0,950)));
         }
+        [Test] public void EngineBoostAndLayersSeparateIdleDriveAndTowing()
+        {
+            Assert.That(RecoveryAudioPolicy.EngineBoost(6),Is.EqualTo(1.995262f).Within(.00001f));
+            var idle=RecoveryAudioPolicy.EngineLayers(0,0,0);
+            var drive=RecoveryAudioPolicy.EngineLayers(5,1,.18f);
+            var towing=RecoveryAudioPolicy.EngineLayers(1,1,.85f);
+            Assert.That(idle.x,Is.EqualTo(.18f));Assert.That(idle.y+idle.z,Is.Zero);
+            Assert.That(drive.y,Is.GreaterThan(drive.x));Assert.That(drive.z,Is.Zero);
+            Assert.That(towing.z,Is.GreaterThan(.13f));
+            Assert.That(RecoveryAudioPolicy.EngineLayers(5,-1,.18f),Is.EqualTo(drive));
+            Assert.That(RecoveryAudioPolicy.EngineLayers(10,0,1).z,Is.Zero,"No loaded revving when throttle released");
+            foreach(float speed in new[]{0f,10,40})foreach(float throttle in new[]{0f,.5f,1})foreach(float effort in new[]{0f,.5f,1})
+            {
+                var layers=RecoveryAudioPolicy.EngineLayers(speed,throttle,effort);
+                Assert.That((layers.x+layers.y+layers.z)*.85f*RecoveryAudioPolicy.EngineBoost(6),Is.LessThan(1),"Engine-only gain budget");
+            }
+        }
         [Test] public void CosmeticCounterHandlesWrapWithoutReplayingOldEvents()
         {Assert.That(RecoveryAudioPolicy.Changed(0,uint.MaxValue),Is.True);Assert.That(RecoveryAudioPolicy.Changed(2,3),Is.False);Assert.That(RecoveryAudioPolicy.Changed(3,3),Is.False);}
         [Test] public void CriticalRecoveryFeedbackDucksMusicGently()

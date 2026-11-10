@@ -763,3 +763,7 @@ Network appearance invalidation now includes JSON, fallback paint and base model
 ## Garage dock transition validation — 2026-11-11
 - Follow-up native Editor simulation reuses open camera/HUD across1080p/720p transitions:240 camera checks across16 slots and128 UI checks (Assembly/Winch,en/ru/ja/ar,100%/130%,full/inset safe area) passed. No runtime edits required. Russian720p/1080p UI captures inspected; scene/dirty state preserved.
 - No build/Play/save mutation. OS docking, frame timing, actual controller selection and Switch graphics-device events not emulated; hardware retest remains necessary. Evidence Docs/Validation/GarageDockTransitions.
+
+## Engine audibility and load mix — 2026-11-11
+- RecoveryAudioBank EngineBoostDb=6 applies only to engine loops. Idle steady pitch; drive throttle/coasting separation; load ramps from actual EngineEffort and throttle, using lower-pitched EngineDrive instead of winch clip. Existing source count, music/winch/UI/ambience levels unchanged. Editor authoring assignment updated.
+- Compile clean;14 direct audio tests plus native routing/effects-mute/app-pause checks passed. No build/Play/profile or scene changes; actual driving/console audition pending. Evidence Docs/Validation/EngineMix.

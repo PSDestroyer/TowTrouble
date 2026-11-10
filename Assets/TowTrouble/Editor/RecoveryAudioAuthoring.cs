@@ -90,7 +90,7 @@ namespace TowTrouble.Editor
             Undo.RecordObject(bank,"Configure Tow Trouble audio");
             bank.Vehicles=Group("Vehicles");bank.Recovery=Group("Recovery");bank.UI=Group("UI");bank.Ambience=Group("Ambience");bank.Music=Group("Music");
             AudioClip Clip(string file)=>AssetDatabase.LoadAssetAtPath<AudioClip>(Library+file)??throw new InvalidOperationException("Missing audio: "+file);
-            bank.EngineIdle=Clip("Vehicles/Engine Idle.wav");bank.EngineDrive=Clip("Vehicles/Engine Drive.wav");bank.EngineLoad=Clip("Recovery/Motor loop.wav");bank.WinchMotor=bank.EngineLoad;
+            bank.EngineIdle=Clip("Vehicles/Engine Idle.wav");bank.EngineDrive=Clip("Vehicles/Engine Drive.wav");bank.EngineLoad=bank.EngineDrive;bank.WinchMotor=Clip("Recovery/Motor loop.wav");
             bank.Wind=Clip("Ambience/Wind_1.wav");bank.MountainWind=Clip("Ambience/Wind_2.wav");bank.Birds=Clip("Ambience/Birds_1.wav");bank.Insects=Clip("Ambience/Forest_Insects.wav");bank.Water=Clip("Ambience/Water_1.wav");bank.Garage=Clip("Foley/impactMetal_light_001.ogg");
             ConfigureSoundtrack(bank);
             var sounds=new List<RecoverySoundSet>();

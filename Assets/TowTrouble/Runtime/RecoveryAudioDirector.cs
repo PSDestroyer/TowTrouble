@@ -186,12 +186,14 @@ namespace TowTrouble
             // but pitch evaluation must still tolerate the uninitialized physics cache.
             float mass=car.Body!=null?car.Body.mass:RecoveryBodyBalance.StockMass(car.ModelIndex);
             float pitch=RecoveryAudioPolicy.EnginePitch(speed,throttle,average,mass);
-            float gain=running?BusGain(RecoveryAudioBus.Vehicles):0;
+            float gain=running?BusGain(RecoveryAudioBus.Vehicles)*bank.EngineGain*RecoveryAudioPolicy.EngineBoost(bank.EngineBoostDb):0;
+            var layers=RecoveryAudioPolicy.EngineLayers(speed,throttle,car.EngineEffort);
             for(int layer=0;layer<3;layer++)
             {
                 var source=engines[slot,layer];source.transform.position=car.transform.position+Vector3.up*.5f;
-                float volume=layer==0?.18f*(1-.65f*throttle):layer==1?.2f*Mathf.Max(throttle,speed/25):.10f*car.EngineEffort*throttle;
-                Loop(source,gain*bank.EngineGain*volume,pitch*(layer==0?.7f:layer==2?.6f:1));
+                float layerPitch=layer==0?Mathf.Lerp(.65f,.85f,Mathf.InverseLerp(2200,950,mass)):
+                    layer==2?pitch*Mathf.Lerp(.82f,.70f,RecoveryAudioPolicy.Gain(car.EngineEffort)):pitch;
+                Loop(source,gain*layers[layer],layerPitch,1.2f);
             }
             var frame=world.Winch(slot);bool motor=running&&world.Attached(slot)&&RecoveryAudioPolicy.MotorActive(frame.State);
             if(motor&& !RecoveryAudioPolicy.MotorActive(motorStates[slot]))Play(RecoverySound.WinchStart,car.RearHitch,slot,.65f);

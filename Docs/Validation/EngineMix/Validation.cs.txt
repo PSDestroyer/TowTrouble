@@ -1,0 +1,19 @@
+if(UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)throw new System.Exception("Edit Mode required");
+var type=System.AppDomain.CurrentDomain.GetAssemblies().Select(a=>a.GetType("TowTrouble.Tests.RecoveryAudioTests")).First(t=>t!=null);var fixture=System.Activator.CreateInstance(type);var tests=new System.Collections.Generic.List<object>();
+foreach(var method in type.GetMethods())foreach(var attr in method.GetCustomAttributes(false).Where(a=>a.GetType().Name=="TestAttribute"||a.GetType().Name=="TestCaseAttribute")){
+var args=attr.GetType().Name=="TestCaseAttribute"?(object[])attr.GetType().GetProperty("Arguments").GetValue(attr):null;
+try{method.Invoke(fixture,args);tests.Add(new{method=method.Name,passed=true});}catch(System.Exception e){throw new System.Exception(method.Name,e.GetBaseException());}}
+var bank=UnityEditor.AssetDatabase.LoadAssetAtPath<TowTrouble.RecoveryAudioBank>("Assets/TowTrouble/Art/Audio/Resources/RecoveryAudioBank.asset");if(bank.EngineLoad==bank.WinchMotor)throw new System.Exception("Winch clip still used by engine");
+var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+var scene=UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();var root=new GameObject("Engine audio validation");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(root,scene);root.SetActive(false);
+try{
+var session=root.AddComponent<TowTrouble.DemoSession>();session.enabled=false;var profile=new TowTrouble.RecoveryProfile{SuppressSaving=true,effects=.8f};typeof(TowTrouble.DemoSession).GetProperty("Profile").SetValue(session,profile);
+var director=root.AddComponent<TowTrouble.RecoveryAudioDirector>();director.enabled=false;var d=typeof(TowTrouble.RecoveryAudioDirector);d.GetField("session",flags).SetValue(director,session);d.GetField("bank",flags).SetValue(director,bank);d.GetField("focused",flags).SetValue(director,true);
+var src=(AudioSource)d.GetMethod("Source",flags).Invoke(director,new object[]{"Engine routing probe",TowTrouble.RecoveryAudioBus.Vehicles,true,true,bank.EngineLoad});
+if(src.outputAudioMixerGroup!=bank.Vehicles||src.clip==bank.WinchMotor)throw new System.Exception("Routing error");
+profile.effects=0;src.volume=.5f;d.GetMethod("Loop",flags).Invoke(director,new object[]{src,.5f,1f,1.2f});if(src.volume!=0)throw new System.Exception("Effects mute failed");
+profile.effects=.8f;d.GetField("appPaused",flags).SetValue(director,true);src.volume=.5f;d.GetMethod("Loop",flags).Invoke(director,new object[]{src,.5f,1f,1.2f});if(src.volume!=0)throw new System.Exception("App pause mute failed");
+// Avoid director cleanup changing live session state: this fixture never called Configure.
+d.GetField("session",flags).SetValue(director,null);
+return new{tests=tests.Count,rows=tests,bank.EngineBoostDb,load=bank.EngineLoad.name,winch=bank.WinchMotor.name,routing=true,effectsMute=true,pauseMute=true};
+}finally{UnityEngine.Object.DestroyImmediate(root);UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(scene);}

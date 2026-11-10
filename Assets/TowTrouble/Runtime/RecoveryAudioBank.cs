@@ -26,6 +26,8 @@ namespace TowTrouble
         [Header("Music and mix")]
         [Range(0,1)] public float MusicGain=.36f;
         [Range(0,1)] public float EngineGain=.85f;
+        [Tooltip("Gain applied only to the three engine loops, in decibels.")]
+        [Range(0,9)] public float EngineBoostDb=6f;
         [Min(.2f)] public float MusicCrossfade=4;
         [Min(0)] public float MenuMusicGap=3,ExploreMusicGap=16;
         public AudioClip MenuMusic;
@@ -44,6 +46,16 @@ namespace TowTrouble
         public static bool MotorActive(WinchState state)=>state==WinchState.TakingUp||state==WinchState.Pulling||state==WinchState.Stalled||state==WinchState.PayingOut;
         public static float EnginePitch(float speed,float throttle,float slip,float mass)
             =>Mathf.Clamp((.78f+Mathf.Repeat(Mathf.Max(0,speed),7)/7*.48f+Gain(Mathf.Abs(throttle))*.22f+Gain(slip)*.25f)*Mathf.Lerp(1.1f,.8f,Mathf.InverseLerp(950,2200,mass)),.65f,1.65f);
+        public static float EngineBoost(float decibels)=>Mathf.Pow(10,Mathf.Clamp(decibels,0,9)/20f);
+        // x: idle, y: revs/drive, z: loaded combustion. Effort already includes
+        // cable reaction, mud and tire slip from the vehicle simulation.
+        public static Vector3 EngineLayers(float speed,float throttle,float effort)
+        {
+            throttle=Gain(Mathf.Abs(throttle));effort=Gain(effort);
+            float load=Mathf.SmoothStep(0,1,Mathf.InverseLerp(.2f,.85f,effort));
+            return new Vector3(.18f*(1-.82f*throttle),
+                .2f*Mathf.Max(throttle,.35f*Gain(speed/25)),.14f*load*throttle);
+        }
         public static bool Changed(uint current,uint previous)=>unchecked((int)(current-previous))>0;
         public static float MusicDuck(bool menu,float tension,bool stalled)=>Mathf.Min(menu?.65f:1,Mathf.Lerp(1,.32f,Mathf.Max(Mathf.InverseLerp(.65f,.95f,tension),stalled?.8f:0)));
         public static float MusicEnvelope(float start,bool incoming,float blend)
