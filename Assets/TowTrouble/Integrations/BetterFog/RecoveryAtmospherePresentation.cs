@@ -28,7 +28,10 @@ namespace TowTrouble
         private ColorAdjustments grade;
         private Bloom bloom;
         private Vignette vignette;
-        private bool previousFog,bound;
+        private bool previousFog,bound,switchFogApplied;
+        private FogMode previousFogMode;
+        private Color previousFogColor;
+        private float previousFogDensity;
         private float previousSunIntensity,previousFillIntensity;
         private Color previousFillColor;
         private bool ownsColorGrading;
@@ -41,6 +44,7 @@ namespace TowTrouble
             var profile=volume.profile;
             profile.TryGet(out fog);profile.TryGet(out grade);profile.TryGet(out bloom);profile.TryGet(out vignette);
             previousFog=RenderSettings.fog;
+            previousFogMode=RenderSettings.fogMode;previousFogColor=RenderSettings.fogColor;previousFogDensity=RenderSettings.fogDensity;
             previousSunIntensity=sky.sunLight.intensity;
             if(fill!=null){previousFillIntensity=fill.intensity;previousFillColor=fill.color;}
             bound=true;
@@ -53,8 +57,9 @@ namespace TowTrouble
             float morning=Mathf.SmoothStep(0,1,Mathf.InverseLerp(4.5f,6,hour))*(1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(7,9,hour)));
             float daylight=Mathf.Min(1-night,Mathf.Clamp01(sky.sunlightColor.maxColorComponent));
             bool performance=session.Profile!=null&&session.Profile.quality==0;
-            // COZY still owns the sky and weather; only Better Fog handles world geometry.
-            RenderSettings.fog=false;
+            // COZY owns sky/weather; Switch uses native fog and PC keeps Better Fog.
+            bool switchRendering=RecoveryPlatform.UsesSwitchRendering;
+            RenderSettings.fog=switchRendering;
             fog._FogDensity.value=Mathf.Lerp(Mathf.Lerp(clearDensity,.0008f,night),rainDensity,wet)+snow*.00012f+morning*.00016f;
             fog._DistanceFogOffset.value=-Mathf.Lerp(clearDistance,70,night);
             fog._FogIntensity.value=Mathf.Lerp(.68f,.80f,wet);
@@ -62,12 +67,19 @@ namespace TowTrouble
             fog._FogColor.value=Color.Lerp(new Color(.035f,.060f,.10f),dayFog,daylight);
             fog._Height.value=Mathf.Lerp(session.World.GaragePosition.y+3,session.World.Drivers[Mathf.Clamp(session.LocalSlot,0,1)].transform.position.y+2,snow);
             fog._HeightDensity.value=.05f+wet*.02f+morning*.035f;
-            fog._UseNoise.value=!performance;
+            fog._UseNoise.value=!performance&&!switchRendering;
             fog._NoiseIntensity.value=.12f+wet*.10f;
             fog._SunIntensity.value=.10f*daylight*(1-wet);
+            if(switchRendering)
+            {
+                // Native vertex/fragment fog uses the scene's existing Exp2 variants; no fullscreen noise/composite passes.
+                switchFogApplied=true;RenderSettings.fogMode=FogMode.ExponentialSquared;
+                RenderSettings.fogDensity=Mathf.Lerp(.004f,.0055f,Mathf.Max(wet,snow));
+                RenderSettings.fogColor=fog._FogColor.value;fog._FogIntensity.value=0;
+            }
             UpdateColorGrading(night);
-            if(bloom!=null)bloom.intensity.value=Mathf.Lerp(.08f,.16f,night);
-            if(vignette!=null)vignette.intensity.value=Mathf.Lerp(.065f,.09f,night);
+            if(bloom!=null)bloom.intensity.value=switchRendering?0:Mathf.Lerp(.08f,.16f,night);
+            if(vignette!=null)vignette.intensity.value=switchRendering?0:Mathf.Lerp(.065f,.09f,night);
             // Lift contact shadows rather than raising exposure and bleaching highlights.
             RenderSettings.ambientEquatorColor=Floor(RenderSettings.ambientEquatorColor,Color.Lerp(new Color(.30f,.33f,.38f),new Color(.28f,.32f,.41f),night));
             RenderSettings.ambientGroundColor=Floor(RenderSettings.ambientGroundColor,Color.Lerp(new Color(.15f,.16f,.18f),new Color(.14f,.16f,.21f),night));
@@ -98,6 +110,7 @@ namespace TowTrouble
         private void OnDisable()
         {
             if(!bound)return;bound=false;RenderSettings.fog=previousFog;
+            if(switchFogApplied){RenderSettings.fogMode=previousFogMode;RenderSettings.fogColor=previousFogColor;RenderSettings.fogDensity=previousFogDensity;switchFogApplied=false;}
             ReleaseColorGrading();
             var shared=volume!=null?volume.sharedProfile:null;
             if(shared!=null)

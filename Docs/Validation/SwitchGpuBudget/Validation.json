@@ -1,0 +1,313 @@
+{
+  "baselineHardwareSamples": [
+    {
+      "fps": 9.97,
+      "gpuMs": 98.39,
+      "cpuRenderMs": 14.55
+    },
+    {
+      "fps": 13.01,
+      "gpuMs": 76.56,
+      "cpuRenderMs": 12.28
+    }
+  ],
+  "tests": {
+    "results": [
+      {
+        "test": "SwitchQualityToggleNeverSelectsPcOrMutatesAuthoredPipelines",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DesktopSelectsPcByNameEvenWhenSwitchIsTheLastQualityLevel",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SessionDisposalRestoresEntryQualityPipelineAndLod",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchBuildIncludesOnlyItsDedicatedQualityAndKeepsDepthForWater",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchPresetCutsGpuCostWhileDesktopKeepsItsAuthoredFeatures",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "VegetationOverridesAreConfinedToTheSwitchQualityLevel",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchTerrainBudgetIsPersistedInTheNativeSettingsFile",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchGraphicsPreviewIsIndependentOfTheOfflinePreviewAndRestores",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "CameraRangeIsUnchangedOnPcAndRestoredAfterSwitchScope",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "GraphicsPolicyUsesBuildTargetWithoutFollowingMultiplayerPreview",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SinglePlayerTargetRedirectsOnlyMultiplayerScreens",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "MultiplayerEntryPointsReturnBeforeProfileOrNetworkAccessOnSinglePlayerTarget",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DesktopKeepsItsMultiplayerScreens",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "RecommendedActionIsGreyWhenCancelHasTheRealSelection",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DirectionalNavigationTransfersTheGoldFillInBothDirections",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "PointerFocusAndKeyboardFocusCannotLeaveTwoGoldButtons",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DisabledButtonLosesGoldAndCannotStealPointerFocus",
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "HintContrastFollowsSelectionWhileInsetBadgesKeepTheirOwnColors",
+        "passed": true,
+        "error": ""
+      }
+    ],
+    "failures": 0,
+    "errors": [],
+    "qualityRestored": true,
+    "terrainRestored": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true,
+    "playing": false
+  },
+  "displayUi": {
+    "results": [
+      {
+        "isSwitch": false,
+        "resolution": 1,
+        "mode": 1,
+        "quality": 1,
+        "apply": 1
+      },
+      {
+        "isSwitch": true,
+        "resolution": 0,
+        "mode": 0,
+        "quality": 1,
+        "apply": 1
+      }
+    ],
+    "playing": false
+  },
+  "configuration": {
+    "renderScale": 0.65,
+    "supportsHDR": false,
+    "shadowDistance": 18,
+    "mainLightShadowmapResolution": 512,
+    "maxAdditionalLightsCount": 2,
+    "depth": true,
+    "fogActive": false,
+    "qualityPreserved": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "garage": {
+    "samples": [
+      {
+        "name": "PC",
+        "path": "garage-PC.png",
+        "renderScale": 1,
+        "supportsHDR": true,
+        "shadowDistance": 110,
+        "grass": 80,
+        "trees": 5000,
+        "farClipPlane": 2300,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (Soft)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Desktop",
+        "nativeFog": false,
+        "bloom": 0.08,
+        "betterFog": 0.68,
+        "shaderErrors": false
+      },
+      {
+        "name": "Switch-Quality",
+        "path": "garage-Switch-Quality.png",
+        "renderScale": 0.65,
+        "supportsHDR": false,
+        "shadowDistance": 18,
+        "grass": 40,
+        "trees": 300,
+        "farClipPlane": 600,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (COZY Mobile)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Mobile",
+        "nativeFog": true,
+        "bloom": 0,
+        "betterFog": 0,
+        "shaderErrors": false
+      },
+      {
+        "name": "Switch-Performance",
+        "path": "garage-Switch-Performance.png",
+        "renderScale": 0.6,
+        "supportsHDR": false,
+        "shadowDistance": 14,
+        "grass": 40,
+        "trees": 300,
+        "farClipPlane": 600,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (COZY Mobile)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Mobile",
+        "nativeFog": true,
+        "bloom": 0,
+        "betterFog": 0,
+        "shaderErrors": false
+      }
+    ],
+    "errors": [],
+    "materialAssetsUnchanged": true,
+    "skyRestored": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "water": {
+    "samples": [
+      {
+        "name": "PC",
+        "path": "water-PC.png",
+        "renderScale": 1,
+        "supportsHDR": true,
+        "shadowDistance": 110,
+        "grass": 80,
+        "trees": 5000,
+        "farClipPlane": 2300,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (Soft)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Desktop",
+        "nativeFog": false,
+        "bloom": 0.08,
+        "betterFog": 0.68,
+        "shaderErrors": false
+      },
+      {
+        "name": "Switch-Quality",
+        "path": "water-Switch-Quality.png",
+        "renderScale": 0.65,
+        "supportsHDR": false,
+        "shadowDistance": 18,
+        "grass": 40,
+        "trees": 300,
+        "farClipPlane": 600,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (COZY Mobile)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Mobile",
+        "nativeFog": true,
+        "bloom": 0,
+        "betterFog": 0,
+        "shaderErrors": false
+      },
+      {
+        "name": "Switch-Performance",
+        "path": "water-Switch-Performance.png",
+        "renderScale": 0.6,
+        "supportsHDR": false,
+        "shadowDistance": 14,
+        "grass": 40,
+        "trees": 300,
+        "farClipPlane": 600,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (COZY Mobile)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Mobile",
+        "nativeFog": true,
+        "bloom": 0,
+        "betterFog": 0,
+        "shaderErrors": false
+      }
+    ],
+    "errors": [],
+    "materialAssetsUnchanged": true,
+    "skyRestored": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "finalState": {
+    "playing": false,
+    "target": "StandaloneOSX",
+    "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+    "dirty": true,
+    "quality": "PC",
+    "pipeline": "PC_RPAsset",
+    "graphicsPreview": false,
+    "offlinePreview": false,
+    "farClipPlane": 2300,
+    "cloud": "Distant Lands/Cozy/URP/Stylized Clouds (Soft)",
+    "sky": "Distant Lands/Cozy/URP/Stylized Sky Desktop",
+    "temporaryMaterials": 0,
+    "temporaryPipelines": 0,
+    "temporaryRoots": 0
+  },
+  "compile": {
+    "status": "completed",
+    "compiling": false,
+    "failed": false,
+    "compilationFailed": false,
+    "errors": [],
+    "warnings": [],
+    "summary": {
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "protectedFiles": {
+    "count": 18,
+    "changed": [],
+    "sha256": {
+      "Assets/Settings/PC_RPAsset.asset": "e1d21eb416252db4f8e3af9a7dfa75c35c4f7f17ac0d2c1ae84f094eb6b6e459",
+      "Assets/Settings/PC_RPAsset.asset.meta": "bb469b9b6f318e9e9bed29c3b2e73e79371c04743c6f95dd6603941f1cd3e53e",
+      "Assets/Settings/PC_Renderer.asset.meta": "b5df8ddb2708c6ed4c133a5ff9ee95a75cc20e4ee3ed6181366a61aedbaf31ec",
+      "Assets/Settings/PC_Renderer.asset": "dc7d507c7616746f3e43d69ef2f29a15d08bebc342f0d8f9ce516557291e2ca3",
+      "Assets/Settings/Mobile_Renderer.asset.meta": "a148ee2b4987b05b8ff7ae5f9bf84916184f77aefddc821dceb551f5a69f8179",
+      "Assets/Settings/Mobile_RPAsset.asset": "7ef12a5f8f6d78968b00518ec11d482f996d27daa05712e9c7947446655c6ed5",
+      "Assets/Settings/Mobile_RPAsset.asset.meta": "53ea46647712c615fd1a3f2e0dddfa8559eeedc649e9a1dbf93ff913de28544c",
+      "Assets/Settings/Mobile_Renderer.asset": "51b770a142cfb922868c3da9020a354106065797c37c92d090286fe8bacd4474",
+      "Assets/TowTrouble/Weather/Materials/Snow.mat": "a1807b21267324e360340b8a22bf8ea85b122e332d606fb2d72cf71185b49cb8",
+      "Assets/TowTrouble/Weather/Materials/Default-ParticleSystem.mat": "f12a56aa595447fb0196ed139baa9879221f1b7a029d4c3da9692654b56c694f",
+      "Assets/TowTrouble/Weather/Materials/Skybox.mat": "e9a286005a99aef5ec27617ae40e7dc66b2223dd2fef27759ae2ee8ebfef21a1",
+      "Assets/TowTrouble/Weather/Materials/Stylized Clouds.mat": "26dafbefbc84d3d777aa59dac4e03899c1728f1ed9b21868f1e5241db3bfd3b3",
+      "Assets/TowTrouble/Weather/Materials/Fog.mat": "6c6c5424741739bf2bf5575544ac54908a31037a1fae4e4d5e7b63bb16c50147",
+      "Assets/TowTrouble/Weather/Materials/Rain.mat": "7f53de5cda722883681a27b23419130fb47f5ca4c05d76d77944de6bcaa455ff",
+      "Assets/TowTrouble/Weather/Materials/Star.mat": "d406669d457bf9a25303bc30b3c726be71bb1367a5a39af1459f0c7105d0a5ef",
+      "Assets/TowTrouble/Weather/Materials/Rain Impact.mat": "485c55bc41b3af7d82be567b6cc3b17a199e035badc8920703a7e52533434689",
+      "Assets/TowTrouble/Weather/Materials/Cirrus Clouds.mat": "e7d329c78a3ee826c8a8b310ea91b26f034c950f791a36b658186ea8781b69ac",
+      "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity": "2a09d6086c967307d9f6cf45c5f9dba92d57aba3154e7599a91e05a151bafe03"
+    }
+  },
+  "deviceAfterMetrics": null
+}

@@ -19,6 +19,9 @@ namespace TowTrouble
         private readonly List<WeatherRelation> weather=new List<WeatherRelation>();
         private RecoveryVehicleEffects[] vehicles;
         private SatelliteProfile[] runtimeSatellites;
+        private Material originalSwitchClouds,originalSwitchSky,switchClouds,switchSky;
+        private CozyWeather.CloudStyle previousCloudStyle;
+        private CozyWeather.SkyStyle previousSkyStyle;
         private float snowWeight,nextRoofCheck,roofVisibility=1;
         private bool focused=true,appPaused;
         public float RainAmount {get;private set;}
@@ -46,7 +49,32 @@ namespace TowTrouble
             ecosystem.weatherSelectionMode=CozyEcosystem.EcosystemStyle.manual;ecosystem.removeProfilesWithNoWeight=false;
             ecosystem.weightedWeatherProfiles=weather;ecosystem.currentWeather=ecosystem.weatherChangeCheck=profiles[1];
         }
-        private void Start(){rainParticles.InitializeEffect(cozy);snowParticles.InitializeEffect(cozy);rainAudio.InitializeEffect(cozy);}
+        private void Start(){ApplySwitchSky();rainParticles.InitializeEffect(cozy);snowParticles.InitializeEffect(cozy);rainAudio.InitializeEffect(cozy);}
+        private void ApplySwitchSky()
+        {
+            if(!RecoveryPlatform.UsesSwitchRendering||switchClouds!=null||cozy==null)return;
+            var clouds=Resources.Load<Material>("Materials/Mobile Clouds Reference");
+            var sky=Resources.Load<Material>("Materials/Mobile Sky Reference");
+            if(clouds==null||sky==null){Debug.LogWarning("Switch sky reference materials are missing.");return;}
+            // COZY changes sharedMaterial.shader in ResetQuality. Own these copies before selecting its mobile styles.
+            originalSwitchClouds=cozy.cloudMesh.sharedMaterial;originalSwitchSky=cozy.skyMesh.sharedMaterial;
+            previousCloudStyle=cozy.cloudStyle;previousSkyStyle=cozy.skyStyle;
+            switchClouds=new Material(originalSwitchClouds){name="Switch clouds (runtime)",hideFlags=HideFlags.DontSave,shader=clouds.shader};
+            switchSky=new Material(originalSwitchSky){name="Switch sky (runtime)",hideFlags=HideFlags.DontSave,shader=sky.shader};
+            cozy.cloudMesh.sharedMaterial=switchClouds;cozy.skyMesh.sharedMaterial=switchSky;
+            cozy.cloudStyle=CozyWeather.CloudStyle.cozyMobile;cozy.skyStyle=CozyWeather.SkyStyle.mobile;
+        }
+        private void ReleaseSwitchSky()
+        {
+            if(switchClouds==null)return;
+            if(cozy!=null)
+            {
+                if(cozy.cloudMesh!=null)cozy.cloudMesh.sharedMaterial=originalSwitchClouds;if(cozy.skyMesh!=null)cozy.skyMesh.sharedMaterial=originalSwitchSky;
+                cozy.cloudStyle=previousCloudStyle;cozy.skyStyle=previousSkyStyle;
+            }
+            if(Application.isPlaying){Destroy(switchClouds);Destroy(switchSky);}else{DestroyImmediate(switchClouds);DestroyImmediate(switchSky);}
+            switchClouds=switchSky=null;
+        }
         private void Update()
         {
             if(cozy==null||cozy.timeModule==null||cozy.weatherModule==null)return;
@@ -105,6 +133,6 @@ namespace TowTrouble
             if(session!=null&&session.Audio!=null)session.Audio.SetEnvironment(0,0);
         }
         private void OnDestroy()
-        {if(runtimeSatellites!=null)foreach(var p in runtimeSatellites)if(p!=null){if(Application.isPlaying)Destroy(p);else DestroyImmediate(p);}}
+        {ReleaseSwitchSky();if(runtimeSatellites!=null)foreach(var p in runtimeSatellites)if(p!=null){if(Application.isPlaying)Destroy(p);else DestroyImmediate(p);}}
     }
 }

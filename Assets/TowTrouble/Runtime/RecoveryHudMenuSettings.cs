@@ -18,7 +18,7 @@ namespace TowTrouble
         private void BuildSettings()
         {
             if(firstSetup){BuildFirstSetup();return;}
-            Header("SETTINGS","Adjust your comfort. Audio and controls save automatically; display changes need confirmation.");
+            Header("SETTINGS",RecoveryPlatform.UsesSwitchRendering?"Adjust your comfort. Audio and controls save automatically; apply display changes when ready.":"Adjust your comfort. Audio and controls save automatically; display changes need confirmation.");
             string[] keys={"Audio","Imagine","Comenzi","Accesibilitate","Joc"};string[] labels={"Audio","Display","Controls","Accessibility","Game"};
             for(int i=0;i<keys.Length;i++){string tab=keys[i];menuTabs.Add(Button(pageRoot,labels[i],76+i*292,196,272,()=>{settingsTab=tab;settingsMessage="";Show("Settings");},settingsTab==tab));}
             var body=Panel(pageRoot,76,278,866,settingsTab=="Accesibilitate"?330:480);var details=Panel(pageRoot,966,278,558,480);
@@ -38,8 +38,12 @@ namespace TowTrouble
                     InitializeDisplayDraft();
                     Slider(body,"Brightness",P.brightness,.7f,1.4f,20,v=>P.brightness=v);
                     SettingButton(body,"QUALITY: "+QualityLabel(displayDraftQuality),136,()=>{displayDraftQuality=(displayDraftQuality+1)%2;Show("Settings");},"Performance reduces visual cost. Quality keeps more detail. Apply changes to preview the selected preset.");
-                    SettingButton(body,displayDraftFullscreen?"MODE: FULLSCREEN":"MODE: WINDOWED",210,()=>{displayDraftFullscreen=!displayDraftFullscreen;Show("Settings");},"Choose fullscreen or a resizable window. An unconfirmed display change reverts automatically.");
-                    SettingButton(body,"RESOLUTION: "+displaySizes[displayDraftResolution].x+" × "+displaySizes[displayDraftResolution].y,284,()=>{displayDraftResolution=(displayDraftResolution+1)%displaySizes.Length;Show("Settings");},"Cycles through unique screen sizes. Apply when ready; you have 15 seconds to keep the new display settings.");
+                    if(!RecoveryPlatform.UsesSwitchRendering)
+                    {
+                        SettingButton(body,displayDraftFullscreen?"MODE: FULLSCREEN":"MODE: WINDOWED",210,()=>{displayDraftFullscreen=!displayDraftFullscreen;Show("Settings");},"Choose fullscreen or a resizable window. An unconfirmed display change reverts automatically.");
+                        SettingButton(body,"RESOLUTION: "+displaySizes[displayDraftResolution].x+" × "+displaySizes[displayDraftResolution].y,284,()=>{displayDraftResolution=(displayDraftResolution+1)%displaySizes.Length;Show("Settings");},"Cycles through unique screen sizes. Apply when ready; you have 15 seconds to keep the new display settings.");
+                    }
+                    else Text(body,"Display size follows your console.",30,230,806,60,20,Muted);
                     Button(body,"APPLY DISPLAY CHANGES",30,382,806,ApplyDisplay,true);
                     break;
                 case "Comenzi":
@@ -99,7 +103,7 @@ namespace TowTrouble
         }
         private UnityEngine.UI.Button SettingButton(RectTransform body,string label,float y,Action action,string description)
         {var button=Button(body,label,30,y,806,action);menuDescriptions[button.gameObject]=description;return button;}
-        private string SettingsDescription()=>settingsTab=="Audio"?"Set the sound to suit your space. Vehicle effects, music, environment and interface have separate controls. Muting audio never removes visual feedback.":settingsTab=="Imagine"?"Choose your display settings on the left, then Apply. Keep the result within 15 seconds or the previous settings return automatically.":settingsTab=="Comenzi"?(session.UsingGamepad?"Controls follow your connected controller automatically. Switch to your keyboard or mouse whenever you prefer.\n\nAdjust camera sensitivity below, or invert its vertical movement.":"Select an action to change its keyboard binding. Each key can have one action; menu navigation keys stay reserved.\n\nConnect a controller to see its button layout."):settingsTab=="Accesibilitate"?"Choose readable text and comfortable camera movement. On a small screen, try 120–130% text size. Cable warnings can include symbols as well as colour.":"Contextual hints help you learn at your own pace. Reset Progress starts a new career and keeps your preferences.";
+        private string SettingsDescription()=>settingsTab=="Audio"?"Set the sound to suit your space. Vehicle effects, music, environment and interface have separate controls. Muting audio never removes visual feedback.":settingsTab=="Imagine"?(RecoveryPlatform.UsesSwitchRendering?"Adjust brightness and choose Quality or Performance, then Apply. Performance favours smoother play; Quality keeps more detail.":"Choose your display settings on the left, then Apply. Keep the result within 15 seconds or the previous settings return automatically."):settingsTab=="Comenzi"?(session.UsingGamepad?"Controls follow your connected controller automatically. Switch to your keyboard or mouse whenever you prefer.\n\nAdjust camera sensitivity below, or invert its vertical movement.":"Select an action to change its keyboard binding. Each key can have one action; menu navigation keys stay reserved.\n\nConnect a controller to see its button layout."):settingsTab=="Accesibilitate"?"Choose readable text and comfortable camera movement. On a small screen, try 120–130% text size. Cable warnings can include symbols as well as colour.":"Contextual hints help you learn at your own pace. Reset Progress starts a new career and keeps your preferences.";
         private static string OnOff(bool value)=>value?"ON":"OFF";
         private void SaveMenuPreference(){session.ApplySettings();P.Save();Show("Settings");}
         private string ControllerGuide()
@@ -112,12 +116,18 @@ namespace TowTrouble
         private void InitializeDisplayDraft()
         {
             if(displayInitialized)return;displayInitialized=true;displayDraftQuality=Mathf.Clamp(P.quality,0,1);displayDraftFullscreen=Screen.fullScreen;
+            if(RecoveryPlatform.UsesSwitchRendering){displaySizes=new[]{new Vector2Int(Screen.width,Screen.height)};displayDraftResolution=0;return;}
             displaySizes=RecoveryMenuSettings.Resolutions(Screen.resolutions,Screen.width,Screen.height);
             if(displaySizes.Length==0)displaySizes=new[]{new Vector2Int(1280,720)};
             displayDraftResolution=Mathf.Max(0,Array.IndexOf(displaySizes,new Vector2Int(Screen.width,Screen.height)));
         }
         private void ApplyDisplay()
         {
+            if(RecoveryPlatform.UsesSwitchRendering)
+            {
+                P.quality=displayDraftQuality;session.ApplySettings();P.Save();
+                displayInitialized=false;settingsMessage="Display settings saved";Show("Settings");return;
+            }
             oldWidth=Screen.width;oldHeight=Screen.height;oldMode=Screen.fullScreenMode;oldQuality=P.quality;
             displayPending=true;displayDeadline=Time.realtimeSinceStartup+15;
             P.quality=displayDraftQuality;session.ApplySettings();

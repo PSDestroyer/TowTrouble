@@ -78,7 +78,7 @@ namespace TowTrouble.Tests
             }
         }
 
-        [Test] public void SwitchBuildIncludesOnlyItsDedicatedQualityAndKeepsFogRenderer()
+        [Test] public void SwitchBuildIncludesOnlyItsDedicatedQualityAndKeepsDepthForWater()
         {
             var settings = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/QualitySettings.asset")[0]);
             var levels = settings.FindProperty("m_QualitySettings");
@@ -109,7 +109,101 @@ namespace TowTrouble.Tests
             Assert.That(AssetDatabase.GetAssetPath(renderer), Is.EqualTo("Assets/Settings/Switch_Renderer.asset"));
             Assert.That((int)renderer.renderingMode, Is.Zero);
             Assert.That(renderer.rendererFeatures.Count, Is.GreaterThan(0));
-            foreach (var feature in renderer.rendererFeatures) { Assert.That(feature, Is.Not.Null); Assert.That(feature.isActive, Is.True); }
+            foreach (var feature in renderer.rendererFeatures) { Assert.That(feature, Is.Not.Null); Assert.That(feature.isActive, Is.False); }
+        }
+
+        [Test] public void SwitchPresetCutsGpuCostWhileDesktopKeepsItsAuthoredFeatures()
+        {
+            var pipeline=AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>("Assets/Settings/Switch_RPAsset.asset");
+            var pc=AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>("Assets/Settings/PC_RPAsset.asset");
+            Assert.That(pipeline.renderScale,Is.EqualTo(RecoverySwitchGraphics.RenderScale));
+            Assert.That(pipeline.supportsHDR,Is.False);Assert.That(pipeline.supportsCameraDepthTexture,Is.True);
+            Assert.That(pipeline.mainLightShadowmapResolution,Is.EqualTo(512));Assert.That(pipeline.maxAdditionalLightsCount,Is.EqualTo(2));
+            Assert.That(pipeline.upscalingFilter,Is.EqualTo(UpscalingFilterSelection.Linear));
+            Assert.That(pc.supportsHDR,Is.True);Assert.That(pc.renderScale,Is.EqualTo(1));
+        }
+
+        [Test] public void VegetationOverridesAreConfinedToTheSwitchQualityLevel()
+        {
+            var settings=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/QualitySettings.asset")[0]);var levels=settings.FindProperty("m_QualitySettings");
+            for(int i=0;i<levels.arraySize;i++)
+            {
+                var level=levels.GetArrayElementAtIndex(i);bool isSwitch=level.FindPropertyRelative("name").stringValue=="Switch";
+                Assert.That(level.FindPropertyRelative("terrainQualityOverrides").intValue,Is.EqualTo(isSwitch?255:0));
+                if(!isSwitch)continue;
+                Assert.That(level.FindPropertyRelative("terrainDetailDistance").floatValue,Is.EqualTo(RecoverySwitchGraphics.GrassDistance));
+                Assert.That(level.FindPropertyRelative("terrainDetailDensityScale").floatValue,Is.EqualTo(RecoverySwitchGraphics.GrassDensity));
+                Assert.That(level.FindPropertyRelative("terrainTreeDistance").floatValue,Is.EqualTo(RecoverySwitchGraphics.TreeDistance));
+                Assert.That(level.FindPropertyRelative("terrainPixelError").floatValue,Is.EqualTo(RecoverySwitchGraphics.TerrainPixelError));
+            }
+            using(var preference=new RecoveryGraphicsPreference())
+            {
+                preference.Apply("Switch",false);
+                Assert.That(QualitySettings.terrainDetailDistance,Is.EqualTo(RecoverySwitchGraphics.GrassDistance));
+                Assert.That(QualitySettings.terrainDetailDensityScale,Is.EqualTo(RecoverySwitchGraphics.GrassDensity));
+                Assert.That(QualitySettings.terrainTreeDistance,Is.EqualTo(RecoverySwitchGraphics.TreeDistance));
+                Assert.That(QualitySettings.lodBias,Is.EqualTo(RecoverySwitchGraphics.LodBias));
+                preference.Apply("Switch",true);Assert.That(QualitySettings.lodBias,Is.EqualTo(RecoverySwitchGraphics.PerformanceLodBias));
+            }
+        }
+
+        [Test] public void SwitchTerrainBudgetIsPersistedInTheNativeSettingsFile()
+        {
+            var copies=UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(Application.dataPath+"/../ProjectSettings/QualitySettings.asset");
+            try
+            {
+                var file=new SerializedObject(copies[0]);var levels=file.FindProperty("m_QualitySettings");bool found=false;
+                for(int i=0;i<levels.arraySize;i++)
+                {
+                    var level=levels.GetArrayElementAtIndex(i);if(level.FindPropertyRelative("name").stringValue!="Switch")continue;found=true;
+                    Assert.That(level.FindPropertyRelative("terrainQualityOverrides").intValue,Is.EqualTo(255));
+                    Assert.That(level.FindPropertyRelative("terrainDetailDistance").floatValue,Is.EqualTo(RecoverySwitchGraphics.GrassDistance));
+                    Assert.That(level.FindPropertyRelative("terrainDetailDensityScale").floatValue,Is.EqualTo(RecoverySwitchGraphics.GrassDensity));
+                    Assert.That(level.FindPropertyRelative("terrainTreeDistance").floatValue,Is.EqualTo(RecoverySwitchGraphics.TreeDistance));
+                }
+                Assert.That(found,Is.True);
+            }
+            finally{foreach(var copy in copies)UnityEngine.Object.DestroyImmediate(copy);}
+        }
+
+        [Test] public void SwitchGraphicsPreviewIsIndependentOfTheOfflinePreviewAndRestores()
+        {
+            bool original=RecoveryPlatform.PreviewSwitchRendering;
+            bool multiplayer=RecoveryPlatform.MultiplayerAvailable,offline=RecoveryPlatform.OfflineOnly;
+            try
+            {
+                RecoveryPlatform.PreviewSwitchRendering=true;
+                Assert.That(RecoveryPlatform.UsesSwitchRendering,Is.True);Assert.That(RecoveryPlatform.GraphicsQuality,Is.EqualTo("Switch"));
+                Assert.That(RecoveryPlatform.FrameRateLimit,Is.EqualTo(30));
+                Assert.That(RecoveryPlatform.MultiplayerAvailable,Is.EqualTo(multiplayer));Assert.That(RecoveryPlatform.OfflineOnly,Is.EqualTo(offline));
+                RecoveryPlatform.PreviewSwitchRendering=false;
+#if !UNITY_SWITCH
+                Assert.That(RecoveryPlatform.UsesSwitchRendering,Is.False);Assert.That(RecoveryPlatform.GraphicsQuality,Is.EqualTo("PC"));
+                Assert.That(RecoveryPlatform.FrameRateLimit,Is.EqualTo(60));
+#endif
+            }
+            finally{RecoveryPlatform.PreviewSwitchRendering=original;}
+        }
+
+        [Test] public void CameraRangeIsUnchangedOnPcAndRestoredAfterSwitchScope()
+        {
+            bool preview=RecoveryPlatform.PreviewSwitchRendering;
+            var scene=UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();var root=new GameObject("Inactive Switch camera scope");root.SetActive(false);
+            UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(root,scene);
+            var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+            try
+            {
+                var lens=root.AddComponent<Camera>();lens.farClipPlane=2300;
+                var rig=root.AddComponent<RecoveryCamera>();var session=root.AddComponent<DemoSession>();
+                typeof(DemoSession).GetField("recoveryCamera",flags).SetValue(session,rig);
+                var apply=typeof(DemoSession).GetMethod("ApplySwitchCameraBudget",flags);var release=typeof(DemoSession).GetMethod("RestoreGraphicsPreference",flags);
+#if !UNITY_SWITCH
+                RecoveryPlatform.PreviewSwitchRendering=false;apply.Invoke(session,null);Assert.That(lens.farClipPlane,Is.EqualTo(2300));
+#endif
+                RecoveryPlatform.PreviewSwitchRendering=true;apply.Invoke(session,null);Assert.That(lens.farClipPlane,Is.EqualTo(RecoverySwitchGraphics.CameraDistance));
+                apply.Invoke(session,null);release.Invoke(session,null);Assert.That(lens.farClipPlane,Is.EqualTo(2300));
+            }
+            finally{UnityEngine.Object.DestroyImmediate(root);UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(scene);RecoveryPlatform.PreviewSwitchRendering=preview;}
         }
 
         [Test] public void GraphicsPolicyUsesBuildTargetWithoutFollowingMultiplayerPreview()

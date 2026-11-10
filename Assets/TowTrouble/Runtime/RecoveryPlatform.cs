@@ -6,18 +6,33 @@ namespace TowTrouble
 #if UNITY_EDITOR
         // Scoped Editor validation only; never included in a player build.
         public static bool PreviewSinglePlayerOnly { get; set; }
+        // Graphics validation is separate from controller labels and multiplayer policy.
+        public static bool PreviewSwitchRendering { get; set; }
 #endif
+        public static bool UsesSwitchRendering
+        {
+            get
+            {
+#if UNITY_SWITCH
+                return true;
+#elif UNITY_EDITOR
+                return PreviewSwitchRendering;
+#else
+                return false;
+#endif
+            }
+        }
         // Platform selection is independent of controller labels and multiplayer previews.
 #if UNITY_SWITCH
         public static string GraphicsQuality => "Switch";
         public static ushort FrameRateLimit => 30;
 #else
 #if UNITY_STANDALONE || UNITY_EDITOR
-        public static string GraphicsQuality => "PC";
+        public static string GraphicsQuality => UsesSwitchRendering ? "Switch" : "PC";
 #else
         public static string GraphicsQuality => null; // Respect the platform's configured default.
 #endif
-        public static ushort FrameRateLimit => 60;
+        public static ushort FrameRateLimit => UsesSwitchRendering ? (ushort)30 : (ushort)60;
 #endif
         public static bool MultiplayerAvailable
         {

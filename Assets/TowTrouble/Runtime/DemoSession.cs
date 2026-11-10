@@ -103,7 +103,7 @@ namespace TowTrouble
         private void Start()
         {
             if (world.Map == null) { TravelTo("OpenWorldRecovery",0,null); return; }
-            if(Profile.displayWidth>=800&&Profile.displayHeight>=600&&Profile.displayMode>=0&&Profile.displayMode<=3)Screen.SetResolution(Profile.displayWidth,Profile.displayHeight,(FullScreenMode)Profile.displayMode);
+            if(!RecoveryPlatform.UsesSwitchRendering&&Profile.displayWidth>=800&&Profile.displayHeight>=600&&Profile.displayMode>=0&&Profile.displayMode<=3)Screen.SetResolution(Profile.displayWidth,Profile.displayHeight,(FullScreenMode)Profile.displayMode);
             Application.targetFrameRate = RecoveryPlatform.FrameRateLimit;
             // FishNet reapplies this rendering cap on connection; its simulation tick rate stays unchanged.
             network.ServerManager.SetFrameRate(RecoveryPlatform.FrameRateLimit);

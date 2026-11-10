@@ -124,7 +124,7 @@ QualitySettings:
     shadowResolution: 1
     shadowProjection: 1
     shadowCascades: 1
-    shadowDistance: 35
+    shadowDistance: 18
     shadowNearPlaneOffset: 3
     shadowCascade2Split: 0.33333334
     shadowCascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
@@ -144,10 +144,10 @@ QualitySettings:
     realtimeGICPUUsage: 100
     adaptiveVsyncExtraA: 0
     adaptiveVsyncExtraB: 0
-    lodBias: 1
+    lodBias: 0.65
     meshLodThreshold: 1
     maximumLODLevel: 0
-    enableLODCrossFade: 1
+    enableLODCrossFade: 0
     streamingMipmapsActive: 0
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 512
@@ -160,15 +160,15 @@ QualitySettings:
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
     customRenderPipeline: {fileID: 11400000, guid: 61d59198adec84b21b3feef17a3527a6, type: 2}
-    terrainQualityOverrides: 0
-    terrainPixelError: 1
-    terrainDetailDensityScale: 1
-    terrainBasemapDistance: 1000
-    terrainDetailDistance: 80
-    terrainTreeDistance: 5000
-    terrainBillboardStart: 50
+    terrainQualityOverrides: 255
+    terrainPixelError: 6
+    terrainDetailDensityScale: 0.4
+    terrainBasemapDistance: 400
+    terrainDetailDistance: 40
+    terrainTreeDistance: 300
+    terrainBillboardStart: 65
     terrainFadeLength: 5
-    terrainMaxTrees: 50
+    terrainMaxTrees: 24
     excludedTargetPlatforms:
     - Android
     - GameCoreScarlett

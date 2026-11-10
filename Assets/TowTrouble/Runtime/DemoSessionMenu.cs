@@ -36,14 +36,36 @@ namespace TowTrouble
             world.Drivers[0].GetComponent<RecoveryCustomization>()?.Apply(Profile.Build(Profile.vehicle), Profile.paint, true);
         }
         private RecoveryGraphicsPreference graphicsPreference;
+        private Camera switchLens;
+        private float previousSwitchFarClip;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private bool switchGraphicsLogged;
+#endif
         private void ApplyGraphicsPreference()
         {
             if (!Application.isPlaying) return;
             if (graphicsPreference == null) graphicsPreference = new RecoveryGraphicsPreference();
             graphicsPreference.Apply(RecoveryPlatform.GraphicsQuality, Profile.quality == 0);
+            ApplySwitchCameraBudget();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if(RecoveryPlatform.UsesSwitchRendering&&!switchGraphicsLogged)
+            {
+                switchGraphicsLogged=true;
+                var pipeline=UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset;
+                Debug.Log($"[Tow Trouble Switch] target=30fps output={Screen.width}x{Screen.height} quality={QualitySettings.names[QualitySettings.GetQualityLevel()]} scale={pipeline?.renderScale:0.00} HDR={pipeline?.supportsHDR} shadow={pipeline?.shadowDistance:0}m grass={QualitySettings.terrainDetailDistance:0}m trees={QualitySettings.terrainTreeDistance:0}m far={switchLens.farClipPlane:0}m");
+            }
+#endif
+        }
+        private void ApplySwitchCameraBudget()
+        {
+            if(!RecoveryPlatform.UsesSwitchRendering||switchLens!=null)return;
+            switchLens=recoveryCamera.GetComponent<Camera>();previousSwitchFarClip=switchLens.farClipPlane;
+            switchLens.farClipPlane=Mathf.Min(previousSwitchFarClip,RecoverySwitchGraphics.CameraDistance);
         }
         private void RestoreGraphicsPreference()
         {
+            if(switchLens!=null)switchLens.farClipPlane=previousSwitchFarClip;
+            switchLens=null;
             graphicsPreference?.Dispose();
             graphicsPreference = null;
         }
