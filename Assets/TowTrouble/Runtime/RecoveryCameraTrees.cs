@@ -120,6 +120,8 @@ namespace TowTrouble
             if (car == null || !car.gameObject.activeInHierarchy || !car.TryGetComponent<BoxCollider>(out var box)) return;
             var t = car.transform;
             Vector3 center = t.TransformPoint(box.center);
+            if (car==session.World.Casualty && session.ContractIntroActive && !session.ContractIntroReturning)
+                center+=session.ContractIntroActorPosition-car.transform.position;
             if ((center - transform.position).sqrMagnitude > MaxTreeSightDistance * MaxTreeSightDistance) return;
             Vector3 viewport = treeCamera.WorldToViewportPoint(center);
             if (viewport.z <= 0f || viewport.x < -.04f || viewport.x > 1.04f || viewport.y < -.04f || viewport.y > 1.04f) return;

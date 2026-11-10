@@ -22,7 +22,7 @@ namespace TowTrouble
             if(connected)
             {
                 int slot=LocalSlot;
-                frame=new RecoveryHapticFrame { Active=world.HapticTelemetryReady&&input&&Profile!=null&&Profile.vibration&&!menuOpen&&View=="Gameplay"&&hapticFocus&&!hapticPaused&&Time.timeScale>0&&world.Phase!=RecoveryPhase.Lobby&&world.Phase!=RecoveryPhase.Complete,
+                frame=new RecoveryHapticFrame { Active=world.HapticTelemetryReady&&input&&Profile!=null&&Profile.vibration&&!MenuOpen&&View=="Gameplay"&&hapticFocus&&!hapticPaused&&Time.timeScale>0&&world.Phase!=RecoveryPhase.Lobby&&world.Phase!=RecoveryPhase.Complete,
                     Slot=slot,Run=world.RunId,Resets=world.Resets(slot),Attached=world.Attached(slot),Tension=world.Tension(slot),Winch=world.Winch(slot),
                     Recovering=world.Phase==RecoveryPhase.Recover,Delivered=world.Phase==RecoveryPhase.Deliver,Events=world.HapticEvents(slot) };
             }
@@ -30,7 +30,7 @@ namespace TowTrouble
             hapticOutput.Write(pad,signal,Time.realtimeSinceStartupAsDouble);
         }
         private void StopHaptics(){hapticSignal.Reset();hapticOutput.Clear();hapticDevice=null;}
-        private void OnDisable(){InputSystem.onDeviceChange-=HapticDeviceChanged;StopHaptics();}
+        private void OnDisable(){CancelContractIntro();InputSystem.onDeviceChange-=HapticDeviceChanged;StopHaptics();}
         private void OnApplicationFocus(bool focused){hapticFocus=focused;if(!focused)StopHaptics();}
         private void OnApplicationPause(bool paused){hapticPaused=paused;if(paused)StopHaptics();}
         private void OnApplicationQuit(){StopHaptics();}

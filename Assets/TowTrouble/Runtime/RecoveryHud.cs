@@ -230,7 +230,7 @@ namespace TowTrouble
             {
                 if(w.Phase==RecoveryPhase.Complete&&!wasComplete)Show(session.Training?"TutorialDone":"Results");
                 else if(w.Phase!=previousPhase&&w.Phase!=RecoveryPhase.Complete){if(w.Phase!=RecoveryPhase.Lobby||(page!="Contracts"&&page!="Vehicles"))Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");}
-                if(session.MenuOpen&&page=="Gameplay"&&session.View!="Garage"&&session.View!="Board")Show("Pause");
+                if(session.MenuOpen&&!session.ContractIntroActive&&page=="Gameplay"&&session.View!="Garage"&&session.View!="Board")Show("Pause");
                 if(!session.MenuOpen&&page=="Pause")Show("Gameplay");
                 wasComplete=w.Phase==RecoveryPhase.Complete;previousPhase=w.Phase;
             }
@@ -238,6 +238,7 @@ namespace TowTrouble
                 !(page=="Confirm"&&confirmationReturn==session.View))Show(session.View);
             else if(online&&(page=="Garage"||page=="Board")&&session.View=="Gameplay")Show("Gameplay");
             wasOnline=online;
+            if(UpdateContractIntroHud())return;
             UpdateBusyPresentation(Time.unscaledTime);
             if (HandleGarageControls(online)) return;
             if (HandleBoardControls(online)) return;

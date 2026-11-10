@@ -18,6 +18,16 @@ namespace TowTrouble
             if(rate>0&&Time.timeScale>.01f&&engineSmoke.gameObject.activeInHierarchy){if(!engineSmoke.isPlaying)engineSmoke.Play(false);}
             else if(engineSmoke.isPlaying)engineSmoke.Stop(false,ParticleSystemStopBehavior.StopEmittingAndClear);
         }
+        public ParticleSystem CreateIncidentSmoke(Transform parent)
+        {
+            if(engineSmoke==null)return null;
+            var copy=Instantiate(engineSmoke,parent,false);
+            copy.transform.localPosition=transform.InverseTransformPoint(engineSmoke.transform.position);
+            copy.gameObject.SetActive(true);
+            var main=copy.main;main.useUnscaledTime=true;main.playOnAwake=false;main.maxParticles=48;main.stopAction=ParticleSystemStopAction.None;
+            copy.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+            return copy;
+        }
         private void OnDisable()
         { if(engineSmoke!=null)engineSmoke.Stop(false,ParticleSystemStopBehavior.StopEmittingAndClear); }
     }

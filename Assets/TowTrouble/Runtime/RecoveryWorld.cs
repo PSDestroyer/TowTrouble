@@ -57,6 +57,7 @@ namespace TowTrouble
         public bool FreeRoam=>freeRoam.Value;
         public string RunId=>runId.Value;
         public Vector3 GaragePosition=>garagePosition;
+        public event System.Action<int,string> ContractAcceptedPresentation;
         public bool HasContract=>Phase==RecoveryPhase.HookUp||Phase==RecoveryPhase.Recover||Phase==RecoveryPhase.Deliver;
         public void ConfigureGarage(Vector3 position){garagePosition=position;}
         public bool InGarageArea(int slot)=>slot>=0&&slot<2&&Vector3.Distance(new Vector3(drivers[slot].transform.position.x,0,drivers[slot].transform.position.z),new Vector3(garagePosition.x,0,garagePosition.z))<8&&Mathf.Abs(drivers[slot].transform.position.y-garagePosition.y)<3;
@@ -216,7 +217,11 @@ namespace TowTrouble
             contractId.Value=contract;ApplyContract();ClearContract();
             casualty.gameObject.SetActive(true);casualty.SetSimulation(true);casualty.SetSpawn(Contract.Target,Quaternion.Euler(Contract.Pitch,Contract.Heading,Contract.Roll),Contract.MudDrag,Contract.Extraction-2,!Contract.IsOpenWorld&&contract==2);
             runId.Value=System.Guid.NewGuid().ToString("N");phase.Value=(int)RecoveryPhase.HookUp;BeginScenario();
+            PresentAcceptedContract(contract,runId.Value);
         }
+        // Unbuffered: existing peers see the incident once; late joiners enter the current recovery directly.
+        [ObserversRpc]
+        private void PresentAcceptedContract(int index,string run) => ContractAcceptedPresentation?.Invoke(index,run);
         [ServerRpc(RequireOwnership=false)]
         public void ReturnToExplore(NetworkConnection sender=null)
         {

@@ -1,0 +1,40 @@
+{
+  "nativeLocations": 24,
+  "cameraSamples": 1200,
+  "minimumCameraGroundClearance": 1.1499939,
+  "testsPassed": 10,
+  "protectedHashesUnchanged": 14,
+  "liveRuns": [
+    {
+      "name": "Live",
+      "frames": 517,
+      "introFrames": 335,
+      "errors": 0,
+      "socketless": true,
+      "missionClockPaused": true,
+      "returnToGameplay": true,
+      "minCameraGroundClearance": 4.5077343,
+      "skipViaNewInputSystem": false,
+      "maxSmokeParticles": 0
+    },
+    {
+      "name": "LiveSkip",
+      "frames": 337,
+      "introFrames": 234,
+      "errors": 0,
+      "socketless": true,
+      "missionClockPaused": true,
+      "returnToGameplay": true,
+      "minCameraGroundClearance": 4.46624,
+      "skipViaNewInputSystem": true,
+      "maxSmokeParticles": 10
+    }
+  ],
+  "buildsRun": false,
+  "newPackages": false,
+  "limitations": [
+    "No Nintendo hardware/physical gamepad performance or render validation.",
+    "FishNet notification is unbuffered and compiled; two-peer playback was not exercised.",
+    "Incident motion is a procedural visual reenactment using real site poses, not an authored crash animation per car."
+  ]
+}

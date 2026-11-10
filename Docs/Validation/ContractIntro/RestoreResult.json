@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "script eval_file",
+    "parameters": {
+      "file": "/private/tmp/TowContractIntro/Restore.cs"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "playing": false,
+        "scenePreserved": true,
+        "dirtyStatePreserved": true,
+        "realSaveUnchanged": true,
+        "saveArtifacts": [
+          "save.json:unchanged",
+          "save.json.backup:unchanged",
+          "save.json.previous:unchanged"
+        ],
+        "previewOffline": false,
+        "validationKeyCleared": true,
+        "socketAutoInit": false,
+        "networkAutoInit": false
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

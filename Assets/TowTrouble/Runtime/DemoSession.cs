@@ -89,7 +89,7 @@ namespace TowTrouble
         public bool ReadyForPresentation => Connected && LocalSlot >= 0 && !Connecting;
         public bool IsHost => network != null && network.ServerManager != null && network.ServerManager.Started;
         public int LocalSlot => Connected ? world.Slot(network.ClientManager.Connection.ClientId) : -1;
-        public bool MenuOpen => menuOpen;
+        public bool MenuOpen => menuOpen || ContractIntroActive;
         public string Status => status;
 
         public void Configure(NetworkManager manager, RecoveryWorld recoveryWorld, RecoveryCamera cameraRig)
@@ -109,6 +109,7 @@ namespace TowTrouble
             network.ServerManager.SetFrameRate(RecoveryPlatform.FrameRateLimit);
             network.ClientManager.SetFrameRate(RecoveryPlatform.FrameRateLimit);
             network.ClientManager.OnClientConnectionState += ClientState;
+            world.ContractAcceptedPresentation += QueueContractIntro;
             recoveryCamera.Bind(this);PreviewFittedRide();StartAudio();
             if(RecoveryPlatform.UsesSwitchRendering)gameObject.AddComponent<RecoverySwitchSceneRendering>().Initialize(recoveryCamera.GetComponent<Camera>());
             int mode=travelMode;string destination=travelAddress;travelMode=0;travelAddress=null;
@@ -124,6 +125,8 @@ namespace TowTrouble
 
         private void OnDestroy()
         {
+            CancelContractIntro();
+            if(world!=null)world.ContractAcceptedPresentation -= QueueContractIntro;
             RestoreGraphicsPreference();ClearTrainingDressing();StopHaptics();Time.timeScale=1;
             if (network != null && network.ClientManager != null) network.ClientManager.OnClientConnectionState -= ClientState;
         }
@@ -228,7 +231,7 @@ namespace TowTrouble
         public void Leave()
         {
             if (leaving) return;
-            leaving = true;Time.timeScale=1; network.ClientManager.StopConnection();
+            CancelContractIntro();leaving = true;Time.timeScale=1; network.ClientManager.StopConnection();
             if (IsHost) network.ServerManager.StopConnection(true);
             StartCoroutine(Reload());
         }
@@ -248,7 +251,7 @@ namespace TowTrouble
                 if (IsHost) network.ServerManager.StopConnection(true);
                 MenuConnectionFailed();status = RecoveryPlatform.MultiplayerAvailable?"Connection timed out. Check the host address and try again.":"Starting the game timed out. Please try again.";
             }
-            if (!Connected || LocalSlot < 0) return;
+            if (!Connected || LocalSlot < 0) { CancelContractIntro(); return; }
             if (Connecting && (!Solo || world.Phase != RecoveryPhase.Lobby))
             { Connecting = false; status = Solo ? "Your game is ready." : "Connected. Get your crew ready."; }
             if(!identitySent){identitySent=true;if(IsHost)world.ConfigureSession(world.Map!=null?0:SelectedContract,!Solo,explorationRequested||world.Map!=null);world.SetDriver(Profile.name,Profile.vehicle,Profile.paint);}
@@ -262,6 +265,7 @@ namespace TowTrouble
                 if (!readySent) { readySent = true; world.SetReady(true); }
                 if (world.CanStart) { quickStart = false; world.StartRecovery(); }
             }
+            if (TickContractIntro(Time.unscaledDeltaTime)) return;
             // UI submit/cancel can close an overlay before this Update executes.
             // Consume that frame so the same button cannot pause or operate a cable.
             if (menuInputConsumedFrame == Time.frameCount)

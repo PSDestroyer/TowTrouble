@@ -28,6 +28,12 @@ namespace TowTrouble
                 velocity = Vector3.zero; gameplayCameraActive = false;
                 UpdateTitleLighting(false); return;
             }
+            if(session.ContractIntroCamera(out var incidentPosition,out var incidentLook))
+            {
+                velocity=Vector3.zero;gameplayCameraActive=false;
+                transform.SetPositionAndRotation(incidentPosition,Quaternion.LookRotation(incidentLook-incidentPosition));
+                UpdateTitleLighting(false);UpdateTreeVisibility(false);return;
+            }
             if(!session.GarageOpen)garageCameraActive=false;
             var p=session.Profile;bool lobby=!session.ReadyForPresentation||session.World.Phase==RecoveryPhase.Lobby;
             bool title=session.View=="Title";
