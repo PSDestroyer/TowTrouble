@@ -130,6 +130,11 @@ namespace TowTrouble
             if(menuScroll!=null){float scroll=(RecoveryInputDevices.Pad?.rightStick.y.ReadValue()??0)*Time.unscaledDeltaTime*650; if(Keyboard.current?.pageUpKey.isPressed==true)scroll+=Time.unscaledDeltaTime*650;if(Keyboard.current?.pageDownKey.isPressed==true)scroll-=Time.unscaledDeltaTime*650;var content=menuScroll.content;float range=Mathf.Max(0,content.rect.height-menuScroll.viewport.rect.height);content.anchoredPosition=new Vector2(content.anchoredPosition.x,Mathf.Clamp(content.anchoredPosition.y-scroll,0,range));}
             var keyboard=Keyboard.current;var pad=RecoveryInputDevices.Pad;
             bool cancel=keyboard?.escapeKey.wasPressedThisFrame==true||RecoveryInputPrompts.Cancel(pad)?.wasPressedThisFrame==true;
+            if(busyPresentationPending)
+            {
+                if(cancel){session.ConsumeMenuInput();MenuBack();}
+                return true;
+            }
             var selected=EventSystem.current?.currentSelectedGameObject?.GetComponent<UnityEngine.UI.Selectable>();
             if(selected is TMP_InputField editing && editing.isFocused)
             {

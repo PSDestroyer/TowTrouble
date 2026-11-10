@@ -34,6 +34,33 @@ namespace TowTrouble.Editor
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(scene);
             UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);
         }
+        [MenuItem("Tow Trouble/Audio/Refresh expanded soundtrack")]
+        public static void RefreshSoundtrack()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop Play before configuring music.");
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            foreach(string title in new[]{"Wooden Inn","One Step at a Time","First Light Particles","Deep Blue Ambient Piano"})
+            {
+                var importer=AssetImporter.GetAtPath(Library+"Music/"+title+".wav") as AudioImporter;
+                if(importer==null)throw new InvalidOperationException("Missing music: "+title);
+                importer.forceToMono=false;importer.loadInBackground=true;
+                var settings=importer.defaultSampleSettings;
+                settings.loadType=AudioClipLoadType.Streaming;settings.preloadAudioData=false;
+                settings.compressionFormat=AudioCompressionFormat.Vorbis;settings.quality=.65f;
+                settings.sampleRateSetting=AudioSampleRateSetting.OverrideSampleRate;settings.sampleRateOverride=44100;
+                importer.defaultSampleSettings=settings;importer.SetOverrideSampleSettings("Switch",settings);importer.SaveAndReimport();
+            }
+            var bank=AssetDatabase.LoadAssetAtPath<RecoveryAudioBank>(BankPath);
+            if(bank==null)throw new InvalidOperationException("Audio bank is missing.");
+            ConfigureSoundtrack(bank);EditorUtility.SetDirty(bank);AssetDatabase.SaveAssetIfDirty(bank);
+        }
+        private static void ConfigureSoundtrack(RecoveryAudioBank bank)
+        {
+            AudioClip Music(string title)=>AssetDatabase.LoadAssetAtPath<AudioClip>(Library+"Music/"+title+".wav")??throw new InvalidOperationException("Missing music: "+title);
+            bank.MenuMusic=Music("Revelation");
+            bank.ExploreMusic=new[]{Music("Sunset Plains"),bank.MenuMusic,Music("Wooden Inn"),Music("One Step at a Time"),Music("First Light Particles"),Music("Deep Blue Ambient Piano")};
+            bank.MusicGain=.36f;bank.EngineGain=.85f;bank.MusicCrossfade=4;bank.MenuMusicGap=3;bank.ExploreMusicGap=16;
+        }
         [MenuItem("Tow Trouble/Audio/Configure audio library")]
         public static void Configure()
         {
@@ -65,7 +92,7 @@ namespace TowTrouble.Editor
             AudioClip Clip(string file)=>AssetDatabase.LoadAssetAtPath<AudioClip>(Library+file)??throw new InvalidOperationException("Missing audio: "+file);
             bank.EngineIdle=Clip("Vehicles/Engine Idle.wav");bank.EngineDrive=Clip("Vehicles/Engine Drive.wav");bank.EngineLoad=Clip("Recovery/Motor loop.wav");bank.WinchMotor=bank.EngineLoad;
             bank.Wind=Clip("Ambience/Wind_1.wav");bank.MountainWind=Clip("Ambience/Wind_2.wav");bank.Birds=Clip("Ambience/Birds_1.wav");bank.Insects=Clip("Ambience/Forest_Insects.wav");bank.Water=Clip("Ambience/Water_1.wav");bank.Garage=Clip("Foley/impactMetal_light_001.ogg");
-            bank.MenuMusic=Clip("Music/Revelation.wav");bank.ExploreMusic=new[]{Clip("Music/Sunset Plains.wav"),bank.MenuMusic};
+            ConfigureSoundtrack(bank);
             var sounds=new List<RecoverySoundSet>();
             void Add(RecoverySound sound,RecoveryAudioBus bus,float gain,int priority,float cooldown,params string[] clips)
             {sounds.Add(new RecoverySoundSet{Sound=sound,Bus=bus,Gain=gain,Priority=priority,Cooldown=cooldown,Clips=clips.Select(Clip).ToArray()});}
@@ -100,7 +127,7 @@ namespace TowTrouble.Editor
                 new RecoverySurfaceSounds{Surface=RecoveryAudioSurface.Wood,Gain=.13f,Clips=Enumerable.Range(0,3).Select(i=>Clip("Foley/footstep_wood_00"+i+".ogg")).ToArray()},
                 new RecoverySurfaceSounds{Surface=RecoveryAudioSurface.Grass,Gain=.08f,Clips=Enumerable.Range(0,3).Select(i=>Clip("Foley/footstep_grass_00"+i+".ogg")).ToArray()}};
             bank.Waterfalls=UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None).Where(r=>r.sharedMaterial!=null&&r.sharedMaterial.shader!=null&&(r.sharedMaterial.shader.name=="TowTrouble/Gorge Falling Water"||r.name.IndexOf("waterfall",StringComparison.OrdinalIgnoreCase)>=0)).Select(r=>r.bounds.center).Distinct().ToArray();
-            EditorUtility.SetDirty(bank);AssetDatabase.SaveAssets();
+            EditorUtility.SetDirty(bank);AssetDatabase.SaveAssetIfDirty(bank);
             Debug.Log("Tow Trouble audio configured: "+bank.Sounds.Length+" events, "+bank.Surfaces.Length+" surfaces, "+bank.Waterfalls.Length+" waterfall anchors.");
         }
     }

@@ -23,6 +23,11 @@ namespace TowTrouble
     {
         public AudioMixerGroup Vehicles,Recovery,UI,Ambience,Music;
         public AudioClip EngineIdle,EngineDrive,EngineLoad,WinchMotor,Wind,MountainWind,Birds,Insects,Water,Garage;
+        [Header("Music and mix")]
+        [Range(0,1)] public float MusicGain=.36f;
+        [Range(0,1)] public float EngineGain=.85f;
+        [Min(.2f)] public float MusicCrossfade=4;
+        [Min(0)] public float MenuMusicGap=3,ExploreMusicGap=16;
         public AudioClip MenuMusic;
         public AudioClip[] ExploreMusic=Array.Empty<AudioClip>();
         public RecoverySoundSet[] Sounds=Array.Empty<RecoverySoundSet>();
@@ -40,6 +45,8 @@ namespace TowTrouble
         public static float EnginePitch(float speed,float throttle,float slip,float mass)
             =>Mathf.Clamp((.78f+Mathf.Repeat(Mathf.Max(0,speed),7)/7*.48f+Gain(Mathf.Abs(throttle))*.22f+Gain(slip)*.25f)*Mathf.Lerp(1.1f,.8f,Mathf.InverseLerp(950,2200,mass)),.65f,1.65f);
         public static bool Changed(uint current,uint previous)=>unchecked((int)(current-previous))>0;
-        public static float MusicDuck(bool menu,float tension,bool stalled)=>menu?.65f:Mathf.Lerp(1,.32f,Mathf.Max(Mathf.InverseLerp(.65f,.95f,tension),stalled?.8f:0));
+        public static float MusicDuck(bool menu,float tension,bool stalled)=>Mathf.Min(menu?.65f:1,Mathf.Lerp(1,.32f,Mathf.Max(Mathf.InverseLerp(.65f,.95f,tension),stalled?.8f:0)));
+        public static float MusicEnvelope(float start,bool incoming,float blend)
+        {float t=Mathf.Clamp01(blend);return incoming?Mathf.Sqrt(Mathf.Lerp(start*start,1,Mathf.Sin(t*Mathf.PI*.5f)*Mathf.Sin(t*Mathf.PI*.5f))):Mathf.Max(0,start*Mathf.Cos(t*Mathf.PI*.5f));}
     }
 }

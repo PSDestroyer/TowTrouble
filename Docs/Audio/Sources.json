@@ -384,7 +384,8 @@
     "source": "Assets/Suntail Village",
     "license": "Unity Asset Store EULA (existing licensed project asset)",
     "original": "Forest/Wind_1.wav",
-    "sha256": "f906dceb51748981d66e28284601f6bc6dadcf409eecb093a055ab2e622f851b"
+    "sha256": "b68376cb8a271603ae6a8b96cd542f35b3a1771594d47c695ec880f94dc5f71a",
+    "edits": "Tow Trouble sound-design pass: DC removal, mono-compatible RMS calibration, -1.9dBFS peak ceiling, 180ms loop seam overlap; original vendor asset unchanged"
   },
   {
     "path": "Assets/TowTrouble/Art/Audio/Library/Ambience/Wind_2.wav",
@@ -392,7 +393,8 @@
     "source": "Assets/Suntail Village",
     "license": "Unity Asset Store EULA (existing licensed project asset)",
     "original": "Forest/Wind_2.wav",
-    "sha256": "47c336fa516831fbb9f7057af0d7b43330cca3a25ff614419ef6b63b7106309a"
+    "sha256": "476dcd5e2543e9bc312ac6755ffea16a4478480a24cce1bc430bbcf7ec4fc269",
+    "edits": "Tow Trouble sound-design pass: DC removal, mono-compatible RMS calibration, -1.9dBFS peak ceiling, 180ms loop seam overlap; original vendor asset unchanged"
   },
   {
     "path": "Assets/TowTrouble/Art/Audio/Library/Ambience/Birds_1.wav",
@@ -400,7 +402,8 @@
     "source": "Assets/Suntail Village",
     "license": "Unity Asset Store EULA (existing licensed project asset)",
     "original": "Forest/Birds_1.wav",
-    "sha256": "3237f8464536791746fd4c00ad9e9189d683f6413b4c62b56eae7d3a8361e190"
+    "sha256": "84d1b1ae3cdc503bc36908551076d5e758935f2170908805245bcd168ae0954b",
+    "edits": "Tow Trouble sound-design pass: DC removal, mono-compatible RMS calibration, -1.9dBFS peak ceiling, 180ms loop seam overlap; original vendor asset unchanged"
   },
   {
     "path": "Assets/TowTrouble/Art/Audio/Library/Ambience/Forest_Insects.wav",
@@ -408,7 +411,8 @@
     "source": "Assets/Suntail Village",
     "license": "Unity Asset Store EULA (existing licensed project asset)",
     "original": "Forest/Forest_Insects.wav",
-    "sha256": "a2ea7ba2a5b696d7266e9202157fdcb961ea111d2c74e993d6708440bb328b08"
+    "sha256": "23861914ca3944a72ad59477f19883284b11553ec342b2ec84cc1e2ab8ba6ebc",
+    "edits": "Tow Trouble sound-design pass: DC removal, mono-compatible RMS calibration, -1.9dBFS peak ceiling, 180ms loop seam overlap; original vendor asset unchanged"
   },
   {
     "path": "Assets/TowTrouble/Art/Audio/Library/Ambience/Water_1.wav",
@@ -416,7 +420,8 @@
     "source": "Assets/Suntail Village",
     "license": "Unity Asset Store EULA (existing licensed project asset)",
     "original": "Water/Water_1.wav",
-    "sha256": "f3260b6e38c2a42e13200291f01e841b10e8b9868a5809908fac55914cf4c190"
+    "sha256": "1f2109ac17410f41e4d2847721294ccc09b6e85b1b9f67f081a35d431c66c49b",
+    "edits": "Tow Trouble sound-design pass: DC removal, mono-compatible RMS calibration, -1.9dBFS peak ceiling, 180ms loop seam overlap; original vendor asset unchanged"
   },
   {
     "path": "Assets/TowTrouble/Art/Audio/Library/Surfaces/Footstep_Dirt_1.wav",
@@ -495,5 +500,45 @@
     "license": "CC0-1.0",
     "original": "Audio/impactSoft_heavy_000.ogg",
     "sha256": "49e7ca88743fca974bb8676ea138b751cfd8f9033b5e7af8736c2a215d6edbc1"
+  },
+  {
+    "path": "Assets/TowTrouble/Art/Audio/Library/Music/Wooden Inn.wav",
+    "author": "Indieteur",
+    "source": "https://opengameart.org/content/wooden-inn",
+    "download": "https://opengameart.org/sites/default/files/Wooden%20Inn.Wav",
+    "license": "CC0-1.0",
+    "original": "Wooden Inn.Wav",
+    "edits": "DC removal, digital silence trim with natural lead/tail retained, RMS matching toward -20 dBFS with -1.4 dBFS peak ceiling, 15ms/80ms edge fades; stereo/timing retained",
+    "sha256": "0df7922854d7d7a553a9e0e24e93756ed6d2ff334cb3e47c21c3c12e93793ccf"
+  },
+  {
+    "path": "Assets/TowTrouble/Art/Audio/Library/Music/One Step at a Time.wav",
+    "author": "Alex McCulloch (Pro Sensory)",
+    "source": "https://opengameart.org/content/one-step-at-a-time",
+    "download": "https://opengameart.org/sites/default/files/OneStepAtATIme.wav",
+    "license": "CC0-1.0",
+    "original": "OneStepAtATIme.wav",
+    "edits": "DC removal, digital silence trim with natural lead/tail retained, RMS matching toward -20 dBFS with -1.4 dBFS peak ceiling, 15ms/80ms edge fades; stereo/timing retained",
+    "sha256": "591bee9b9782617843cef889a125f2ae1f1edf0db000da4403aa7a5cb1ee08bb"
+  },
+  {
+    "path": "Assets/TowTrouble/Art/Audio/Library/Music/First Light Particles.wav",
+    "author": "Yoiyami",
+    "source": "https://opengameart.org/content/first-light-particles-%E2%80%93-cc0-atmospheric-pianoambient-track",
+    "download": "https://opengameart.org/sites/default/files/first_light_particles_0.wav",
+    "license": "CC0-1.0",
+    "original": "first_light_particles_0.wav",
+    "edits": "DC removal, digital silence trim with natural lead/tail retained, RMS matching toward -20 dBFS with -1.4 dBFS peak ceiling, 15ms/80ms edge fades; stereo/timing retained",
+    "sha256": "3273246f9a1cdf102e691b8213b5f78059c585fbbd6e1555dba7330dce9226d3"
+  },
+  {
+    "path": "Assets/TowTrouble/Art/Audio/Library/Music/Deep Blue Ambient Piano.wav",
+    "author": "Yoiyami",
+    "source": "https://opengameart.org/content/yoiyami-core-theme-%E2%80%93-deep-blue-ambient-piano",
+    "download": "https://opengameart.org/sites/default/files/yoiyami_core_theme_0.wav",
+    "license": "CC0-1.0",
+    "original": "yoiyami_core_theme_0.wav",
+    "edits": "DC removal, digital silence trim with natural lead/tail retained, RMS matching toward -20 dBFS with -1.4 dBFS peak ceiling, 15ms/80ms edge fades; stereo/timing retained",
+    "sha256": "b1e504e895e3270c89baf793dd6ea11166003d38ade0bf02a9d46bb1155b79c0"
   }
 ]

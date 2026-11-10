@@ -5,7 +5,7 @@ namespace TowTrouble
 {
     // One local presentation rig per session. Physics/network events are read, never authored here.
     [DefaultExecutionOrder(200)]
-    public sealed class RecoveryAudioDirector : MonoBehaviour
+    public sealed partial class RecoveryAudioDirector : MonoBehaviour
     {
         private const int VoiceCount=12;
         private DemoSession session;
@@ -33,11 +33,11 @@ namespace TowTrouble
         private string run,view;
         private RecoveryPhase phase;
         private bool seeded,obstacle,focused=true,appPaused,hadConnection;
-        private int localSlot=-1,musicIndex,trackIndex=-1;
+        private int localSlot=-1,musicIndex;
         private readonly double[] surfaceAt=new double[3];
         private readonly bool[] grounded=new bool[3];
         private readonly double[] nextCreakAt=new double[2];
-        private double nextMusicAt,nextWorkshopAt;
+        private double nextWorkshopAt;
         private bool musicMenu,trackStarted;
         private int uiFrame=-1,uiPriority=999;
         private float musicBlend,musicDuck=1;
@@ -191,7 +191,7 @@ namespace TowTrouble
             {
                 var source=engines[slot,layer];source.transform.position=car.transform.position+Vector3.up*.5f;
                 float volume=layer==0?.18f*(1-.65f*throttle):layer==1?.2f*Mathf.Max(throttle,speed/25):.10f*car.EngineEffort*throttle;
-                Loop(source,gain*volume,pitch*(layer==0?.7f:layer==2?.6f:1));
+                Loop(source,gain*bank.EngineGain*volume,pitch*(layer==0?.7f:layer==2?.6f:1));
             }
             var frame=world.Winch(slot);bool motor=running&&world.Attached(slot)&&RecoveryAudioPolicy.MotorActive(frame.State);
             if(motor&& !RecoveryAudioPolicy.MotorActive(motorStates[slot]))Play(RecoverySound.WinchStart,car.RearHitch,slot,.65f);
@@ -248,28 +248,10 @@ namespace TowTrouble
             garage.transform.position=world.GaragePosition;garage.volume=gain*.13f;
             if(gain>0&&Vector3.Distance(p,world.GaragePosition)<32&&Time.realtimeSinceStartupAsDouble>=nextWorkshopAt){garage.Play();nextWorkshopAt=Time.realtimeSinceStartupAsDouble+13;}
         }
-        private void Music(RecoveryWorld world,bool online,int slot)
-        {
-            bool menu=!online||world.Phase==RecoveryPhase.Lobby;double now=Time.realtimeSinceStartupAsDouble;
-            bool change=!trackStarted||menu!=musicMenu;
-            if(change&&now>=nextMusicAt||menu!=musicMenu)
-            {
-                var clip=menu?bank.MenuMusic:bank.ExploreMusic.Length>0?bank.ExploreMusic[(++trackIndex)%bank.ExploreMusic.Length]:null;
-                musicIndex=1-musicIndex;var next=music[musicIndex];next.Stop();next.clip=clip;next.volume=0;
-                if(clip!=null){next.Play();trackStarted=true;}musicMenu=menu;musicBlend=0;nextMusicAt=now+5;
-            }
-            float tension=online?world.Tension(slot):0;
-            musicDuck=Mathf.MoveTowards(musicDuck,RecoveryAudioPolicy.MusicDuck(session.MenuOpen,tension,world.Winch(slot).State==WinchState.Stalled),Time.unscaledDeltaTime*.6f);
-            musicBlend=Mathf.MoveTowards(musicBlend,1,Time.unscaledDeltaTime/3);
-            float gain=BusGain(RecoveryAudioBus.Music)*.3f*musicDuck;
-            for(int i=0;i<2;i++){var s=music[i];s.volume=gain*(i==musicIndex?musicBlend:1-musicBlend);if(i!=musicIndex&&musicBlend>=1)s.Stop();}
-            var active=music[musicIndex];
-            if(focused&&!appPaused&&trackStarted&&now>nextMusicAt&&active.clip!=null&&active.clip.loadState==AudioDataLoadState.Loaded&&!active.isPlaying)
-            {trackStarted=false;nextMusicAt=now+(menu?6:22);}
-        }
         private void Silence(){foreach(var s in GetComponentsInChildren<AudioSource>())s.Stop();}
-        private void OnApplicationFocus(bool value){focused=value;foreach(var s in GetComponentsInChildren<AudioSource>()){if(value)s.UnPause();else s.Pause();}}
-        private void OnApplicationPause(bool value){appPaused=value;foreach(var s in GetComponentsInChildren<AudioSource>()){if(value)s.Pause();else s.UnPause();}}
+        private void OnApplicationFocus(bool value){focused=value;UpdateSuspension();}
+        private void OnApplicationPause(bool value){appPaused=value;UpdateSuspension();}
+        private void UpdateSuspension(){foreach(var s in GetComponentsInChildren<AudioSource>()){if(focused&&!appPaused)s.UnPause();else s.Pause();}}
         private void OnDisable(){Silence();if(listener!=null)listener.enabled=false;RestoreListeners();}
         private void OnEnable(){if(listener==null)return;if(oldListeners!=null)foreach(var previous in oldListeners)if(previous!=null)previous.enabled=false;listener.enabled=true;}
         private void RestoreListeners(){if(oldListeners!=null)for(int i=0;i<oldListeners.Length;i++)if(oldListeners[i]!=null)oldListeners[i].enabled=oldListenerEnabled[i];}

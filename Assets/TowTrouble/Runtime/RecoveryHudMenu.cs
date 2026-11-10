@@ -11,6 +11,9 @@ namespace TowTrouble
         private int helpTab;
         private string helpReturn="Main";
         private bool busySolo=true, busyJoin,busyTraining;
+        private const float BusyPanelDelay=.5f;
+        private bool busyPresentationPending;
+        private float busyRevealAt;
         private TMP_Text lobbyState;
         private UnityEngine.UI.Button lobbyReady;
         private string textEntryDraft, textEntryLabel, textEntryOriginal;
@@ -44,6 +47,23 @@ namespace TowTrouble
         }
         private void StartMenuTraining()
         {busySolo=true;busyJoin=false;busyTraining=true;session.RequestTraining();Show("Busy");}
+        private bool DeferBusyPresentation()
+        {
+            if(!session.Connecting||session.Leaving)return false;
+            busyPresentationPending=true;busyRevealAt=Time.unscaledTime+BusyPanelDelay;status=null;
+            SetMenuNavigation(true);
+            return true;
+        }
+        private void UpdateBusyPresentation(float now)
+        {
+            // Read readiness again: successful startup must win over a timer/error view in this frame.
+            if(!busyPresentationPending||page!="Busy"||session.ReadyForPresentation)return;
+            if(session.Connecting&&!session.Leaving&&now<busyRevealAt)return;
+            busyPresentationPending=false;
+            Panel(pageRoot,0,0,1600,900,new Color(.03f,.04f,.035f,.42f));
+            BuildBusy();ConfigureMenuPage();
+            if(Application.isPlaying)StartCoroutine(FocusFirst());
+        }
         private void BuildBusy()
         {
             var panel=Panel(pageRoot,430,285,740,330);

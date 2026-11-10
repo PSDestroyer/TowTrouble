@@ -1,0 +1,582 @@
+{
+  "compile": {
+    "status": "completed",
+    "compiling": false,
+    "failed": false,
+    "compilationFailed": false,
+    "errors": [],
+    "warnings": [],
+    "summary": {
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "tests": {
+    "rows": [
+      {
+        "test": "AudioPreferencesMigrateWithUsefulDefaultsAndPreserveMute",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OnlyMotorStatesProduceContinuousWinchAudio",
+        "args": [
+          0,
+          false
+        ],
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OnlyMotorStatesProduceContinuousWinchAudio",
+        "args": [
+          1,
+          false
+        ],
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OnlyMotorStatesProduceContinuousWinchAudio",
+        "args": [
+          6,
+          false
+        ],
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OnlyMotorStatesProduceContinuousWinchAudio",
+        "args": [
+          7,
+          false
+        ],
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OnlyMotorStatesProduceContinuousWinchAudio",
+        "args": [
+          2,
+          true
+        ],
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OnlyMotorStatesProduceContinuousWinchAudio",
+        "args": [
+          3,
+          true
+        ],
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OnlyMotorStatesProduceContinuousWinchAudio",
+        "args": [
+          5,
+          true
+        ],
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OnlyMotorStatesProduceContinuousWinchAudio",
+        "args": [
+          4,
+          true
+        ],
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "EnginePresentationStaysBoundedAcrossBodiesAndLoads",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "CosmeticCounterHandlesWrapWithoutReplayingOldEvents",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "CriticalRecoveryFeedbackDucksMusicGently",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "InvalidAudioGainsCannotReachNativeAudioSources",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "PlaylistKeepsFamiliarOpeningThenPlaysEachTrackBeforeReusingTheBag",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "PlaylistSkipsNullsDuplicatesAndTheThemeJustHeardInTheMenu",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "MusicSelectionCannotConsumeGameplayRandomNumbers",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "CrossfadeKeepsPowerAndDoesNotBoostAnInterruptedOutgoingDeck",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "OpenContractPanelCannotSuppressCriticalRecoveryMusicDucking",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchColourCorrectionDoesNotAccumulateAndRestoresManualControlsAndOverrides",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "PcColourControlsRemainExactlyAsAuthored",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchQualityToggleNeverSelectsPcOrMutatesAuthoredPipelines",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "DesktopSelectsPcByNameEvenWhenSwitchIsTheLastQualityLevel",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SessionDisposalRestoresEntryQualityPipelineAndLod",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchBuildIncludesOnlyItsDedicatedQualityAndKeepsDepthForWater",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchPresetCutsGpuCostWhileDesktopKeepsItsAuthoredFeatures",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "VegetationOverridesAreConfinedToTheSwitchQualityLevel",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchTerrainBudgetIsPersistedInTheNativeSettingsFile",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "SwitchGraphicsPreviewIsIndependentOfTheOfflinePreviewAndRestores",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "CameraRangeIsUnchangedOnPcAndRestoredAfterSwitchScope",
+        "args": null,
+        "passed": true,
+        "error": ""
+      },
+      {
+        "test": "GraphicsPolicyUsesBuildTargetWithoutFollowingMultiplayerPreview",
+        "args": null,
+        "passed": true,
+        "error": ""
+      }
+    ],
+    "failures": 0,
+    "errors": [],
+    "playing": false,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "rig": {
+    "menuThemeSelected": true,
+    "familiarExplorationSelected": true,
+    "independentMusicMute": true,
+    "appPauseSurvivesFocusNotification": true,
+    "sourceCount": 28,
+    "musicSources": 2,
+    "routed": true,
+    "errors": [],
+    "playing": false,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "musicImport": {
+    "clips": [
+      {
+        "name": "Sunset Plains",
+        "length": 329.679962,
+        "channels": 2,
+        "loadType": 2,
+        "preloadAudioData": false,
+        "quality": 0.65,
+        "switchType": 2
+      },
+      {
+        "name": "Revelation",
+        "length": 84.81088,
+        "channels": 2,
+        "loadType": 2,
+        "preloadAudioData": false,
+        "quality": 0.65,
+        "switchType": 2
+      },
+      {
+        "name": "Wooden Inn",
+        "length": 204.881271,
+        "channels": 2,
+        "loadType": 2,
+        "preloadAudioData": false,
+        "quality": 0.65,
+        "switchType": 2
+      },
+      {
+        "name": "One Step at a Time",
+        "length": 154.50383,
+        "channels": 2,
+        "loadType": 2,
+        "preloadAudioData": false,
+        "quality": 0.65,
+        "switchType": 2
+      },
+      {
+        "name": "First Light Particles",
+        "length": 131.719971,
+        "channels": 2,
+        "loadType": 2,
+        "preloadAudioData": false,
+        "quality": 0.65,
+        "switchType": 2
+      },
+      {
+        "name": "Deep Blue Ambient Piano",
+        "length": 234.959976,
+        "channels": 2,
+        "loadType": 2,
+        "preloadAudioData": false,
+        "quality": 0.65,
+        "switchType": 2
+      }
+    ],
+    "MusicGain": 0.36,
+    "EngineGain": 0.85,
+    "MusicCrossfade": 4.0,
+    "ExploreMusicGap": 16.0,
+    "dirtyPreserved": true
+  },
+  "garage": {
+    "samples": [
+      {
+        "name": "PC",
+        "path": "/private/tmp/tow-colour-after-PC.png",
+        "saturation": 23,
+        "contrast": 15,
+        "exposure": 0.2,
+        "hidden": 0,
+        "instancedGroups": 0,
+        "instances": 0,
+        "instanceDraws": 0,
+        "renderScale": 1,
+        "supportsHDR": true,
+        "shadowDistance": 110,
+        "grass": 80,
+        "trees": 5000,
+        "farClipPlane": 2300,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (Soft)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Desktop",
+        "nativeFog": false,
+        "bloom": 0.08,
+        "betterFog": 0.68,
+        "shaderErrors": false
+      },
+      {
+        "name": "Switch-Fixed",
+        "path": "/private/tmp/tow-colour-after-Switch-Fixed.png",
+        "saturation": 31,
+        "contrast": 19,
+        "exposure": 0.14,
+        "hidden": 6565,
+        "instancedGroups": 2064,
+        "instances": 17,
+        "instanceDraws": 14,
+        "renderScale": 0.8,
+        "supportsHDR": false,
+        "shadowDistance": 18,
+        "grass": 40,
+        "trees": 300,
+        "farClipPlane": 600,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (COZY Mobile)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Mobile",
+        "nativeFog": true,
+        "bloom": 0,
+        "betterFog": 0,
+        "shaderErrors": false
+      }
+    ],
+    "errors": [],
+    "materialAssetsUnchanged": true,
+    "skyRestored": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "lake": {
+    "samples": [
+      {
+        "name": "PC",
+        "path": "/private/tmp/tow-colour-after-water-PC.png",
+        "saturation": 23,
+        "contrast": 15,
+        "exposure": 0.2,
+        "hidden": 0,
+        "instancedGroups": 0,
+        "instances": 0,
+        "instanceDraws": 0,
+        "renderScale": 1,
+        "supportsHDR": true,
+        "shadowDistance": 110,
+        "grass": 80,
+        "trees": 5000,
+        "farClipPlane": 2300,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (Soft)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Desktop",
+        "nativeFog": false,
+        "bloom": 0.08,
+        "betterFog": 0.68,
+        "shaderErrors": false
+      },
+      {
+        "name": "Switch-Fixed",
+        "path": "/private/tmp/tow-colour-after-water-Switch-Fixed.png",
+        "saturation": 31,
+        "contrast": 19,
+        "exposure": 0.14,
+        "hidden": 6621,
+        "instancedGroups": 2064,
+        "instances": 21,
+        "instanceDraws": 10,
+        "renderScale": 0.8,
+        "supportsHDR": false,
+        "shadowDistance": 18,
+        "grass": 40,
+        "trees": 300,
+        "farClipPlane": 600,
+        "cloudShader": "Distant Lands/Cozy/URP/Stylized Clouds (COZY Mobile)",
+        "skyShader": "Distant Lands/Cozy/URP/Stylized Sky Mobile",
+        "nativeFog": true,
+        "bloom": 0,
+        "betterFog": 0,
+        "shaderErrors": false
+      }
+    ],
+    "errors": [],
+    "materialAssetsUnchanged": true,
+    "skyRestored": true,
+    "scenePreserved": true,
+    "dirtyPreserved": true
+  },
+  "newMusic": [
+    {
+      "title": "Wooden Inn",
+      "before": {
+        "seconds": 204.88126984126984,
+        "rate": 44100,
+        "channels": 2,
+        "peak": 0.53826904296875,
+        "rms": 0.0481811803302468
+      },
+      "after": {
+        "seconds": 204.88126984126984,
+        "rate": 44100,
+        "channels": 2,
+        "peak": 0.85,
+        "rms": 0.07610929861703426
+      },
+      "bytes": 36141100
+    },
+    {
+      "title": "One Step at a Time",
+      "before": {
+        "seconds": 154.50383219954648,
+        "rate": 44100,
+        "channels": 2,
+        "peak": 0.999969482421875,
+        "rms": 0.15353168214185342
+      },
+      "after": {
+        "seconds": 154.50383219954648,
+        "rate": 44100,
+        "channels": 2,
+        "peak": 0.6513135173572716,
+        "rms": 0.09999999994109689
+      },
+      "bytes": 27254520
+    },
+    {
+      "title": "First Light Particles",
+      "before": {
+        "seconds": 131.71997916666666,
+        "rate": 48000,
+        "channels": 2,
+        "peak": 0.481842041015625,
+        "rms": 0.06901692079066268
+      },
+      "after": {
+        "seconds": 131.71997916666666,
+        "rate": 48000,
+        "channels": 2,
+        "peak": 0.6981647210079647,
+        "rms": 0.09999997523953798
+      },
+      "bytes": 25290280
+    },
+    {
+      "title": "Deep Blue Ambient Piano",
+      "before": {
+        "seconds": 234.95997916666667,
+        "rate": 48000,
+        "channels": 2,
+        "peak": 0.63916015625,
+        "rms": 0.14102865194226755
+      },
+      "after": {
+        "seconds": 234.95997916666667,
+        "rate": 48000,
+        "channels": 2,
+        "peak": 0.45332868181776764,
+        "rms": 0.09999999748970315
+      },
+      "bytes": 45112360
+    }
+  ],
+  "ambience": [
+    {
+      "name": "Wind_1",
+      "before": {
+        "seconds": 21.4534375,
+        "rmsMono": 0.003499464518031076,
+        "peak": 0.02850472927093506
+      },
+      "after": {
+        "seconds": 21.2734375,
+        "rmsMono": 0.06000000000000001,
+        "peak": 0.48752422480899593
+      },
+      "gainDb": 24.678900186755897
+    },
+    {
+      "name": "Wind_2",
+      "before": {
+        "seconds": 33.24514583333333,
+        "rmsMono": 0.0029853573325258663,
+        "peak": 0.02536773681640625
+      },
+      "after": {
+        "seconds": 33.06514583333333,
+        "rmsMono": 0.05999999999999998,
+        "peak": 0.5081453495678016
+      },
+      "gainDb": 26.052059747990018
+    },
+    {
+      "name": "Birds_1",
+      "before": {
+        "seconds": 25.384770833333334,
+        "rmsMono": 0.01301421341990956,
+        "peak": 0.15848934650421143
+      },
+      "after": {
+        "seconds": 25.204770833333335,
+        "rmsMono": 0.03999999999999999,
+        "peak": 0.48633571246210383
+      },
+      "gainDb": 9.731843403728506
+    },
+    {
+      "name": "Forest_Insects",
+      "before": {
+        "seconds": 20.1820625,
+        "rmsMono": 0.0065815008632430965,
+        "peak": 0.04418492317199707
+      },
+      "after": {
+        "seconds": 20.0020625,
+        "rmsMono": 0.04999999999999998,
+        "peak": 0.3369870322191832
+      },
+      "gainDb": 17.6504078146272
+    },
+    {
+      "name": "Water_1",
+      "before": {
+        "seconds": 23.2810625,
+        "rmsMono": 0.0025562610649546968,
+        "peak": 0.07779872417449951
+      },
+      "after": {
+        "seconds": 23.1010625,
+        "rmsMono": 0.02620913815986577,
+        "peak": 0.8000000000000002
+      },
+      "gainDb": 20.24256359307088
+    }
+  ],
+  "protectedFilesUnchanged": true,
+  "protectedFileCount": 20,
+  "finalState": {
+    "playing": false,
+    "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+    "dirty": true,
+    "quality": "PC",
+    "pipeline": "PC_RPAsset",
+    "graphicsPreview": false,
+    "offlinePreview": false,
+    "farClipPlane": 2300.0,
+    "saturation": 23.0,
+    "contrast": 15.0,
+    "exposure": 0.2,
+    "listeners": [
+      "Main Camera"
+    ],
+    "temporary": 0,
+    "scoreClips": 6,
+    "audioRigs": 0,
+    "sceneBudgets": 0
+  },
+  "provenanceHashesUnchanged": true
+}

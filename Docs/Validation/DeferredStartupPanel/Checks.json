@@ -1,0 +1,41 @@
+{
+  "checks": [
+    "Startup defers the Busy page",
+    "Deferred startup constructs no panel, shade, text or buttons",
+    "Fast startup stays completely free of loading UI",
+    "Slow startup reveals the normal panel even at timeScale zero",
+    "Cancel action exists when the delayed panel is visible",
+    "An early startup failure bypasses the reveal delay",
+    "An immediate startup failure is never deferred",
+    "Returning to the menu keeps its existing immediate presentation",
+    "A new attempt gets a fresh reveal deadline",
+    "Fast completion clears the pending panel and enters Gameplay directly",
+    "The stale timer cannot create a panel after Gameplay has started"
+  ],
+  "results": [
+    {
+      "test": "RecommendedActionIsGreyWhenCancelHasTheRealSelection",
+      "passed": true
+    },
+    {
+      "test": "DirectionalNavigationTransfersTheGoldFillInBothDirections",
+      "passed": true
+    },
+    {
+      "test": "PointerFocusAndKeyboardFocusCannotLeaveTwoGoldButtons",
+      "passed": true
+    },
+    {
+      "test": "DisabledButtonLosesGoldAndCannotStealPointerFocus",
+      "passed": true
+    },
+    {
+      "test": "HintContrastFollowsSelectionWhileInsetBadgesKeepTheirOwnColors",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "scenePreserved": true,
+  "dirtyPreserved": true,
+  "playing": false
+}

@@ -36,6 +36,7 @@ namespace TowTrouble
         private Color previousFillColor;
         private bool ownsColorGrading;
         private float manualSaturation,manualContrast;
+        private readonly RecoverySwitchColorGrade switchColorGrade=new RecoverySwitchColorGrade();
         public void Configure(RecoveryCozyEnvironment weather,CozyWeather sphere,DemoSession owner,Volume global,Light skyFill)
         {environment=weather;sky=sphere;session=owner;volume=global;fill=skyFill;}
         private void OnEnable()
@@ -77,7 +78,9 @@ namespace TowTrouble
                 RenderSettings.fogDensity=Mathf.Lerp(.004f,.0055f,Mathf.Max(wet,snow));
                 RenderSettings.fogColor=fog._FogColor.value;fog._FogIntensity.value=0;
             }
+            switchColorGrade.Dispose();
             UpdateColorGrading(night);
+            switchColorGrade.Apply(grade,night,wet);
             if(bloom!=null)bloom.intensity.value=switchRendering?0:Mathf.Lerp(.08f,.16f,night);
             if(vignette!=null)vignette.intensity.value=switchRendering?0:Mathf.Lerp(.065f,.09f,night);
             // Lift contact shadows rather than raising exposure and bleaching highlights.
@@ -111,6 +114,7 @@ namespace TowTrouble
         {
             if(!bound)return;bound=false;RenderSettings.fog=previousFog;
             if(switchFogApplied){RenderSettings.fogMode=previousFogMode;RenderSettings.fogColor=previousFogColor;RenderSettings.fogDensity=previousFogDensity;switchFogApplied=false;}
+            switchColorGrade.Dispose();
             ReleaseColorGrading();
             var shared=volume!=null?volume.sharedProfile:null;
             if(shared!=null)
