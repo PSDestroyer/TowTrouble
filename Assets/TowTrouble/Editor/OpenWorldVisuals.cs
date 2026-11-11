@@ -169,6 +169,6 @@ namespace TowTrouble.Editor
             var retained=environment.Find("Mega - retained environment");if(retained!=null)foreach(var child in retained.Cast<Transform>().Where(t=>t.name.Contains("Boulder")||t.name.Contains("Rock")).ToArray()){var b=ScenicBounds(child.gameObject);float height=Mathf.Min(18,b.size.y);if(b.size.y>18)child.localScale*=18/b.size.y;b=ScenicBounds(child.gameObject);child.position+=Vector3.up*(Ground(child.position).y-b.min.y-height*.33f);}
             terrain.Flush();EditorUtility.SetDirty(data);SaveVisualScene();
         }
-        private static void SaveVisualScene(){Physics.SyncTransforms();var scene=SceneManager.GetActiveScene();EditorSceneManager.MarkSceneDirty(scene);AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene);}
+        private static void SaveVisualScene(){PruneSoftDecorativeColliders();Physics.SyncTransforms();var scene=SceneManager.GetActiveScene();EditorSceneManager.MarkSceneDirty(scene);AssetDatabase.SaveAssets();EditorSceneManager.SaveScene(scene);}
     }
 }

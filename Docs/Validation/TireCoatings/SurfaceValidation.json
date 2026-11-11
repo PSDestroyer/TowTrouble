@@ -1,0 +1,78 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "script eval_file",
+    "parameters": {
+      "file": "/private/tmp/ScoutAudioReview/coating-preview.cs"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": [
+        {
+          "name": "Clean",
+          "amount": 0,
+          "pattern": 100,
+          "contrast": 1,
+          "bias": 0,
+          "smoothness": 0.38,
+          "tireSlots": 1
+        },
+        {
+          "name": "Mud",
+          "amount": 1,
+          "pattern": 100,
+          "contrast": 1,
+          "bias": 0,
+          "smoothness": 0.38,
+          "tireSlots": 1
+        },
+        {
+          "name": "Sand",
+          "amount": 0.5,
+          "pattern": 145,
+          "contrast": 1,
+          "bias": 0,
+          "smoothness": 0.08,
+          "tireSlots": 1
+        },
+        {
+          "name": "Snow",
+          "amount": 0.65,
+          "pattern": 65,
+          "contrast": 5,
+          "bias": -2.2,
+          "smoothness": 0.2,
+          "tireSlots": 1
+        },
+        {
+          "name": "CleanSand",
+          "amount": 0,
+          "pattern": 145,
+          "contrast": 1,
+          "bias": 0,
+          "smoothness": 0.38,
+          "tireSlots": 1
+        },
+        {
+          "name": "CleanSnow",
+          "amount": 0,
+          "pattern": 65,
+          "contrast": 1,
+          "bias": 0,
+          "smoothness": 0.38,
+          "tireSlots": 1
+        }
+      ]
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -75,7 +75,7 @@ namespace TowTrouble.Editor
         }
         private static void ConfigureWheelCoating(RecoveryWorld world)
         {
-            var shader=AssetDatabase.LoadAssetAtPath<Shader>(Vendor+"/Shaders/Texture with Mud.shadergraph");
+            var shader=AssetDatabase.LoadAssetAtPath<Shader>("Assets/TowTrouble/Art/Mud/Stylized Tire Coating.shadergraph");
             if(shader==null)throw new InvalidOperationException("Import Living Mud's tire coating shader first.");
             var mud=AssetDatabase.LoadAssetAtPath<Material>(Vendor+"/URP Materials/Dynamic Mud Surface Material/DMS Mud03 Material.mat");
             var derived=new System.Collections.Generic.Dictionary<Material,Material>();

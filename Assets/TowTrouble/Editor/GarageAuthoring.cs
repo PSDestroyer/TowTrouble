@@ -82,7 +82,7 @@ namespace TowTrouble.Editor
             Functional(entries);ConfigureCableProgression(entries);ConfigureWinchPrototype(entries);GarageHandlingAuthoring.Apply(entries);
             var catalog=AssetDatabase.LoadAssetAtPath<RecoveryGarageCatalog>(CatalogPath);if(catalog==null){catalog=ScriptableObject.CreateInstance<RecoveryGarageCatalog>();AssetDatabase.CreateAsset(catalog,CatalogPath);}
             foreach(var entry in entries)if(entry.Slot==GarageSlot.Paint&&entry.Price==0)entry.PaintIndex=0;
-            catalog.Configure(entries.ToArray(),stock);catalog.TireShader=AssetDatabase.LoadAssetAtPath<Shader>("Assets/Living Mud/Shaders/Texture with Mud.shadergraph");
+            catalog.Configure(entries.ToArray(),stock);catalog.TireShader=AssetDatabase.LoadAssetAtPath<Shader>("Assets/TowTrouble/Art/Mud/Stylized Tire Coating.shadergraph");
             var mud=AssetDatabase.LoadAssetAtPath<Material>("Assets/Living Mud/URP Materials/Dynamic Mud Surface Material/DMS Mud03 Material.mat");catalog.MudTexture=mud.GetTexture("_Albedo");EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssets();
             var scene=SceneManager.GetSceneByPath(DemoBuilder.ScenePath);if(!scene.isLoaded)scene=EditorSceneManager.OpenScene(DemoBuilder.ScenePath,OpenSceneMode.Additive);
             var world=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<RecoveryWorld>(true)).Single();

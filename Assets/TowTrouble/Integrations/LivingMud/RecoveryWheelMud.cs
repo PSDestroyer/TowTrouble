@@ -15,12 +15,15 @@ namespace TowTrouble
         private float lastElapsed;
         public void ConfigureGround(RecoveryWorld owner,Texture mud,Texture snow,Texture sand)
         {world=owner;mudTexture=mud;snowTexture=snow;sandTexture=sand;}
-        public static Color CoatingColor(RecoveryGroundKind kind)=>kind==RecoveryGroundKind.Snow?new Color(.94f,.97f,1):kind==RecoveryGroundKind.Sand?new Color(.91f,.77f,.52f):new Color(.68f,.53f,.35f);
+        public static Color CoatingColor(RecoveryGroundKind kind)=>kind==RecoveryGroundKind.Snow?new Color(.90f,.95f,1):kind==RecoveryGroundKind.Sand?new Color(.88f,.77f,.57f):new Color(.68f,.53f,.35f);
         private readonly float[] coverage=new float[4];
         private readonly bool[] touching=new bool[4];
         private readonly Renderer[][] renderers=new Renderer[4][];
         private MaterialPropertyBlock properties;
+        private readonly System.Collections.Generic.Dictionary<Renderer,int[]> coatingSlots=new System.Collections.Generic.Dictionary<Renderer,int[]>();
         private int model=-1;
+        private static readonly int CoatingContrast=Shader.PropertyToID("_CoatingContrast"),CoatingBias=Shader.PropertyToID("_CoatingBias");
+        private static readonly int PatternScale=Shader.PropertyToID("_CoatingScale"),Smoothness=Shader.PropertyToID("_Smoothness");
         private static readonly int MudAmount=Shader.PropertyToID("_Mud_Amount");
         private static readonly int MudTint=Shader.PropertyToID("_Mud_Tint"),MudTexture=Shader.PropertyToID("_Mud_Texture");
         public void Configure(RecoveryVehicle owner){vehicle=owner;}
@@ -36,8 +39,17 @@ namespace TowTrouble
         private void Awake(){properties=new MaterialPropertyBlock();BindModel();}
         private void BindModel()
         {
-            ClearMud();model=vehicle.GeometryVersion;
-            for(int wheel=0;wheel<4;wheel++)renderers[wheel]=vehicle.WheelVisual(wheel).GetComponentsInChildren<Renderer>(true);
+            ClearMud();coatingSlots.Clear();model=vehicle.GeometryVersion;
+            for(int wheel=0;wheel<4;wheel++)
+            {
+                renderers[wheel]=vehicle.WheelVisual(wheel).GetComponentsInChildren<Renderer>(true);
+                foreach(var renderer in renderers[wheel])
+                {
+                    var slots=new System.Collections.Generic.List<int>();var materials=renderer.sharedMaterials;
+                    for(int i=0;i<materials.Length;i++)if(materials[i]!=null&&materials[i].HasProperty(MudAmount))slots.Add(i);
+                    coatingSlots[renderer]=slots.ToArray();
+                }
+            }
         }
         public void AddMud(int wheel,float amount)
         {
@@ -55,9 +67,20 @@ namespace TowTrouble
         private void Apply(int wheel,float amount)
         {
             if(renderers[wheel]==null)return;
-            foreach(var renderer in renderers[wheel])if(renderer!=null){renderer.GetPropertyBlock(properties);properties.SetFloat(MudAmount,amount);properties.SetColor(MudTint,CoatingColor(kinds[wheel]));
-                var texture=kinds[wheel]==RecoveryGroundKind.Snow?snowTexture:kinds[wheel]==RecoveryGroundKind.Sand?sandTexture:mudTexture;
-                if(texture!=null)properties.SetTexture(MudTexture,texture);renderer.SetPropertyBlock(properties);}
+            var kind=kinds[wheel];bool snow=kind==RecoveryGroundKind.Snow,sand=kind==RecoveryGroundKind.Sand;
+            // Keep the existing mud path unchanged. Dry dust remains translucent;
+            // snow forms larger islands, with rubber visible between deposits.
+            float displayAmount=amount*(snow?.65f:sand?.50f:1);
+            float scale=snow?65:sand?145:100;
+            float smoothness=Mathf.Lerp(.38f,snow?.20f:sand?.08f:.38f,amount);
+            var texture=snow?snowTexture:sand?sandTexture:mudTexture;
+            foreach(var renderer in renderers[wheel])if(renderer!=null&&coatingSlots.TryGetValue(renderer,out var slots))
+                foreach(int slot in slots)
+                {
+                    renderer.GetPropertyBlock(properties,slot);properties.SetFloat(MudAmount,displayAmount);
+                    properties.SetColor(MudTint,CoatingColor(kind));properties.SetFloat(PatternScale,scale);properties.SetFloat(CoatingContrast,snow?Mathf.Lerp(1,5f,amount):1);properties.SetFloat(CoatingBias,snow?-2.2f*amount:0);properties.SetFloat(Smoothness,smoothness);
+                    if(texture!=null)properties.SetTexture(MudTexture,texture);renderer.SetPropertyBlock(properties,slot);
+                }
         }
         private void LateUpdate()
         {
