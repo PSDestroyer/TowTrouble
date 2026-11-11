@@ -30,7 +30,7 @@ namespace TowTrouble
             var scroll=scrollRoot.gameObject.AddComponent<RecoverySmoothScrollRect>();scroll.ReducedMotion=P.reducedMotion;garageListScroll=scroll;scroll.horizontal=false;scroll.vertical=true;scroll.movementType=UnityEngine.UI.ScrollRect.MovementType.Clamped;scroll.scrollSensitivity=40;scroll.decelerationRate=.10f;
             var viewport=Node("Viewport",scrollRoot,0,0,GarageCatalogWidth-52,height);
             var maskImage=viewport.gameObject.AddComponent<UnityEngine.UI.Image>();maskImage.color=Color.white;maskImage.raycastTarget=true;
-            var mask=viewport.gameObject.AddComponent<UnityEngine.UI.Mask>();mask.showMaskGraphic=false;
+            ConfigureGarageViewportMask(viewport, maskImage, RecoveryPlatform.UsesSwitchRendering);
             var content=Node("Three column parts grid",viewport,0,0,GarageCatalogWidth-52,0);content.anchorMin=new Vector2(0,1);content.anchorMax=new Vector2(1,1);content.sizeDelta=Vector2.zero;
             float cellWidth=(GarageCatalogWidth-52-20)/3;
             var grid=content.gameObject.AddComponent<UnityEngine.UI.GridLayoutGroup>();grid.constraint=UnityEngine.UI.GridLayoutGroup.Constraint.FixedColumnCount;grid.constraintCount=3;grid.cellSize=new Vector2(cellWidth,garageSlot==GarageSlot.Assembly?292:270);grid.spacing=new Vector2(10,12);grid.childAlignment=TextAnchor.UpperLeft;
@@ -52,6 +52,22 @@ namespace TowTrouble
             bar.SetValueWithoutNotify(range>0?1-offset/range:1);barRoot.gameObject.SetActive(range>.01f);
             var currentPage=pageRoot;scroll.onValueChanged.AddListener(_=>{if(pageRoot==currentPage)garageScrollY=content.anchoredPosition.y;});
         }
+        private static void ConfigureGarageViewportMask(RectTransform viewport, UnityEngine.UI.Image inputSurface, bool switchRendering)
+        {
+            if (switchRendering)
+            {
+                // Rectangular clipping also culls offscreen cards. A stencil mask
+                // clips pixels, but still submits every catalogue card for drawing.
+                inputSurface.color = Color.clear;
+                viewport.gameObject.AddComponent<UnityEngine.UI.RectMask2D>();
+            }
+            else
+            {
+                var mask = viewport.gameObject.AddComponent<UnityEngine.UI.Mask>();
+                mask.showMaskGraphic = false;
+            }
+        }
+
         private string GarageCardName(GaragePart part)
         {
             string label=GarageName(part);
