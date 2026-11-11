@@ -86,7 +86,8 @@ namespace TowTrouble
             // Lift contact shadows rather than raising exposure and bleaching highlights.
             RenderSettings.ambientEquatorColor=Floor(RenderSettings.ambientEquatorColor,Color.Lerp(new Color(.30f,.33f,.38f),new Color(.28f,.32f,.41f),night));
             RenderSettings.ambientGroundColor=Floor(RenderSettings.ambientGroundColor,Color.Lerp(new Color(.15f,.16f,.18f),new Color(.14f,.16f,.21f),night));
-            if(session.View!="Title")
+            // Menu lighting owns these lights on both front-end screens.
+            if(session.View!="Title"&&session.View!="Main")
             {
                 sky.sunLight.intensity=Mathf.Lerp(.84f,.95f,night);
                 if(fill!=null){fill.intensity=Mathf.Lerp(.21f,.18f,night);fill.color=Color.Lerp(new Color(1,.97f,.94f),new Color(.56f,.68f,1),night);}

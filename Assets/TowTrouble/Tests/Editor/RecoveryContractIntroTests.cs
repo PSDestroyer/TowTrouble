@@ -64,6 +64,65 @@ namespace TowTrouble.Tests
                 }
             });
         }
+        [Test] public void EveryIncidentSettlesAndCameraPushInIsContinuous()
+        {
+            WithIncident((car,contract,parent)=>
+            {
+                foreach(RecoverySituationKind kind in Enum.GetValues(typeof(RecoverySituationKind)))
+                {
+                    contract.SituationKind=kind;
+                    using(var intro=new RecoveryContractIntro(car,contract,parent,false))
+                    {
+                        intro.Advance(.6f);intro.CameraPose(out var previous,out var look);
+                        float openingDistance=Vector3.Distance(previous,look);
+                        for(int i=0;i<90;i++)
+                        {
+                            intro.Advance(.05f);intro.CameraPose(out var current,out look);
+                            Assert.That(float.IsNaN(current.x)||float.IsInfinity(current.y),Is.False,kind.ToString());
+                            Assert.That(Vector3.Distance(previous,current),Is.LessThan(.8f),kind+" camera jump");previous=current;
+                        }
+                        Assert.That(Vector3.Distance(previous,look),Is.LessThan(openingDistance),kind+" push in");
+                        var actor=parent.Find("Recovery incident reenactment");
+                        Assert.That(Vector3.Distance(actor.position,contract.Target),Is.LessThan(.001f));
+                        Assert.That(Quaternion.Angle(actor.rotation,Quaternion.Euler(contract.Pitch,contract.Heading,contract.Roll)),Is.LessThan(.001f));
+                    }
+                    using(var intro=new RecoveryContractIntro(car,contract,parent,true))
+                    {
+                        intro.Advance(3.3f);intro.CameraPose(out var a,out var lookA);
+                        intro.Advance(1.5f);intro.CameraPose(out var b,out var lookB);
+                        Assert.That(Vector3.Distance(a,b),Is.LessThan(.001f),kind+" reduced motion");
+                    }
+                }
+            });
+        }
+        [Test] public void IncidentSprayHasBoundedBudgetsAndNeverEmitsWithoutWheelContact()
+        {
+            bool previous=RecoveryPlatform.PreviewSwitchRendering;
+            try
+            {
+                WithIncident((car,contract,parent)=>
+                {
+                    foreach(bool handheld in new[]{false,true})
+                    foreach(var kind in new[]{RecoverySituationKind.Mud,RecoverySituationKind.Sand,RecoverySituationKind.Snow,RecoverySituationKind.Water,RecoverySituationKind.DryWash})
+                    {
+                        RecoveryPlatform.PreviewSwitchRendering=handheld;contract.SituationKind=kind;
+                        using(var intro=new RecoveryContractIntro(car,contract,parent,false))
+                        {
+                            var actor=parent.Find("Recovery incident reenactment");var spray=actor.Find("Incident wheel spray").GetComponent<ParticleSystem>();
+                            Assert.That(spray.main.maxParticles,Is.EqualTo(handheld?48:96));
+                            Assert.That(spray.collision.enabled,Is.False);Assert.That(spray.trails.enabled,Is.False);
+                            Assert.That(spray.main.simulationSpace,Is.EqualTo(ParticleSystemSimulationSpace.World));
+                            Assert.That(spray.GetComponent<ParticleSystemRenderer>().shadowCastingMode,Is.EqualTo(UnityEngine.Rendering.ShadowCastingMode.Off));
+                            for(int frame=0;frame<50;frame++)intro.Advance(.1f);
+                            Assert.That(spray.particleCount,Is.Zero,"Airborne wheels must not throw material");
+                            intro.Advance(.6f);Assert.That(actor.gameObject.activeSelf,Is.False);
+                        }
+                        Assert.That(parent.Find("Recovery incident reenactment"),Is.Null);
+                    }
+                });
+            }
+            finally{RecoveryPlatform.PreviewSwitchRendering=previous;}
+        }
         [Test] public void ReenactmentMovesOnlyVisualCopyAndReturnsEveryOriginalVisibilityFlag()
         {
             WithIncident((source,contract,parent)=>

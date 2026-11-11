@@ -18,8 +18,18 @@ namespace TowTrouble
         private readonly Vector3[] path = new Vector3[9], pathNormals = new Vector3[9];
         private readonly Quaternion finalRotation;
         private readonly Vector3 cameraOffset;
+        private readonly float focusHeight, shotDistance;
         private readonly bool reducedMotion;
         private readonly ParticleSystem smoke;
+        private ParticleSystem wheelSpray;
+        private readonly Vector3[] sprayPoints=new Vector3[4],sprayNormals=new Vector3[4];
+        private readonly bool[] sprayGrounded=new bool[4];
+        private readonly float[] sprayCredit=new float[4];
+        private readonly System.Random sprayRandom=new System.Random(71);
+        private Color sprayColor;
+        private float spraySize,sprayGravity,sprayLifetime;
+        private bool sprayWater,spraySwitch;
+        private bool AuthoredWheelRut=>contract.ExtractionProfile!=null&&contract.ExtractionProfile.Enabled;
         private bool restored, disposed;
         private AudioSource engine, engineLow;
         private readonly int modelIndex;
@@ -76,9 +86,16 @@ namespace TowTrouble
                     else point.y=contract.Target.y;
                     path[i] = point;
                 }
+                // Fit the actual vehicle rather than using the same distance for every body.
+                var bounds=new Bounds(source.transform.position,Vector3.zero);bool found=false;
+                foreach(var renderer in model.Root.GetComponentsInChildren<MeshRenderer>(true))
+                {if(!renderer.enabled)continue;if(!found){bounds=renderer.bounds;found=true;}else bounds.Encapsulate(renderer.bounds);}
+                focusHeight=found?Mathf.Clamp(bounds.center.y-source.transform.position.y,.85f,1.6f):1.05f;
+                shotDistance=found?Mathf.Clamp(bounds.extents.magnitude*2.1f,6.5f,9.5f):8.5f;
                 cameraOffset = ChooseCamera();
                 if(contract.SituationKind==RecoverySituationKind.EngineFailure && source.TryGetComponent<RecoveryDistressVisuals>(out var distress))
                     smoke=distress.CreateIncidentSmoke(actor.transform);
+                CreateWheelSpray(source);
                 Pose();
             }
             catch { Dispose(); throw; }
@@ -109,6 +126,7 @@ namespace TowTrouble
                 if(ShowingIncident&&!actor.activeSelf)
                 {actor.SetActive(true);foreach(var renderer in originals)if(renderer!=null)renderer.forceRenderingOff=true;}
                 Pose();
+                AdvanceWheelSpray(audible?Mathf.Min(Mathf.Max(0,delta),.1f):0);
             }
         }
         public void Skip() { if (CanSkip) Elapsed = 5.2f; }
@@ -124,23 +142,36 @@ namespace TowTrouble
             if(smoke!=null && time>=2.3f && Application.isPlaying && !smoke.isPlaying)smoke.Play(true);
             float approach = Mathf.Clamp01(time / 2.2f);
             float travel = 1 - (1 - approach) * (1 - approach);
-            float settle = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(1.1f, 2.9f, time));
+            bool soft=SoftSurface;
+            float settle = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(soft?.8f:1.1f, 2.9f, time));
             var position = Vector3.Lerp(Travel(travel), contract.Target, settle);
             float sample=travel*(path.Length-1);int low=Mathf.Min(path.Length-2,Mathf.FloorToInt(sample));
             var normal=Vector3.Slerp(pathNormals[low],pathNormals[low+1],sample-low);
             var forward=Quaternion.Euler(0,contract.Heading,0)*Vector3.forward;
             var heading = Quaternion.LookRotation(Vector3.ProjectOnPlane(forward,normal),normal);
             var rotation = Quaternion.Slerp(heading, finalRotation, settle);
-            float struggle = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(2.8f, 3.1f, time)) * (1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(4, 4.6f, time)));
+            float struggle = AttemptAt(time);
             bool failure = contract.SituationKind == RecoverySituationKind.EngineFailure;
-            if (!reducedMotion) rotation *= Quaternion.Euler(Mathf.Sin(time * 17) * (failure ? .3f : .85f) * struggle, 0, Mathf.Sin(time * 11) * .3f * struggle);
+            if (!reducedMotion)
+            {
+                // One loaded suspension movement, then a damped release; no continuous shaking.
+                float rock=Mathf.Sin(Mathf.Clamp01((time-2.7f)/1.8f)*Mathf.PI*2)*struggle;
+                float impact=contract.SituationKind==RecoverySituationKind.Rocks||contract.SituationKind==RecoverySituationKind.Ditch
+                    ? Mathf.Sin(Mathf.Clamp01((time-1.5f)/1.2f)*Mathf.PI*2)*(1-Mathf.Clamp01((time-1.5f)/1.2f))*.9f:0;
+                rotation *= Quaternion.Euler((failure?.15f:soft?.45f:1.15f)*rock+impact,0,(soft?.15f:.4f)*rock);
+            }
             actor.transform.SetPositionAndRotation(position, rotation);
-            float spin = spinDirection*(travel * (failure?4:5.5f) / wheelRadius * Mathf.Rad2Deg + (failure ? 0 : Mathf.Max(0, Mathf.Min(time, 4.3f) - 2.7f) * 340));
+            float spin = spinDirection*(travel * (failure?4:5.5f) / wheelRadius * Mathf.Rad2Deg + (failure ? 0 : AttemptTravel(time) * (soft?320:contract.SituationKind==RecoverySituationKind.Water?190:100)));
             for (int i = 0; i < wheels.Length; i++) if (wheels[i] != null)
             {
-                var anchor=actor.transform.TransformPoint(wheelAnchors[i]);var up=actor.transform.up;float offset=-.12f;
+                var anchor=actor.transform.TransformPoint(wheelAnchors[i]);var up=actor.transform.up;float offset=-.12f;sprayGrounded[i]=false;
                 if(Physics.Raycast(anchor+up*RecoveryWheelPose.ProbeLift,-up,out var contact,wheelRadius+suspensionTravel+RecoveryWheelPose.ProbeLift,1<<8,QueryTriggerInteraction.Ignore))
+                    {
                     offset=RecoveryWheelPose.SuspensionOffset(contact.distance,wheelRadius,suspensionTravel);
+                    sprayGrounded[i]=true;sprayNormals[i]=contact.normal;
+                    var cover=contact.collider.GetComponent<RecoveryTrackSurface>();
+                    sprayPoints[i]=(cover!=null?cover.VisualPoint(contact.point):contact.point)+contact.normal*.045f;
+                }
                 wheels[i].SetPositionAndRotation(RecoveryWheelPose.Position(anchor,up,offset),RecoveryWheelPose.Rotation(actor.transform.rotation,0,spin));
             }
             if(engine!=null)
@@ -149,7 +180,7 @@ namespace TowTrouble
                 if(failure)envelope*=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1.7f,2.4f,time));
                 // Restrained approach, settle to idle, then one gentle attempt to get free.
                 // No rapid pitch wobble: preserve the recorded classic engine character.
-                float demand=.42f*(1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(.6f,2.2f,time)))+(failure?0:.32f*struggle);
+                float demand=.42f*(1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(.6f,2.2f,time)))+(failure?0:(soft?.32f:.24f)*struggle);
                 var weights=RecoveryScoutEngineMix.Weights(demand,0);
                 float gain=audioAudible&&Application.isFocused?audioGain*envelope:0;
                 SetEngineLayer(engine,gain*weights.x,1);
@@ -182,30 +213,120 @@ namespace TowTrouble
             source.clip=clip;source.outputAudioMixerGroup=bank.Vehicles;source.volume=0;source.priority=110;source.dopplerLevel=0;
             return source;
         }
+        private void CreateWheelSpray(RecoveryVehicle source)
+        {
+            var kind=contract.SituationKind;
+            if(kind!=RecoverySituationKind.Mud&&kind!=RecoverySituationKind.Sand&&kind!=RecoverySituationKind.Snow&&kind!=RecoverySituationKind.Water&&kind!=RecoverySituationKind.DryWash&&!AuthoredWheelRut)return;
+            Material material=source.GetComponent<RecoveryVehicleEffects>()?.VaporMaterial;
+            if(material==null)foreach(var ps in source.GetComponentsInChildren<ParticleSystem>(true))
+                {
+                    var candidate=ps.GetComponent<ParticleSystemRenderer>()?.sharedMaterial;
+                    if(candidate!=null&&candidate.shader.name=="TowTrouble/Exhaust Vapor"){material=candidate;break;}
+                    if(ps.name=="Road dust")material=candidate;
+                }
+            if(material==null)return;
+            sprayWater=kind==RecoverySituationKind.Water;spraySwitch=RecoveryPlatform.UsesSwitchRendering;
+            bool snow=kind==RecoverySituationKind.Snow,mud=kind==RecoverySituationKind.Mud||AuthoredWheelRut;
+            sprayColor=sprayWater?new Color(.65f,.88f,.95f,.75f):snow?new Color(.92f,.96f,1,.85f):mud?new Color(.26f,.16f,.08f,1):new Color(.76f,.56f,.28f,.8f);
+            spraySize=sprayWater?.14f:snow?.22f:mud?.17f:.24f;
+            sprayGravity=snow?.4f:sprayWater?.85f:mud?1:.6f;sprayLifetime=snow?.8f:.6f;
+            var go=new GameObject("Incident wheel spray");go.transform.SetParent(actor.transform,false);
+            wheelSpray=go.AddComponent<ParticleSystem>();wheelSpray.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+            var main=wheelSpray.main;main.playOnAwake=false;main.loop=false;main.simulationSpace=ParticleSystemSimulationSpace.World;
+            main.useUnscaledTime=true;main.maxParticles=spraySwitch?48:96;main.startSpeed=0;main.gravityModifier=sprayGravity;
+            // Simulated explicitly by the intro clock so solo pause/focus/skip remain deterministic.
+            main.cullingMode=ParticleSystemCullingMode.AlwaysSimulate;
+            var emission=wheelSpray.emission;emission.enabled=false;var shape=wheelSpray.shape;shape.enabled=false;
+            var color=wheelSpray.colorOverLifetime;color.enabled=true;
+            var gradient=new Gradient();gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(Color.white,1)},new[]{new GradientAlphaKey(0,0),new GradientAlphaKey(1,.08f),new GradientAlphaKey(.8f,.55f),new GradientAlphaKey(0,1)});color.color=gradient;
+            var size=wheelSpray.sizeOverLifetime;size.enabled=true;size.size=new ParticleSystem.MinMaxCurve(1,AnimationCurve.Linear(0,1,1,.45f));
+            var renderer=wheelSpray.GetComponent<ParticleSystemRenderer>();renderer.sharedMaterial=material;
+            var tint=new MaterialPropertyBlock();tint.SetColor("_BaseColor",Color.white);tint.SetColor("_Color",Color.white);renderer.SetPropertyBlock(tint);
+            renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;renderer.receiveShadows=false;
+            renderer.motionVectorGenerationMode=MotionVectorGenerationMode.ForceNoMotion;
+            renderer.renderMode=sprayWater?ParticleSystemRenderMode.Stretch:ParticleSystemRenderMode.Billboard;
+            if(sprayWater){renderer.lengthScale=1.4f;renderer.velocityScale=.12f;}
+        }
+        private void AdvanceWheelSpray(float delta)
+        {
+            if(wheelSpray==null||delta<=0||!ShowingIncident)return;
+            wheelSpray.Simulate(delta,false,false,false);
+            if(Elapsed>=5.2f)return;
+            float time=Mathf.Max(0,Elapsed-.25f),attempt=AttemptAt(time);
+            float approach=.22f*(1-Mathf.Clamp01(time/2.2f));
+            float proximity=1;
+            if(sprayWater||contract.SituationKind==RecoverySituationKind.Mud)
+                proximity=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,Vector3.Distance(actor.transform.position,contract.Target)));
+            float strength=(approach+attempt)*proximity;
+            if(strength<=0)return;
+            float rate=(spraySwitch?10:18)*strength*RecoveryVehicle.VisualEffectsGain;
+            for(int i=0;i<4;i++)
+            {
+                if(!sprayGrounded[i]||(AuthoredWheelRut&&i!=contract.ExtractionProfile.BlockedWheel)){sprayCredit[i]=0;continue;}
+                sprayCredit[i]+=rate*delta;int count=Mathf.Min(3,Mathf.FloorToInt(sprayCredit[i]));sprayCredit[i]-=count;
+                for(int j=0;j<count;j++)
+                {
+                    float jitter=(float)sprayRandom.NextDouble(),lift=(float)sprayRandom.NextDouble();
+                    var normal=sprayNormals[i];var back=Vector3.ProjectOnPlane(-actor.transform.forward*spinDirection,normal).normalized;
+                    var side=Vector3.Cross(normal,back);
+                    var outward=Vector3.ProjectOnPlane(actor.transform.right,normal).normalized*Mathf.Sign(wheelAnchors[i].x);
+                    var particle=new ParticleSystem.EmitParams{
+                        position=sprayPoints[i]+outward*.1f+side*((jitter-.5f)*.12f),
+                        velocity=back*Mathf.Lerp(.8f,2.6f,attempt)+normal*Mathf.Lerp(2,3.2f,lift)+outward*Mathf.Lerp(.9f,1.5f,jitter)+side*((jitter-.5f)*.35f),
+                        startColor=sprayColor,startSize=spraySize*Mathf.Lerp(.65f,1.25f,jitter),
+                        startLifetime=sprayLifetime*Mathf.Lerp(.75f,1, lift),rotation=jitter*360};
+                    wheelSpray.Emit(particle,1);
+                }
+            }
+            // Emit may start the system; prevent a second automatic simulation tick.
+            wheelSpray.Pause(false);
+        }
+        private bool SoftSurface => contract.SituationKind==RecoverySituationKind.Mud||contract.SituationKind==RecoverySituationKind.Sand||contract.SituationKind==RecoverySituationKind.Snow||contract.SituationKind==RecoverySituationKind.DryWash;
+        private static float AttemptAt(float time)=>Mathf.SmoothStep(0,1,Mathf.InverseLerp(2.7f,3.2f,time))*(1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(3.6f,4.5f,time)));
+        // Integral of the same acceleration envelope: wheel speed settles smoothly with the motor.
+        private static float RampIntegral(float time,float start,float duration)
+        {
+            float u=Mathf.Clamp01((time-start)/duration);
+            return duration*(u*u*u-.5f*u*u*u*u)+Mathf.Max(0,time-start-duration);
+        }
+        private static float AttemptTravel(float time)=>RampIntegral(time,2.7f,.5f)-RampIntegral(time,3.6f,.9f);
+        private void ShotPose(Vector3 actorPosition,float time,Vector3 offset,out Vector3 position,out Vector3 look)
+        {
+            float establish=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(.2f,2.2f,time));
+            float reveal=Mathf.SmoothStep(0,1,Mathf.InverseLerp(1.8f,4.5f,time));
+            // Early look-ahead shows where the car is heading. Finish on the trapped vehicle.
+            look=actorPosition+Vector3.up*focusHeight+(reducedMotion?Vector3.zero:(contract.Target-actorPosition)*(.16f*establish));
+            float orbit=reducedMotion?0:(SoftSurface?7:contract.SituationKind==RecoverySituationKind.EngineFailure?-5:4)*reveal;
+            float scale=reducedMotion?1:Mathf.Lerp(1.12f,.9f,reveal);
+            position=look+Quaternion.AngleAxis(orbit,Vector3.up)*offset*scale;
+        }
         public void CameraPose(out Vector3 position, out Vector3 look)
         {
-            look = actor.transform.position + Vector3.up * 1.05f;
-            float drift = reducedMotion ? 0 : Mathf.SmoothStep(0, 1, Mathf.Clamp01((Elapsed - .25f) / 4.8f));
-            position = look + Quaternion.AngleAxis(drift * 4, Vector3.up) * cameraOffset * (1 - drift * .06f);
+            ShotPose(actor.transform.position,Mathf.Max(0,Elapsed-.25f),cameraOffset,out position,out look);
             position.y = Mathf.Max(position.y, Ground(position, position.y - 2) + 1.15f);
             if (Physics.Linecast(look, position, out var hit, 1 << 8, QueryTriggerInteraction.Ignore)) position = hit.point + hit.normal * .45f;
-            // A steep bank's hit normal can point down. Protect the shortened arm as well as its destination.
             position.y = Mathf.Max(position.y, Ground(position, position.y - 2) + 1.15f);
         }
         private Vector3 ChooseCamera()
         {
             float best = float.MaxValue; Vector3 chosen = new Vector3(7, 5, 7);
-            foreach (float yaw in new[] { -52f, 52, -85, 85, -130, 130, 180 })
-            foreach (float height in new[] { 3.8f, 6f })
+            float preferred=AuthoredWheelRut?48:contract.SituationKind==RecoverySituationKind.EngineFailure?42:SoftSurface?68:55;
+            float lowHeight=AuthoredWheelRut?2.6f:contract.SituationKind==RecoverySituationKind.Water?4.2f:3.2f;
+            foreach (float yaw in new[] { -preferred, preferred, -85, 85, -130, 130, 180 })
+            foreach (float height in new[] { lowHeight, 6f })
             {
-                var offset = Quaternion.Euler(0, contract.Heading + yaw, 0) * new Vector3(0, height, 8.5f);
-                float score = height * .08f + Mathf.Abs(Mathf.Abs(yaw) - 52) * .002f;
-                for (int i = 0; i < 5; i++)
+                var offset = Quaternion.Euler(0, contract.Heading + yaw, 0) * new Vector3(0, height, shotDistance);
+                float score = height * .08f + Mathf.Abs(Mathf.Abs(yaw) - preferred) * .002f;
+                // Check the entire planned push-in/orbit, not just the starting view.
+                for (int i = 0; i < 7; i++)
                 {
-                    var focus = Vector3.Lerp(Travel(i / 4f), contract.Target, i / 4f) + Vector3.up * 1.05f;
-                    var eye = focus + offset;
+                    float time=i*.75f,approach=Mathf.Clamp01(time/2.2f),travel=1-(1-approach)*(1-approach);
+                    float settle=Mathf.SmoothStep(0,1,Mathf.InverseLerp(SoftSurface?.8f:1.1f,2.9f,time));
+                    var point=Vector3.Lerp(Travel(travel),contract.Target,settle);
+                    ShotPose(point,time,offset,out var eye,out var focus);
                     eye.y = Mathf.Max(eye.y, Ground(eye, eye.y - 2) + 1.15f);
                     if (Physics.Linecast(focus, eye, 1 << 8, QueryTriggerInteraction.Ignore)) score += 100;
+                    if (Physics.CheckSphere(eye,.35f,1<<8,QueryTriggerInteraction.Ignore))score+=100;
                 }
                 if (score < best) { best = score; chosen = offset; }
             }

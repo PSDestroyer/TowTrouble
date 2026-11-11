@@ -97,7 +97,8 @@ namespace TowTrouble
             if(enteringTitle)velocity=Vector3.zero;
             ApplyPresentationPose(position, look, title||session.GarageOpen||choosingStarter,
                 !lobby&&!session.GarageOpen, p.reducedMotion, Time.unscaledDeltaTime, title||choosingStarter||session.GarageOpen);
-            UpdateTitleLighting(title);
+            // Title and main menu share the same warm vehicle lighting.
+            UpdateTitleLighting(title || session.View == "Main");
             UpdateTreeVisibility(lobby);
         }
         private void ApplyPresentationPose(Vector3 position, Vector3 look, bool preview, bool gameplay, bool reducedMotion, float dt, bool previewRotation)

@@ -8,6 +8,7 @@ namespace TowTrouble
     {
         [SerializeField] private RecoveryVehicle vehicle;
         [SerializeField] private RecoveryVehicleEffectsProfile profile;
+        internal Material VaporMaterial=>profile!=null?profile.Smoke:null;
         private readonly List<Lamp> lamps=new List<Lamp>();
         private readonly List<ParticleSystem> exhausts=new List<ParticleSystem>();
         private MaterialPropertyBlock block;
