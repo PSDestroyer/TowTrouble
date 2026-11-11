@@ -23,6 +23,47 @@ namespace TowTrouble.Tests
             }
             finally{UnityEngine.Object.DestroyImmediate(root);EditorSceneManager.ClosePreviewScene(scene);}
         }
+        [Test] public void CinematicUsesEachVehiclesApprovedLoopsAndRespectsMuteAndReturn()
+        {
+            var bank=Resources.Load<RecoveryAudioBank>("RecoveryAudioBank");Assert.That(bank,Is.Not.Null);
+            WithIncident((car,contract,parent)=>
+            {
+                for(int model=0;model<4;model++)
+                {
+                    car.SetModel(model);
+                    using(var intro=new RecoveryContractIntro(car,contract,parent,false))
+                    {
+                        intro.ConfigureAudio(bank,.8f);intro.ConfigureAudio(bank,.8f);
+                        var actor=parent.Find("Recovery incident reenactment");var sources=actor.GetComponents<AudioSource>();
+                        Assert.That(sources.Length,Is.EqualTo(2));
+                        Assert.That(sources[0].clip,Is.SameAs(model==0?bank.ScoutMuscleIdle:bank.EngineFor(model).Idle));
+                        Assert.That(sources[1].clip,Is.SameAs(model==0?bank.ScoutMuscleLow:bank.EngineFor(model).Low));
+                        foreach(var source in sources){Assert.That(source.outputAudioMixerGroup,Is.SameAs(bank.Vehicles));Assert.That(source.playOnAwake,Is.False);}
+                        intro.Advance(1);float lastPitch=sources[1].pitch;
+                        for(int step=0;step<40;step++)
+                        {
+                            intro.Advance(.1f);
+                            Assert.That(sources[0].pitch,Is.EqualTo(1));
+                            Assert.That(Mathf.Abs(sources[1].pitch-lastPitch),Is.LessThan(.025f));lastPitch=sources[1].pitch;
+                            Assert.That(sources[0].volume+sources[1].volume,Is.LessThan(.17f));
+                        }
+                        intro.Advance(0,false);foreach(var source in sources)Assert.That(source.volume,Is.Zero);
+                        intro.Advance(1);Assert.That(actor.gameObject.activeSelf,Is.False);
+                    }
+                }
+                using(var muted=new RecoveryContractIntro(car,contract,parent,false))
+                {
+                    muted.ConfigureAudio(bank,0);muted.Advance(1);
+                    foreach(var source in parent.Find("Recovery incident reenactment").GetComponents<AudioSource>())Assert.That(source.volume,Is.Zero);
+                }
+                contract.SituationKind=RecoverySituationKind.EngineFailure;
+                using(var failed=new RecoveryContractIntro(car,contract,parent,false))
+                {
+                    failed.ConfigureAudio(bank,1);failed.Advance(3);
+                    foreach(var source in parent.Find("Recovery incident reenactment").GetComponents<AudioSource>())Assert.That(source.volume,Is.Zero);
+                }
+            });
+        }
         [Test] public void ReenactmentMovesOnlyVisualCopyAndReturnsEveryOriginalVisibilityFlag()
         {
             WithIncident((source,contract,parent)=>

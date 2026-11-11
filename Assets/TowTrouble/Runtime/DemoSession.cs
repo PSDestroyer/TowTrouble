@@ -156,6 +156,9 @@ namespace TowTrouble
             if (RecoveryPlatform.OfflineOnly && !(transport is RecoveryOfflineTransport))
             { Connecting = false; status = "Offline play could not initialize. Return to the main menu and try again."; return; }
             ConfigureHostTransport(transport);
+            var startingBuild=Profile.Build(Profile.vehicle).Copy();
+            if(GarageCatalog!=null)startingBuild.Normalize(GarageCatalog,Profile.Owns);
+            world.PrepareHostVehicle(startingBuild,Profile.paint,exploration||world.Map!=null);
             if (!network.ServerManager.StartConnection()) { Connecting = false; status = RecoveryPlatform.MultiplayerAvailable?"Port 7777 is unavailable.":"Could not start the game. Please try again."; return; }
             network.ClientManager.StartConnection();
         }

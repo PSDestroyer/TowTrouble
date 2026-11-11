@@ -178,8 +178,7 @@ namespace TowTrouble
         {
             bool ignition=session.Connected&&car.gameObject.activeInHierarchy&&car.EngineRunning&&world.Phase!=RecoveryPhase.Lobby&&world.Phase!=RecoveryPhase.Complete;
             bool running=driving&&ignition;
-            if(running&&!wasEngine[slot])Play(RecoverySound.EngineStart,car.transform.position,slot,.7f);
-            wasEngine[slot]=ignition;
+            EngineIgnition(car,slot,ignition,session.Connected);
             float throttle=Mathf.Abs(car.ControlInput.y),speed=car.Speed;
             var slip=car.WheelSlip;float average=(slip.x+slip.y+slip.z+slip.w)*.25f;
             // A hidden lobby preview may not have run Awake yet. Its audio is muted,
@@ -188,7 +187,8 @@ namespace TowTrouble
             float pitch=RecoveryAudioPolicy.EnginePitch(speed,throttle,average,mass);
             float gain=running?BusGain(RecoveryAudioBus.Vehicles)*bank.EngineGain*RecoveryAudioPolicy.EngineBoost(bank.EngineBoostDb):0;
             var layers=RecoveryAudioPolicy.EngineLayers(speed,throttle,car.EngineEffort);
-            for(int layer=0;layer<3;layer++)
+            bool muscle=VehicleEngine(car,slot,running);
+            if(!muscle)for(int layer=0;layer<3;layer++)
             {
                 var source=engines[slot,layer];source.transform.position=car.transform.position+Vector3.up*.5f;
                 float layerPitch=layer==0?Mathf.Lerp(.65f,.85f,Mathf.InverseLerp(2200,950,mass)):

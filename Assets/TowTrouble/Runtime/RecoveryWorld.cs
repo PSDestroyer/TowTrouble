@@ -135,6 +135,25 @@ namespace TowTrouble
         public void Configure(RecoveryVehicle[] vehicles, RecoveryVehicle target, LineRenderer[] lines)
         { drivers = vehicles; casualty = target; cables = lines; }
 
+        private RecoveryBuild pendingHostBuild;
+        private int pendingHostPaint;
+        private bool pendingHostRoam;
+        // Stage local identity before FishNet initializes the scene object. SyncVars
+        // must be assigned on server startup, before its first ResetRecovery/render.
+        public void PrepareHostVehicle(RecoveryBuild build,int paint,bool roam)
+        {
+            if(NetworkObject!=null&&(IsServerInitialized||IsClientInitialized))return;
+            pendingHostBuild=build?.Copy();pendingHostPaint=Mathf.Clamp(paint,0,3);pendingHostRoam=roam;
+        }
+        private void ApplyPreparedHostVehicle()
+        {
+            if(pendingHostBuild==null)return;
+            vehicle0.Value=Mathf.Clamp(pendingHostBuild.Model,0,3);paint0.Value=pendingHostPaint;
+            freeRoam.Value=pendingHostRoam;
+            build0.Value=JsonUtility.ToJson(pendingHostBuild);appliedBuild[0]=null;
+            pendingHostBuild=null;
+        }
+
         public override void OnStartServer()
         {
             base.OnStartServer();
@@ -142,6 +161,7 @@ namespace TowTrouble
             NetworkManager.SceneManager.OnClientLoadedStartScenes += ClientLoaded;
             NetworkManager.ServerManager.OnRemoteConnectionState += RemoteChanged;
             receivedHaptics=false;hapticSequence=receivedHapticSequence=0;System.Array.Clear(hapticEvents,0,2);
+            ApplyPreparedHostVehicle();
             phase.Value = 0; driver0Id.Value = -1; driver1Id.Value = -1;garageMask.Value=0;runId.Value="";
             ResetRecovery();
         }

@@ -139,6 +139,8 @@ namespace TowTrouble
         public void SetModel(int index)
         {
             if(models==null||models.Length==0)return;
+            // A fitted assembly replaces the stock roots; never display both.
+            GetComponent<RecoveryCustomization>()?.ClearPreview();
             modelIndex=Mathf.Clamp(index,0,models.Length-1);var m=models[modelIndex];
             for(int i=0;i<models.Length;i++)models[i].Root.SetActive(i==modelIndex);
             wheelVisuals=m.Wheels;radius=m.Radius;maxSpeed=RecoveryBodyBalance.StockSpeed(modelIndex);dryGripScale=mudGripScale=mudResistanceScale=sandGripScale=snowGripScale=1;suspensionLift=0;CableStrength=RecoveryRules.BreakForce;WinchSpeed=RecoveryWinch.StockSpeed;WinchForce=RecoveryWinch.StockForce;geometryVersion++;driveForce=casualty?m.Drive:RecoveryBodyBalance.StockDrive(modelIndex);steering=casualty?m.Steering:RecoveryBodyBalance.StockSteering(modelIndex);

@@ -27,6 +27,47 @@ MonoBehaviour:
   Insects: {fileID: 8300000, guid: 36d2c8c4966784beaa5603346579924c, type: 3}
   Water: {fileID: 8300000, guid: 2473461cd54804938b790e6ac2e55743, type: 3}
   Garage: {fileID: 8300000, guid: 0e115b4d0d53147f4b3e89c62a4d8047, type: 3}
+  ScoutMuscleIdle: {fileID: 8300000, guid: eba2ecce0b8eb4b80a73a5c819a22300, type: 3}
+  ScoutMuscleLow: {fileID: 8300000, guid: 4b89e92c2f07d425aa13f92f0e9dbd38, type: 3}
+  ScoutMuscleHigh: {fileID: 8300000, guid: 25283bc61761f4ec8b5628240a89c60f, type: 3}
+  ScoutEngineGain: 0.68
+  Ignitions:
+  - Model: 0
+    Start: {fileID: 8300000, guid: a288563f18de54312a2934040bfbc130, type: 3}
+    Stop: {fileID: 8300000, guid: b213059106d4c4983abfda4f63e844e7, type: 3}
+    StartGain: 0.16
+    StopGain: 0.14
+  - Model: 1
+    Start: {fileID: 8300000, guid: a04b12cffcf9d461fb1dbd9ff6409148, type: 3}
+    Stop: {fileID: 8300000, guid: 52a11e95a982e4e4799044630925631a, type: 3}
+    StartGain: 0.16
+    StopGain: 0.14
+  - Model: 2
+    Start: {fileID: 8300000, guid: e34e2ca0c300b49629126c01301e7119, type: 3}
+    Stop: {fileID: 8300000, guid: f2a92963d4eaa4e5eb93f6010e7c4686, type: 3}
+    StartGain: 0.16
+    StopGain: 0.14
+  - Model: 3
+    Start: {fileID: 8300000, guid: a8dc25570d4a74d4fb0e0502bf8b4554, type: 3}
+    Stop: {fileID: 8300000, guid: 89750d2543f3848bebe18add823eee31, type: 3}
+    StartGain: 0.16
+    StopGain: 0.14
+  VehicleEngines:
+  - Model: 1
+    Idle: {fileID: 8300000, guid: 88a378285901a4208b4efe647cd701d1, type: 3}
+    Low: {fileID: 8300000, guid: 759d7038130564252a1e70eab343ed43, type: 3}
+    High: {fileID: 8300000, guid: b666aac021d714c87b94537da3bb8d5a, type: 3}
+    Gain: 0.68
+  - Model: 2
+    Idle: {fileID: 8300000, guid: 0925ab9e34e404616b47cc0db1b2419c, type: 3}
+    Low: {fileID: 8300000, guid: 770ce87518e704c68a0c03c070771607, type: 3}
+    High: {fileID: 8300000, guid: c23df5761b3f34ab29ffd45f8b067eaf, type: 3}
+    Gain: 0.68
+  - Model: 3
+    Idle: {fileID: 8300000, guid: 7629e57ba111a4dc98e529c9ae2d455d, type: 3}
+    Low: {fileID: 8300000, guid: 802a7104b16fe446eb536f0864c42336, type: 3}
+    High: {fileID: 8300000, guid: 4de407ac7f6504b7aafd771507f5d13e, type: 3}
+    Gain: 0.68
   MusicGain: 0.36
   EngineGain: 0.85
   EngineBoostDb: 6
@@ -67,14 +108,14 @@ MonoBehaviour:
     Bus: 2
     Clips:
     - {fileID: 8300000, guid: 52bd04e13235340808a0eee8d5bed44e, type: 3}
-    Gain: 0.22
+    Gain: 0.18
     Priority: 110
     Cooldown: 0.16
   - Sound: 4
     Bus: 2
     Clips:
     - {fileID: 8300000, guid: ce6e780bb439740be9dea5aa753971d7, type: 3}
-    Gain: 0.22
+    Gain: 0.18
     Priority: 110
     Cooldown: 0.16
   - Sound: 5
@@ -102,21 +143,21 @@ MonoBehaviour:
     Bus: 2
     Clips:
     - {fileID: 8300000, guid: 407f6b6bc3bbf43a5bef529bdde36df5, type: 3}
-    Gain: 0.33
+    Gain: 0.24
     Priority: 55
     Cooldown: 0.4
   - Sound: 9
     Bus: 2
     Clips:
     - {fileID: 8300000, guid: fc9b995a9c268457e8f8d8ff25f8f342, type: 3}
-    Gain: 0.45
+    Gain: 0.32
     Priority: 15
     Cooldown: 2
   - Sound: 10
     Bus: 1
     Clips:
     - {fileID: 8300000, guid: cf572085ecbec4b849f8da29cf74bbfc, type: 3}
-    Gain: 0.5
+    Gain: 0.38
     Priority: 35
     Cooldown: 0.15
   - Sound: 11

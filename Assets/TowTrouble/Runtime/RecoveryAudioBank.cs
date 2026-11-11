@@ -18,11 +18,40 @@ namespace TowTrouble
     }
     [Serializable] public sealed class RecoverySurfaceSounds
     { public RecoveryAudioSurface Surface; public AudioClip[] Clips=Array.Empty<AudioClip>(); [Range(0,1)] public float Gain=.2f; }
+    [Serializable] public sealed class RecoveryIgnitionSounds
+    {
+        public int Model;
+        public AudioClip Start,Stop;
+        [Range(0,1)] public float StartGain=.16f,StopGain=.14f;
+    }
+    [Serializable] public sealed class RecoveryVehicleEngineSounds
+    {
+        public int Model;
+        public AudioClip Idle,Low,High;
+        [Range(0,1)] public float Gain=.68f;
+        public bool Ready=>Idle!=null&&Low!=null&&High!=null;
+        public AudioClip Clip(int layer)=>layer==0?Idle:layer==1?Low:High;
+    }
     [CreateAssetMenu(menuName="Tow Trouble/Audio Bank")]
     public sealed class RecoveryAudioBank : ScriptableObject
     {
         public AudioMixerGroup Vehicles,Recovery,UI,Ambience,Music;
         public AudioClip EngineIdle,EngineDrive,EngineLoad,WinchMotor,Wind,MountainWind,Birds,Insects,Water,Garage;
+        [Header("Scout classic engine (optional; other vehicles use the original bank)")]
+        public AudioClip ScoutMuscleIdle,ScoutMuscleLow,ScoutMuscleHigh;
+        [Tooltip("Independent level for the prepared Muscle clips; legacy engine boost does not apply.")]
+        [Range(0,1)] public float ScoutEngineGain=.68f;
+        public bool HasScoutMuscle=>ScoutMuscleIdle!=null&&ScoutMuscleLow!=null&&ScoutMuscleHigh!=null;
+        public RecoveryIgnitionSounds[] Ignitions=Array.Empty<RecoveryIgnitionSounds>();
+        public RecoveryIgnitionSounds IgnitionFor(int model)
+        {if(Ignitions!=null)foreach(var sound in Ignitions)if(sound!=null&&sound.Model==model)return sound;return null;}
+        public RecoveryVehicleEngineSounds[] VehicleEngines=Array.Empty<RecoveryVehicleEngineSounds>();
+        public RecoveryVehicleEngineSounds EngineFor(int model)
+        {
+            if(VehicleEngines!=null)foreach(var engine in VehicleEngines)
+                if(engine!=null&&engine.Model==model&&engine.Ready)return engine;
+            return null;
+        }
         [Header("Music and mix")]
         [Range(0,1)] public float MusicGain=.36f;
         [Range(0,1)] public float EngineGain=.85f;

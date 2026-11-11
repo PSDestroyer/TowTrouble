@@ -1,0 +1,11 @@
+# Vehicle ignition — 2026-11-11
+
+Eight designed clips: Start/Stop for Scout, Hauler, Buddy and Ranger. These are not four independently recorded starters: prepare.py combines the first0.6s of the user-imported Engine_Start.WAV with each approved prepared idle, varying starter duration. Shutdown is a short pitch/envelope rundown of that same idle. Low_Off/High_Off were not assumed to be ignition recordings. Source and idle hashes retained; neither source nor approved engine loops modified.
+
+Start durations1.55–1.85s; stop.8–.95s. Independent StartGain.16/StopGain.14 avoid the legacy6dB boost. Mono22.05kHz ADPCM, preload, explicit Switch override; all8 clips888320 bytes decoded PCM excluding Unity overhead. At most one lazy reusable ignition AudioSource per driver (two extra sources maximum) prevents overlapping start/stop transients; Vehicles mixer/Effects/Master preferences and spatial attenuation preserved.
+
+RecoveryAudioIgnition tracks actual ignition edges independently of audible focus/timeScale. Pause/unmute does not synthesize a new start. Changing model while running selects the new starter; stopped model swaps emit no old stop. Disconnect/inactive vehicle stops transient. Existing ignition condition (connected, active, EngineRunning, not Lobby/Complete) retained. No new ignition input, gameplay delay, networking or mechanical changes. Garage only emits if existing engine state changes; UI opening alone does not invent an engine stop. Ralanti crossfades into last portion of startup while gameplay remains controllable. Missing custom startup falls back to existing EngineStart sound.
+
+Authoring: Tow Trouble/Audio/Configure engine ignition. Saves only bank and import settings. Scout/fleet configure menus preserve the independent Ignitions array. New profiles keep customized start/stop gain when reconfigured.
+
+Validation: Unity compilation0 errors/0 warnings.22 direct NUnit audio cases passed.29 isolated native rig assertions checked all model clips, routing, no repeated starts, idle envelope, stop/envelope reset, effects mute, app pause, disconnect and source reuse. No Play Mode/build/active scene save/profile write. Preexisting dirty scene retained. Listening in gameplay and on Switch remains user validation; no subjective sound guarantee from these tests.

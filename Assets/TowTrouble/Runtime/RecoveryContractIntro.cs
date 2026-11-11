@@ -21,7 +21,8 @@ namespace TowTrouble
         private readonly bool reducedMotion;
         private readonly ParticleSystem smoke;
         private bool restored, disposed;
-        private AudioSource engine;
+        private AudioSource engine, engineLow;
+        private readonly int modelIndex;
         private float audioGain;
         private bool audioAudible=true;
         public float Elapsed { get; private set; }
@@ -41,7 +42,7 @@ namespace TowTrouble
         }
         public RecoveryContractIntro(RecoveryVehicle source, RecoveryContract incident, Transform parent, bool reduceMotion)
         {
-            contract = incident; reducedMotion = reduceMotion;
+            contract = incident; reducedMotion = reduceMotion; modelIndex=source.ModelIndex;
             finalRotation = Quaternion.Euler(contract.Pitch, contract.Heading, contract.Roll);
             actor = new GameObject("Recovery incident reenactment");
             actor.SetActive(false); actor.transform.SetParent(parent, false);
@@ -146,17 +147,40 @@ namespace TowTrouble
             {
                 float envelope=Mathf.SmoothStep(0,1,Mathf.InverseLerp(.15f,.5f,time))*(1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(4.3f,4.9f,time)));
                 if(failure)envelope*=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1.7f,2.4f,time));
-                engine.volume=audioAudible&&Application.isFocused?audioGain*envelope:0;
-                engine.pitch=Mathf.Lerp(1,.78f,settle)+(failure?0:Mathf.Sin(time*9)*.07f*struggle);
-                if(Application.isPlaying&&ShowingIncident&&!engine.isPlaying&&engine.volume>.001f)engine.Play();
+                // Restrained approach, settle to idle, then one gentle attempt to get free.
+                // No rapid pitch wobble: preserve the recorded classic engine character.
+                float demand=.42f*(1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(.6f,2.2f,time)))+(failure?0:.32f*struggle);
+                var weights=RecoveryScoutEngineMix.Weights(demand,0);
+                float gain=audioAudible&&Application.isFocused?audioGain*envelope:0;
+                SetEngineLayer(engine,gain*weights.x,1);
+                SetEngineLayer(engineLow,gain*weights.y,Mathf.Lerp(.92f,1.04f,demand));
             }
+        }
+        private void SetEngineLayer(AudioSource source,float volume,float pitch)
+        {
+            if(source==null)return;
+            source.volume=volume;source.pitch=pitch;
+            if(Application.isPlaying&&ShowingIncident&&!source.isPlaying&&volume>.001f)source.Play();
         }
         public void ConfigureAudio(RecoveryAudioBank bank,float effects)
         {
-            if(bank==null||bank.EngineDrive==null)return;
-            audioGain=RecoveryAudioPolicy.Gain(effects)*bank.EngineGain*.34f;
-            engine=actor.AddComponent<AudioSource>();engine.playOnAwake=false;engine.loop=true;engine.spatialBlend=0;
-            engine.clip=bank.EngineDrive;engine.outputAudioMixerGroup=bank.Vehicles;engine.volume=0;engine.priority=110;engine.dopplerLevel=0;
+            if(bank==null||engine!=null)return;
+            bool scout=modelIndex==0&&bank.HasScoutMuscle;
+            var profile=scout?null:bank.EngineFor(modelIndex);
+            var idle=scout?bank.ScoutMuscleIdle:profile!=null?profile.Idle:bank.EngineIdle;
+            var low=scout?bank.ScoutMuscleLow:profile!=null?profile.Low:bank.EngineDrive;
+            if(idle==null)idle=low;
+            if(idle==null)return;
+            // A close cinematic mix, quieter than driving, respects the player's effects level.
+            audioGain=RecoveryAudioPolicy.Gain(effects)*RecoveryAudioPolicy.Gain(scout?bank.ScoutEngineGain:profile!=null?profile.Gain:bank.EngineGain)*.8f;
+            engine=CreateEngineLayer(bank,idle);
+            if(low!=null)engineLow=CreateEngineLayer(bank,low);
+        }
+        private AudioSource CreateEngineLayer(RecoveryAudioBank bank,AudioClip clip)
+        {
+            var source=actor.AddComponent<AudioSource>();source.playOnAwake=false;source.loop=true;source.spatialBlend=0;
+            source.clip=clip;source.outputAudioMixerGroup=bank.Vehicles;source.volume=0;source.priority=110;source.dopplerLevel=0;
+            return source;
         }
         public void CameraPose(out Vector3 position, out Vector3 look)
         {

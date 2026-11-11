@@ -64,6 +64,25 @@ namespace TowTrouble.Tests
                 }
             }
         }
+        [Test] public void SmallChassisKeepsWholeCarInsideWorkshopPreview()
+        {
+            var body=new Bounds(new Vector3(0,1.15f,-.18f),new Vector3(2.38f,3.02f,5.04f));
+            var detail=new Bounds(new Vector3(0,-.16f,-.62f),new Vector3(1.72f,.38f,1.1f));
+            var go=new GameObject("Chassis framing regression",typeof(Camera));var camera=go.GetComponent<Camera>();camera.enabled=false;
+            try{foreach(float aspect in new[]{16f/9,16f/10,4f/3,21f/9})foreach(float fov in new[]{45f,57f,65f})
+            {
+                camera.aspect=aspect;camera.fieldOfView=fov;
+                var viewport=RecoveryGarageView.Viewport(aspect,new Rect(.03f,.03f,.94f,.94f));
+                var frame=RecoveryGarageView.Frame(GarageSlot.Chassis,body,detail,fov,aspect,viewport);
+                RecoveryGarageView.Pose(frame.Focus,RecoveryGarageView.Direction(frame.Yaw,frame.Elevation),frame.Distance,fov,aspect,viewport,out var position,out var look);
+                camera.transform.SetPositionAndRotation(position,Quaternion.LookRotation(look-position));
+                for(int i=0;i<8;i++)
+                {
+                    var p=camera.WorldToViewportPoint(body.center+Vector3.Scale(body.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1)));
+                    Assert.That(p.z,Is.GreaterThan(0));Assert.That(viewport.Contains(new Vector2(p.x,p.y)),Is.True,"Chassis view crops vehicle at "+aspect+" / "+fov);
+                }
+            }}finally{Object.DestroyImmediate(go);}
+        }
         [Test] public void GarageEntryDoesNotInheritAnUndergroundGameplayPose()
         {
             using(var f=new Fixture())f.CheckEntry();
@@ -116,6 +135,48 @@ namespace TowTrouble.Tests
                 {
                     var build=new RecoveryBuild{Model=3};f.Car.SetModel(3);build.Set(part,f.Catalog);f.CheckSuspension(build);
                 }
+            }
+        }
+        [Test] public void SwitchingStockModelRemovesThePreviousFittedBodyImmediately()
+        {
+            using(var f=new Fixture())
+            for(int model=0;model<4;model++)
+            {
+                f.Car.SetModel(3);f.Custom.Apply(new RecoveryBuild{Model=3},0,true);
+                f.Car.SetModel(model);
+                Assert.That(f.Car.GetComponentsInChildren<RecoveryAssembly>(),Is.Empty);
+                for(int i=0;i<4;i++)Assert.That(f.Car.ModelAt(i).Root.activeSelf,Is.EqualTo(i==model));
+                f.Custom.Apply(new RecoveryBuild{Model=model},0);
+                Assert.That(f.Car.GetComponentsInChildren<RecoveryAssembly>().Length,Is.EqualTo(1));
+                for(int i=0;i<4;i++)Assert.That(f.Car.ModelAt(i).Root.activeSelf,Is.False);
+            }
+        }
+        [Test] public void HostStartupStagesTheChosenBuildBeforeTheFirstVehicleReset()
+        {
+            using(var f=new Fixture())
+            {
+                var go=new GameObject("Host staging regression");go.SetActive(false);
+                SceneManager.MoveGameObjectToScene(go,f.Car.gameObject.scene);
+                try
+                {
+                    var world=go.AddComponent<RecoveryWorld>();world.Configure(new[]{f.Car,f.Car},f.Car,new LineRenderer[2]);
+                    var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+                    for(int model=0;model<4;model++)
+                    {
+                        var build=new RecoveryBuild{Model=model};
+                        build.Set(f.Catalog.Find("suspension_offroad"),f.Catalog);
+                        var expected=GaragePerformance.Calculate(build,f.Catalog);
+                        world.PrepareHostVehicle(build,2,true);build.Model=(model+1)%4;
+                        typeof(RecoveryWorld).GetMethod("ApplyPreparedHostVehicle",flags).Invoke(world,null);
+                        Assert.That(world.VehicleIndex(0),Is.EqualTo(model));Assert.That(world.FreeRoam,Is.True);
+                        f.Car.SetModel(world.VehicleIndex(0));
+                        typeof(RecoveryWorld).GetMethod("ApplyBuild",flags).Invoke(world,new object[]{0});
+                        Assert.That(f.Car.GetComponent<Rigidbody>().mass,Is.EqualTo(expected.Mass).Within(.01f));
+                        Assert.That(f.Car.GetComponentsInChildren<RecoveryAssembly>().Length,Is.EqualTo(1));
+                        for(int i=0;i<4;i++)Assert.That(f.Car.ModelAt(i).Root.activeSelf,Is.False);
+                    }
+                }
+                finally{UnityEngine.Object.DestroyImmediate(go);}
             }
         }
         private static void SameBounds(Bounds expected,Bounds actual,string label)

@@ -31,6 +31,9 @@ namespace TowTrouble
             new Rect(RecoveryGarageLayout.PreviewX+12,364,RecoveryGarageLayout.PreviewWidth-24,218),aspect,safe);
         public static GarageViewFrame Frame(GarageSlot slot,Bounds body,Bounds detail,float fov,float aspect,Rect viewport)
         {
+            // A chassis mesh can be a tiny, low subassembly. Framing it alone
+            // hides the car behind the workshop panels; retain whole-car context.
+            if(slot==GarageSlot.Chassis)detail.Encapsulate(body);
             float yaw=-38,elevation=19;
             switch(slot)
             {

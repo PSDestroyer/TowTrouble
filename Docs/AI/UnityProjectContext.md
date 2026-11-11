@@ -779,3 +779,33 @@ Network appearance invalidation now includes JSON, fallback paint and base model
 ## Offroad suspension sign correction — 2026-11-11
 - Confirmed UseAssembly applied +Lift to wheel anchors (lowering supported chassis) and independently moved collider above mesh. Changed wheel anchors to -Lift; collider remains at authored center with body/hitches. Existing +15cm item, stiffness/mass/cost unchanged.
 - Native before/after probe and regression across four base models/catalogue bodies, repeated apply and Stock restore passed; five garage/camera tests and compilation clean. Level-ground static spring balance predicts raised chassis; no live physics/console validation, build/Play/scene/save changes. Evidence Docs/Validation/OffroadSuspension.
+
+## Scout Muscle audio — 2026-11-11
+- Scout-only classic engine uses3 prepared Muscle clips from user-imported Audio/Engine. Reuses existing3 sources/driver, Vehicles mixer/preferences, other models unchanged. Continuous smoothed demand replaces periodic pitch resets on Scout; restrained high layer, effort changes intensity.
+- Original WAVs intact; mild offline presence EQ and loop seam preparation; mono22.05kHz ADPCM with Switch override,272896 bytes decoded PCM. Bank wired by RecoveryScoutMuscleAuthoring; no scene save/build/Play.
+- Compile clean;18 audio NUnit cases and9 isolated rig checks pass. Editor listening and Switch speaker evaluation remain user tests. Details Docs/Audio/ScoutMuscle.
+
+## Comfort audio mix — 2026-11-11
+- User liked Scout Muscle timbre but found it too loud. Scout now uses independent bank.ScoutEngineGain=.68 (-7.94dB vs prior legacy boost path), preserving timbre/transitions/PCM. Other engines unchanged. UI Open/Close/Accept/Complete and cable Attach softened in bank and authoring defaults. Critical feedback retained.
+- Music/source-level audit found five tracks near-20dB RMS and Wooden Inn-22.4; ambience lower. Existing music/ambience and player volume preferences preserved; bank changes apply to new and existing profiles. Compile clean,19 audio cases + native mute/routing checks pass; no build/Play/save changes.
+
+## Fleet engine profiles — 2026-11-11
+- Extended approved Scout mix to Hauler(Bus Idle/Low/High), Buddy(Generic Idle/Low/Med), Ranger(Buggy Idle/Low/Med). Scout clips/gain preserved. New VehicleEngines array in audio bank, per-model gain.68; same3 sources/driver and smoothed demand, no legacy+6dB boost for configured profiles.
+-9 derived source-preserving clips, mono22.05kHz ADPCM/Switch override,962048 bytes decoded PCM. Profile authoring menu Configure fleet engines; fallback for missing profiles. Existing startup one-shot retained.
+- Compile clean;20 audio tests+60 native rig assertions pass. No builds/Play/scene/save changes; user listening pending. Docs/Audio/FleetEngines.
+
+## Per-model ignition audio — 2026-11-11
+- Added4 Start/Stop profiles, designed offline from imported Engine_Start.WAV and each approved idle (not independent vehicle recordings). Original and idle hashes preserved; eight monoADPCM22.05kHz clips888320 PCM bytes. StartGain.16/StopGain.14.
+- RecoveryAudioIgnition tracks existing engine edges; no replay on mute/pause/focus, cancels previous transient on change/disconnect. Maximum2 lazy extra sources; graceful startup→idle envelope. No new inputs or physics changes; garage UI alone does not imply ignition off.
+- Compile clean;22 audio cases+29 isolated rig assertions passed. No build/Play/scene/save changes. Docs/Audio/Ignition.
+
+## Recovery cinematic engines — 2026-11-11
+- Incident reenactments still used legacy EngineDrive for every model and a rapid pitch oscillation. Now resolve the actual source ModelIndex to approved Scout/fleet idle + low clips, Vehicles mixer and existing effects preference; legacy fallback remains for missing profiles.
+- Two temporary looping sources owned by the disposable actor; no high-RPM layer, steady idle pitch, narrow low pitch, smooth approach/settle/one restrained struggle. Cinematic gain is 80% of profile gain before shared mix weights. Engine-failure fade, focus mute, skip/return and cleanup retained; reconfiguration cannot duplicate sources.
+- Editor compilation: zero errors/warnings. Six incident tests passed, including all four clip mappings, smooth pitch, volume bounds, mute, engine failure, and return. No builds or scene/save changes. Subjective listening in Editor/on Switch remains user validation.
+
+## Play entry vehicle overlap — 2026-11-11
+- User recording shows selected Speedster Bug, Scout overlapping at ~1.32–1.49s, stock Scout at1.65s, selected build restored at1.82s. Isolated pre-fix reproduction: fitted Ranger assembly stays active after SetModel(0), alongside Scout root.
+- Host now stages a copied/ownership-normalized selected build, paint and roam intent before StartConnection. OnStartServer consumes those values before ResetRecovery, so the first authoritative render uses the selected fitted vehicle instead of default model0/empty build. Existing identity RPCs retained. No changes to saves or remote-peer authority.
+- SetModel clears/deactivates previous custom assembly before enabling stock roots, invalidating customization cache to allow reapplication. Prevents simultaneous stock/custom bodies even with deferred Destroy.
+- Editor compile zero errors/warnings; eight garage tests pass including all four model transitions and staged startup applied geometry/performance. Recording inspected; complete Play/network transition after fix and Switch hardware remain manual validation. No builds or scene saves; stopped Play for compilation.
