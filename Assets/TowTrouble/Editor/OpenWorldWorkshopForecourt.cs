@@ -14,6 +14,9 @@ namespace TowTrouble.Editor
             if (EditorApplication.isPlayingOrWillChangePlaymode)
                 throw new InvalidOperationException("Workshop dressing requires Edit Mode.");
             VisualContext();
+            System.IO.Directory.CreateDirectory("/private/tmp/TowForecourtCorrection");
+            if (!System.IO.File.Exists("/private/tmp/TowForecourtCorrection/Before.unity"))
+                EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), "/private/tmp/TowForecourtCorrection/Before.unity", true);
             var workshop = environment.Find("Workshop service base");
             var world = UnityEngine.Object.FindFirstObjectByType<RecoveryWorld>(FindObjectsInactive.Include);
             if (workshop == null || world == null) throw new InvalidOperationException("Workshop service base is missing.");
@@ -28,42 +31,54 @@ namespace TowTrouble.Editor
                 var root = PolishGroup(workshop, "Workshop forecourt working details");
                 Undo.RegisterCreatedObjectUndo(root.gameObject, "Add workshop forecourt details");
                 var garage = world.GaragePosition;
-                var service = PolishGroup(root, "Mobile wheel service beside parking");
+                var legacy = environment.Find("County landscape polish/Regional landmarks/Garage recovery supply yard");
+                if (legacy != null)
+                {
+                    Undo.RecordObject(legacy.gameObject, "Retire primitive supply racks");
+                    legacy.gameObject.SetActive(false);
+                }
+                var service = PolishGroup(root, "Wheel service along west wall");
                 ForecourtProp(source, "Outdoor inspection and wheel service/Inspection trolley and removed wheels/Trolley detail", service,
-                    "Drawered tool trolley and laid-out spanners", garage + new Vector3(-7.2f, 0, -4), -12);
-                ForecourtProp(source, "Outdoor inspection and wheel service/Inspection trolley and removed wheels/Wheel ready to refit", service,
-                    "Removed wheel beside trolley", garage + new Vector3(-5.8f, 0, -4.4f), 28);
+                    "Drawered tool trolley and laid-out spanners", garage + new Vector3(-13.5f, 0, 18), 90);
                 ForecourtProp(source, "Outdoor inspection and wheel service/Floor jack and paired wheel chocks", service,
-                    "Floor jack parked beside wheel work", garage + new Vector3(-6.7f, 0, -2.4f), -38);
+                    "Floor jack parked beside wheel work", garage + new Vector3(-15.2f, 0, 18), 90);
 
                 var rigging = PolishGroup(root, "Recovery cable preparation beside garage");
                 ForecourtProp(source, "Cable preparation station/Cable bench and reel detail", rigging,
-                    "Recovery workbench with coiled cable and straps", garage + new Vector3(-8.1f, 0, -5.8f), -8, .84f);
-                ForecourtProp(source, "Cable preparation station/Service station spare wheel", rigging,
-                    "Spare wheel awaiting refit", garage + new Vector3(-10.6f, 0, -2.8f), 12);
+                    "Recovery workbench with coiled cable and straps", garage + new Vector3(-13.5f, 0, 23), 90, .84f);
 
-                var stock = PolishGroup(root, "Apron parts and fluids ready for service");
+                var stock = PolishGroup(root, "Parts storage along east wall");
                 ForecourtProp(source, "Covered workshop materials/Spare parts packing crate", stock,
-                    "Delivered spare parts crate", garage + new Vector3(-3.6f, 0, 5.8f), 9);
+                    "Delivered spare parts crate", garage + new Vector3(13, 0, 27), 90);
                 ForecourtProp(source, "Covered workshop materials/Workshop lubricant drum", stock,
-                    "Service fluid drum beside parts", garage + new Vector3(-1.8f, 0, 6), -12);
+                    "Service fluid drum beside parts", garage + new Vector3(12.6f, 0, 25), 0);
                 ForecourtProp(source, "Covered workshop materials/Covered service fluid drum", stock,
-                    "Smaller fluid drum", garage + new Vector3(-.5f, 0, 5.7f), 18);
+                    "Smaller fluid drum", garage + new Vector3(13.7f, 0, 25), 0);
                 ForecourtProp(source, "Covered workshop materials/Loading handtruck beside supply crates", stock,
-                    "Handtruck returned beside delivery", garage + new Vector3(.7f, 0, 6.5f), -14);
+                    "Handtruck returned beside delivery", garage + new Vector3(14.6f, 0, 27), 90);
 
+                // The former free-standing station is the mesh source above. Retire its
+                // scene instance after copying, so it no longer occupies the open court.
+                var oldStation = source.Find("Cable preparation station");
+                if (oldStation != null)
+                {
+                    Undo.RecordObject(oldStation.gameObject, "Consolidate cable station against workshop wall");
+                    oldStation.gameObject.SetActive(false);
+                }
+
+                BuildGarageTireRack(stock, Ground(garage + new Vector3(13.2f, 0, 21)) - Vector3.up * .08f,
+                    WorkshopFinish("Timber"), WorkshopFinish("Metal"));
+                var rack = stock.Find("Organized spare wheel rack");
+                rack.rotation = Quaternion.Euler(0, 90, 0);
                 foreach (var t in root.GetComponentsInChildren<Transform>(true)) { t.gameObject.isStatic = true; t.gameObject.layer = 8; }
                 Physics.SyncTransforms();
+                // Reserve the entire turning apron, not just narrow bay centre lines.
+                var apron = new Bounds(garage + new Vector3(0, 2, -1), new Vector3(21, 12, 30));
+                foreach (var renderer in root.GetComponentsInChildren<Renderer>())
+                    if (renderer.bounds.Intersects(apron)) throw new InvalidOperationException("Workshop art enters the turning apron: " + renderer.name);
                 foreach (var collider in root.GetComponentsInChildren<Collider>())
-                {
-                    var bounds = collider.bounds;
-                    foreach (float slot in new[] { -2.5f, 2.5f })
-                    {
-                        // Reserve both parking bays plus a continuous approach to the yard.
-                        var drive = new Bounds(garage + new Vector3(slot, 1, -3), new Vector3(3.8f, 4, 13));
-                        if (bounds.Intersects(drive)) throw new InvalidOperationException("Workshop prop blocks a player bay: " + collider.name);
-                    }
-                }
+                    if (collider.bounds.Intersects(apron)) throw new InvalidOperationException("Workshop collision enters the turning apron: " + collider.name);
+                AssetDatabase.SaveAssets();
                 EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
                 if (!EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene())) throw new InvalidOperationException("Could not save workshop forecourt.");
                 Undo.CollapseUndoOperations(undo);
