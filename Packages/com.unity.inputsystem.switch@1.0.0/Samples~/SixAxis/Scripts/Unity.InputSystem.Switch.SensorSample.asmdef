@@ -1,0 +1,37 @@
+{
+    "name": "Unity.InputSystem.Switch.SensorSample",
+    "rootNamespace": "",
+    "references": [
+        "Unity.TextMeshPro",
+        "Unity.InputSystem",
+        "Unity.InputSystem.Switch"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "Switch"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "Unity",
+            "expression": "[6000.0.63f1,6000.1.0a1)",
+            "define": "UNITY_INPUTSYSTEM_SWITCH_2SIXAXIS"
+        },
+        {
+            "name": "Unity",
+            "expression": "[6000.3.1f1,6000.4.0a1)",
+            "define": "UNITY_INPUTSYSTEM_SWITCH_2SIXAXIS"
+        },
+        {
+            "name": "Unity",
+            "expression": "6000.4.0a6",
+            "define": "UNITY_INPUTSYSTEM_SWITCH_2SIXAXIS"
+        }
+    ],
+    "noEngineReferences": false
+}
