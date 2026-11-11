@@ -1,0 +1,64 @@
+{
+  "success": true,
+  "command": "command",
+  "data": {
+    "command": "script eval_file",
+    "parameters": {
+      "file": "/private/tmp/ScoutAudioReview/light-validate.cs"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": [
+        {
+          "night": 0,
+          "wet": 0,
+          "sun": 1.12,
+          "fill": 0.32,
+          "shadow": 0.82,
+          "stable": true
+        },
+        {
+          "night": 0,
+          "wet": 1,
+          "sun": 0.84,
+          "fill": 0.26,
+          "shadow": 1,
+          "stable": true
+        },
+        {
+          "night": 0.5,
+          "wet": 0.5,
+          "sun": 0.965000033,
+          "fill": 0.235,
+          "shadow": 0.955,
+          "stable": true
+        },
+        {
+          "night": 1,
+          "wet": 0,
+          "sun": 0.95,
+          "fill": 0.18,
+          "shadow": 1,
+          "stable": true
+        },
+        {
+          "night": 1,
+          "wet": 1,
+          "sun": 0.95,
+          "fill": 0.18,
+          "shadow": 1,
+          "stable": true
+        }
+      ]
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "/Users/gheorghe/GitHub/TowTrouble"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -32,7 +32,12 @@ namespace TowTrouble
         private FogMode previousFogMode;
         private Color previousFogColor;
         private float previousFogDensity;
-        private float previousSunIntensity,previousFillIntensity;
+        private float previousSunIntensity,previousFillIntensity,previousSunShadowStrength;
+        private Color previousSunColor;
+        [Header("Stylized gameplay lighting")]
+        [SerializeField,Range(.5f,1.5f)] private float gameplaySunIntensity=1.12f;
+        [SerializeField,Range(0,.6f)] private float gameplayFillIntensity=.32f;
+        [SerializeField,Range(0,1)] private float gameplayShadowStrength=.82f;
         private Color previousFillColor;
         private bool ownsColorGrading;
         private float manualSaturation,manualContrast;
@@ -47,6 +52,7 @@ namespace TowTrouble
             previousFog=RenderSettings.fog;
             previousFogMode=RenderSettings.fogMode;previousFogColor=RenderSettings.fogColor;previousFogDensity=RenderSettings.fogDensity;
             previousSunIntensity=sky.sunLight.intensity;
+            previousSunColor=sky.sunLight.color;previousSunShadowStrength=sky.sunLight.shadowStrength;
             if(fill!=null){previousFillIntensity=fill.intensity;previousFillColor=fill.color;}
             bound=true;
         }
@@ -89,8 +95,29 @@ namespace TowTrouble
             // Menu lighting owns these lights on both front-end screens.
             if(session.View!="Title"&&session.View!="Main")
             {
-                sky.sunLight.intensity=Mathf.Lerp(.84f,.95f,night);
-                if(fill!=null){fill.intensity=Mathf.Lerp(.21f,.18f,night);fill.color=Color.Lerp(new Color(1,.97f,.94f),new Color(.56f,.68f,1),night);}
+                ApplyGameplayLighting(night,wet);
+            }
+            else
+            {
+                // Preserve the approved front-end lighting, including shadow strength.
+                sky.sunLight.shadowStrength=previousSunShadowStrength;
+            }
+        }
+        private void ApplyGameplayLighting(float night,float wet)
+        {
+            night=Mathf.Clamp01(night);wet=Mathf.Clamp01(wet);
+            float clearDay=(1-night)*(1-wet);
+            sky.sunLight.intensity=Mathf.Lerp(Mathf.Lerp(gameplaySunIntensity,.84f,wet),.95f,night);
+            // Read COZY's current colour, never last frame's modified light colour.
+            // Preserve its dawn/dusk luminance and leave night/rain colours intact.
+            var weatherColor=sky.sunlightColor;
+            var warmSun=new Color(1,.94f,.82f)*weatherColor.maxColorComponent;
+            sky.sunLight.color=Color.Lerp(weatherColor,warmSun,.22f*clearDay);
+            sky.sunLight.shadowStrength=Mathf.Lerp(previousSunShadowStrength,gameplayShadowStrength,clearDay);
+            if(fill!=null)
+            {
+                fill.intensity=Mathf.Lerp(Mathf.Lerp(gameplayFillIntensity,.26f,wet),.18f,night);
+                fill.color=Color.Lerp(new Color(.88f,.94f,1),new Color(.56f,.68f,1),night);
             }
         }
         private static Color Floor(Color a,Color b)=>new Color(Mathf.Max(a.r,b.r),Mathf.Max(a.g,b.g),Mathf.Max(a.b,b.b),1);
@@ -125,7 +152,7 @@ namespace TowTrouble
                 if(bloom!=null&&shared.TryGet<Bloom>(out var originalBloom))bloom.intensity.value=originalBloom.intensity.value;
                 if(vignette!=null&&shared.TryGet<Vignette>(out var originalVignette))vignette.intensity.value=originalVignette.intensity.value;
             }
-            if(sky!=null&&sky.sunLight!=null)sky.sunLight.intensity=previousSunIntensity;
+            if(sky!=null&&sky.sunLight!=null){sky.sunLight.intensity=previousSunIntensity;sky.sunLight.color=previousSunColor;sky.sunLight.shadowStrength=previousSunShadowStrength;}
             if(fill!=null){fill.intensity=previousFillIntensity;fill.color=previousFillColor;}
         }
     }
