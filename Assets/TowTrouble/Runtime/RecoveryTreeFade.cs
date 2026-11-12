@@ -42,6 +42,11 @@ namespace TowTrouble
                 {
                     var material = original[i];
                     if (material == null) continue;
+                    // The canopy can clear the camera's view, but the solid trunk
+                    // must stay visible where the player can drive into it.
+                    if (material.name.IndexOf("bark", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        material.name.IndexOf("trunk", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                        continue;
                     bool useAlpha = !material.HasProperty(Fade);
                     if (useAlpha)
                     {

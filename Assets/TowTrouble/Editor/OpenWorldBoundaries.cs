@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Rendering;
 namespace TowTrouble.Editor
 {
  public static partial class OpenWorldAuthoring
@@ -51,23 +50,6 @@ namespace TowTrouble.Editor
    for(int side=0;side<4;side++)
    {
     var group=new GameObject(new[]{"North snowy ridge","East sandstone escarpment","South coastal headlands","West forest ridge"}[side]).transform;group.SetParent(root,false);
-    for(int i=0;i<24;i++)
-    {
-     float along=-470+i*(940f/23),offset=498+Mathf.Sin(i*2.7f+side);
-     var p=side==0?new Vector3(along,0,offset):side==1?new Vector3(offset,0,along):side==2?new Vector3(along,0,-offset):new Vector3(-offset,0,along);
-     bool desert=side==1||(side==2&&along>150);string prefab=desert?"P_RockDesert_Clump01":"P_RockSpire_RockClump01";
-     var go=ForestProp(prefab,p,26+(i%4)*4,i*137+side*41,group,false,false);go.name="Boundary formation "+i;go.transform.position-=Vector3.up*3;
-     foreach(var renderer in go.GetComponentsInChildren<Renderer>(true))renderer.enabled=true;
-     foreach(var lod in go.GetComponentsInChildren<LODGroup>(true)){var levels=lod.GetLODs();if(levels.Length>0){var chosen=levels[Mathf.Min(1,levels.Length-1)].renderers;foreach(var r in lod.GetComponentsInChildren<Renderer>(true))r.enabled=chosen.Contains(r);}UnityEngine.Object.DestroyImmediate(lod);}
-     var visible=go.GetComponentsInChildren<Renderer>().Where(r=>r.enabled).ToArray();
-     foreach(var r in visible){r.shadowCastingMode=ShadowCastingMode.Off;r.lightProbeUsage=LightProbeUsage.Off;r.reflectionProbeUsage=ReflectionProbeUsage.Off;}
-     // Seat the whole footprint into the slope, not only the centre point.
-     go.transform.localScale=Vector3.Scale(go.transform.localScale,new Vector3(1,1.5f,1));
-     var bounds=ScenarioBounds(go);float low=float.MaxValue;
-     for(int sx=0;sx<3;sx++)for(int sz=0;sz<3;sz++){var sample=new Vector3(Mathf.Lerp(bounds.min.x,bounds.max.x,sx*.5f),0,Mathf.Lerp(bounds.min.z,bounds.max.z,sz*.5f));low=Mathf.Min(low,Ground(sample).y);}
-     go.transform.position+=Vector3.up*(low-bounds.min.y-1);
-     var distanceLod=go.AddComponent<LODGroup>();distanceLod.SetLODs(new[]{new LOD(.006f,visible)});distanceLod.RecalculateBounds();
-    }
     // Four cheap static safety colliders sit behind the terrain ridge, below its back face.
     var wall=new GameObject("Hidden outer safety barrier");wall.transform.SetParent(group,false);wall.layer=8;
     wall.transform.position=side==0?new Vector3(0,250,494):side==1?new Vector3(494,250,0):side==2?new Vector3(0,250,-494):new Vector3(-494,250,0);
@@ -75,11 +57,11 @@ namespace TowTrouble.Editor
    }
    bool innerUnchanged=true;for(int z=0;z<n;z++)for(int x=0;x<n;x++)if(Mathf.Max(Mathf.Abs(-500+x/(float)(n-1)*1000),Mathf.Abs(-500+z/(float)(n-1)*1000))<=440&&heights[z,x]!=before[z,x])innerUnchanged=false;
    if(!innerUnchanged)throw new InvalidOperationException("Playable terrain changed");
-   var renderers=root.GetComponentsInChildren<MeshRenderer>().Where(r=>r.enabled).ToArray();long triangles=renderers.Sum(r=>(long)r.GetComponent<MeshFilter>().sharedMesh.triangles.Length/3);
    Physics.SyncTransforms();int hits=0;foreach(var box in root.GetComponentsInChildren<BoxCollider>())for(int j=-4;j<=4;j++){var c=box.transform.position;bool northSouth=box.size.x>box.size.z;var origin=northSouth?new Vector3(j*115,450,0):new Vector3(0,450,j*115);var dir=northSouth?new Vector3(0,0,Mathf.Sign(c.z)):new Vector3(Mathf.Sign(c.x),0,0);if(box.Raycast(new Ray(origin,dir),out _,510))hits++;}
    if(hits!=36)throw new InvalidOperationException("Boundary continuity failed");
-   File.WriteAllText(evidence+"/Validation.json",Newtonsoft.Json.JsonConvert.SerializeObject(new{innerUnchanged,roadLimit,terrainSamplesChanged=changed,formations=96,renderers=renderers.Length,triangles,colliders=4,boundaryRayHits=hits,newLights=0,newRuntimeComponents=0},Newtonsoft.Json.Formatting.Indented));
+   File.WriteAllText(evidence+"/Validation.json",Newtonsoft.Json.JsonConvert.SerializeObject(new{innerUnchanged,roadLimit,terrainSamplesChanged=changed,colliders=4,boundaryRayHits=hits,newLights=0,newRuntimeComponents=0},Newtonsoft.Json.Formatting.Indented));
    EditorSceneManager.MarkSceneDirty(scene);Undo.CollapseUndoOperations(undo);
+   BlendCountyHorizon();
   }
  }
 }

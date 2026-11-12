@@ -8,8 +8,13 @@ namespace TowTrouble
     {
         private const float BreadcrumbSpacing = 8f;
         private const float FirstBreadcrumbDistance = 5f;
+        private const int EnvironmentLayer = 1 << 8;
         private readonly MeshRenderer[] roadChevrons = new MeshRenderer[5];
-        private Mesh roadTrailMesh;
+        private readonly Mesh[] roadTrailMeshes = new Mesh[5];
+        private readonly Vector3[] lastChevronCenters = new Vector3[5], lastChevronDirections = new Vector3[5];
+        private readonly bool[] placedChevrons = new bool[5];
+        private readonly RaycastHit[] chevronHits = new RaycastHit[16];
+        private Vector3[] chevronTemplate, chevronProjection;
         private Texture2D roadTrailPalette;
         private GameObject roadTrailRoot;
         private Material roadTrailMaterial;
@@ -21,7 +26,6 @@ namespace TowTrouble
             var shader = Shader.Find("Universal Render Pipeline/Unlit");
             if (shader == null) return;
             roadTrailPalette = BuildTrailPalette();
-            roadTrailMesh = BuildChevronMesh();
             roadTrailMaterial = new Material(shader) { name = "Local route chevrons" };
             roadTrailMaterial.SetTexture("_BaseMap", roadTrailPalette);
             roadTrailMaterial.SetColor("_BaseColor", Color.white);
@@ -35,7 +39,15 @@ namespace TowTrouble
             {
                 var item = new GameObject("Road chevron", typeof(MeshFilter), typeof(MeshRenderer));
                 item.transform.SetParent(roadTrailRoot.transform, false);
-                item.GetComponent<MeshFilter>().sharedMesh = roadTrailMesh;
+                var mesh = BuildChevronMesh();
+                if (chevronTemplate == null)
+                {
+                    chevronTemplate = mesh.vertices;
+                    chevronProjection = new Vector3[chevronTemplate.Length];
+                }
+                mesh.MarkDynamic();
+                roadTrailMeshes[i] = mesh;
+                item.GetComponent<MeshFilter>().sharedMesh = mesh;
                 var renderer = item.GetComponent<MeshRenderer>();
                 renderer.sharedMaterial = roadTrailMaterial;
                 renderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -75,7 +87,11 @@ namespace TowTrouble
             var uvs = new List<Vector2>(66);
             void Triangle(Vector2 a, Vector2 b, Vector2 c, int column)
             {
-                Add(a, column); Add(b, column); Add(c, column);
+                var ab = (a + b) * .5f;
+                var bc = (b + c) * .5f;
+                var ca = (c + a) * .5f;
+                Face(a, ab, ca); Face(ab, b, bc); Face(ca, bc, c); Face(ab, bc, ca);
+                void Face(Vector2 p, Vector2 q, Vector2 r) { Add(p, column); Add(q, column); Add(r, column); }
             }
             void Add(Vector2 point, int column)
             {
@@ -97,7 +113,6 @@ namespace TowTrouble
             mesh.SetVertices(vertices);
             mesh.SetUVs(0, uvs);
             mesh.SetTriangles(indices, 0);
-            mesh.UploadMeshData(true);
             return mesh;
         }
 
@@ -149,7 +164,7 @@ namespace TowTrouble
                 Vector3 forward = delta / length;
                 while (next <= length && drawn < roadChevrons.Length)
                 {
-                    DrawRoadChevron(roadChevrons[drawn++], road[i] + forward * next, forward);
+                    DrawRoadChevron(drawn++, road[i] + forward * next, forward);
                     next += BreadcrumbSpacing;
                 }
                 next -= length;
@@ -159,14 +174,64 @@ namespace TowTrouble
             roadTrailRoot.SetActive(drawn > 0);
         }
 
-        private static void DrawRoadChevron(MeshRenderer marker, Vector3 center, Vector3 forward)
+        private void DrawRoadChevron(int index, Vector3 center, Vector3 forward)
         {
-            // Marker dimensions are in meters regardless of the scene owner's scale.
-            var scale = marker.transform.parent.lossyScale;
-            marker.transform.localScale = new Vector3(1f / Mathf.Max(.00001f, scale.x),
-                1f / Mathf.Max(.00001f, scale.y), 1f / Mathf.Max(.00001f, scale.z));
-            marker.transform.SetPositionAndRotation(center + Vector3.up * .16f, Quaternion.LookRotation(forward, Vector3.up));
+            var marker = roadChevrons[index];
+            if (placedChevrons[index] && (lastChevronCenters[index] - center).sqrMagnitude < .0001f &&
+                Vector3.Dot(lastChevronDirections[index], forward) > .9999f)
+            {
+                marker.enabled = true;
+                return;
+            }
+
+            placedChevrons[index] = false;
+            marker.enabled = false;
+            if (!FindChevronSurface(center, 1.35f, out var surface)) return;
+            var tangent = Vector3.ProjectOnPlane(forward, surface.normal).normalized;
+            if (tangent.sqrMagnitude < .5f) return;
+            var frame = Quaternion.LookRotation(tangent, surface.normal);
+            marker.transform.position = surface.point;
+
+            for (int i = 0; i < chevronTemplate.Length; i++)
+            {
+                var hint = surface.point + frame * chevronTemplate[i];
+                if (!FindChevronSurface(hint, .48f, out var contact) ||
+                    Vector3.Dot(surface.normal, contact.normal) < .70f) return;
+                chevronProjection[i] = marker.transform.InverseTransformPoint(contact.point + contact.normal * .026f);
+            }
+
+            var mesh = roadTrailMeshes[index];
+            mesh.vertices = chevronProjection;
+            mesh.RecalculateBounds();
+            lastChevronCenters[index] = center;
+            lastChevronDirections[index] = forward;
+            placedChevrons[index] = true;
             marker.enabled = true;
+        }
+
+        private bool FindChevronSurface(Vector3 hint, float range, out RaycastHit contact)
+        {
+            contact = default;
+            int count = Physics.RaycastNonAlloc(hint + Vector3.up * (range + .03f), Vector3.down,
+                chevronHits, range * 2 + .06f, EnvironmentLayer, QueryTriggerInteraction.Ignore);
+            float closest = range;
+            for (int i = 0; i < count; i++)
+            {
+                var hit = chevronHits[i];
+                if (hit.normal.y < .48f || !IsChevronSurface(hit.collider)) continue;
+                float error = Mathf.Abs(hit.point.y - hint.y);
+                if (error >= closest) continue;
+                closest = error;
+                contact = hit;
+            }
+            return contact.collider != null;
+        }
+
+        private static bool IsChevronSurface(Collider collider)
+        {
+            return collider is TerrainCollider || collider.TryGetComponent<RecoveryGroundSurface>(out _) ||
+                collider.TryGetComponent<RecoveryTrackSurface>(out _) || collider.name.StartsWith("Road-") ||
+                collider.name == "Bridge drive surface" || collider.name == "Bridge entry ramp";
         }
 
         private void HideRoadTrail()
@@ -178,7 +243,7 @@ namespace TowTrouble
         private void DisposeRoadTrail()
         {
             DestroyTrailResource(roadTrailMaterial);
-            DestroyTrailResource(roadTrailMesh);
+            foreach (var mesh in roadTrailMeshes) DestroyTrailResource(mesh);
             DestroyTrailResource(roadTrailPalette);
         }
 

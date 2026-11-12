@@ -1,0 +1,9 @@
+# Named meadow rework — 2026-11-11
+
+User rejected the previous scattered pass as visually unchanged. Native inspection confirmed OpenWorldRecovery was loaded and saved, PC quality active, Switch rendering false, and both desktop art roots active and not hidden. The issue was insufficient landscape-scale composition rather than loading the wrong scene.
+
+Added 13 explicitly positioned woodland/meadow compositions in OpenWorldDesktopCounty.MeadowBelt: house and shelter surroundings, bridge meadow, river bend, western woodland/slope, upper woodland and garage approaches. Bushes use 2.5–4.5 m measured width, varied foliage and irregular overlapping lobes. Rock02 outcrops at 4.3 m and rock clumps at 3.2 m anchor the groups; ferns and full-sized grass soften their edges. Existing path, delivery, recovery, slope and actual water-triangle protection still filter each plant. NamedZones.json records actual accepted placement counts; constrained bridge/shelter locations deliberately accept fewer objects.
+
+An initial four-row hedge-like pass was rejected during native capture review and replaced with irregular lobe masks, gaps and size variation. Before/Meadow0–5 and After/Meadow0–5 are actual Unity renders from identical cameras. These representative views cover houses, woodland, river approach and garage approach; they are not exact reconstructions of all uploaded screenshots. Existing terrain paint, terrain heights, recovery state and 2,870 existing collider serializations are unchanged. No decorative colliders added.
+
+Compilation succeeded without reported errors/warnings. Native exact road-path checks on 25,624 placements give >=2.599 m edge allowance including placement footprint and <0.000002 m ground-anchor error. Mesh/shader/reference verification is recorded in Checks.json. No player build or hardware FPS benchmark was performed.

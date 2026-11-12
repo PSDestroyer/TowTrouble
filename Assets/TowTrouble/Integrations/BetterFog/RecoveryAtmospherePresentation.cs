@@ -38,6 +38,10 @@ namespace TowTrouble
         [SerializeField,Range(.5f,1.5f)] private float gameplaySunIntensity=1.12f;
         [SerializeField,Range(0,.6f)] private float gameplayFillIntensity=.32f;
         [SerializeField,Range(0,1)] private float gameplayShadowStrength=.82f;
+        [Header("Desktop showcase lighting")]
+        [SerializeField,Range(.5f,1.5f)] private float desktopSunIntensity=1.20f;
+        [SerializeField,Range(0,.6f)] private float desktopFillIntensity=.24f;
+        [SerializeField,Range(0,1)] private float desktopShadowStrength=.90f;
         private Color previousFillColor;
         private bool ownsColorGrading;
         private float manualSaturation,manualContrast;
@@ -107,16 +111,20 @@ namespace TowTrouble
         {
             night=Mathf.Clamp01(night);wet=Mathf.Clamp01(wet);
             float clearDay=(1-night)*(1-wet);
-            sky.sunLight.intensity=Mathf.Lerp(Mathf.Lerp(gameplaySunIntensity,.84f,wet),.95f,night);
+            bool desktop=!RecoveryPlatform.UsesSwitchRendering;
+            float sunIntensity=desktop?desktopSunIntensity:gameplaySunIntensity;
+            float fillIntensity=desktop?desktopFillIntensity:gameplayFillIntensity;
+            float shadowStrength=desktop?desktopShadowStrength:gameplayShadowStrength;
+            sky.sunLight.intensity=Mathf.Lerp(Mathf.Lerp(sunIntensity,.84f,wet),.95f,night);
             // Read COZY's current colour, never last frame's modified light colour.
             // Preserve its dawn/dusk luminance and leave night/rain colours intact.
             var weatherColor=sky.sunlightColor;
             var warmSun=new Color(1,.94f,.82f)*weatherColor.maxColorComponent;
             sky.sunLight.color=Color.Lerp(weatherColor,warmSun,.22f*clearDay);
-            sky.sunLight.shadowStrength=Mathf.Lerp(previousSunShadowStrength,gameplayShadowStrength,clearDay);
+            sky.sunLight.shadowStrength=Mathf.Lerp(previousSunShadowStrength,shadowStrength,clearDay);
             if(fill!=null)
             {
-                fill.intensity=Mathf.Lerp(Mathf.Lerp(gameplayFillIntensity,.26f,wet),.18f,night);
+                fill.intensity=Mathf.Lerp(Mathf.Lerp(fillIntensity,.26f,wet),.18f,night);
                 fill.color=Color.Lerp(new Color(.88f,.94f,1),new Color(.56f,.68f,1),night);
             }
         }

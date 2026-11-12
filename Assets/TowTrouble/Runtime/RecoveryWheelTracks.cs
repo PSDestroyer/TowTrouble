@@ -13,6 +13,7 @@ namespace TowTrouble
         [SerializeField] private Collider[] roadSurfaces;
         [SerializeField] private Material[] materials;
         private const int SegmentsPerChunk=128,MaxChunks=36,Columns=7,SurfaceCount=6;
+        private const float TrackSampleSpacing = .42f;
         private readonly List<Chunk> chunks=new List<Chunk>();
         private readonly Chunk[] active=new Chunk[SurfaceCount];
         private readonly RaycastHit[] previous=new RaycastHit[12];
@@ -70,25 +71,64 @@ namespace TowTrouble
             if(connected[key]&&(hit.point-previous[key].point).sqrMagnitude<.09f)return;
             if(connected[key]&&CanConnect(previous[key].point,hit.point,previousKind[key],kind))
             {
-                var a=previous[key];float distance=Vector3.Distance(a.point,hit.point);
-                var mapA=PaintMap(a);var mapB=PaintMap(hit);
-                int mask=SurfaceMask(mapA,a.point,previousKind[key])|SurfaceMask(mapB,hit.point,kind);
-                // Include the tread edges when straddling a narrow painted boundary.
-                var side=Vector3.Cross((a.normal+hit.normal).normalized,(hit.point-a.point).normalized)*.30f;
-                mask|=SurfaceMask(mapA,a.point-side,previousKind[key])|SurfaceMask(mapA,a.point+side,previousKind[key]);
-                mask|=SurfaceMask(mapB,hit.point-side,kind)|SurfaceMask(mapB,hit.point+side,kind);
-                for(int skin=0;skin<SurfaceCount;skin++)
+                var start = previous[key];
+                var a = start;
+                int kindA = previousKind[key];
+                int steps = Mathf.CeilToInt(Vector3.Distance(start.point, hit.point) / TrackSampleSpacing);
+                bool hasStart = true;
+                for (int i = 1; i <= steps; i++)
                 {
-                    if((mask&(1<<skin))==0){tails[key,skin]=default;continue;}
-                    var chunk=GetChunk(skin);
-                    if(!chunk.AppendBlended(a,hit,skin,travel[key],travel[key]+distance,strength,mapA,mapB,previousKind[key],kind,true))continue;
-                    var tail=tails[key,skin];if(tail.Chunk!=null)tail.Chunk.OpenEnd(tail.Segment,tail.Generation);
-                    tails[key,skin]=new Tail{Chunk=chunk,Segment=chunk.Count-1,Generation=chunk.Generation};
+                    var b = hit;
+                    int kindB = kind;
+                    if (i < steps)
+                    {
+                        float t = i / (float)steps;
+                        var hint = Vector3.Lerp(start.point, hit.point, t);
+                        var normal = Vector3.Lerp(start.normal, hit.normal, t).normalized;
+                        if ((!RaycastContact(start.collider, hint, normal, .35f, out b) &&
+                             !RaycastContact(hit.collider, hint, normal, .35f, out b)) || !TrySurface(b, out kindB))
+                        {
+                            BreakStrip(key);
+                            hasStart = false;
+                            continue;
+                        }
+                    }
+                    if (hasStart && (a.point - b.point).sqrMagnitude < .75f * .75f)
+                        AppendSpan(key, a, b, kindA, kindB, strength);
+                    else BreakStrip(key);
+                    a = b;
+                    kindA = kindB;
+                    hasStart = true;
                 }
-                travel[key]+=distance;
             }
-            else {travel[key]=0;for(int skin=0;skin<SurfaceCount;skin++)tails[key,skin]=default;}
+            else BreakStrip(key);
             previous[key]=hit;previousKind[key]=kind;connected[key]=true;
+        }
+        private void BreakStrip(int key)
+        {
+            travel[key] = 0;
+            for (int skin = 0; skin < SurfaceCount; skin++) tails[key, skin] = default;
+        }
+        private void AppendSpan(int key, RaycastHit a, RaycastHit b, int kindA, int kindB, float strength)
+        {
+            float distance = Vector3.Distance(a.point, b.point);
+            var mapA = PaintMap(a);
+            var mapB = PaintMap(b);
+            var side = Vector3.Cross((a.normal + b.normal).normalized, (b.point - a.point).normalized) * .30f;
+            int mask = SurfaceMask(mapA, a.point, kindA) | SurfaceMask(mapB, b.point, kindB) |
+                       SurfaceMask(mapA, a.point - side, kindA) | SurfaceMask(mapA, a.point + side, kindA) |
+                       SurfaceMask(mapB, b.point - side, kindB) | SurfaceMask(mapB, b.point + side, kindB);
+            for (int skin = 0; skin < SurfaceCount; skin++)
+            {
+                if ((mask & (1 << skin)) == 0) { tails[key, skin] = default; continue; }
+                var chunk = GetChunk(skin);
+                if (!chunk.AppendBlended(a, b, skin, travel[key], travel[key] + distance, strength, mapA, mapB, kindA, kindB, true))
+                { tails[key, skin] = default; continue; }
+                var tail = tails[key, skin];
+                if (tail.Chunk != null) tail.Chunk.OpenEnd(tail.Segment, tail.Generation);
+                tails[key, skin] = new Tail { Chunk = chunk, Segment = chunk.Count - 1, Generation = chunk.Generation };
+            }
+            travel[key] += distance;
         }
         public bool TrySurface(RaycastHit hit,out int kind)
         {
@@ -113,20 +153,19 @@ namespace TowTrouble
         public static bool ProjectContact(Collider surface,Vector3 hint,Vector3 normal,out Vector3 point,out Vector3 up)
         {
             point=hint;up=normal;
-            if(surface==null)return false;
-            if(surface is TerrainCollider terrainCollider)
-            {
-                var data=terrainCollider.terrainData;var origin=surface.transform.position;
-                float u=(hint.x-origin.x)/data.size.x,v=(hint.z-origin.z)/data.size.z;
-                if(u<0||v<0||u>1||v>1)return false;
-                int hx=Mathf.Clamp(Mathf.FloorToInt(u*data.holesResolution),0,data.holesResolution-1),hz=Mathf.Clamp(Mathf.FloorToInt(v*data.holesResolution),0,data.holesResolution-1);
-                if(data.IsHole(hx,hz))return false;
-                point.y=origin.y+data.GetInterpolatedHeight(u,v);up=data.GetInterpolatedNormal(u,v);
-                return Mathf.Abs(point.y-hint.y)<.65f;
-            }
-            if(surface.Raycast(new Ray(hint+normal*.6f,-normal),out var hit,1.2f))
-            {point=hit.point;up=hit.normal;if(surface.TryGetComponent<RecoveryTrackSurface>(out var skin))point=skin.VisualPoint(point);return Vector3.Dot(up,normal)>.35f;}
-            return false;
+            if (!RaycastContact(surface, hint, normal, .65f, out var hit)) return false;
+            point = hit.point;
+            up = hit.normal;
+            if (surface.TryGetComponent<RecoveryTrackSurface>(out var skin)) point = skin.VisualPoint(point);
+            return true;
+        }
+        private static bool RaycastContact(Collider surface, Vector3 hint, Vector3 normal, float range, out RaycastHit hit)
+        {
+            hit = default;
+            if (surface == null) return false;
+            var axis = surface is TerrainCollider ? Vector3.up : normal;
+            return surface.Raycast(new Ray(hint + axis * range, -axis), out hit, range * 2) &&
+                   Vector3.Dot(hit.normal, normal) > .35f;
         }
         private Chunk GetChunk(int kind)
         {
@@ -176,7 +215,8 @@ namespace TowTrouble
                 var normal=(a.normal+b.normal).normalized;var direction=(b.point-a.point).normalized;var right=Vector3.Cross(normal,direction).normalized;
                 if(right.sqrMagnitude<.1f)return false;
                 var midpoint=(a.point+b.point)*.5f;
-                if(!ProjectContact(a.collider,midpoint,normal,out _,out _)&&!ProjectContact(b.collider,midpoint,normal,out _,out _))return false;
+                if ((!RaycastContact(a.collider, midpoint, normal, .11f, out _) &&
+                     !RaycastContact(b.collider, midpoint, normal, .11f, out _))) return false;
                 float halfWidth=kind==2?.30f:.27f,depth=RecoveryTrackSurface.Relief((RecoveryTrackKind)kind);
                 for(int row=0;row<2;row++)for(int c=0;c<Columns;c++)
                 {
