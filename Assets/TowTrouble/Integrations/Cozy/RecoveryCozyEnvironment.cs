@@ -83,6 +83,12 @@ namespace TowTrouble
             DayPercentage=RecoveryWeatherRules.Day(seconds);NightAmount=RecoveryWeatherRules.Night(DayPercentage);
             cozy.timeModule.currentTime=DayPercentage;
             RecoveryWeatherRules.Weather(seconds,world.EnvironmentSeed,out int from,out int to,out float blend);
+            bool expedition = session.Expedition != null;
+            if (expedition)
+            {
+                from = Mathf.Max(2, from);
+                to = Mathf.Max(2, to);
+            }
             // COZY3.6 expects a strongest profile strictly above 0.5. Keep the midpoint safe.
             if(Mathf.Abs(blend-.5f)<.0001f)blend=.5001f;
             for(int i=0;i<weather.Count;i++)weather[i].weight=0;
@@ -91,7 +97,7 @@ namespace TowTrouble
             var local=world.Drivers[Mathf.Clamp(session.LocalSlot,0,1)];var position=local.transform.position;
             bool onSnow=ground!=null&&ground.Sample(position)==RecoveryGroundKind.Snow;
             float alpine=Mathf.SmoothStep(0,1,Mathf.InverseLerp(115,150,position.y))*Mathf.InverseLerp(180,240,position.z);
-            float target=live?Mathf.Max(onSnow?1:0,alpine):0;
+            float target=expedition?1:live?Mathf.Max(onSnow?1:0,alpine):0;
             snowWeight=Mathf.MoveTowards(snowWeight,target,Time.deltaTime/7);
             WetAmount=RecoveryWeatherRules.Wet(from,to,blend);
             RecoveryWeatherRules.Precipitation(WetAmount,snowWeight,out float rain,out float snow);
@@ -101,7 +107,8 @@ namespace TowTrouble
                 // No precipitation under the workshop canopy; one inexpensive probe per quarter second.
                 roofVisibility=Physics.Raycast(position+Vector3.up*3.5f,Vector3.up,12,~0,QueryTriggerInteraction.Ignore)?0:1;
             }
-            RainAmount=live?rain*roofVisibility:0;SnowAmount=live?snow*roofVisibility:0;
+            RainAmount=live&&!expedition?rain*roofVisibility:0;
+            SnowAmount=expedition?(live?Mathf.Lerp(.55f,.96f,WetAmount):.45f)*roofVisibility:live?snow*roofVisibility:0;
             foreach(var effects in vehicles)if(effects!=null)effects.SetNightLighting(NightAmount);
             if(session.Audio!=null)session.Audio.SetEnvironment(NightAmount,RainAmount);
         }

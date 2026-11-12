@@ -28,7 +28,7 @@ namespace TowTrouble
         public int GarageViewReset { get; private set; }
         public bool GarageCameraInputBlocked { get; set; }
         public void ResetGarageView() { GarageViewReset++; }
-        public bool BoardOpen=>View=="Board";
+        public bool BoardOpen=>View=="Board" || View=="Expeditions";
         public int LastReward=>Profile.lastPayout;
         private bool identitySent, recorded;
         public RecoveryProfile Profile {get;private set;}
@@ -40,7 +40,17 @@ namespace TowTrouble
         public void ConsumeMenuInput() { menuInputConsumedFrame = Time.frameCount; }
         private UnityEngine.Rendering.Universal.ColorAdjustments grade;
         public RecoveryAudioDirector Audio { get; private set; }
-        private void Awake(){RecoveryOfflineTransport.Prepare(network);Profile=RecoveryProfile.Load();SelectedContract=Profile.lastContract;ApplySettings();}
+        public WinterExpedition Expedition { get; private set; }
+        private void Awake()
+        {
+            TryGetComponent(out WinterExpedition expedition);
+            Expedition = expedition;
+            RecoveryOfflineTransport.Prepare(network, Expedition != null);
+            Profile = RecoveryProfile.Load();
+            SelectedContract = Profile.lastContract;
+            Expedition?.Bind(this);
+            ApplySettings();
+        }
         private void StartAudio(){var bank=Resources.Load<RecoveryAudioBank>("RecoveryAudioBank");if(bank==null){Debug.LogWarning("Tow Trouble audio bank is missing.");return;}var rig=new GameObject("Tow Trouble audio");rig.transform.SetParent(transform,false);Audio=rig.AddComponent<RecoveryAudioDirector>();Audio.Configure(this,bank);}
         public void ApplySettings(){RecoveryInputPrompts.FamilyOverride=Profile.controllerFamily;RecoveryLocalization.Select(Profile.language);AudioListener.volume=Profile.master;RecoveryVehicle.EffectsGain=Profile.effects;ApplyGraphicsPreference();if(grade==null){var volume=FindFirstObjectByType<UnityEngine.Rendering.Volume>();if(volume!=null&&volume.profile!=null)volume.profile.TryGet(out grade);}if(grade!=null)grade.postExposure.Override(Mathf.Log(RecoveryPlatform.UsesSwitchRendering?1:Profile.brightness,2)+.1f);}
         public void SelectContract(int value){SelectedContract=Mathf.Clamp(value,0,RecoveryContract.All.Length-1);if(Profile.Unlocked(SelectedContract)){Profile.lastContract=SelectedContract;Profile.Save();}if(Profile.Unlocked(SelectedContract)&&Connected&&IsHost&&world.Phase==RecoveryPhase.Lobby)world.ConfigureSession(SelectedContract,!Solo,world.FreeRoam);}
@@ -95,6 +105,10 @@ namespace TowTrouble
         public void Configure(NetworkManager manager, RecoveryWorld recoveryWorld, RecoveryCamera cameraRig)
         { network = manager; world = recoveryWorld; recoveryCamera = cameraRig; }
 
+        private const string ClassicScene = "OpenWorldRecovery";
+        private const string WinterScene = "WinterExpeditions";
+        internal static bool WinterDlcAvailable =>
+            SceneUtility.GetBuildIndexByScenePath("Assets/TowTrouble/Scenes/" + WinterScene + ".unity") >= 0;
         private static int travelMode;
         private static string travelAddress;
         public void OpenTutorial(){ RequestTraining(); }
@@ -102,7 +116,7 @@ namespace TowTrouble
         {travelMode=mode;travelAddress=address;Time.timeScale=1;SceneManager.LoadScene(scene);}
         private void Start()
         {
-            if (world.Map == null) { TravelTo("OpenWorldRecovery",0,null); return; }
+            if (world.Map == null) { TravelTo(ClassicScene,0,null); return; }
             if(!RecoveryPlatform.UsesSwitchRendering&&Profile.displayWidth>=800&&Profile.displayHeight>=600&&Profile.displayMode>=0&&Profile.displayMode<=3)Screen.SetResolution(Profile.displayWidth,Profile.displayHeight,(FullScreenMode)Profile.displayMode);
             Application.targetFrameRate = RecoveryPlatform.FrameRateLimit;
             // FishNet reapplies this rendering cap on connection; its simulation tick rate stays unchanged.
@@ -145,10 +159,10 @@ namespace TowTrouble
 
         public void Host(bool solo,bool exploration=false)
         {
-            if(!solo&&!RecoveryPlatform.MultiplayerAvailable){status="Only local play is available on this platform.";return;}
+            if(!solo&&(!RecoveryPlatform.MultiplayerAvailable||Expedition!=null)){status="Only local play is available in this demo.";return;}
             if(!Profile.starterChosen){View="Starter";return;}
             if (Connecting || Connected || leaving) return;
-            if(exploration&&world.Map==null){TravelTo("OpenWorldRecovery",solo?1:2,null);return;}
+            if(exploration&&world.Map==null){TravelTo(ClassicScene,solo?1:2,null);return;}
             Solo=solo;explorationRequested=exploration;garageIdentitySent=false;identitySent=false;recorded=false;
             quickStart = solo; readySent = false; Connecting = true; connectDeadline = Time.unscaledTime + 12f;
             status = "Starting your session…";
@@ -159,24 +173,24 @@ namespace TowTrouble
             var startingBuild=Profile.Build(Profile.vehicle).Copy();
             if(GarageCatalog!=null)startingBuild.Normalize(GarageCatalog,Profile.Owns);
             world.PrepareHostVehicle(startingBuild,Profile.paint,exploration||world.Map!=null);
-            if (!network.ServerManager.StartConnection()) { Connecting = false; status = RecoveryPlatform.MultiplayerAvailable?"Port 7777 is unavailable.":"Could not start the game. Please try again."; return; }
+            if (!network.ServerManager.StartConnection()) { Connecting = false; status = transport is RecoveryOfflineTransport?"Could not start the game. Please try again.":"Port 7777 is unavailable."; return; }
             network.ClientManager.StartConnection();
         }
 
         private static void ConfigureHostTransport(Transport transport)
         {
+            if (transport is RecoveryOfflineTransport) return;
             transport.SetMaximumClients(RecoveryPlatform.MultiplayerAvailable?2:1);
-            if (RecoveryPlatform.OfflineOnly) return;
             transport.SetPort(7777);
             transport.SetClientAddress("127.0.0.1");
         }
 
         public void Join(string address)
         {
-            if(!RecoveryPlatform.MultiplayerAvailable){status="Only local play is available on this platform.";return;}
+            if(!RecoveryPlatform.MultiplayerAvailable||Expedition!=null){status="Only local play is available in this demo.";return;}
             if(!Profile.starterChosen){View="Starter";return;}
             if (Connecting || Connected || leaving) return;
-            if(world.Map==null){TravelTo("OpenWorldRecovery",3,address);return;}
+            if(world.Map==null){TravelTo(ClassicScene,3,address);return;}
             address = address.Trim();
             if (address.Length == 0 || address.Length > 253) { status = "Enter a valid host address."; return; }
             Solo=false;garageIdentitySent=false;identitySent=false;recorded=false;
@@ -199,7 +213,7 @@ namespace TowTrouble
         {
             if(Training||!Connected||!world.FreeRoam||world.Phase==RecoveryPhase.Lobby||world.Phase==RecoveryPhase.Complete)return;
             if(BoardOpen){CloseOverlay();return;}if(menuOpen)return;
-            world.Drive(Vector2.zero,true,false);menuOpen=true;View="Board";if(Solo)Time.timeScale=0;
+            world.Drive(Vector2.zero,true,false);menuOpen=true;View=Expedition!=null?"Expeditions":"Board";if(Solo)Time.timeScale=0;
         }
         public void OpenGarage()
         {
@@ -242,7 +256,8 @@ namespace TowTrouble
         private IEnumerator Reload()
         {
             yield return new WaitForSecondsRealtime(.25f);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (returnToMain && Expedition != null) TravelTo(ClassicScene, 0, null);
+            else SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         private void Update()
@@ -276,17 +291,27 @@ namespace TowTrouble
             bool overlayWasOpen=BoardOpen||GarageOpen;
             var keyboard = Keyboard.current;
             var pad = RecoveryInputDevices.Pad;
-            if(world.FreeRoam&&View=="Gameplay")
+            if(world.FreeRoam&&(View=="Gameplay"||View=="Expeditions")&&
+                (keyboard != null && keyboard[Profile.ReadKey(Profile.boardKey, Key.Tab)].wasPressedThisFrame||pad?.selectButton.wasPressedThisFrame==true))
+                ToggleBoard();
+            if(world.FreeRoam&&View=="Gameplay"&&!overlayWasOpen)
             {
-                if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.boardKey,Key.Tab)].wasPressedThisFrame)||(pad!=null&&pad.selectButton.wasPressedThisFrame))ToggleBoard();
                 if((keyboard!=null&&keyboard[Profile.ReadKey(Profile.garageKey,Key.G)].wasPressedThisFrame)||(pad!=null&&pad.buttonWest.wasPressedThisFrame))OpenGarage();
             }
             if(!overlayWasOpen&&(View=="Gameplay"||View=="Pause")&&((keyboard!=null&&keyboard.escapeKey.wasPressedThisFrame)||(pad!=null&&pad.startButton.wasPressedThisFrame)))ToggleMenu();
             if (world.Phase == RecoveryPhase.Lobby || world.Phase == RecoveryPhase.Complete){return;}
             if (!menuOpen)
             {
-                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.F)].wasPressedThisFrame) || (pad != null && RecoveryInputPrompts.Confirm(pad).wasPressedThisFrame)) world.ToggleCable();
-                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.resetKey,Key.R)].wasPressedThisFrame) || (pad != null && pad.leftStickButton.wasPressedThisFrame)) world.Unstuck();
+                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.hookKey,Key.F)].wasPressedThisFrame) || (pad != null && RecoveryInputPrompts.Confirm(pad).wasPressedThisFrame))
+                {
+                    if (Expedition != null && world.Phase == RecoveryPhase.Explore) Expedition.ToggleWinch();
+                    else world.ToggleCable();
+                }
+                if ((keyboard != null && keyboard[Profile.ReadKey(Profile.resetKey,Key.R)].wasPressedThisFrame) || (pad != null && pad.leftStickButton.wasPressedThisFrame))
+                {
+                    Expedition?.Detach();
+                    world.Unstuck();
+                }
             }
             if(RecoveryPlatform.MultiplayerAvailable&&!menuOpen){if(keyboard!=null){if(keyboard.digit1Key.wasPressedThisFrame)world.SendSignal(1);if(keyboard.digit2Key.wasPressedThisFrame)world.SendSignal(2);if(keyboard.digit3Key.wasPressedThisFrame)world.SendSignal(3);}if(pad!=null&&pad.dpad.up.wasPressedThisFrame)world.SendSignal(1);if(pad!=null&&pad.dpad.right.wasPressedThisFrame)world.SendSignal(2);if(pad!=null&&pad.dpad.down.wasPressedThisFrame)world.SendSignal(3);}
             if (Time.unscaledTime < nextInput) return;
@@ -294,6 +319,7 @@ namespace TowTrouble
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (ValidationInputActive)
             {
+                Expedition?.SetWinchInput(ValidationWinch, false);
                 world.Drive(ValidationInput, ValidationBrake, ValidationWinch);
                 return;
             }
@@ -313,6 +339,7 @@ namespace TowTrouble
                     brake = RecoveryInputPrompts.Cancel(pad).isPressed; winch = pad.leftShoulder.isPressed;extend=pad.rightShoulder.isPressed;
                 }
             }
+            Expedition?.SetWinchInput(winch, extend);
             world.Drive(input, brake, winch,extend);
         }
     }

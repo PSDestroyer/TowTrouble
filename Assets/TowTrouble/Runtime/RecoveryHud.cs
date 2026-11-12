@@ -50,7 +50,8 @@ namespace TowTrouble
             var scaler=canvas.GetComponent<UnityEngine.UI.CanvasScaler>();scaler.uiScaleMode=UnityEngine.UI.CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1600,900);scaler.screenMatchMode=UnityEngine.UI.CanvasScaler.ScreenMatchMode.Expand;scaler.matchWidthOrHeight=.5f;root=(RectTransform)canvas.transform;
             foreach(var label in FindObjectsByType<TMP_Text>(FindObjectsInactive.Include,FindObjectsSortMode.None))
                 if(label.gameObject.scene==gameObject.scene)RecoveryLocalizedText.Bind(label);
-            BuildGameplay();ConfigureHudScreen();BuildPersistenceHint();Show(session.ConsumeReturnToMain()?"Main":"Title");
+            BuildGameplay();ConfigureHudScreen();BuildPersistenceHint();
+            Show(session.ConsumeReturnToMain() ? "Main" : session.Expedition != null && session.Connecting ? "Busy" : "Title");
         }
         private void OnDestroy(){SetMenuNavigation(false);SetGarageNavigation(false);SetBoardNavigation(false);DisposeRoadTrail();}
         private RectTransform Node(string name,Transform parent,float x,float y,float width,float height)
@@ -128,7 +129,7 @@ namespace TowTrouble
             if(target=="Busy"&&DeferBusyPresentation())return;
             if(target=="Main"||target=="Title")session.PreviewFittedRide();
             if(target!="Title"&&target!="Main"&&target!="Lobby"&&target!="Starter"&&target!="Garage")Panel(pageRoot,0,0,1600,900,new Color(.03f,.04f,.035f,.42f));
-            switch(target){case "Garage":BuildGarage();break;case "Board":BuildBoard();break;case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Help":BuildHelp();break;case "Starter":BuildVehicles();break;case "TutorialOffer":BuildTutorialOffer();break;case "TutorialDone":case "TrainingComplete":BuildTutorialDone();break;case "TextEntry":BuildTextEntry();break;case "Busy":BuildBusy();break;case "Confirm":BuildConfirmation();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;}
+            switch(target){case "Garage":BuildGarage();break;case "Board":BuildBoard();break;case "Expeditions":BuildExpeditions();break;case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Help":if(session.Expedition!=null)BuildExpeditionHelp();else BuildHelp();break;case "Starter":BuildVehicles();break;case "TutorialOffer":BuildTutorialOffer();break;case "TutorialDone":case "TrainingComplete":BuildTutorialDone();break;case "TextEntry":BuildTextEntry();break;case "Busy":BuildBusy();break;case "Confirm":BuildConfirmation();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;}
             ConfigureMenuPage();
             StartCoroutine(FocusFirst());
         }
@@ -145,10 +146,11 @@ namespace TowTrouble
         }
         private void BuildTitle()
         {
-            Logo(pageRoot,100,70,96);Text(pageRoot,L("DRUMURI GRELE. PRIETENI BUNI.","BAD ROADS. GOOD COMPANY."),108,333,700,40,21,Paper,true);
+            if(session.Expedition!=null)Text(pageRoot,"WINTER EXPEDITIONS",100,130,1050,110,72,Paper,true);
+            else { Logo(pageRoot,100,70,96);Text(pageRoot,L("DRUMURI GRELE. PRIETENI BUNI.","BAD ROADS. GOOD COMPANY."),108,333,700,40,21,Paper,true); }
             var titlePrompt=Panel(pageRoot,450,738,700,72);titlePrompt.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Gold;
             prompt=Text(pageRoot,"",0,750,1600,48,26,Ink,true);prompt.alignment=TextAlignmentOptions.Center;
-            Text(pageRoot,RecoveryPlatform.MultiplayerAvailable?"TOW TROUBLE  •  SOLO / CO-OP":"TOW TROUBLE",76,847,1000,25,15,Muted);
+            Text(pageRoot,session.Expedition!=null?"TOW COUNTY · OFF-ROAD DEMO":RecoveryPlatform.MultiplayerAvailable?"TOW TROUBLE  •  SOLO / CO-OP":"TOW TROUBLE",76,847,1000,25,15,Muted);
         }
 
 
@@ -232,13 +234,13 @@ namespace TowTrouble
             {
                 if(w.Phase==RecoveryPhase.Complete&&!wasComplete)Show(session.Training?"TutorialDone":"Results");
                 else if(w.Phase!=previousPhase&&w.Phase!=RecoveryPhase.Complete){if(w.Phase!=RecoveryPhase.Lobby||(page!="Contracts"&&page!="Vehicles"))Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");}
-                if(session.MenuOpen&&!session.ContractIntroActive&&page=="Gameplay"&&session.View!="Garage"&&session.View!="Board")Show("Pause");
+                if(session.MenuOpen&&!session.ContractIntroActive&&page=="Gameplay"&&!session.GarageOpen&&!session.BoardOpen)Show("Pause");
                 if(!session.MenuOpen&&page=="Pause")Show("Gameplay");
                 wasComplete=w.Phase==RecoveryPhase.Complete;previousPhase=w.Phase;
             }
-            if(online&&(session.View=="Garage"||session.View=="Board")&&page!=session.View&&
+            if(online&&(session.View=="Garage"||session.BoardOpen)&&page!=session.View&&
                 !(page=="Confirm"&&confirmationReturn==session.View))Show(session.View);
-            else if(online&&(page=="Garage"||page=="Board")&&session.View=="Gameplay")Show("Gameplay");
+            else if(online&&(page=="Garage"||page=="Board"||page=="Expeditions")&&session.View=="Gameplay")Show("Gameplay");
             wasOnline=online;
             if(UpdateContractIntroHud())return;
             UpdateBusyPresentation(Time.unscaledTime);
@@ -257,6 +259,7 @@ namespace TowTrouble
             RefreshRollingSpeed(w.Drivers[slot].Speed);
             crew.text = w.Cooperative && w.Occupied < 2 ? L("Coechipier deconectat", "Crewmate disconnected") : "";
             if(session.Training){RefreshTrainingHud();return;}
+            if(session.Expedition!=null && w.Phase==RecoveryPhase.Explore) { RefreshExpedition(w, slot); return; }
             if (w.Phase == RecoveryPhase.Explore)
             {
                 RefreshMissionStatus(w, slot, false);

@@ -42,6 +42,15 @@ namespace TowTrouble
         public float CableStrength {get;private set;}=RecoveryRules.BreakForce;
         public float WinchSpeed {get;private set;}=RecoveryWinch.StockSpeed;
         public float WinchForce {get;private set;}=RecoveryWinch.StockForce;
+        public bool WinterDriving { get; internal set; }
+        public float SnowSink { get; private set; }
+        public float RutSteering { get; private set; }
+        internal WinterSnowRuts SnowRuts { get; set; }
+        internal WinterExpedition WinterExpedition { get; set; }
+        private readonly float[] snowDepth = new float[4];
+        private readonly Vector3[] lastSnowContact = new Vector3[4];
+        private readonly bool[] hadSnowContact = new bool[4];
+
         private Vector3 cableReaction;
         public RecoveryVehicleModel CurrentModel=>models[modelIndex];
         public int ModelCount=>models==null?0:models.Length;
@@ -225,14 +234,23 @@ namespace TowTrouble
             if (!simulate) return;
             System.Array.Copy(suspensionOffsets,previousSuspensionOffsets,wheels.Length);
             float forwardSpeed=Vector3.Dot(body.linearVelocity,transform.forward);
-            float steer=input.x*Mathf.Lerp(steering,15,Mathf.Abs(forwardSpeed)/14);
+            float steeringLimit = Mathf.Lerp(steering, 15, Mathf.Abs(forwardSpeed) / 14);
+            float steer = Mathf.Clamp(input.x * steeringLimit + RutSteering, -steeringLimit, steeringLimit);
+            float countersteer = WinterDriving && !brake ? Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.26f, .72f, Mathf.Abs(input.x))) : 0;
+            var intendedTravel = countersteer > 0 && Mathf.Abs(input.y) > .08f
+                ? Quaternion.AngleAxis(input.x * steeringLimit, transform.up) * transform.forward * Mathf.Sign(input.y)
+                : Vector3.zero;
             float blend=1-Mathf.Exp(-10*Time.fixedDeltaTime);
             bool grounded=false;int mudWheels=0;
+            float snowSink = 0;
+            float rutSteering = 0, rutEdge = 0;
             for(int i=0;i<wheels.Length;i++)
             {
                 var w=wheels[i];var up=transform.up;float reach=w.radius+w.suspensionDistance+RecoveryWheelPose.ProbeLift;
                 if(!TryGetWheelContact(i,out var hit))
                 {
+                    snowDepth[i] = 0;
+                    hadSnowContact[i] = false;
                     suspensionOffsets[i]=-w.suspensionDistance;
                     wheelSlips[i]=Mathf.Lerp(wheelSlips[i],0,blend);wheelLoads[i]=0;
                     wheelRates[i]=Mathf.Lerp(wheelRates[i],casualty||brake?0:input.y*18,blend);
@@ -240,27 +258,75 @@ namespace TowTrouble
                 }
                 grounded=true;
                 var pointVelocity=body.GetPointVelocity(w.transform.position);
-                float compression=Mathf.Clamp(reach-hit.distance,0,w.suspensionDistance);
+                float staticLoad=body.mass*Physics.gravity.magnitude/wheels.Length;
+                bool packed = false;
+                bool snow = WinterDriving && WinterDrivingSurface.IsSnow(hit, out packed);
+                Vector3 rutGradient = Vector3.zero;
+                float profile = snow && SnowRuts != null ? SnowRuts.ReadWheelProfile(hit.point, hit.normal, out rutGradient) : 0;
+                float rut = Mathf.Max(0, profile);
+                float drift = snow && WinterExpedition != null ? WinterExpedition.DriftAt(hit.point) : 0;
+                float targetDepth = snow ? WinterDrivingSurface.Penetration(hit.point, packed,
+                    wheelSlips[i], wheelLoads[i] / Mathf.Max(1, staticLoad)) : 0;
+                targetDepth = Mathf.Clamp(targetDepth + profile + .14f * drift, -.06f, .44f);
+                float edge = Mathf.Clamp01(rutGradient.magnitude * 1.7f);
+                float climb = Vector3.Dot(intendedTravel, rutGradient) < -.025f ? countersteer : 0;
+                snowDepth[i] = Mathf.MoveTowards(snowDepth[i], targetDepth, Time.fixedDeltaTime * Mathf.Lerp(.54f, 1.65f, edge));
+                snowSink = Mathf.Max(snowSink, snowDepth[i]);
+                float supportDistance = hit.distance + snowDepth[i];
+                float compression=Mathf.Clamp(reach-supportDistance,0,w.suspensionDistance);
                 float support=Mathf.Clamp(compression*(37000*(1+suspensionLift))-Vector3.Dot(pointVelocity,up)*4500,0,18000);
                 body.AddForceAtPosition(up*support,w.transform.position);
-                float staticLoad=body.mass*Physics.gravity.magnitude/wheels.Length;
                 wheelLoads[i]=Mathf.Lerp(wheelLoads[i],Mathf.Clamp(support,staticLoad*.3f,staticLoad*1.8f),blend);
                 var forward=Vector3.ProjectOnPlane(Quaternion.AngleAxis(i<2?steer:0,up)*transform.forward,hit.normal).normalized;
                 var right=Vector3.Cross(hit.normal,forward).normalized;
                 float longitudinal=Vector3.Dot(pointVelocity,forward),lateral=Vector3.Dot(pointVelocity,right);
+                float rutMotion = Mathf.InverseLerp(.25f, 1.8f, pointVelocity.magnitude);
+                if (i < 2 && !casualty && !brake && support > staticLoad * .15f)
+                {
+                    // Read ahead of the front axle so crossing at an angle turns the wheels
+                    // along the rut even as the tire reaches the flat bottom.
+                    float direction = Mathf.Abs(forwardSpeed) > .25f ? Mathf.Sign(forwardSpeed) : Mathf.Sign(input.y);
+                    var look = Vector3.ProjectOnPlane(transform.forward, hit.normal).normalized * (direction * .26f);
+                    var lead = rutGradient;
+                    if (snow && SnowRuts != null && edge > .05f)
+                        SnowRuts.ReadWheelProfile(hit.point + look, hit.normal, out lead);
+                    float pull = Vector3.Dot(Vector3.Lerp(rutGradient, lead, .4f), transform.right);
+                    rutSteering += Mathf.Clamp(pull * 37f, -17f, 17f) * rutMotion * direction * .5f;
+                    rutEdge = Mathf.Max(rutEdge, edge * rutMotion);
+                }
                 bool muddy=hit.collider.TryGetComponent<RecoveryMudTerrain>(out var mud);
+                if (snow) muddy = false;
                 if(muddy)mudWheels++;
                 float drive=casualty||brake?0:input.y*RecoveryTraction.SpeedLimitedDrive(driveForce,forwardSpeed,maxSpeed,body.mass,body.linearDamping,wheels.Length);
                 float rolling=casualty?100:Mathf.Abs(input.y)<.05f?240:RecoveryTraction.PoweredRollingDamping;
                 float braking=Mathf.Clamp(-longitudinal*(brake?1300:rolling),-5500,5500);
                 float surfaceGrip=1.25f*dryGripScale,surfaceSideGrip=1.3f*dryGripScale,looseDrag=0;
                 if(hit.collider.TryGetComponent<RecoveryGroundSurface>(out var surface)){var kind=surface.KindAt(hit.point);surfaceGrip=kind==RecoveryGroundKind.Snow?.52f*snowGripScale:kind==RecoveryGroundKind.Sand?.68f*sandGripScale:1.25f*dryGripScale;surfaceSideGrip=surfaceGrip;looseDrag=RecoveryTraction.SoftGroundDrag(kind,surface.Softness,kind==RecoveryGroundKind.Snow?snowGripScale:sandGripScale);}
-                float grip=RecoveryTraction.Grip(muddy?mud.LongitudinalGrip*mudGripScale:surfaceGrip,brake?0:input.y,muddy?mud.AggressiveThrottleLoss:0);
+                if (snow)
+                {
+                    surfaceGrip = WinterDrivingSurface.Grip(packed, hit.normal, snowGripScale) * (1 - drift * .28f);
+                    surfaceSideGrip = surfaceGrip * Mathf.Lerp(.83f, 1.12f, climb);
+                    looseDrag = RecoveryTraction.SoftGroundDrag(RecoveryGroundKind.Snow, (snowDepth[i] - rut) / .24f, snowGripScale);
+                    looseDrag += 1250f * rut;
+                }
+                float grip=RecoveryTraction.Grip(muddy?mud.LongitudinalGrip*mudGripScale:surfaceGrip,brake?0:input.y,muddy?mud.AggressiveThrottleLoss:snow?.24f:0);
                 float forwardLimit=wheelLoads[i]*grip,sideLimit=wheelLoads[i]*(muddy?mud.LateralGrip*mudGripScale:surfaceSideGrip);
                 // Static cable support shares the existing tire grip budget. It cannot
                 // anchor an airborne wheel or hold more force than the ground permits.
-                var hold=brake&&!casualty?RecoveryTraction.CableBrake(cableReaction,forward,right,wheels.Length):Vector2.zero;
-                var tire=RecoveryTraction.LimitForces(new Vector2(drive+braking,-lateral*1400)+hold,forwardLimit,sideLimit);
+                var reaction = cableReaction + (WinterExpedition?.CableReaction ?? Vector3.zero);
+                var hold=brake&&!casualty?RecoveryTraction.CableBrake(reaction,forward,right,wheels.Length):Vector2.zero;
+                // A rut wall pulls a loaded tire toward the low part of the track.
+                // Apply the force through the same friction budget as braking and steering.
+                Vector2 pullIntoRut = Vector2.zero;
+                if (edge > .001f && support > 0)
+                {
+                    // Leaning on the steering gives the tire a chance to bite into
+                    // the bank without making the wall disappear from suspension travel.
+                    float wallGrip = Mathf.Lerp(.96f, .24f, climb);
+                    Vector3 rutForce = Vector3.ClampMagnitude(Vector3.ProjectOnPlane(rutGradient, hit.normal), .68f) * (support * wallGrip);
+                    pullIntoRut = new Vector2(Vector3.Dot(rutForce, forward), Vector3.Dot(rutForce, right));
+                }
+                var tire=RecoveryTraction.LimitForces(new Vector2(drive+braking,-lateral*(1400+rut*2800))+hold+pullIntoRut,forwardLimit,sideLimit);
                 body.AddForceAtPosition(forward*tire.x+right*tire.y,hit.point);
                 if(muddy)
                 {
@@ -272,9 +338,29 @@ namespace TowTrouble
                 }
                 else if(looseDrag>0)body.AddForceAtPosition(RecoveryTraction.MudResistance(pointVelocity,hit.normal,looseDrag,body.mass),hit.point);
                 float slip=casualty||brake?0:RecoveryTraction.Slip(drive,forwardLimit);
+                if (snow && SnowRuts != null)
+                {
+                    Vector3 previous = hadSnowContact[i] ? lastSnowContact[i] : hit.point;
+                    float travel = Vector3.ProjectOnPlane(hit.point - previous, hit.normal).magnitude;
+                    if (brake && body.linearVelocity.sqrMagnitude < .0225f) travel = 0;
+                    if (travel > 1.5f) { previous = hit.point; travel = 0; }
+                    float spin = Mathf.Abs(input.y) * slip;
+                    SnowRuts.Stamp(hit, previous, travel, spin, Mathf.Clamp(support / Mathf.Max(1, staticLoad), 0, 1.5f),
+                        packed, Time.fixedDeltaTime);
+                    lastSnowContact[i] = hit.point;
+                }
+                hadSnowContact[i] = snow;
                 wheelSlips[i]=Mathf.Lerp(wheelSlips[i],slip,blend);
                 wheelRates[i]=casualty&&recoveryJammed&&i>=4-Mathf.CeilToInt(recoveryLockedWheels*4)?0:longitudinal/w.radius+(casualty||brake?0:Mathf.Sign(input.y)*wheelSlips[i]*18);
-                suspensionOffsets[i]=RecoveryWheelPose.SuspensionOffset(hit.distance,w.radius,w.suspensionDistance);
+                suspensionOffsets[i]=RecoveryWheelPose.SuspensionOffset(supportDistance,w.radius,w.suspensionDistance);
+            }
+            SnowSink = snowSink;
+            RutSteering = Mathf.Lerp(RutSteering, rutSteering * Mathf.Lerp(1, .12f, countersteer), 1 - Mathf.Exp(-15 * Time.fixedDeltaTime));
+            if (rutEdge > .66f && Time.unscaledTime >= nextHapticImpact)
+            {
+                HapticImpactStrength = Mathf.Lerp(.18f, .40f, rutEdge);
+                unchecked { HapticImpactSerial++; }
+                nextHapticImpact = Time.unscaledTime + .32f;
             }
             mudFraction=mudWheels/(float)wheels.Length;
             if(grounded)body.AddForce(-transform.up*body.linearVelocity.magnitude*70);
@@ -293,6 +379,10 @@ namespace TowTrouble
         private void ResetWheelPresentation()
         {
             ResetSteeringPresentation();
+            System.Array.Clear(snowDepth, 0, snowDepth.Length);
+            System.Array.Clear(hadSnowContact, 0, hadSnowContact.Length);
+            SnowSink = 0;
+            RutSteering = 0;
             for(int i=0;i<wheels.Length;i++)
                 previousSuspensionOffsets[i]=suspensionOffsets[i]=-Mathf.Min(.12f,wheels[i].suspensionDistance);
         }
@@ -305,7 +395,8 @@ namespace TowTrouble
                 transform.SetPositionAndRotation(Vector3.Lerp(transform.position,remotePosition,blend),Quaternion.Slerp(transform.rotation,remoteRotation,blend));
             }
             var controls=ControlInput;var rates=WheelAngularVelocity;
-            float steer=controls.x*Mathf.Lerp(steering,15,Speed/14);
+            float steeringLimit = Mathf.Lerp(steering, 15, Speed / 14);
+            float steer = Mathf.Clamp(controls.x * steeringLimit + RutSteering, -steeringLimit, steeringLimit);
             UpdateSteeringPresentation(steer,Time.deltaTime);
             float poseBlend=RecoveryWheelPose.InterpolationAlpha(Time.timeAsDouble,Time.fixedTimeAsDouble,Time.fixedDeltaTime);
             for(int i=0;i<wheels.Length;i++)

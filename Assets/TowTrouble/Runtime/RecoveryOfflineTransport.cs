@@ -27,9 +27,9 @@ namespace TowTrouble
         private bool CanSend => serverState == LocalConnectionState.Started && clientState == LocalConnectionState.Started && localPlayerPresent;
 
         // DemoSession calls this early, on every scene load, before manager initialization.
-        public static void Prepare(NetworkManager manager)
+        public static void Prepare(NetworkManager manager, bool forceLocal = false)
         {
-            if (!RecoveryPlatform.OfflineOnly) return;
+            if (!forceLocal && !RecoveryPlatform.OfflineOnly) return;
             if (manager == null) throw new InvalidOperationException("Offline play requires the configured session manager.");
             var transports = manager.GetComponent<TransportManager>();
             if (manager.Initialized)

@@ -40,11 +40,16 @@ namespace TowTrouble
             if(debrisGain<=0){ResetDebrisBudget(wheel);return;}
             if(splashes==null||wheel>=splashes.Length||splashes[wheel]==null)return;
             var kind=DebrisSurface(hit,out var point);
+            bool packed = false;
+            bool winterSnow = vehicle.WinterDriving && WinterDrivingSurface.IsSnow(hit, out packed);
+            if (winterSnow) kind = RecoveryWheelDebrisKind.Snow;
             if(debrisKinds[wheel]!=kind){ResetDebrisBudget(wheel);debrisKinds[wheel]=kind;}
             float angular=vehicle.WheelAngularVelocity[wheel],slip=vehicle.SlipAtWheel(wheel),speed=vehicle.Speed;
             float rate=RecoveryWheelDebrisRules.Rate(kind,speed,slip,angular,true)*Mathf.Clamp01(RecoveryVehicle.VisualEffectsGain)*debrisGain;
+            float looseSnow = winterSnow ? (packed ? .38f : 1f) : 0f;
+            rate *= 1 + looseSnow * (1.35f + .45f * slip);
             float dt=Mathf.Min(Time.deltaTime,.05f);
-            splashBudget[wheel]=Mathf.Min(3,splashBudget[wheel]+rate*dt);
+            splashBudget[wheel]=Mathf.Min(winterSnow?5:3,splashBudget[wheel]+rate*dt);
             int count=(int)splashBudget[wheel];splashBudget[wheel]-=count;
             var normal=hit.normal;var forward=Vector3.Cross(vehicle.WheelVisual(wheel).right,normal).normalized;
             if(forward.sqrMagnitude<.5f)forward=Vector3.ProjectOnPlane(vehicle.transform.forward,normal).normalized;
@@ -55,15 +60,19 @@ namespace TowTrouble
             var color=RecoveryWheelDebrisRules.Color(kind);
             float lift=kind==RecoveryWheelDebrisKind.Snow?1.5f:kind==RecoveryWheelDebrisKind.Grass?.7f:1.1f;
             float size=kind==RecoveryWheelDebrisKind.Mud?.10f:kind==RecoveryWheelDebrisKind.Snow?.09f:kind==RecoveryWheelDebrisKind.Sand?.045f:.05f;
+            lift += .55f * looseSnow;
+            size *= 1 + .46f * looseSnow;
             var spray=splashes[wheel];
             if(count>0)
             {
                 if(!spray.isPlaying)spray.Play(false);
                 for(int i=0;i<count;i++)
                 {
-                    var particle=new ParticleSystem.EmitParams{position=point+normal*.07f+Random.insideUnitSphere*.06f,
-                        velocity=back*(.7f+speed*.18f+slip*2.2f)+normal*(lift+slip*1.5f)+side*(.25f+slip*.7f)+Random.insideUnitSphere*.35f,
-                        startColor=color*Random.Range(.85f,1.12f),startSize=size*Random.Range(.65f,1.35f),startLifetime=Random.Range(.30f,.58f)};
+                    var particle=new ParticleSystem.EmitParams{position=point+normal*.07f+back*(.13f*looseSnow)+Random.insideUnitSphere*.06f,
+                        velocity=back*(.7f+speed*.18f+slip*2.2f+looseSnow*Random.Range(.55f,1.5f))+normal*(lift+slip*1.5f)
+                            +side*(.25f+slip*.7f+looseSnow*Random.Range(.65f,1.5f))+Random.insideUnitSphere*.35f,
+                        startColor=color*Random.Range(.85f,1.12f),startSize=size*Random.Range(.65f-.05f*looseSnow,1.35f+.07f*looseSnow),
+                        startLifetime=Random.Range(.30f,.58f)+looseSnow*.10f};
                     if(kind==RecoveryWheelDebrisKind.Grass)particle.startSize3D=new Vector3(size*.35f,size*1.8f,size*.4f);
                     spray.Emit(particle,1);
                 }
@@ -72,15 +81,19 @@ namespace TowTrouble
             bool limited=RecoveryPlatform.UsesSwitchRendering;
             if(!RecoveryWheelDebrisRules.PowderWheel(wheel,vehicle.WheelSlip,limited)){powderBudget[wheel]=0;return;}
             float powderRate=RecoveryWheelDebrisRules.PowderRate(kind,speed,slip,angular,true,limited)*Mathf.Clamp01(RecoveryVehicle.VisualEffectsGain)*debrisGain;
-            powderBudget[wheel]=powderRate>0?Mathf.Min(2,powderBudget[wheel]+powderRate*dt):0;
+            powderRate *= 1 + looseSnow * (limited ? .5f : 1.15f);
+            powderBudget[wheel]=powderRate>0?Mathf.Min(winterSnow?4:2,powderBudget[wheel]+powderRate*dt):0;
             int fine=(int)powderBudget[wheel];powderBudget[wheel]-=fine;
             if(fine==0)return;
             var powder=powders[wheel];if(!powder.isPlaying)powder.Play(false);
+            var powderColor = RecoveryWheelDebrisRules.PowderColor(kind);
+            powderColor.a += .13f * looseSnow;
             for(int i=0;i<fine;i++)
             {
-                var puff=new ParticleSystem.EmitParams{position=point+normal*.18f+back*Random.Range(.05f,.18f)+side*Random.Range(-.08f,.16f),
-                    velocity=back*(.45f+speed*.12f)+normal*(.40f+slip*.55f)+side*Random.Range(.08f,.30f),
-                    startColor=RecoveryWheelDebrisRules.PowderColor(kind),startSize=RecoveryWheelDebrisRules.PowderSize(kind,speed,slip,limited)*Random.Range(.85f,1.15f),
+                var puff=new ParticleSystem.EmitParams{position=point+normal*.18f+back*Random.Range(.05f,.18f+looseSnow*.14f)+side*Random.Range(-.08f,.16f),
+                    velocity=back*(.45f+speed*.12f+looseSnow*(.64f+slip))+normal*(.40f+slip*.55f)
+                        +side*Random.Range(.08f,.30f+looseSnow*.68f),
+                    startColor=powderColor,startSize=RecoveryWheelDebrisRules.PowderSize(kind,speed,slip,limited)*Random.Range(.85f,1.15f)*(1+.27f*looseSnow),
                     startLifetime=RecoveryWheelDebrisRules.PowderLifetime(kind,limited)*Random.Range(.9f,1.1f)};
                 powder.Emit(puff,1);
             }

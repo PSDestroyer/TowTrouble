@@ -45,6 +45,7 @@ namespace TowTrouble
                 }
             }
             var palette=RecoveryPaintPalette.Current;bool stockBody=RecoveryPaintPalette.StockBody(build,catalog);
+            var bodySnow = vehicle.GetComponent<WinterBodySnow>();
             var reused=new Dictionary<(Material,bool),Material>();
             var tires=new HashSet<Renderer>();foreach(var wheel in assembly.Wheels)foreach(var renderer in wheel.GetComponentsInChildren<Renderer>(true))tires.Add(renderer);
             foreach(var renderer in root.GetComponentsInChildren<Renderer>(true))
@@ -65,12 +66,14 @@ namespace TowTrouble
                     {
                         material.CopyPropertiesFromMaterial(original);
                         if(material.HasProperty("_BaseMap"))material.SetTexture("_BaseMap",texture);
+                        if (!tires.Contains(renderer)) bodySnow?.UseSnowShader(material);
                     }
                     values[i]=material;
                 }
                 renderer.sharedMaterials=values;
             }
             vehicle.UseAssembly(assembly,GaragePerformance.Calculate(build,catalog));boundGeometry=vehicle.GeometryVersion;
+            bodySnow?.Bind(vehicle, root);
         }
         private static void HideOriginals(Transform socket,GarageSlot slot)
         {
@@ -86,6 +89,7 @@ namespace TowTrouble
         public void ClearPreview(){Clear();applied="";boundGeometry=-1;}
         private void Clear()
         {
+            if (vehicle != null) vehicle.GetComponent<WinterBodySnow>()?.Unbind();
             if(assembly!=null){assembly.gameObject.SetActive(false);if(Application.isPlaying)Destroy(assembly.gameObject);else DestroyImmediate(assembly.gameObject);assembly=null;}
             foreach(var m in materials)if(m!=null){if(Application.isPlaying)Destroy(m);else DestroyImmediate(m);}materials.Clear();
         }

@@ -78,5 +78,71 @@ namespace TowTrouble.Tests
             }
             finally{SaveManager.ReleaseIsolated(id);RecoveryProfile.ValidationStorageKey=prior;}
         }
+
+        [Test] public void WinterCareerImportsOnceAndKeepsTheClassicVehicleSelection()
+        {
+            const string id = "TowTrouble.SaveTest.WinterImport";
+            const string legacyKey = "TowTrouble.WinterExpeditions.v1";
+            string prior = RecoveryProfile.ValidationStorageKey;
+            try
+            {
+                RecoveryProfile.ValidationStorageKey = id;
+                var classic = new RecoveryProfile { credits = 2400, completedMask = 1 };
+                RecoveryEconomy.ChooseStarter(classic, 0, 2);
+                classic.Save();
+
+                var winter = new RecoveryProfile { credits = 1050, winterJobs = 8, winterSurveys = 2 };
+                RecoveryEconomy.ChooseStarter(winter, 3, 1);
+                winter.ownedParts.Add("winter_part");
+                string legacy = UnityEngine.JsonUtility.ToJson(winter);
+                RecoveryProfile.Storage.SetString(legacyKey, legacy);
+
+                var shared = RecoveryProfile.Load();
+                Assert.That(shared.winterProfileImported, Is.True);
+                Assert.That(shared.credits, Is.EqualTo(3450));
+                Assert.That(shared.completedMask, Is.EqualTo(1));
+                Assert.That(shared.winterJobs, Is.EqualTo(8));
+                Assert.That(shared.winterSurveys, Is.EqualTo(2));
+                Assert.That(shared.vehicle, Is.EqualTo(0));
+                Assert.That(shared.paint, Is.EqualTo(2));
+                Assert.That(shared.OwnsVehicle(3), Is.True);
+                Assert.That(shared.Owns("winter_part"), Is.True);
+                Assert.That(RecoveryProfile.Load().credits, Is.EqualTo(3450));
+
+                RecoveryMenuSettings.WithoutProgress(shared).Save();
+                Assert.That(RecoveryProfile.Load().credits, Is.Zero);
+                Assert.That(RecoveryProfile.Storage.GetString(legacyKey), Is.EqualTo(legacy));
+            }
+            finally
+            {
+                SaveManager.ReleaseIsolated(id);
+                RecoveryProfile.ValidationStorageKey = prior;
+            }
+        }
+
+        [Test] public void WinterOnlyCareerBecomesTheSharedProfile()
+        {
+            const string id = "TowTrouble.SaveTest.WinterOnly";
+            string prior = RecoveryProfile.ValidationStorageKey;
+            try
+            {
+                RecoveryProfile.ValidationStorageKey = id;
+                var winter = new RecoveryProfile { credits = 850, winterJobs = 1, hookKey = "H" };
+                RecoveryEconomy.ChooseStarter(winter, 2, 3);
+                RecoveryProfile.Storage.SetString("TowTrouble.WinterExpeditions.v1", UnityEngine.JsonUtility.ToJson(winter));
+
+                var shared = RecoveryProfile.Load();
+                Assert.That(shared.starterVehicle, Is.EqualTo(2));
+                Assert.That(shared.paint, Is.EqualTo(3));
+                Assert.That(shared.hookKey, Is.EqualTo("H"));
+                Assert.That(shared.winterJobs, Is.EqualTo(1));
+                Assert.That(RecoveryProfile.Load().credits, Is.EqualTo(850));
+            }
+            finally
+            {
+                SaveManager.ReleaseIsolated(id);
+                RecoveryProfile.ValidationStorageKey = prior;
+            }
+        }
     }
 }

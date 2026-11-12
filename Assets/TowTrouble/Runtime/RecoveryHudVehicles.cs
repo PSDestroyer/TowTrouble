@@ -19,7 +19,7 @@ namespace TowTrouble
         {
             if(P.starterChosen)return;
             ConfirmAction("Make "+RecoveryVehicle.ModelNames[vehiclePreview]+" your Stock vehicle?\n\nYou receive one starter for free. Buy different bodies and equipment later in the workshop.",()=>{
-                if(session.ChooseStarter(vehiclePreview,starterPaint))Show("TutorialOffer");
+                if(session.ChooseStarter(vehiclePreview,starterPaint))Show(session.Expedition!=null?"Main":"TutorialOffer");
                 else Show("Starter");
             },"Starter","CHOOSE "+RecoveryVehicle.ModelNames[vehiclePreview].ToUpperInvariant());
         }

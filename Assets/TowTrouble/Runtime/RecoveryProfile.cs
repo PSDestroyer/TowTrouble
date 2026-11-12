@@ -21,6 +21,7 @@ namespace TowTrouble
         public int displayWidth,displayHeight,displayMode=-1;
         public int controllerFamily; // 0 automatic; 1 Xbox, 2 PlayStation, 3 Nintendo
         [NonSerialized] public bool SuppressSaving;
+        public bool winterProfileImported;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         public static string ValidationStorageKey;
 #endif
@@ -44,7 +45,7 @@ namespace TowTrouble
         public string forwardKey="W",reverseKey="S",leftKey="A",rightKey="D",brakeKey="Space";
         public string language="en", name="Driver", hookKey="F", resetKey="R", reelKey="Q", extendKey="E";
         public int cableControlsRevision;
-        public int credits,lastPayout;
+        public int credits,lastPayout,winterSurveys,winterJobs;
         public List<string> ownedParts=new List<string>();
         public List<string> paidRuns=new List<string>();
         public RecoveryBuild[] builds;
@@ -120,11 +121,61 @@ namespace TowTrouble
             return SaveManager.Store;
         } }
         private const string Key="TowTrouble.Profile.v1";
+        private const string LegacyWinterKey="TowTrouble.WinterExpeditions.v1";
         public static RecoveryProfile Load()
         {
-            string saved=Storage.GetString(StorageKey,"");
-            try {return Parse(saved);}
+            var storage = Storage;
+            string saved=storage.GetString(StorageKey,"");
+            RecoveryProfile profile;
+            try {profile = Parse(saved);}
             catch(ArgumentException){Storage.SuspendWrites("The career could not be read. Original save preserved.");Debug.LogWarning("[Tow Trouble] Career could not be read; original save preserved. Saving is disabled until the file is recovered.");return new RecoveryProfile();}
+            if (profile.winterProfileImported) return profile;
+
+            string legacy = storage.GetString(LegacyWinterKey);
+            if (string.IsNullOrEmpty(legacy)) return profile;
+            RecoveryProfile winter;
+            try { winter = Parse(legacy); }
+            catch (ArgumentException)
+            {
+                Debug.LogWarning("[Tow Trouble] The previous Winter Expeditions profile could not be imported. Its save was preserved.");
+                return profile;
+            }
+
+            if (string.IsNullOrEmpty(saved)) profile = winter;
+            else profile.MergeWinterProgress(winter);
+            // Store the import marker alongside the merged balance so a reload cannot award it twice.
+            profile.winterProfileImported = true;
+            if (storage.CanWrite) profile.Save();
+            return profile;
+        }
+
+        private void MergeWinterProgress(RecoveryProfile winter)
+        {
+            winterJobs |= winter.winterJobs;
+            winterSurveys |= winter.winterSurveys;
+            completedMask |= winter.completedMask;
+            medalMask |= winter.medalMask;
+            noResetMask |= winter.noResetMask;
+            noSnapMask |= winter.noSnapMask;
+            credits = Mathf.Min(1000000000, credits + winter.credits);
+
+            for (int model = 0; model < builds.Length; model++)
+                if (!OwnsVehicle(model) && winter.OwnsVehicle(model)) builds[model] = winter.builds[model].Copy();
+            ownedVehicles |= winter.ownedVehicles;
+            if (!starterChosen && winter.starterChosen)
+            {
+                starterChosen = true;
+                starterVehicle = winter.starterVehicle;
+                vehicle = winter.vehicle;
+                paint = winter.paint;
+            }
+            foreach (string part in winter.ownedParts)
+                if (!string.IsNullOrEmpty(part) && !ownedParts.Contains(part)) ownedParts.Add(part);
+            foreach (string run in winter.paidRuns)
+                if (!string.IsNullOrEmpty(run) && !paidRuns.Contains(run)) paidRuns.Add(run);
+            foreach (var preset in winter.presets)
+                if (preset?.Build != null && !presets.Exists(p => p != null && p.Name == preset.Name)) presets.Add(preset);
+            Clamp();
         }
         public void Save()
         {

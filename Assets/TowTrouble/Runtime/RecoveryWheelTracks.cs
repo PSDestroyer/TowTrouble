@@ -51,6 +51,11 @@ namespace TowTrouble
                 {
                     int key=v*4+w;
                     if(!ready||!car.TryGetWheelContact(w,out var hit)||!TrySurface(hit,out int kind)) {connected[key]=false;continue;}
+                    if (car.SnowRuts != null && WinterDrivingSurface.IsSnow(hit, out _))
+                    {
+                        connected[key] = false;
+                        continue;
+                    }
                     float strength=kind>=(int)RecoveryTrackKind.Hard?Mathf.Lerp(.45f,1,car.SlipAtWheel(w)):1;
                     RecordContact(key,hit,kind,strength);
                 }

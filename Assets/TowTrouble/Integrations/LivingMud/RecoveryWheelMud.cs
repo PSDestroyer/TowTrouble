@@ -112,8 +112,18 @@ namespace TowTrouble
             {
                 debrisCamera=Camera.main;
                 bool limited=RecoveryPlatform.UsesSwitchRendering;
-                if(powders!=null)foreach(var powder in powders)if(powder!=null)RecoveryWheelDebrisRules.ConfigurePowder(powder,limited);
-                if(limited&&splashes!=null)foreach(var spray in splashes)if(spray!=null){var main=spray.main;main.maxParticles=16;}
+                bool winter = vehicle != null && vehicle.WinterDriving;
+                if(powders!=null)foreach(var powder in powders)if(powder!=null)
+                {
+                    RecoveryWheelDebrisRules.ConfigurePowder(powder,limited);
+                    if(winter && !limited){var main=powder.main;main.maxParticles=46;}
+                }
+                if(splashes!=null)foreach(var spray in splashes)if(spray!=null)
+                {
+                    var main=spray.main;
+                    if(limited)main.maxParticles=winter?24:16;
+                    else if(winter)main.maxParticles=54;
+                }
             }
             if(vehicle!=null)vehicle.ExternalWheelEffects=HasWheelDebris;
         }

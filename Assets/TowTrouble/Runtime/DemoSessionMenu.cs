@@ -8,6 +8,17 @@ namespace TowTrouble
         private static bool returnToMain;
         public bool Leaving => leaving;
         public bool ConsumeReturnToMain() { bool value = returnToMain; returnToMain = false; return value; }
+        internal void StartWinterExpeditions()
+        {
+            if (!Profile.starterChosen || Connected || Connecting || leaving || !WinterDlcAvailable) return;
+            TravelTo(WinterScene, 1, null);
+        }
+        internal void OpenClassicMenu()
+        {
+            if (Connected || Connecting || leaving) return;
+            returnToMain = true;
+            TravelTo(ClassicScene, 0, null);
+        }
         public void CancelConnection()
         {
             Connecting = false; quickStart = false; connectDeadline = 0;

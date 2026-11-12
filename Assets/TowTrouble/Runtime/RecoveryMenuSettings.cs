@@ -22,7 +22,7 @@ namespace TowTrouble
         }
         public static RecoveryProfile WithoutProgress(RecoveryProfile source)
         {
-            var result = new RecoveryProfile();
+            var result = new RecoveryProfile { winterProfileImported = source.winterProfileImported };
             CopyPreferences(source, result);
             return result;
         }
