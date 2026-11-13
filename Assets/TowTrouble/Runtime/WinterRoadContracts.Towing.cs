@@ -7,6 +7,7 @@ namespace TowTrouble
         private const float LaneEdge = 3.1f;
         private Transform treeBaseEye;
         private RecoveryVehicle pickup;
+        internal RecoveryVehicle Pickup => pickup;
         private Vector3 rescueExit, rescueBank;
         private int blockedAxle;
         private float pickupStall, pickupFreeTime;

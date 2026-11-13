@@ -36,8 +36,6 @@ namespace TowTrouble
             for (int i = 0; i < ShortcutRoute.Length; i++)
                 shortcutPoints[i] = Ground(ShortcutRoute[i], out _);
             var fork = shortcutPoints[0];
-            RoadSign(fork + new Vector3(2, 0, -1.5f), "PINEWOOD\nPACKED ROAD");
-            RoadSign(fork + new Vector3(-3, 0, -4), "FOREST SHORTCUT\nDEEP SNOW");
             Vector3 packedRoad = new(-70f, fork.y, 19f);
             Arrow(cargoRoute, packedRoad, (packedRoad - fork).normalized);
             Vector3 shortcutEntry = (shortcutPoints[1] - fork).normalized;
@@ -57,24 +55,6 @@ namespace TowTrouble
             Stake(post, "Shortcut winch post", cargoRoute);
             supplyAnchor = Piece(cargoRoute, "Shortcut winch eye", PrimitiveType.Sphere, post + Vector3.up * .76f,
                 Vector3.one * .32f, orange).transform;
-        }
-
-        private void RoadSign(Vector3 point, string label)
-        {
-            Vector3 ground = Ground(point, out _);
-            Stake(ground, "Route sign", cargoRoute);
-            var board = Piece(cargoRoute, "Route sign board", PrimitiveType.Cube, ground + Vector3.up * 1.18f,
-                new Vector3(2.15f, .85f, .10f), wood, Quaternion.Euler(0, 90, 0));
-            var face = new GameObject("Route sign text").AddComponent<TextMesh>();
-            face.transform.SetParent(board.transform, false);
-            face.transform.localPosition = new Vector3(0, 0, -.56f);
-            face.transform.localScale = new Vector3(1 / 2.15f, 1 / .85f, 10f);
-            face.anchor = TextAnchor.MiddleCenter;
-            face.alignment = TextAlignment.Center;
-            face.characterSize = .08f;
-            face.fontSize = 44;
-            face.color = Color.white;
-            face.text = label;
         }
 
         private bool TickSupply(RecoveryVehicle driver, bool attached)

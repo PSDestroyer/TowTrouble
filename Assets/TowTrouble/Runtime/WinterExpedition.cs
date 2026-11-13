@@ -45,6 +45,7 @@ namespace TowTrouble
         internal bool NearTowTarget { get; private set; }
         internal bool TowHintUsesRear { get; private set; }
         internal bool TowingLoad => attachedBody != null;
+        internal RecoveryVehicle TowedPickup => Attached && TowingLoad ? jobs?.Pickup : null;
         internal bool UsingRearCable => Attached && rearCable;
         internal bool Reconnecting => jobs?.Reconnecting(Attached) == true;
         internal bool ShowingEntry => jobs?.ApproachingEntry == true;

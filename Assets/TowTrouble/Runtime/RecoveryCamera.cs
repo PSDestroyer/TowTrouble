@@ -40,7 +40,8 @@ namespace TowTrouble
             bool enteringTitle=title&&!titleCameraActive;titleCameraActive=title;
             bool choosingStarter=session.View=="Starter"||session.View=="Confirm"&&!p.starterChosen;
             if(!choosingStarter)starterCameraActive=false;
-            bool frameWheel=session.World.HasContract&&!session.World.ClearingObstacle&&(session.World.UsesArcadeExtraction||(session.World.FreeRoam&&(session.World.Contract.SituationKind==RecoverySituationKind.Ditch||session.World.Contract.SituationKind==RecoverySituationKind.Embankment)));
+            var towedPickup = session.Expedition?.TowedPickup;
+            bool frameWheel=towedPickup!=null||(session.World.HasContract&&!session.World.ClearingObstacle&&(session.World.UsesArcadeExtraction||(session.World.FreeRoam&&(session.World.Contract.SituationKind==RecoverySituationKind.Ditch||session.World.Contract.SituationKind==RecoverySituationKind.Embankment))));
             extractionFraming=Mathf.MoveTowards(extractionFraming,frameWheel?1:0,Time.unscaledDeltaTime*2);
             Vector3 position,look;
             if(lobby||session.GarageOpen)
@@ -75,9 +76,12 @@ namespace TowTrouble
                     if(Keyboard.current!=null&&Keyboard.current.cKey.wasPressedThisFrame){orbit=0;elevation=8;}
                 }
                 if(!moving)orbit=Mathf.LerpAngle(orbit,0,Time.deltaTime*2.5f);
-                var rotation=Quaternion.Euler(0,car.eulerAngles.y+orbit,0);var target=session.World.TowTargetPosition;
-                bool includeTarget=session.World.HasContract&&Vector3.Distance(car.position,target)<28;
-                var center=includeTarget?Vector3.Lerp(car.position,target,Mathf.Lerp(.38f,.5f,extractionFraming)):car.position;
+                var rotation=Quaternion.Euler(0,car.eulerAngles.y+orbit,0);
+                var target = towedPickup != null ? towedPickup.transform.position : session.World.TowTargetPosition;
+                float separation = Vector3.Distance(car.position, target);
+                bool includeTarget = towedPickup != null || (session.World.HasContract && separation < 28f);
+                float targetWeight = Mathf.Lerp(.38f,.5f,extractionFraming);
+                var center = includeTarget ? Vector3.Lerp(car.position, target, targetWeight) : car.position;
                 var followOffset=includeTarget
                     ?new Vector3(9.5f,elevation,-14f)
                     :new Vector3(6f,elevation*.7f,-Mathf.Max(1f,playerFollowDistance));
@@ -85,11 +89,12 @@ namespace TowTrouble
                 {
                     // The authored wheel ditches are on the left. Keep both vehicles in
                     // frame from that side, and retain the player's manual orbit.
-                    float spread=Mathf.Clamp(Vector3.Distance(car.position,target)/10f,.9f,2.2f);
+                    float spread=Mathf.Clamp(separation/10f,.9f,2.2f);
                     var wheelView=new Vector3(-8*spread,elevation+3*spread,-6*spread);
                     followOffset=Vector3.Lerp(followOffset,wheelView,extractionFraming);
                 }
                 position=center+rotation*followOffset;look=center+Vector3.up*1.2f+car.forward;
+                if (towedPickup != null) position = FitTowPair(position, look, car, towedPickup.transform);
                 if(CameraObstruction(look,position,out var hit,QueryTriggerInteraction.UseGlobal))position=hit.point+hit.normal*.5f;
             }
             // Preview modes own their framing and circular orbit. A second position
@@ -101,6 +106,37 @@ namespace TowTrouble
             UpdateTitleLighting(title || session.View == "Main");
             UpdateTreeVisibility(lobby);
         }
+
+        private Vector3 FitTowPair(Vector3 position, Vector3 look, Transform driver, Transform pickup)
+        {
+            if (treeCamera == null) return position;
+
+            var view = Quaternion.LookRotation(look - position);
+            var inverseView = Quaternion.Inverse(view);
+            // Preserve the classic angle and move back only when a vehicle approaches an edge.
+            float vertical = Mathf.Tan(treeCamera.fieldOfView * .5f * Mathf.Deg2Rad) * .9f;
+            float horizontal = vertical * treeCamera.aspect;
+            float retreat = Mathf.Max(RequiredRetreat(driver), RequiredRetreat(pickup));
+            return position - (view * Vector3.forward) * retreat;
+
+            float RequiredRetreat(Transform vehicle)
+            {
+                if (!vehicle.TryGetComponent<BoxCollider>(out var box)) return 0f;
+                var extents = box.size * .5f + Vector3.one * .35f;
+                float distance = 0f;
+                for (int x = -1; x <= 1; x += 2)
+                for (int y = -1; y <= 1; y += 2)
+                for (int z = -1; z <= 1; z += 2)
+                {
+                    var corner = box.center + new Vector3(x * extents.x, y * extents.y, z * extents.z);
+                    var point = inverseView * (vehicle.TransformPoint(corner) - position);
+                    float depth = Mathf.Max(Mathf.Abs(point.x) / horizontal, Mathf.Abs(point.y) / vertical);
+                    distance = Mathf.Max(distance, depth - point.z);
+                }
+                return distance;
+            }
+        }
+
         private void ApplyPresentationPose(Vector3 position, Vector3 look, bool preview, bool gameplay, bool reducedMotion, float dt, bool previewRotation)
         {
             // Menu and gameplay poses may be on opposite sides of scenery. Enter at the final safe pose.

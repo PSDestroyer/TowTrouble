@@ -85,7 +85,9 @@ namespace TowTrouble
             if (!lobby && !preview)
             {
                 if (world.Cooperative && world.OccupiedSlot(1 - slot)) AddCarSightPoints(world.Drivers[1 - slot], ref count);
-                if (world.HasContract || world.Phase == RecoveryPhase.Complete) AddCarSightPoints(world.Casualty, ref count);
+                var pickup = session.Expedition?.TowedPickup;
+                if (pickup != null) AddCarSightPoints(pickup, ref count);
+                else if (world.HasContract || world.Phase == RecoveryPhase.Complete) AddCarSightPoints(world.Casualty, ref count);
             }
 
             Vector3 eye = transform.position;
