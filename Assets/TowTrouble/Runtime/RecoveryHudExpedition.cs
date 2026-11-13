@@ -87,7 +87,8 @@ namespace TowTrouble
                 SetMissionStatus(job.HasValue ? WinterRoadContracts.Offers[(int)job.Value].Name.ToUpperInvariant() :
                     expedition.Returning ? "RETURN TO BASE" : "FIELD SURVEY", expedition.Instruction(near));
                 bool plowing = expedition.PlowFitted;
-                bool localWork = plowing || expedition.ShowingPullPoint || expedition.Reconnecting || expedition.ExtractingPickup ||
+                bool localWork = plowing || expedition.OnShortcut || expedition.ShowingPickupExit ||
+                    expedition.ShowingPullPoint || expedition.Reconnecting || expedition.ExtractingPickup ||
                     job == WinterJob.Tree && expedition.DeliveryLeg ||
                     near && (job == WinterJob.Supply || job == WinterJob.Recovery);
                 bool delivery = expedition.DeliveryLeg && !expedition.Reconnecting;
@@ -114,22 +115,16 @@ namespace TowTrouble
 
             var family = RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
             string hook = session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(family) : P.ReadKey(P.hookKey, Key.F).ToString();
-            string reel = session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(family) : P.ReadKey(P.reelKey, Key.Q).ToString();
             string brake = session.UsingGamepad ? RecoveryInputPrompts.CancelLabel(family) : P.ReadKey(P.brakeKey, Key.Space).ToString();
-            if (expedition.TowingLoad)
-            {
-                string load = Mathf.RoundToInt(expedition.CableLoad * 100) + "% load";
-                ShowExploreHint(reel, "Reel in · " + load, expedition.CableLoad > .78f ? "Ease off the throttle" :
-                    (expedition.UsingRearCable ? "Rear cable" : "Front cable") + " · " + hook + " to detach");
-            }
-            else if (expedition.Attached)
-                ShowExploreHint(reel, "Reel in · " + Mathf.RoundToInt(expedition.CableLoad * 100) + "% load", hook + " · Detach");
-            else if (expedition.CanFitPlow)
+            if (expedition.Attached) return;
+            if (expedition.CanFitPlow)
                 ShowExploreHint(hook, "Fit the plow blade while stopped");
             else if (expedition.PlowFitted)
-                ShowExploreHint("", expedition.DestinationName);
+                ShowExploreHint(hook, expedition.BladeLowered ? "Raise blade" : "Lower blade",
+                    expedition.BladeLoad > .55f ? "Heavy snow · keep a steady pace" : null);
             else if (expedition.NearTowTarget)
-                ShowExploreHint(hook, expedition.TowHintUsesRear ? "Attach rear cable" : "Attach front cable");
+                ShowExploreHint(hook, expedition.TowHintUsesRear ? "Attach rear cable" : "Attach front cable",
+                    expedition.ActiveJob == WinterJob.Tree ? expedition.NearbyTowName : null);
             else if (expedition.ActiveJob == WinterJob.Supply && expedition.NearDestination(driver.transform.position))
                 ShowExploreHint(brake, expedition.HasCargo ? "Hold brake to unload" : "Hold brake to load");
             else if (expedition.HasCargo)
@@ -140,6 +135,41 @@ namespace TowTrouble
                 ShowExploreHint("", "Deep snow · " + Mathf.RoundToInt(driver.SnowSink * 100) + " cm");
             else if (!RefreshUrgentHint(world, slot))
                 RefreshExploreHint(world, slot);
+        }
+
+        private void BuildWinterResults()
+        {
+            if (session.Expedition.Result is not { } result) return;
+            var card = Panel(pageRoot, 380, 224, 840, 452);
+            card.name = "Winter expedition result";
+            Icon(card, RecoveryIcon.FinishFlag, 32, 26, 30, Amber);
+            Text(card, L("EXPEDIȚIE ÎNCHEIATĂ", "EXPEDITION COMPLETE"), 76, 22, 732, 36, 23, Amber, true);
+            Text(card, result.Name, 32, 68, 776, 50, 30, Paper, true);
+
+            var payout = Panel(card, 32, 144, 494, 150);
+            payout.GetComponentInChildren<RecoveryPlateGraphic>().Style = RecoveryPlateStyle.Paper;
+            Text(payout, L("RECOMPENSA TA", "YOUR PAYOUT"), 20, 12, 454, 27, 16, Ink, true);
+            Icon(payout, RecoveryIcon.Coins, 20, 51, 38, Ink);
+            string reward = result.Reward > 0 ? "+" + result.Reward.ToString("N0") + " CR" :
+                L("Deja recompensată", "Already rewarded");
+            Text(payout, reward, 74, 42, 400, 62, result.Reward > 0 ? 42 : 26, Ink, true);
+            Text(payout, L("Sold  ", "Balance  ") + P.credits.ToString("N0") + " CR", 20, 105, 454, 32, 17, Ink);
+            var stats = ResultInset(card, "Expedition statistics", 542, 144, 266, 150);
+            ResultStat(stats, 54, L("Timp", "Time"), System.TimeSpan.FromSeconds(result.Elapsed).ToString(@"mm\:ss"));
+            if (!string.IsNullOrEmpty(result.Detail))
+                Text(card, result.Detail, 34, 294, 772, 28, 16, Muted);
+            Button(card, L("CONTINUĂ EXPLORAREA", "CONTINUE EXPLORING"), 32, 322, 776, ContinueWinterResults, true, 56);
+            var row = Node("Continue control", card, 310, 390, 220, 40);
+            resultInputHint = MenuGlyph(row, "confirm", 0, 0);
+            Text(row, "Continue", 68, 0, 152, 40, 18, Muted).alignment = TMPro.TextAlignmentOptions.MidlineLeft;
+        }
+
+        private void ContinueWinterResults()
+        {
+            session.ConsumeMenuInput();
+            session.Expedition.DismissResult();
+            session.CloseOverlay();
+            Show("Gameplay");
         }
     }
 }

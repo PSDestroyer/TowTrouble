@@ -22,15 +22,17 @@ namespace TowTrouble
 
         private DemoSession session;
         private RecoveryVehicle driver;
-        private Transform attachedAnchor;
+        private Transform attachedAnchor, nearbyTowEye;
         private Rigidbody attachedBody;
         private bool rearCable;
         private WinterRoadContracts jobs;
-        private float holdSeconds, cableLength, reelSpeed, stress, nextAnchorCheck;
+        private float holdSeconds, cableLength, reelSpeed, stress, nextAnchorCheck, startedAt;
         private bool reel, payOut;
         public int Selected { get; private set; } = -1;
         public bool Returning { get; private set; }
         public string Report { get; private set; }
+        internal (string Name, int Reward, float Elapsed, string Detail)? Result { get; private set; }
+        internal WinchFrame CableFrame { get; private set; }
         public bool Attached => attachedAnchor != null;
         public Transform NearbyAnchor { get; private set; }
         public float CableLoad { get; private set; }
@@ -51,18 +53,26 @@ namespace TowTrouble
             ActiveJob == WinterJob.Recovery && !TowHintUsesRear);
         internal bool MissedPlowSection => driver != null && jobs?.MissedPlowSection(driver.FrontHitch) == true;
         internal bool ExtractingPickup => TowingLoad && jobs?.ExtractingPickup == true;
-        internal Vector3 GuidancePoint => ShowingEntry ? jobs.EntryPoint : ShowingPullPoint || ExtractingPickup ? jobs.PullPoint :
-            (Reconnecting || NearTowTarget) && jobs?.TowEye != null ? jobs.TowEye.position : Destination;
-        internal string GuidanceName => ShowingEntry ? (ActiveJob == WinterJob.Tree ? "Lay-by approach" : "Meadow entrance") :
+        internal bool OnShortcut => jobs?.OnShortcut == true;
+        internal bool ShowingPickupExit => TowingLoad && jobs?.GuidingPickupExit == true;
+        internal Vector3 GuidancePoint => jobs?.LoadedRoute == true ? jobs.SupplyRoutePoint :
+            ShowingPickupExit ? jobs.PickupExit : ShowingEntry ? jobs.EntryPoint : ShowingPullPoint || ExtractingPickup ? jobs.PullPoint :
+            (Reconnecting || NearTowTarget) && (nearbyTowEye != null ? nearbyTowEye : jobs?.TowEye) is { } eye ? eye.position : Destination;
+        internal string GuidanceName => jobs?.LoadedRoute == true ? jobs.SupplyRouteName :
+            ShowingPickupExit ? "Meadow exit · take the bend wide" :
+            ShowingEntry ? (ActiveJob == WinterJob.Tree ? "Lay-by approach" : "Meadow entrance") :
             ShowingPullPoint || ExtractingPickup ? "Marked pull point" :
-            Reconnecting ? "Reconnect the cable" : NearTowTarget ? "Tow eye" : DestinationName;
+            Reconnecting ? "Reconnect the cable" : NearTowTarget ? NearbyTowName : DestinationName;
+        internal string NearbyTowName => jobs.TowEyeName(nearbyTowEye);
         internal bool CanFitPlow => driver != null && jobs?.AtPlowStart(driver.transform.position) == true;
         internal bool PlowFitted => jobs?.PlowFitted == true;
+        internal bool BladeLowered => jobs?.BladeLowered == true;
+        internal float BladeLoad => jobs?.BladeLoad ?? 0;
         public Vector3 Destination => ActiveJob.HasValue ? jobs.Destination :
             Returning ? session.World.GaragePosition : surveys[Selected].Point;
         public string DestinationName => ActiveJob.HasValue ? jobs.DestinationName :
             Returning ? "Expedition base" : surveys[Selected].Name;
-        internal float DriftAt(Vector3 point) => jobs?.DriftAt(point) ?? 0;
+        internal float DriftAt(Vector3 point) => jobs?.SnowAt(point) ?? 0;
 
         public void Configure(Survey[] sites, Transform[] winchAnchors, LineRenderer line)
         {
@@ -74,7 +84,7 @@ namespace TowTrouble
         internal void Bind(DemoSession owner)
         {
             session = owner;
-            jobs = new WinterRoadContracts(owner.World, transform);
+            jobs = new WinterRoadContracts(owner.World, transform, owner.Profile.winterJobs);
             var ruts = gameObject.AddComponent<WinterSnowRuts>();
             ruts.Bind(owner.World.Drivers[0].transform);
             foreach (var car in owner.World.Drivers)
@@ -96,6 +106,7 @@ namespace TowTrouble
             Returning = false;
             holdSeconds = 0;
             Report = null;
+            startedAt = Time.time;
             session.CloseOverlay();
         }
 
@@ -106,6 +117,7 @@ namespace TowTrouble
             Returning = false;
             holdSeconds = 0;
             Report = null;
+            startedAt = Time.time;
             jobs.Begin(job);
             session.CloseOverlay();
         }
@@ -140,7 +152,8 @@ namespace TowTrouble
             {
                 nextAnchorCheck = Time.time + .18f;
                 bool useRear = false;
-                NearTowTarget = !Attached && TryTowHitch(out useRear);
+                nearbyTowEye = Attached ? null : jobs.FindTowEye(driver, out useRear);
+                NearTowTarget = nearbyTowEye != null;
                 TowHintUsesRear = useRear;
                 NearbyAnchor = Attached || NearTowTarget ? null : FindAnchor();
             }
@@ -172,6 +185,7 @@ namespace TowTrouble
                 profile.Save();
             }
             Report = first ? $"Survey logged · +{survey.Reward:N0} CR" : "Survey logged";
+            Result = (survey.Name, first ? survey.Reward : 0, Time.time - startedAt, null);
             Returning = false;
             Selected = -1;
         }
@@ -183,16 +197,23 @@ namespace TowTrouble
             var profile = session.Profile;
             int mask = 1 << (int)job;
             bool first = (profile.winterJobs & mask) == 0;
+            int bonus = job == WinterJob.Supply ? jobs.CargoBonus : 0;
+            int reward = first ? offer.Reward + bonus : 0;
             if (first)
             {
                 profile.winterJobs |= mask;
-                profile.credits = Mathf.Min(1000000000, profile.credits + offer.Reward);
+                profile.credits = Mathf.Min(1000000000, profile.credits + reward);
                 profile.Save();
             }
-            Report = first ? $"{offer.Name} complete · +{offer.Reward:N0} CR" : $"{offer.Name} complete";
+            Report = first ? $"{offer.Name} complete · +{reward:N0} CR" : $"{offer.Name} complete";
+            string detail = job != WinterJob.Supply ? null : bonus == 0 ? "Crate damaged" :
+                first ? $"Crate intact · +{bonus} CR bonus included" : "Crate delivered intact";
+            Result = (offer.Name, reward, Time.time - startedAt, detail);
             jobs.Finish(job);
             NearTowTarget = false;
         }
+
+        internal void DismissResult() => Result = null;
 
         internal void SetWinchInput(bool wind, bool release)
         {
@@ -210,9 +231,15 @@ namespace TowTrouble
                 jobs.FitPlow(driver);
                 return;
             }
-            if (TryTowHitch(out rearCable))
+            if (PlowFitted)
             {
-                attachedAnchor = jobs.TowEye;
+                jobs.ToggleBlade();
+                return;
+            }
+            var eye = jobs.FindTowEye(driver, out rearCable);
+            if (eye != null)
+            {
+                attachedAnchor = eye;
                 attachedBody = jobs.TowBody;
                 jobs.AttachedTarget();
             }
@@ -223,43 +250,38 @@ namespace TowTrouble
             }
             if (!Attached) return;
             cableLength = Mathf.Max(RecoveryWinch.MinimumLength, Vector3.Distance(Hitch, attachedAnchor.position));
+            CableFrame = new WinchFrame { Length = cableLength, State = WinchState.Holding };
             cable.enabled = true;
         }
 
         private Vector3 Hitch => rearCable ? driver.RearHitch : driver.FrontHitch;
-
-        private bool TryTowHitch(out bool rear)
-        {
-            rear = false;
-            if (jobs?.TowEye == null) return false;
-            var eye = jobs.TowEye.position;
-            var front = (eye - driver.FrontHitch).sqrMagnitude;
-            var back = (eye - driver.RearHitch).sqrMagnitude;
-            rear = back < front;
-            return Mathf.Min(front, back) < 16f * 16f &&
-                !Physics.Linecast(rear ? driver.RearHitch : driver.FrontHitch, eye, 1 << 8, QueryTriggerInteraction.Ignore);
-        }
 
         private Transform FindAnchor()
         {
             Transform closest = null;
             float limit = 18f * 18f;
             Vector3 hitch = driver.FrontHitch;
-            foreach (var anchor in anchors)
+            Consider(jobs.SupplyAnchor);
+            foreach (var anchor in anchors) Consider(anchor);
+            return closest;
+
+            void Consider(Transform anchor)
             {
+                if (anchor == null) return;
                 Vector3 delta = anchor.position - hitch;
-                if (delta.sqrMagnitude > limit || Vector3.Dot(driver.transform.forward, delta) < -2f) continue;
-                if (Physics.Linecast(hitch, anchor.position, 1 << 8, QueryTriggerInteraction.Ignore)) continue;
+                if (delta.sqrMagnitude > limit || Vector3.Dot(driver.transform.forward, delta) < -2f) return;
+                if (Physics.Linecast(hitch, anchor.position, 1 << 8, QueryTriggerInteraction.Ignore)) return;
                 limit = delta.sqrMagnitude;
                 closest = anchor;
             }
-            return closest;
         }
 
         private void FixedUpdate()
         {
             if (driver == null || driver.Body.isKinematic || session.MenuOpen) return;
             jobs.FixedTick(driver);
+            jobs.TickCargo(driver);
+            if (jobs.CargoImpact) session.Audio?.Play(RecoverySound.Impact, driver.RearHitch, session.LocalSlot, .65f);
             if (!Attached) return;
             Vector3 hitch = Hitch;
             Vector3 delta = attachedAnchor.position - hitch;
@@ -268,10 +290,10 @@ namespace TowTrouble
             Vector3 direction = delta / distance;
             Vector3 targetVelocity = attachedBody != null ? attachedBody.GetPointVelocity(attachedAnchor.position) : Vector3.zero;
             float separating = Vector3.Dot(targetVelocity - driver.Body.GetPointVelocity(hitch), direction);
-            var frame = RecoveryWinch.Step(cableLength, distance, separating, reel, payOut,
+            CableFrame = RecoveryWinch.Step(cableLength, distance, separating, reel, payOut,
                 driver.WinchForce, driver.WinchSpeed, reelSpeed, Time.fixedDeltaTime);
-            cableLength = frame.Length;
-            reelSpeed = frame.Speed;
+            cableLength = CableFrame.Length;
+            reelSpeed = CableFrame.Speed;
             float demand = RecoveryRules.CableDemand(distance, cableLength, separating);
             stress = RecoveryRules.CableStressAfter(stress, demand, driver.CableStrength, Time.fixedDeltaTime);
             if (stress >= 1) { Detach(); return; }
@@ -279,7 +301,11 @@ namespace TowTrouble
             float force = Mathf.Min(demand, driver.CableStrength);
             CableReaction = direction * force;
             driver.Body.AddForceAtPosition(CableReaction, hitch);
-            if (attachedBody != null) attachedBody.AddForceAtPosition(-CableReaction, attachedAnchor.position);
+            if (attachedBody != null)
+            {
+                attachedBody.AddForceAtPosition(-CableReaction, attachedAnchor.position);
+                jobs.ApplyTowResistance(attachedAnchor, -CableReaction, CableLoad);
+            }
         }
 
         private void LateUpdate()
@@ -298,6 +324,7 @@ namespace TowTrouble
             attachedBody = null;
             NearbyAnchor = null;
             stress = reelSpeed = CableLoad = 0;
+            CableFrame = default;
             CableReaction = Vector3.zero;
             reel = payOut = false;
             if (cable != null) cable.enabled = false;

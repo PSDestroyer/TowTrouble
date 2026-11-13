@@ -129,7 +129,7 @@ namespace TowTrouble
             if(target=="Busy"&&DeferBusyPresentation())return;
             if(target=="Main"||target=="Title")session.PreviewFittedRide();
             if(target!="Title"&&target!="Main"&&target!="Lobby"&&target!="Starter"&&target!="Garage")Panel(pageRoot,0,0,1600,900,new Color(.03f,.04f,.035f,.42f));
-            switch(target){case "Garage":BuildGarage();break;case "Board":BuildBoard();break;case "Expeditions":BuildExpeditions();break;case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Help":if(session.Expedition!=null)BuildExpeditionHelp();else BuildHelp();break;case "Starter":BuildVehicles();break;case "TutorialOffer":BuildTutorialOffer();break;case "TutorialDone":case "TrainingComplete":BuildTutorialDone();break;case "TextEntry":BuildTextEntry();break;case "Busy":BuildBusy();break;case "Confirm":BuildConfirmation();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;}
+            switch(target){case "Garage":BuildGarage();break;case "Board":BuildBoard();break;case "Expeditions":BuildExpeditions();break;case "Title":BuildTitle();break;case "Main":BuildMain();break;case "Help":if(session.Expedition!=null)BuildExpeditionHelp();else BuildHelp();break;case "Starter":BuildVehicles();break;case "TutorialOffer":BuildTutorialOffer();break;case "TutorialDone":case "TrainingComplete":BuildTutorialDone();break;case "TextEntry":BuildTextEntry();break;case "Busy":BuildBusy();break;case "Confirm":BuildConfirmation();break;case "Coop":BuildCoop();break;case "Lobby":BuildLobby();break;case "Settings":BuildSettings();break;case "Credits":BuildCredits();break;case "Pause":BuildPause();break;case "Results":BuildResults();break;case "WinterResults":BuildWinterResults();break;}
             ConfigureMenuPage();
             StartCoroutine(FocusFirst());
         }
@@ -234,7 +234,12 @@ namespace TowTrouble
             {
                 if(w.Phase==RecoveryPhase.Complete&&!wasComplete)Show(session.Training?"TutorialDone":"Results");
                 else if(w.Phase!=previousPhase&&w.Phase!=RecoveryPhase.Complete){if(w.Phase!=RecoveryPhase.Lobby||(page!="Contracts"&&page!="Vehicles"))Show(w.Phase==RecoveryPhase.Lobby?"Lobby":"Gameplay");}
-                if(session.MenuOpen&&!session.ContractIntroActive&&page=="Gameplay"&&!session.GarageOpen&&!session.BoardOpen)Show("Pause");
+                if(page=="Gameplay"&&w.Phase==RecoveryPhase.Explore&&session.Expedition?.Result!=null)
+                {
+                    if (!session.MenuOpen) session.ToggleMenu();
+                    Show("WinterResults");
+                }
+                else if(session.MenuOpen&&!session.ContractIntroActive&&page=="Gameplay"&&!session.GarageOpen&&!session.BoardOpen)Show("Pause");
                 if(!session.MenuOpen&&page=="Pause")Show("Gameplay");
                 wasComplete=w.Phase==RecoveryPhase.Complete;previousPhase=w.Phase;
             }

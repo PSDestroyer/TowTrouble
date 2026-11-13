@@ -192,6 +192,7 @@ namespace TowTrouble
             if(page=="TutorialOffer"){SkipTutorialOffer();return;}
             if(page=="TutorialDone"||page=="TrainingComplete"){ContinueTutorial();return;}
             if(page=="Results"){if(session.IsHost){session.FinishExplorationContract();Show("Gameplay");}return;}
+            if(page=="WinterResults"){ContinueWinterResults();return;}
             if(page=="Settings"){Show(returnPage);return;}
             if(page=="Help"){Show(helpReturn);return;}
             if(page!="Main"&&page!="Title")Show("Main");
@@ -233,7 +234,7 @@ namespace TowTrouble
         {
             string deviceStyle=session.UsingGamepad+":"+RecoveryInputPrompts.Family(RecoveryInputDevices.Pad);
             if(menuDeviceStyle!=deviceStyle){menuDeviceStyle=deviceStyle;if(page=="Help"||page=="Credits"||page=="Settings"&&settingsTab=="Comenzi") {float y=menuScroll!=null?menuScroll.content.anchoredPosition.y:0;Show(page);if(menuScroll!=null)menuScroll.content.anchoredPosition=new Vector2(0,y);return;} }
-            if(page=="Results"&&resultInputHint!=null&&resultInputHost)resultInputHint.text=MenuKey("confirm");
+            if(resultInputHint!=null&&(page=="WinterResults"||page=="Results"&&resultInputHost))resultInputHint.text=MenuKey("confirm");
             UpdateStarterHints();
             foreach(var hint in menuHints)if(hint.Item1!=null)hint.Item1.text=MenuKey(hint.Item2);
             if(menuFooter!=null)menuFooter.text="Navigate";

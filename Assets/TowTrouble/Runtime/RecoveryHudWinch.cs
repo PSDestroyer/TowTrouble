@@ -66,12 +66,13 @@ namespace TowTrouble
 
         private void RefreshCableHud(RecoveryWorld world, int slot)
         {
-            bool attached = world.HasContract && world.Attached(slot);
-            float tension = attached ? Mathf.Clamp01(world.Tension(slot)) : 0;
-            var frame = attached ? world.Winch(slot) : default;
-            bool operating = frame.State != WinchState.Holding && frame.State != WinchState.Disconnected;
+            var expedition = world.Phase == RecoveryPhase.Explore ? session.Expedition : null;
+            bool winter = expedition != null;
+            bool attached = winter ? expedition.Attached : world.HasContract && world.Attached(slot);
+            float tension = attached ? Mathf.Clamp01(winter ? expedition.CableLoad : world.Tension(slot)) : 0;
+            var frame = !attached ? default : winter ? expedition.CableFrame : world.Winch(slot);
             bool quietDetach = attached && world.Drivers[slot].Speed < .45f;
-            bool visible = attached && (IntroduceWinch || quietDetach || operating || tension > (cableGroup.activeSelf ? .01f : .025f));
+            bool visible = attached;
             if (visible != cableGroup.activeSelf) cableGroup.SetActive(visible);
             cableWarning = visible && tension >= (cableWarning ? CableWarningLoad - .035f : CableWarningLoad);
 
@@ -87,10 +88,14 @@ namespace TowTrouble
                         ? L("Oprește tragerea", "Ease off the throttle")
                         : L("Slăbește cablul", "Pay out cable");
                 }
-                else if (pullAdvice != null) hint = pullAdvice;
-                else if (IntroduceWinch)
+                else if (winter && expedition.TowingLoad)
+                    hint = (expedition.UsingRearCable ? L("Cablu spate", "Rear cable") : L("Cablu față", "Front cable")) +
+                        " · " + (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.hookKey, Key.F).ToString()) +
+                        L(" Desprinde", " Detach");
+                else if (!winter && pullAdvice != null) hint = pullAdvice;
+                else if (!winter && IntroduceWinch)
                 { label = "Cable attached"; hint = "Hold " + (session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.reelKey, Key.Q).ToString()) + " to reel in"; }
-                if (hint == null && quietDetach && !IntroduceWinch)
+                if (hint == null && (winter || quietDetach && !IntroduceWinch))
                     hint = (session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.ReadKey(P.hookKey, Key.F).ToString()) + " · Detach cable";
                 if (UrgentAssistance) hint = null;
 
@@ -175,10 +180,12 @@ namespace TowTrouble
         private void RefreshCableDetails(RecoveryWorld world,int slot)
         {
             if (cableDetails == null) return;
-            bool attached = world != null && world.HasContract && slot >= 0 && slot < 2 && world.Attached(slot);
+            var expedition = world?.Phase == RecoveryPhase.Explore ? session.Expedition : null;
+            bool attached = slot >= 0 && slot < 2 &&
+                (expedition != null ? expedition.Attached : world != null && world.HasContract && world.Attached(slot));
             if (cableDetails.gameObject.activeSelf != attached) cableDetails.gameObject.SetActive(attached);
             if (!attached) return;
-            var frame = world.Winch(slot);
+            var frame = expedition != null ? expedition.CableFrame : world.Winch(slot);
             float capacity = world.Drivers[slot].WinchForce / 1000f;
             string controls = session.UsingGamepad ? RecoveryInputPrompts.PreviousTabLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad))+" / "+RecoveryInputPrompts.NextTabLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.reelKey + " / " + P.extendKey;
             string detach = session.UsingGamepad ? RecoveryInputPrompts.ConfirmLabel(RecoveryInputPrompts.Family(RecoveryInputDevices.Pad)) : P.hookKey;
