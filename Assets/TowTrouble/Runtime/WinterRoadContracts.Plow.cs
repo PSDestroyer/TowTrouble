@@ -12,26 +12,22 @@ namespace TowTrouble
         private const float FirstDrift = 6f;
         private const float CellLength = DriftSpacing / CellsPerDrift;
         private const float LaneHalfWidth = 1.5f;
+        private const float SnowStart = FirstDrift - DriftSpacing * .5f - 1.6f;
+        private const float SnowEnd = FirstDrift + (DriftCount - .5f) * DriftSpacing + 2.4f;
+        private const float SnowCoverHalfWidth = 5.7f;
         private const float StripOffset = .72f;
         private const float BladeWidth = 3.15f;
-        private const int PrototypeDrift = 3;
         private const int BladeSamples = 12;
         private const float ShoulderOffset = 2.02f;
-        private const float ShoulderWidth = 1.05f;
         private const float SnowFlowTime = .29f;
         private const float BladeLift = .48f;
-        private static readonly float[] SnowHeights = { .24f, .28f, .48f, .70f, .64f, .51f, .39f, .32f };
+        private const float DeepestDrift = 1.1f;
+        private static readonly float[] SnowHeights = { .45f, .56f, .83f, DeepestDrift, 1.04f, .91f, .76f, .65f };
         private readonly int[,] plowedCells = new int[DriftCount, StripCount];
-        private readonly GameObject[,] drifts = new GameObject[DriftCount, StripCount];
-        private readonly GameObject[] piles = new GameObject[DriftCount];
         private readonly Vector3[] driftPoints = new Vector3[DriftCount];
-        private readonly GameObject[,] prototypeBanks = new GameObject[StripCount, CellsPerDrift];
-        private readonly float[,] prototypeSnow = new float[StripCount, CellsPerDrift];
-        private readonly GameObject[,] prototypeShoulderBanks = new GameObject[StripCount, CellsPerDrift];
-        private readonly float[,] snowInWave = new float[StripCount, CellsPerDrift];
-        private readonly float[,] shoulderSnow = new float[StripCount, CellsPerDrift];
+        private readonly float[,,] snowRemaining = new float[DriftCount, StripCount, CellsPerDrift];
+        private readonly float[] snowInWave = new float[StripCount];
         private readonly GameObject[] snowRolls = new GameObject[StripCount];
-        private float shedLeft, shedRight;
         private GameObject bladeSnowWave;
         private Vector3 loweredBladePosition;
         private bool bladeLowered;
@@ -42,10 +38,8 @@ namespace TowTrouble
         private GameObject pinewoodRoad;
         private bool pinewoodCleared;
         private int cleared, nextDrift, nextCell, nextStrip;
-        private float nextSpray;
 
         private float NextSnowAlong => FirstDrift + (nextDrift - .5f) * DriftSpacing + (nextCell + .5f) * CellLength;
-        private const float PrototypeCentre = FirstDrift + PrototypeDrift * DriftSpacing;
 
         private Vector3 NextSnowPoint => nextDrift >= DriftCount ? driftPoints[DriftCount - 1] :
             driftPoints[nextDrift] + plowDirection * ((nextCell + .5f) * CellLength - DriftSpacing * .5f) +
@@ -75,7 +69,7 @@ namespace TowTrouble
                 return "Turn the blade toward the exit poles";
             if (Mathf.Abs(Vector3.Dot(blade.transform.position - NextSnowPoint, plowSide)) > .86f)
                 return nextStrip < 0 ? "Center the blade between the poles" : "Line up the blade with the marked edge";
-            if (nextDrift == PrototypeDrift && driver.Speed > 4.5f)
+            if (nextDrift < DriftCount && driver.Speed > 4.5f)
                 return "Slow down · a fast pass leaves packed snow behind";
             if (nextDrift >= 2 && nextDrift < 6)
                 return "Ease through the deep drift · use another pass if an edge remains";
@@ -91,7 +85,6 @@ namespace TowTrouble
             pinewoodRoad = new GameObject("Pinewood road snow");
             pinewoodRoad.transform.SetParent(owner, false);
             var parent = pinewoodRoad.transform;
-            var rotation = Quaternion.LookRotation(plowDirection);
             EnsureMaterials();
             Stake(plowStart + plowSide * 2.1f, "Blade station", parent);
             Stake(plowStart - plowSide * 2.1f, "Blade station", parent);
@@ -99,38 +92,15 @@ namespace TowTrouble
             {
                 var point = Ground(plowStart + plowDirection * (FirstDrift + i * DriftSpacing), out _);
                 driftPoints[i] = point;
-                for (int strip = 0; strip < StripCount; strip++)
-                {
-                    var center = Ground(point + plowSide * StripCentre(strip), out _);
-                    if (i == PrototypeDrift)
-                    {
-                        for (int cell = 0; cell < CellsPerDrift; cell++)
-                        {
-                            Vector3 patch = Ground(center + plowDirection * ((cell + .5f) * CellLength - DriftSpacing * .5f), out _);
-                            prototypeBanks[strip, cell] = Snowbank("Prototype drift · snow patch", patch + Vector3.up * .035f,
-                                new Vector3(1.6f, SnowHeights[i], 1.04f), rotation, parent);
-                            float sign = strip == 0 ? -1 : 1;
-                            Vector3 shoulder = Ground(patch + plowSide * (sign * ShoulderOffset - StripCentre(strip)), out _);
-                            prototypeShoulderBanks[strip, cell] = Snowbank("Snow deposited on shoulder", shoulder + Vector3.up * .045f,
-                                new Vector3(ShoulderWidth, .01f, 1.07f), rotation, parent);
-                        }
-                    }
-                    else drifts[i, strip] = Snowbank("Snow in lane", center + Vector3.up * .04f,
-                        new Vector3(1.7f, SnowHeights[i], 3.45f), rotation, parent);
-                }
-                if (i != PrototypeDrift)
-                {
-                    var edge = Ground(point + plowSide * 2.03f, out _);
-                    piles[i] = Snowbank("Snow pushed to shoulder", edge + Vector3.up * .02f,
-                        new Vector3(.93f, .1f, 3.45f), rotation, parent);
-                }
                 if (i % 2 == 0 || i == DriftCount - 1)
                 {
-                    float width = i >= 6 ? 1.83f : 2.24f;
+                    const float width = LaneHalfWidth + .08f;
                     Stake(point + plowSide * width, "Snow pole", parent);
                     Stake(point - plowSide * width, "Snow pole", parent);
                 }
             }
+            BuildRoadSnow(parent);
+            BuildShoulderMeshes(parent);
             SetPinewoodRoad(savedClearance);
         }
 
@@ -138,58 +108,105 @@ namespace TowTrouble
 
         private void SetPinewoodRoad(bool open)
         {
+            System.Array.Clear(snowInWave, 0, snowInWave.Length);
+            for (int drift = 0; drift < DriftCount; drift++)
             for (int strip = 0; strip < StripCount; strip++)
-            for (int cell = 0; cell < CellsPerDrift; cell++)
             {
-                prototypeSnow[strip, cell] = open ? 0 : 1;
-                snowInWave[strip, cell] = 0;
-                shoulderSnow[strip, cell] = open ? 1 : 0;
-                ShowShoulderSnow(strip, cell);
+                plowedCells[drift, strip] = open ? CompleteStrip : 0;
+                for (int cell = 0; cell < CellsPerDrift; cell++)
+                    snowRemaining[drift, strip, cell] = open ? 0 : 1;
             }
-
-            for (int i = 0; i < DriftCount; i++)
-            {
-                for (int strip = 0; strip < StripCount; strip++)
-                    plowedCells[i, strip] = open ? CompleteStrip : 0;
-                ShowPlowSection(i);
-            }
+            RefreshRoadSnow();
+            ResetShoulder(open);
             UpdatePlowProgress();
         }
 
-        private void ShowPlowSection(int index)
+        private const int SnowCellCount = DriftCount * CellsPerDrift;
+        private const int SnowSurfaceRows = 201;
+        private const int SnowSurfaceColumns = 73;
+        private Mesh roadSnowMesh;
+        private GameObject roadSnowSurface;
+        private Vector3[] roadSnowGround, roadSnowVertices;
+        private float[] roadSnowHeight;
+
+        private void BuildRoadSnow(Transform parent)
         {
-            float totalRemoved = 0;
-            for (int strip = 0; strip < StripCount; strip++)
+            roadSnowSurface = CreateSnowSurface("Pinewood snow cover", parent,
+                SnowSurfaceRows, SnowSurfaceColumns, out roadSnowMesh, reverse: true);
+            roadSnowGround = new Vector3[SnowSurfaceRows * SnowSurfaceColumns];
+            roadSnowVertices = new Vector3[roadSnowGround.Length];
+            roadSnowHeight = new float[roadSnowGround.Length];
+            for (int row = 0; row < SnowSurfaceRows; row++)
+            for (int column = 0; column < SnowSurfaceColumns; column++)
             {
-                if (index == PrototypeDrift)
-                {
-                    for (int cell = 0; cell < CellsPerDrift; cell++)
-                    {
-                        float remaining = prototypeSnow[strip, cell];
-                        var patch = prototypeBanks[strip, cell];
-                        patch.SetActive(remaining > 0);
-                        var patchScale = patch.transform.localScale;
-                        patchScale.y = SnowHeights[index] * remaining;
-                        patch.transform.localScale = patchScale;
-                    }
-                    continue;
-                }
-                var bank = drifts[index, strip];
-                int removed = 0;
-                for (int cell = 0; cell < CellsPerDrift; cell++)
-                    if ((plowedCells[index, strip] & (1 << cell)) != 0) removed++;
-                totalRemoved += removed;
-                bank.SetActive(removed < CellsPerDrift);
-                var scale = bank.transform.localScale;
-                scale.y = SnowHeights[index] * (1 - .7f * removed / CellsPerDrift);
-                bank.transform.localScale = scale;
+                float along = Mathf.Lerp(SnowStart, SnowEnd, row / (float)(SnowSurfaceRows - 1));
+                float across = SnowSurfaceAcross(column);
+                Vector3 point = plowStart + plowDirection * along + plowSide * across;
+                int vertex = row * SnowSurfaceColumns + column;
+                roadSnowGround[vertex] =
+                    roadSnowSurface.transform.InverseTransformPoint(Ground(point, out _));
+                roadSnowHeight[vertex] = UndisturbedSnowHeight(along, across);
             }
-            if (index == PrototypeDrift) return;
-            var pile = piles[index];
-            pile.SetActive(totalRemoved > 0);
-            var pileScale = pile.transform.localScale;
-            pileScale.y = SnowHeights[index] * totalRemoved / (CellsPerDrift * StripCount) * .77f;
-            pile.transform.localScale = pileScale;
+        }
+
+        private static float SnowSurfaceAcross(int column) =>
+            SnowCoverHalfWidth * (2f * column / (SnowSurfaceColumns - 1) - 1);
+
+        private static float UndisturbedSnowHeight(float along, float across)
+        {
+            float drift = Mathf.Clamp((along - FirstDrift) / DriftSpacing, 0, DriftCount - 1);
+            int lower = Mathf.FloorToInt(drift);
+            float depth = Mathf.SmoothStep(SnowHeights[lower],
+                SnowHeights[Mathf.Min(lower + 1, DriftCount - 1)], drift - lower);
+            float distance = Mathf.Abs(across);
+            float sideSeed = across < 0 ? 11f : 26f;
+            float width = Mathf.Lerp(3.8f, 5.45f, Mathf.PerlinNoise(along * .16f, sideSeed));
+            float shoulder = 1 - .56f * Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.55f, 2.8f, distance));
+            float edge = 1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(width - 1.8f, width, distance));
+            float end = Mathf.SmoothStep(0, 1, Mathf.Min(along - SnowStart, SnowEnd - along) / 2.7f);
+            float variation = Mathf.PerlinNoise(along * .39f + 6f, across * .68f + 17f) - .5f;
+            return Mathf.Max(0, depth * shoulder + variation * .25f) * edge * end;
+        }
+
+        private float RoadSnowRemaining(int cell, int strip) =>
+            snowRemaining[cell / CellsPerDrift, strip, cell % CellsPerDrift];
+
+        private void RefreshRoadSnow()
+        {
+            for (int row = 0; row < SnowSurfaceRows; row++)
+            {
+                float along = Mathf.Lerp(SnowStart, SnowEnd, row / (float)(SnowSurfaceRows - 1));
+                float sample = Mathf.Clamp((along - FirstDrift + DriftSpacing * .5f) / CellLength - .5f, 0, SnowCellCount - 1);
+                int first = Mathf.FloorToInt(sample);
+                int next = Mathf.Min(first + 1, SnowCellCount - 1);
+                float blend = Mathf.SmoothStep(0, 1, sample - first);
+                float left = Mathf.Lerp(RoadSnowRemaining(first, 0), RoadSnowRemaining(next, 0), blend);
+                float right = Mathf.Lerp(RoadSnowRemaining(first, 1), RoadSnowRemaining(next, 1), blend);
+                for (int column = 0; column < SnowSurfaceColumns; column++)
+                {
+                    float across = SnowSurfaceAcross(column);
+                    float sideBlend = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(-.24f, .24f, across));
+                    float cut = 1 - SnowbankEdge(across);
+                    float remaining = Mathf.Lerp(1, Mathf.Lerp(left, right, sideBlend), cut);
+                    int vertex = row * SnowSurfaceColumns + column;
+                    roadSnowVertices[vertex] = roadSnowGround[vertex] + Vector3.up * (roadSnowHeight[vertex] * remaining - .015f);
+                }
+            }
+            roadSnowSurface.SetActive(true);
+            WriteSnowSurface(roadSnowMesh, roadSnowVertices);
+        }
+
+        private static float SnowbankEdge(float across) =>
+            Mathf.SmoothStep(0, 1, Mathf.InverseLerp(LaneHalfWidth - .24f, LaneHalfWidth + .24f, Mathf.Abs(across)));
+
+        private float RoadsideSnowAt(Vector3 point)
+        {
+            Vector3 delta = point - plowStart;
+            float across = Vector3.Dot(delta, plowSide);
+            if (Mathf.Abs(across) < LaneHalfWidth - .24f || Mathf.Abs(across) >= SnowCoverHalfWidth) return 0;
+            float along = Vector3.Dot(delta, plowDirection);
+            if (along <= SnowStart || along >= SnowEnd || Mathf.Abs(delta.y) > 2f) return 0;
+            return UndisturbedSnowHeight(along, across) * SnowbankEdge(across) / DeepestDrift;
         }
 
         private void UpdatePlowProgress()
@@ -228,17 +245,18 @@ namespace TowTrouble
             if (index < 0 || index >= DriftCount || Mathf.Abs(point.y - driftPoints[index].y) > 1.4f) return 0;
             int cell = Mathf.Clamp(Mathf.FloorToInt((metres - index * DriftSpacing) / CellLength), 0, CellsPerDrift - 1);
             int strip = across < 0 ? 0 : 1;
-            if ((plowedCells[index, strip] & (1 << cell)) != 0) return 0;
-            float remaining = index == PrototypeDrift ? prototypeSnow[strip, cell] : 1;
-            return remaining * SnowHeights[index] / .70f *
+            float remaining = snowRemaining[index, strip, cell];
+            return remaining * SnowHeights[index] / DeepestDrift *
                 (1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(1.18f, LaneHalfWidth, Mathf.Abs(across))));
         }
 
-        internal float SnowAt(Vector3 point) => Mathf.Max(DriftAt(point), Mathf.Max(ShoulderSnowAt(point), SupplyDriftAt(point)));
+        internal float SnowAt(Vector3 point) => Mathf.Max(DriftAt(point),
+            Mathf.Max(RoadsideSnowAt(point), Mathf.Max(ShoulderSnowAt(point), SupplyDriftAt(point))));
 
         internal void FixedTick(RecoveryVehicle driver)
         {
-            if (!PlowFitted || cleared >= DriftCount) return;
+            if (!PlowFitted) return;
+            if (cleared >= DriftCount) { AdvanceSnowWave(); return; }
             bladeTravel = Mathf.MoveTowards(bladeTravel, bladeLowered ? 0 : 1, 4.5f * Time.fixedDeltaTime);
             blade.transform.localPosition = loweredBladePosition + Vector3.up * (bladeTravel * BladeLift);
             Vector3 contact = blade.transform.position;
@@ -255,18 +273,16 @@ namespace TowTrouble
             if (to <= from || to - from > 2f) { AdvanceSnowWave(); return; }
 
             float reach = BladeWidth * .5f * Mathf.Abs(Vector3.Dot(driver.transform.right, plowSide)) - .07f;
-            float resistance = DriftAt(contact);
-            bool inPrototype = Mathf.Abs(to - PrototypeCentre) <= DriftSpacing * .5f;
-            // Read the undisturbed snow before the swept blade removes it.
-            float contactLoad = inPrototype ? ApplyBladeResistance(driver, contact, speed) : 0;
-            bool changed = false;
+            // Sample the snow before the swept blade removes it.
+            float contactLoad = ApplyBladeResistance(driver, contact, speed);
+            float cutAtSpeed = Mathf.Lerp(1, .44f, Mathf.InverseLerp(3.8f, 7f, speed));
+            bool changed = false, clearedCell = false;
             for (int index = 0; index < DriftCount; index++)
             {
                 float sectionStart = FirstDrift + (index - .5f) * DriftSpacing;
                 if (sectionStart > to || sectionStart + DriftSpacing < from ||
                     Mathf.Abs(contact.y - driftPoints[index].y) > 1.4f) continue;
 
-                bool changedSection = false;
                 for (int cell = 0; cell < CellsPerDrift; cell++)
                 {
                     float along = sectionStart + (cell + .5f) * CellLength;
@@ -276,51 +292,26 @@ namespace TowTrouble
                     for (int strip = 0; strip < StripCount; strip++)
                     {
                         if ((plowedCells[index, strip] & bit) != 0) continue;
-                        if (index == PrototypeDrift)
-                        {
-                            float distance = Mathf.Abs(across - StripCentre(strip));
-                            float overlap = Mathf.Clamp01((reach + .65f - distance) / 1.3f);
-                            float bite = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.24f, .85f, overlap));
-                            if (bite <= 0) continue;
-                            float cut = bite * Mathf.Lerp(1, .44f, Mathf.InverseLerp(3.8f, 7f, speed));
-                            float before = prototypeSnow[strip, cell];
-                            float remaining = Mathf.Max(0, before - cut);
-                            prototypeSnow[strip, cell] = remaining > .12f ? remaining : 0;
-                            snowInWave[strip, cell] += before - prototypeSnow[strip, cell];
-                            if (prototypeSnow[strip, cell] > 0)
-                            {
-                                changedSection = true;
-                                continue;
-                            }
-                        }
-                        else if (Mathf.Abs(across - StripCentre(strip)) > reach) continue;
+                        float distance = Mathf.Abs(across - StripCentre(strip));
+                        float overlap = Mathf.Clamp01((reach + .65f - distance) / 1.3f);
+                        float bite = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.24f, .85f, overlap));
+                        if (bite <= 0) continue;
+
+                        float before = snowRemaining[index, strip, cell];
+                        float remaining = Mathf.Max(0, before - bite * cutAtSpeed);
+                        remaining = remaining > .12f ? remaining : 0;
+                        snowRemaining[index, strip, cell] = remaining;
+                        snowInWave[strip] += (before - remaining) * SnowHeights[index] / DeepestDrift;
+                        changed = true;
+                        if (remaining > 0) continue;
                         plowedCells[index, strip] |= bit;
-                        changedSection = true;
+                        clearedCell = true;
                     }
                 }
-                if (!changedSection) continue;
-                changed = true;
-                ShowPlowSection(index);
             }
-            if (changed) UpdatePlowProgress();
+            if (changed) RefreshRoadSnow();
+            if (clearedCell) UpdatePlowProgress();
             AdvanceSnowWave(contactLoad);
-            if (inPrototype) return;
-            if (resistance > 0)
-                driver.Body.AddForceAtPosition(-forward * resistance * (240 + 190 * speed), contact);
-            if (resistance <= 0) return;
-            if (Time.time < nextSpray) return;
-            nextSpray = Time.time + .065f;
-            for (int j = 0; j < 5; j++)
-            {
-                float sign = j == 0 ? -1 : 1;
-                plowSnow.Emit(new ParticleSystem.EmitParams
-                {
-                    position = contact + forward * .22f + plowSide * (sign * Random.Range(.45f, 1.35f)),
-                    velocity = plowSide * (sign * Random.Range(1.6f, 3.7f)) +
-                        Vector3.up * Random.Range(1.2f, 2.7f) + forward * Random.Range(.2f, 1.4f),
-                    rotation3D = Random.rotation.eulerAngles
-                }, 1);
-            }
         }
 
         private float ApplyBladeResistance(RecoveryVehicle driver, Vector3 contact, float speed)
@@ -334,8 +325,6 @@ namespace TowTrouble
             {
                 float offset = ((i + .5f) / BladeSamples - .5f) * BladeWidth;
                 Vector3 point = cuttingEdge + right * offset;
-                float along = Vector3.Dot(point - plowStart, plowDirection);
-                if (Mathf.Abs(along - PrototypeCentre) >= DriftSpacing * .5f) continue;
                 float depth = DriftAt(point);
                 if (depth <= 0) continue;
                 driver.Body.AddForceAtPosition(-forward * (forcePerSample * depth), point);
@@ -344,50 +333,21 @@ namespace TowTrouble
             return load;
         }
 
-        private void ShowShoulderSnow(int strip, int cell)
-        {
-            float snowAmount = shoulderSnow[strip, cell];
-            var bank = prototypeShoulderBanks[strip, cell];
-            bank.SetActive(snowAmount > .015f);
-            bank.transform.localScale = new Vector3(ShoulderWidth, snowAmount * .92f, 1.07f);
-        }
-
-        private float ShoulderSnowAt(Vector3 point)
-        {
-            Vector3 delta = point - driftPoints[PrototypeDrift];
-            float along = Vector3.Dot(delta, plowDirection);
-            float across = Vector3.Dot(delta, plowSide);
-            float distance = Mathf.Abs(Mathf.Abs(across) - ShoulderOffset);
-            if (Mathf.Abs(along) >= DriftSpacing * .5f || distance >= ShoulderWidth * .5f || Mathf.Abs(delta.y) > 1.4f)
-                return 0;
-            int cell = Mathf.Clamp(Mathf.FloorToInt((along + DriftSpacing * .5f) / CellLength), 0, CellsPerDrift - 1);
-            return shoulderSnow[across < 0 ? 0 : 1, cell] * .7f *
-                (1 - Mathf.SmoothStep(0, 1, distance / (ShoulderWidth * .5f)));
-        }
-
         private void AdvanceSnowWave(float contactLoad = 0)
         {
             float release = 1 - Mathf.Exp(-Time.fixedDeltaTime / SnowFlowTime);
-            float left = DrainSnowStrip(0, release, ref shedLeft);
-            float right = DrainSnowStrip(1, release, ref shedRight);
+            float left = DrainSnowStrip(0, release);
+            float right = DrainSnowStrip(1, release);
             bladeSnowWave.SetActive(left + right > .03f);
+            AdvanceShoulderFlow();
             bladeLoad = Mathf.MoveTowards(bladeLoad, contactLoad, Time.fixedDeltaTime * (contactLoad > bladeLoad ? 11f : 6f));
         }
 
-        private float DrainSnowStrip(int strip, float release, ref float spray)
+        private float DrainSnowStrip(int strip, float release)
         {
-            float moving = 0, released = 0;
-            for (int cell = 0; cell < CellsPerDrift; cell++)
-            {
-                float before = snowInWave[strip, cell];
-                if (before <= 0) continue;
-                float shed = before < .012f ? before : before * release;
-                snowInWave[strip, cell] -= shed;
-                shoulderSnow[strip, cell] += shed;
-                moving += snowInWave[strip, cell];
-                released += shed;
-                ShowShoulderSnow(strip, cell);
-            }
+            float before = snowInWave[strip];
+            float released = before < .012f ? before : before * release;
+            float moving = snowInWave[strip] = before - released;
 
             float sign = strip == 0 ? -1 : 1;
             float size = Mathf.Clamp01(moving / 1.6f);
@@ -396,19 +356,7 @@ namespace TowTrouble
             roll.transform.localPosition = new Vector3(sign * (.82f + .26f * (1 - size)), -.15f, .42f);
             roll.transform.localScale = new Vector3(.85f + .78f * size, .18f + .63f * size, .75f + .31f * size);
 
-            spray += released * 42f;
-            int chunks = Mathf.FloorToInt(spray);
-            spray -= chunks;
-            for (int i = 0; i < chunks; i++)
-            {
-                plowSnow.Emit(new ParticleSystem.EmitParams
-                {
-                    position = blade.transform.TransformPoint(new Vector3(sign * Random.Range(1.15f, 1.55f), -.08f, .43f)),
-                    velocity = plowSide * (sign * Random.Range(2.3f, 4.4f)) +
-                        Vector3.up * Random.Range(.85f, 2f) + plowDirection * Random.Range(.1f, .8f),
-                    rotation3D = Random.rotation.eulerAngles
-                }, 1);
-            }
+            if (released > 0) LaunchShoulderSnow(strip, released);
             return moving;
         }
 
@@ -451,7 +399,7 @@ namespace TowTrouble
             for (int strip = 0; strip < StripCount; strip++)
                 snowRolls[strip] = Snowbank("Snow roll along cutting edge", blade.transform.position, Vector3.one,
                     blade.transform.rotation, bladeSnowWave.transform);
-            shedLeft = shedRight = 0;
+            BuildSnowStreams();
             bladeSnowWave.SetActive(false);
             plowSnow.Play();
             previousBladePoint = blade.transform.position;

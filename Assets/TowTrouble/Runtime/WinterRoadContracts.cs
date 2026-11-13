@@ -209,7 +209,7 @@ namespace TowTrouble
                 case WinterJob.Tree:
                     return Held(reachedTow && TowInBay() && TowBody.linearVelocity.magnitude < 1.1f);
                 case WinterJob.Plow:
-                    return cleared == DriftCount;
+                    return cleared == DriftCount && !SnowStillMoving();
                 default:
                     return false;
             }
@@ -387,6 +387,7 @@ namespace TowTrouble
             Remove(deliveryMarker);
             Remove(pickupExitMarker);
             Remove(crate);
+            DisposeSnowStreams();
             Remove(blade);
             Remove(props);
             props = crate = blade = null;
@@ -412,7 +413,7 @@ namespace TowTrouble
                 parkedTree = props;
                 props = null;
             }
-            Clear();
+            Clear(restoreRoad: job != WinterJob.Plow);
         }
 
         private static void Remove(GameObject instance)
@@ -427,6 +428,9 @@ namespace TowTrouble
             Clear(restoreRoad: false);
             Remove(parkedTree);
             Remove(pinewoodRoad);
+            if (roadSnowMesh != null) UnityEngine.Object.Destroy(roadSnowMesh);
+            foreach (var mesh in shoulderMeshes)
+                if (mesh != null) UnityEngine.Object.Destroy(mesh);
             foreach (var material in new[] { wood, steel, orange, snow, paint, particles, marking })
                 if (material != null) UnityEngine.Object.Destroy(material);
             if (snowyBark != null) UnityEngine.Object.Destroy(snowyBark);
