@@ -72,7 +72,7 @@ namespace TowTrouble
         private UnityEngine.UI.Button Button(Transform parent,string label,float x,float y,float width,Action action,bool primary=false,float height=54)
         {
             // Keep general-menu actions above the larger, 720p-readable control strip.
-            if(parent==pageRoot&&page!="Board"&&page!="Garage"&&page!="Confirm"&&y>=780&&y+height>830)y=830-height;
+            if(parent==pageRoot&&!IsBoardPage(page)&&page!="Garage"&&page!="Confirm"&&y>=780&&y+height>830)y=830-height;
             var rt=Panel(parent,x,y,width,height);rt.name=label;var img=rt.GetComponent<UnityEngine.UI.Image>();img.raycastTarget=true;img.color=Color.clear;
             var plate=rt.GetComponentInChildren<RecoveryPlateGraphic>();if(plate==null)plate=Plate(rt,Ink,primary);plate.Style=RecoveryPlateStyle.Charcoal;
             var button=rt.gameObject.AddComponent<UnityEngine.UI.Button>();button.targetGraphic=plate;
@@ -109,12 +109,12 @@ namespace TowTrouble
             if(page=="Garage"&&target!="Garage")RememberGarageScroll();
             if(target!="Garage")SetGarageNavigation(false);
             if(target=="Garage")BeginGaragePage(page!="Garage");
-            bool enteringBoard = target == "Board" && page != "Board";
-            if (page == "Board") RememberBoardScroll();
-            SetBoardNavigation(target == "Board");
+            bool enteringBoard = IsBoardPage(target) && page != target;
+            if (IsBoardPage(page)) RememberBoardScroll();
+            SetBoardNavigation(IsBoardPage(target));
             if(target=="Garage")SetGarageNavigation(true);
 
-            if (target == "Board") BeginBoardPage(enteringBoard);
+            if (IsBoardPage(target)) BeginBoardPage(enteringBoard);
             if (target != "Gameplay") HideRoadTrail();
             if (target == "Board")
             {
@@ -136,7 +136,7 @@ namespace TowTrouble
         private IEnumerator FocusFirst()
         {
             var target=pageRoot;string remembered=focusName;yield return null;if(page=="Gameplay"||target==null||target!=pageRoot||!target.gameObject.activeInHierarchy)yield break;
-            if (page == "Board") { FocusBoardRecovery(); yield break; }
+            if (IsBoardPage(page)) { FocusBoardRecovery(); yield break; }
             if (page == "Garage") { FocusGarageUI(); yield break; }
             if (IsGeneralMenu) { FocusMenuControl(); yield break; }
             var controls=target.GetComponentsInChildren<UnityEngine.UI.Selectable>();UnityEngine.UI.Selectable preferred=null;

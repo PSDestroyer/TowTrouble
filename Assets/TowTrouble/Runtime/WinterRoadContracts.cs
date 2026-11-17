@@ -56,6 +56,13 @@ namespace TowTrouble
         internal bool ExtractingPickup => Active == WinterJob.Recovery && reachedTow && !pickupFreed;
         internal bool GuidingPickupExit => Active == WinterJob.Recovery && pickupFreed && !passedPickupExit;
         internal Vector3 PickupExit => rescueEntry;
+        internal Vector3 JobStart(WinterJob job) => job switch
+        {
+            WinterJob.Recovery => rescue,
+            WinterJob.Tree => treeRoad,
+            WinterJob.Plow => plowStart,
+            _ => workshop
+        };
         internal int Cleared => cleared;
         internal bool AtPlowStart(Vector3 point) => Active == WinterJob.Plow && !PlowFitted && Near(point, plowStart, 5f);
         internal bool Reconnecting(bool attached) => TowBody != null && reachedTow && !attached && !TowInBay();

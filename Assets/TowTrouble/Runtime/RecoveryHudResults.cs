@@ -15,6 +15,8 @@ namespace TowTrouble
             public float Elapsed;
             public int Resets, Snaps, Reward, Balance, BaseReward, ContractIndex, Tier;
             public bool FreeRoam, Cooperative, Host, NewRecovery;
+            public string Heading, MedalTitle, MedalDetail, Breakdown, NextStep;
+            public Action ContinueExploring;
         }
 
         private void BuildResults()
@@ -40,13 +42,13 @@ namespace TowTrouble
             var card = Panel(pageRoot, 380, (900 - height) * .5f, 840, height);
             card.name = "Recovery result";
             Icon(card, RecoveryIcon.FinishFlag, 32, 26, 30, Amber);
-            Text(card, L("RECUPERARE ÎNCHEIATĂ", "RECOVERY COMPLETE"), 76, 22, 732, 36, 23, Amber, true);
+            Text(card, result.Heading ?? L("RECUPERARE ÎNCHEIATĂ", "RECOVERY COMPLETE"), 76, 22, 732, 36, 23, Amber, true);
             Text(card, result.Title, 32, 66, 776, 45, 30, Paper, true);
 
             bool noResets = result.Resets == 0, noSnaps = result.Snaps == 0;
-            ResultMedal(card, 32, L("Recuperată", "Recovered"), L("Mașină livrată", "Vehicle delivered"), true);
-            ResultMedal(card, 296, L("Fără resetări", "No resets"), noResets ? L("+10% bonus", "+10% bonus") : L("Bonus ratat", "Bonus missed"), noResets);
-            ResultMedal(card, 560, L("Cablu intact", "No cable breaks"), noSnaps ? L("+10% bonus", "+10% bonus") : L("Bonus ratat", "Bonus missed"), noSnaps);
+            ResultMedal(card, 32, result.MedalTitle ?? L("Recuperată", "Recovered"), result.MedalDetail ?? L("Mașină livrată", "Vehicle delivered"), true);
+            ResultMedal(card, 296, L("Fără resetări", "No resets"), ResultMedalDetail(noResets, result.ContinueExploring != null), noResets);
+            ResultMedal(card, 560, L("Cablu intact", "No cable breaks"), ResultMedalDetail(noSnaps, result.ContinueExploring != null), noSnaps);
 
             var payout = Panel(card, 32, 232, 494, 164);
             payout.name = "Recovery payout";
@@ -71,12 +73,12 @@ namespace TowTrouble
             string breakdown = knownPayout ? (firstBonus?"Base  ":"Replay base  ") + baseOffer.ToString("N0") + " CR   +   Bonuses  " +
                 (result.Reward-baseOffer).ToString("N0")+" CR" : "Recovery finished";
             if (firstBonus) breakdown += "  ·  First recovery +25%";
-            Text(card, breakdown, 36, 407, 768, 31, 15, Muted);
+            Text(card, result.Breakdown ?? breakdown, 36, 407, 768, 31, 15, Muted);
 
             var next = ResultInset(card, "Recovery next step", 32, 448, 776, 36);
             Icon(next, result.NewRecovery ? RecoveryIcon.Flag : RecoveryIcon.Check, 10, 8, 20, Amber);
-            Text(next, result.NewRecovery ? L("O recuperare nouă este disponibilă", "New recovery available")
-                : L("Livrată la ", "Delivered to ") + result.Destination, 40, 0, 724, 36, 16, Paper).alignment = TextAlignmentOptions.MidlineLeft;
+            Text(next, result.NextStep ?? (result.NewRecovery ? L("O recuperare nouă este disponibilă", "New recovery available")
+                : L("Livrată la ", "Delivered to ") + result.Destination), 40, 0, 724, 36, 16, Paper).alignment = TextAlignmentOptions.MidlineLeft;
             if (result.Cooperative)
             {
                 Icon(card, RecoveryIcon.Crew, 36, 499, 22, Muted);
@@ -85,7 +87,7 @@ namespace TowTrouble
 
             if (result.FreeRoam)
                 Button(card, L("CONTINUĂ EXPLORAREA", "CONTINUE EXPLORING"), 32, actionY, 776,
-                    () => { session.FinishExplorationContract(); Show("Gameplay"); }, true, 56).interactable = result.Host;
+                    result.ContinueExploring ?? (() => { session.FinishExplorationContract(); Show("Gameplay"); }), true, 56).interactable = result.Host;
             else
             {
                 Button(card, L("URMĂTORUL CONTRACT", "NEXT CONTRACT"), 32, actionY, 776,
@@ -110,6 +112,12 @@ namespace TowTrouble
                 }
                 else Text(card,footer,32,actionY+66,776,40,18,Muted).alignment=TextAlignmentOptions.Center;
             }
+        }
+
+        private string ResultMedalDetail(bool earned, bool winter)
+        {
+            if (winter) return earned ? L("Obținută", "Earned") : L("RATATĂ", "Missed");
+            return earned ? "+10% bonus" : L("Bonus ratat", "Bonus missed");
         }
 
         private RectTransform ResultInset(Transform parent, string name, float x, float y, float width, float height)

@@ -24,7 +24,7 @@ namespace TowTrouble
         private Action pendingConfirmation;
         private string confirmationQuestion, confirmationAction = "CONFIRM", preferredMenuFocus;
         private UnityEngine.UI.Selectable[] menuControls = Array.Empty<UnityEngine.UI.Selectable>();
-        private bool IsGeneralMenu => page!="Gameplay" && page!="Garage" && page!="Board" && !(page=="Confirm"&&confirmationReturn=="Board");
+        private bool IsGeneralMenu => page!="Gameplay" && page!="Garage" && !IsBoardPage(page) && !(page=="Confirm"&&confirmationReturn=="Board");
         private void SetMenuNavigation(bool active)
         {
             if(active&&!menuOwnsNavigation&&EventSystem.current!=null)

@@ -7,17 +7,26 @@ namespace TowTrouble
     {
         private void BuildBoardCard(Transform parent,RecoveryContract[] contracts,int id,float x,float y,Vector3 position,UnityEngine.UI.ScrollRect scroll)
         {
-            var contract=contracts[id];bool active=boardIndex==id;float distance=Vector3.Distance(position,contract.Target);
-            var card=Button(parent,contract.TitleFor(P),x,y,580,()=>SelectBoardRecovery(id),active,142);
+            var contract=contracts[id];
+            BuildBoardCard(parent,id,x,y,scroll,contract.TitleFor(P),contract.Difficulty(P),Vector3.Distance(position,contract.Target),
+                RecoveryEconomy.BaseOffer(contract,!P.Completed(contract.CompletionId)),BoardPhoto(id));
+        }
+        private void BuildBoardCard(Transform parent,int id,float x,float y,UnityEngine.UI.ScrollRect scroll,
+            string name,string label,float distance,int reward,Texture2D photo)
+        {
+            var card=Button(parent,name,x,y,580,()=>SelectBoardRecovery(id),boardIndex==id,142);
             card.gameObject.name="board_recovery_"+id;
             var navigation=card.navigation;navigation.mode=UnityEngine.UI.Navigation.Mode.None;card.navigation=navigation;
             boardCards[id]=card;
             var title=card.GetComponentInChildren<TMP_Text>();title.rectTransform.anchoredPosition=new Vector2(216,-12);title.rectTransform.sizeDelta=new Vector2(344,50);title.font=displayFont!=null?displayFont:font;title.fontSize=24*P.textScale;
-            ContractPhoto(card.transform,id,14,14,184,112);
-            Text(card.transform,contract.Difficulty(P)+"  ·  "+Mathf.RoundToInt(distance)+" m",218,65,340,25,16,Muted);Icon(card.transform,RecoveryIcon.Coins,218,103,22,Amber);Text(card.transform,RecoveryEconomy.BaseOffer(contract,!P.Completed(contract.CompletionId)).ToString("N0")+" CR",250,94,300,36,23,Amber,true);
+            ContractPhoto(card.transform,photo,14,14,184,112);
+            Text(card.transform,label+"  ·  "+Mathf.RoundToInt(distance)+" m",218,65,340,25,16,Muted);Icon(card.transform,RecoveryIcon.Coins,218,103,22,Amber);Text(card.transform,reward.ToString("N0")+" CR",250,94,300,36,23,Amber,true);
             if(scroll!=null)card.gameObject.AddComponent<RecoveryGarageCardFocus>().Configure(scroll);
         }
         private void BuildCompletedRecoveries(List<int> entries,RecoveryContract[] contracts,Vector3 position)
+            => BuildBoardScroll(entries,(parent,id,scroll)=>BuildBoardCard(parent,contracts,id,0,0,position,scroll));
+
+        private void BuildBoardScroll(List<int> entries,System.Action<Transform,int,UnityEngine.UI.ScrollRect> buildCard)
         {
             // Scrollbar uses the existing inter-column gap; card and detail widths are unchanged.
             var holder=Node("Completed recoveries scroll",pageRoot,76,232,604,458);
@@ -31,10 +40,10 @@ namespace TowTrouble
             var area=Stretch("Sliding area",barRoot);area.offsetMin=new Vector2(2,2);area.offsetMax=new Vector2(-2,-2);var handle=Stretch("Handle",area);var graphic=handle.gameObject.AddComponent<UnityEngine.UI.Image>();graphic.color=Amber;
             var bar=barRoot.gameObject.AddComponent<UnityEngine.UI.Scrollbar>();bar.targetGraphic=graphic;bar.handleRect=handle;bar.direction=UnityEngine.UI.Scrollbar.Direction.BottomToTop;var navigation=bar.navigation;navigation.mode=UnityEngine.UI.Navigation.Mode.None;bar.navigation=navigation;
             scroll.verticalScrollbar=bar;
-            foreach(int id in entries)BuildBoardCard(content,contracts,id,0,0,position,scroll);
-            float remembered=boardCompletedScrollY;UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(content);Canvas.ForceUpdateCanvases();scroll.Rebuild(UnityEngine.UI.CanvasUpdate.PostLayout);scroll.StopMovement();
+            foreach(int id in entries)buildCard(content,id,scroll);
+            float remembered=page=="Expeditions"?expeditionScrollY[boardCompleted?1:0]:boardCompletedScrollY;UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(content);Canvas.ForceUpdateCanvases();scroll.Rebuild(UnityEngine.UI.CanvasUpdate.PostLayout);scroll.StopMovement();
             float range=Mathf.Max(0,content.rect.height-viewport.rect.height),offset=Mathf.Clamp(remembered,0,range);scroll.verticalNormalizedPosition=range>0?1-offset/range:1;bar.SetValueWithoutNotify(range>0?1-offset/range:1);barRoot.gameObject.SetActive(range>.01f);
-            var current=pageRoot;scroll.onValueChanged.AddListener(_=>{if(pageRoot==current)boardCompletedScrollY=content.anchoredPosition.y;});
+            var current=pageRoot;scroll.onValueChanged.AddListener(_=>{if(pageRoot==current)RememberBoardScroll();});
         }
     }
 }

@@ -5,55 +5,105 @@ namespace TowTrouble
 {
     public sealed partial class RecoveryHud
     {
-        private bool journalSurveys;
+        private readonly int[] expeditionSelection = { -1, -1 };
+        private readonly float[] expeditionScrollY = new float[2];
+        private static readonly string[] winterJobLabels = { "Cargo delivery", "Vehicle recovery", "Road clearance", "Snow plowing" };
+        private static readonly string[] winterJobTerrain = { "Packed road / deep forest snow", "Snowy ditch and meadow", "Icy lakeside road", "Deep drifts and packed snow" };
+        private static readonly string[] winterPhotoNames =
+        {
+            "Pinewood supplies", "Workshop Meadow rescue", "Lakeside timber", "Pinewood plowing",
+            "Pinewood weather station", "Frozen lakeshore", "High cabin"
+        };
+        private Texture2D[] winterBoardPhotos;
 
         private void BuildExpeditions()
         {
-            var expedition = session.Expedition;
-            Panel(pageRoot, 53, 54, 1090, 741);
-            Text(pageRoot, "EXPEDITION JOURNAL", 90, 78, 960, 64, 44, Paper, true);
-            Button(pageRoot, "WINTER JOBS", 90, 152, 240, () => OpenJournalTab(false), !journalSurveys, 45);
-            Button(pageRoot, "FIELD SURVEYS", 342, 152, 240, () => OpenJournalTab(true), journalSurveys, 45);
-            bool classicRecovery = session.World.HasContract;
-            if (classicRecovery)
-                Text(pageRoot, "Finish or abandon the active recovery to start an expedition.", 600, 146, 490, 57, 18, Muted);
+            Header(L("MISIUNI DE IARNĂ", "WINTER EXPEDITIONS"), L("Alege o misiune. Pregătește mașina. Pornește la drum.", "Pick a job. Prepare your ride. Head out."));
+            Wallet(pageRoot, P.credits);
+            BuildBoardTabs();
 
-            int count = journalSurveys ? expedition.Surveys.Count : WinterRoadContracts.Offers.Length;
-            for (int i = 0; i < count; i++)
+            var expedition = session.Expedition;
+            var entries = new System.Collections.Generic.List<int>();
+            for (int id = 0; id < WinterRoadContracts.Offers.Length + expedition.Surveys.Count; id++)
+                if (WinterEntryCompleted(id) == boardCompleted) entries.Add(id);
+            boardEntries = entries;
+            int tab = boardCompleted ? 1 : 0;
+            if (!entries.Contains(boardIndex)) boardIndex = entries.Contains(expeditionSelection[tab])
+                ? expeditionSelection[tab] : entries.Count > 0 ? entries[0] : -1;
+            expeditionSelection[tab] = boardIndex;
+
+            if (winterBoardPhotos == null)
             {
-                int index = i;
-                var job = (WinterJob)i;
-                var offer = journalSurveys ? default : WinterRoadContracts.Offers[i];
-                var survey = journalSurveys ? expedition.Surveys[i] : default;
-                bool logged = ((journalSurveys ? P.winterSurveys : P.winterJobs) & (1 << i)) != 0;
-                bool selected = journalSurveys ? expedition.Selected == i : expedition.ActiveJob == job;
-                var card = Panel(pageRoot, 88, 216 + i * 116, 1018, 104);
-                Text(card, journalSurveys ? survey.Name : offer.Name, 20, 10, 666, 33, 26, Paper, true);
-                Text(card, journalSurveys ? survey.Brief : offer.Brief, 20, 50, 666, 48, 19, Muted);
-                string label = selected ? (journalSurveys ? "IN PROGRESS" : "RESTART JOB") :
-                    logged ? "REVISIT" : journalSurveys ? "START SURVEY" : "ACCEPT JOB";
-                Button(card, label, 724, 42, 270, () =>
-                {
-                    session.ConsumeMenuInput();
-                    if (journalSurveys) expedition.Depart(index);
-                    else expedition.Accept(job);
-                    Show("Gameplay");
-                }, !logged, 46).interactable = !classicRecovery && !expedition.Attached && !(journalSurveys && selected);
-                Text(card, selected ? "ACTIVE" : logged ? "COMPLETE" : (journalSurveys ? survey.Reward : offer.Reward).ToString("N0") + " CR",
-                    726, 10, 268, 26, 16, Amber, true);
+                winterBoardPhotos = new Texture2D[winterPhotoNames.Length];
+                for (int id = 0; id < winterBoardPhotos.Length; id++)
+                    winterBoardPhotos[id] = Resources.Load<Texture2D>("WinterBoard/" + winterPhotoNames[id]);
             }
 
-            Button(pageRoot, "BACK TO DRIVING", 90, 690, 320, MenuBack);
-            if (expedition.Attached) Text(pageRoot, "Detach the winch before changing expeditions.", 434, 700, 650, 30, 17, Muted);
-            BuildMenuFooter();
+            var position = session.World.Drivers[Mathf.Max(0, session.LocalSlot)].transform.position;
+            if (boardCompleted || entries.Count > 3)
+                BuildBoardScroll(entries, (parent, id, scroll) => WinterCard(parent, id, 0, 0, scroll));
+            else
+                for (int row = 0; row < entries.Count; row++) WinterCard(pageRoot, entries[row], 76, 232 + row * 158, null);
+
+            if (entries.Count == 0)
+                Text(pageRoot, boardCompleted ? "No completed expeditions yet." : "All expeditions are completed. Replay them in Completed.",
+                    76, 300, 580, 140, 23, Muted, true);
+            var detail = Panel(pageRoot, 690, 232, 834, 458);
+            detail.name = "Recovery details";
+            TMPro.TMP_Text description = null;
+            if (boardIndex >= 0)
+            {
+                var entry = WinterEntry(boardIndex);
+                Text(detail, entry.Name, 30, 17, 774, 50, 33, Paper, true);
+                ContractPhoto(detail, WinterPhoto(boardIndex), 30, 80, 774, 178);
+                description = Text(detail, entry.Brief + (entry.Terrain == null ? "" : "\n" + L("Teren: ", "Terrain: ") + entry.Terrain),
+                    30, 274, 482, 93, 18, Paper);
+                BuildBoardReward(detail, boardCompleted ? "REPLAY REWARD" : "REWARD", entry.Reward);
+                if (!boardCompleted && boardIndex == (int)WinterJob.Supply)
+                    Text(detail, "Bonus for delivering the crate intact", 30, 411, 774, 36, 16, Muted);
+            }
+            else Text(detail, boardCompleted ? "Finished expeditions will appear here for replay." : "Choose an expedition from Completed to replay.",
+                30, 30, 774, 100, 25, Paper, true);
+
+            int active = expedition.ActiveJob is WinterJob job ? (int)job :
+                expedition.Selected >= 0 ? WinterRoadContracts.Offers.Length + expedition.Selected : -1;
+            string status = session.World.HasContract ? "Finish or abandon the active recovery to start an expedition." :
+                expedition.Attached ? "Detach the winch before changing expeditions." :
+                active >= 0 ? "IN PROGRESS: " + WinterEntry(active).Name : "No active expedition. Choose where we go next.";
+            string action = IsActiveSurvey(boardIndex) ? "IN PROGRESS" : active >= 0 && boardIndex == active ? "RESTART JOB" :
+                boardCompleted ? "REPLAY EXPEDITION" : boardIndex >= WinterRoadContracts.Offers.Length ? "START SURVEY" : "ACCEPT JOB";
+            BuildBoardActions(entries.Count + (boardCompleted ? " completed expeditions" : " available expeditions"), status, active >= 0, action);
+            FitNewPanelText();
+            if (description != null) description.fontSizeMin = 14f;
+            RefreshBoardHints();
+
+            void WinterCard(Transform parent, int id, float x, float y, UnityEngine.UI.ScrollRect scroll)
+            {
+                var entry = WinterEntry(id);
+                BuildBoardCard(parent, id, x, y, scroll, entry.Name, entry.Label,
+                    Vector3.Distance(position, entry.Point), entry.Reward, WinterPhoto(id));
+            }
         }
 
-        private void OpenJournalTab(bool surveys)
+        private Texture2D WinterPhoto(int id) => id < winterBoardPhotos.Length ? winterBoardPhotos[id] : null;
+
+        private bool WinterEntryCompleted(int id) => id < WinterRoadContracts.Offers.Length
+            ? (P.winterJobs & (1 << id)) != 0 : (P.winterSurveys & (1 << (id - WinterRoadContracts.Offers.Length))) != 0;
+
+        private bool IsActiveSurvey(int id) => id >= WinterRoadContracts.Offers.Length &&
+            session.Expedition.Selected == id - WinterRoadContracts.Offers.Length;
+
+        private (string Name, string Brief, string Label, string Terrain, Vector3 Point, int Reward) WinterEntry(int id)
         {
-            if (journalSurveys == surveys) return;
-            session.ConsumeMenuInput();
-            journalSurveys = surveys;
-            Show("Expeditions");
+            bool completed = WinterEntryCompleted(id);
+            if (id < WinterRoadContracts.Offers.Length)
+            {
+                var offer = WinterRoadContracts.Offers[id];
+                return (offer.Name, offer.Brief, winterJobLabels[id], winterJobTerrain[id],
+                    session.Expedition.JobStart((WinterJob)id), completed ? 0 : offer.Reward);
+            }
+            var survey = session.Expedition.Surveys[id - WinterRoadContracts.Offers.Length];
+            return (survey.Name, survey.Brief, "Field survey", null, survey.Point, completed ? 0 : survey.Reward);
         }
 
         private void BuildExpeditionHelp()
@@ -140,28 +190,45 @@ namespace TowTrouble
         private void BuildWinterResults()
         {
             if (session.Expedition.Result is not { } result) return;
-            var card = Panel(pageRoot, 380, 224, 840, 452);
-            card.name = "Winter expedition result";
-            Icon(card, RecoveryIcon.FinishFlag, 32, 26, 30, Amber);
-            Text(card, L("EXPEDIȚIE ÎNCHEIATĂ", "EXPEDITION COMPLETE"), 76, 22, 732, 36, 23, Amber, true);
-            Text(card, result.Name, 32, 68, 776, 50, 30, Paper, true);
-
-            var payout = Panel(card, 32, 144, 494, 150);
-            payout.GetComponentInChildren<RecoveryPlateGraphic>().Style = RecoveryPlateStyle.Paper;
-            Text(payout, L("RECOMPENSA TA", "YOUR PAYOUT"), 20, 12, 454, 27, 16, Ink, true);
-            Icon(payout, RecoveryIcon.Coins, 20, 51, 38, Ink);
-            string reward = result.Reward > 0 ? "+" + result.Reward.ToString("N0") + " CR" :
-                L("Deja recompensată", "Already rewarded");
-            Text(payout, reward, 74, 42, 400, 62, result.Reward > 0 ? 42 : 26, Ink, true);
-            Text(payout, L("Sold  ", "Balance  ") + P.credits.ToString("N0") + " CR", 20, 105, 454, 32, 17, Ink);
-            var stats = ResultInset(card, "Expedition statistics", 542, 144, 266, 150);
-            ResultStat(stats, 54, L("Timp", "Time"), System.TimeSpan.FromSeconds(result.Elapsed).ToString(@"mm\:ss"));
-            if (!string.IsNullOrEmpty(result.Detail))
-                Text(card, result.Detail, 34, 294, 772, 28, 16, Muted);
-            Button(card, L("CONTINUĂ EXPLORAREA", "CONTINUE EXPLORING"), 32, 322, 776, ContinueWinterResults, true, 56);
-            var row = Node("Continue control", card, 310, 390, 220, 40);
-            resultInputHint = MenuGlyph(row, "confirm", 0, 0);
-            Text(row, "Continue", 68, 0, 152, 40, 18, Muted).alignment = TMPro.TextAlignmentOptions.MidlineLeft;
+            string objective = result.Job switch
+            {
+                WinterJob.Supply => L("Ladă livrată", "Crate delivered"),
+                WinterJob.Recovery => L("Mașină livrată", "Vehicle delivered"),
+                WinterJob.Tree => L("Banda este liberă", "Lane cleared"),
+                WinterJob.Plow => L("Drum deszăpezit", "Road plowed"),
+                _ => L("Date înregistrate", "Survey logged")
+            };
+            string breakdown = result.Reward == 0 ? L("Deja recompensată", "Already rewarded") :
+                L("Bază  ", "Base  ") + (result.Reward - result.Bonus).ToString("N0") + " CR";
+            if (result.Bonus > 0)
+                breakdown += L("   +   Bonus ladă intactă  ", "   +   Intact crate bonus  ") + result.Bonus.ToString("N0") + " CR";
+            else if (result.Job == WinterJob.Supply)
+                breakdown += result.CargoIntact ? L("  ·  Ladă intactă", "  ·  Crate intact") : L("  ·  Ladă deteriorată", "  ·  Crate damaged");
+            string nextStep = result.Job switch
+            {
+                WinterJob.Supply => L("Livrată la Pinewood", "Delivered to Pinewood"),
+                WinterJob.Recovery => L("Livrată la atelier", "Delivered to the workshop"),
+                WinterJob.Tree => L("Traseu redeschis la Lakeside", "Lakeside Road reopened"),
+                WinterJob.Plow => L("Traseu redeschis la Pinewood", "Pinewood Road reopened"),
+                _ => L("Raport predat la bază", "Report filed at expedition base")
+            };
+            BuildResultsSummary(new ResultSummary
+            {
+                Title = result.Name,
+                Heading = L("EXPEDIȚIE ÎNCHEIATĂ", "EXPEDITION COMPLETE"),
+                MedalTitle = L("Finalizată", "Completed"),
+                MedalDetail = objective,
+                Elapsed = result.Elapsed,
+                Resets = result.Resets,
+                Snaps = result.CableBreaks,
+                Reward = result.Reward,
+                Balance = P.credits,
+                Breakdown = breakdown,
+                NextStep = nextStep,
+                FreeRoam = true,
+                Host = true,
+                ContinueExploring = ContinueWinterResults
+            });
         }
 
         private void ContinueWinterResults()

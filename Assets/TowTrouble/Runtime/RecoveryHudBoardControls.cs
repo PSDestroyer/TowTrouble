@@ -18,6 +18,7 @@ namespace TowTrouble
         private bool boardOwnsNavigation, boardPreviousNavigation, boardSubmitRelease;
         private int boardOpenFrame, boardMoveDirection, boardDialogIndex;
         private float boardNextMove;
+        private static bool IsBoardPage(string target) => target == "Board" || target == "Expeditions";
 
         private sealed class BoardHint
         {
@@ -63,15 +64,22 @@ namespace TowTrouble
         {
             float speed = boardScroll is RecoverySmoothScrollRect previous ? previous.ScrollSpeed : 0;
             if(boardIndex!=id)PlayMenuMove();
-            RememberBoardScroll(); boardIndex = id; Show("Board");
+            RememberBoardScroll(); boardIndex = id; Show(page);
             if (boardScroll is RecoverySmoothScrollRect current) current.ScrollSpeed = speed;
         }
         private void RememberBoardScroll()
-        { if (boardScroll != null) boardCompletedScrollY = boardScroll.content.anchoredPosition.y; }
+        {
+            if (boardScroll == null) return;
+            if (page == "Expeditions") expeditionScrollY[boardCompleted ? 1 : 0] = boardScroll.content.anchoredPosition.y;
+            else boardCompletedScrollY = boardScroll.content.anchoredPosition.y;
+        }
 
         private bool CanUseBoardPrimary()
         {
             var world = session.World;
+            if (page == "Expeditions")
+                return boardIndex >= 0 && !world.HasContract && world.Phase == RecoveryPhase.Explore &&
+                    !session.Expedition.Attached && !IsActiveSurvey(boardIndex);
             if (!session.IsHost) return false;
             if (world.HasContract) return true;
             return boardIndex >= 0 && boardIndex < world.AvailableContracts.Length &&
@@ -81,7 +89,13 @@ namespace TowTrouble
         {
             if (!CanUseBoardPrimary()) return;
             session.ConsumeMenuInput();
-            if (session.World.HasContract)
+            if (page == "Expeditions")
+            {
+                if (boardIndex < WinterRoadContracts.Offers.Length) session.Expedition.Accept((WinterJob)boardIndex);
+                else session.Expedition.Depart(boardIndex - WinterRoadContracts.Offers.Length);
+                if (!session.BoardOpen) Show("Gameplay");
+            }
+            else if (session.World.HasContract)
                 Confirm("Abandon \"" + session.World.Contract.TitleFor(P) + "\" without payment?",
                     () => { session.ConsumeMenuInput(); session.FinishExplorationContract(); Show("Gameplay"); }, "Board");
             else session.AcceptBoardContract(boardIndex);
@@ -110,7 +124,7 @@ namespace TowTrouble
         private bool HandleBoardControls(bool online)
         {
             bool dialog = page == "Confirm" && confirmationReturn == "Board";
-            if (!online || page != "Board" && !dialog) { SetBoardNavigation(false); return false; }
+            if (!online || !IsBoardPage(page) && !dialog) { SetBoardNavigation(false); return false; }
             SetBoardNavigation(true);
             RefreshBoardHints();
             var keyboard = Keyboard.current; var pad = RecoveryInputDevices.Pad;
@@ -123,9 +137,9 @@ namespace TowTrouble
                 else CloseBoard();
                 return true;
             }
-            if (page == "Board")
+            if (IsBoardPage(page))
             {
-                if (boardRenderedCompletedMask != P.completedMask) Show("Board");
+                if (page == "Board" && boardRenderedCompletedMask != P.completedMask) Show("Board");
                 if (startButton != null) startButton.interactable = CanUseBoardPrimary();
                 FocusBoardRecovery();
                 if (Time.frameCount == boardOpenFrame) return true;

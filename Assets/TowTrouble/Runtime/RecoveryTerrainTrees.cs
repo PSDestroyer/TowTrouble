@@ -313,8 +313,11 @@ namespace TowTrouble
                 terrain.reflectionProbeUsage = source.reflectionProbeUsage;
                 terrain.renderingLayerMask = source.renderingLayerMask;
                 terrain.preserveTreePrototypeLayers = source.preserveTreePrototypeLayers;
+#if UNITY_EDITOR
+                // Unity exposes these light probe baking settings only in the Editor.
                 terrain.bakeLightProbesForTrees = source.bakeLightProbesForTrees;
                 terrain.deringLightProbesForTrees = source.deringLightProbesForTrees;
+#endif
                 terrain.treeDistance = originalDistance = source.treeDistance;
                 terrain.treeBillboardDistance = source.treeBillboardDistance;
                 terrain.treeCrossFadeLength = source.treeCrossFadeLength;

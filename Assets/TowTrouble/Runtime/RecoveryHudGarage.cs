@@ -210,7 +210,9 @@ namespace TowTrouble
         private void SelectBoardTab(bool completed)
         {
             if(boardCompleted!=completed)PlayMenuMove();
-            RememberBoardScroll();boardCompleted=completed;boardIndex=completed?boardCompletedIndex:boardAvailableIndex;Show("Board");
+            RememberBoardScroll();boardScroll=null;boardCompleted=completed;
+            boardIndex=page=="Expeditions"?expeditionSelection[completed?1:0]:completed?boardCompletedIndex:boardAvailableIndex;
+            Show(page);
         }
         private void BuildBoard()
         {
@@ -221,10 +223,7 @@ namespace TowTrouble
             if(!visible.Contains(boardIndex))boardIndex=visible.Count>0?visible[0]:-1;
             if(boardIndex>=0)garagePlannedContractIndex=boardIndex;
             if(boardCompleted)boardCompletedIndex=boardIndex;else boardAvailableIndex=boardIndex;
-            var availableTab=Button(pageRoot,L("DISPONIBILE","AVAILABLE"),76,194,284,()=>SelectBoardTab(false),!boardCompleted,30);
-            availableTab.gameObject.name="Board available tab";AddBoardHint(availableTab,0,true);
-            var completedTab=Button(pageRoot,L("FINALIZATE","COMPLETED"),372,194,284,()=>SelectBoardTab(true),boardCompleted,30);
-            completedTab.gameObject.name="Board completed tab";AddBoardHint(completedTab,1,true);
+            BuildBoardTabs();
             if(boardCompleted)BuildCompletedRecoveries(visible,contracts,car.transform.position);
             else for(int row=0;row<visible.Count;row++)BuildBoardCard(pageRoot,contracts,visible[row],76,232+row*158,car.transform.position,null);
             if(visible.Count==0)Text(pageRoot,boardCompleted?L("Nicio recuperare finalizată încă.","No completed recoveries yet."):L("Toate recuperările sunt finalizate. Le poți rejuca în Finalizate.","All recoveries are completed. Replay them in Completed."),76,300,580,140,23,Muted,true);
@@ -241,26 +240,53 @@ namespace TowTrouble
                 Text(detail,RecoveryAssistance.Preparation(selected,equipment),30,369,482,40,16,Amber).name="Equipment recommendation";
             }
             bool first=!P.Completed(selected.CompletionId);
-            var reward=Panel(detail,542,277,262,111);reward.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Paper;Icon(reward,RecoveryIcon.Coins,15,17,26,Ink);Text(reward,first?"REWARD":"REPLAY REWARD",50,12,196,27,16,Ink,true);Text(reward,RecoveryEconomy.BaseOffer(selected,first).ToString("N0")+" CR",17,45,228,50,35,Ink,true).alignment=TextAlignmentOptions.Center;
+            BuildBoardReward(detail,first?"REWARD":"REPLAY REWARD",RecoveryEconomy.BaseOffer(selected,first));
             string estimate=selected.ExpectedSeconds>0?"~"+Mathf.CeilToInt(selected.ExpectedSeconds/60)+" min  ·  ":"";
             Text(detail,estimate+(first?"First recovery +25%  ·  ":"Replay  ·  ")+"No resets +10%  ·  No breaks +10%",30,411,774,36,16,Muted);
             }
             else Text(detail,boardCompleted?L("Recuperările terminate vor apărea aici pentru rejucare.","Finished recoveries will appear here for replay."):L("Alege o recuperare din Finalizate pentru a o rejuca.","Choose a completed recovery to replay."),30,30,774,100,25,Paper,true);
-            Text(pageRoot,visible.Count+L(boardCompleted?" recuperări finalizate":" recuperări disponibile",boardCompleted?" completed recoveries":" available recoveries"),76,708,256,36,16,Paper);
-            boardSelectionHint=ControlText(Text(pageRoot,"",340,708,316,36,16,Muted));
-            var statusCard=Panel(pageRoot,76,w.Map!=null?750:720,1448,w.Map!=null?40:50);Icon(statusCard,w.HasContract?RecoveryIcon.Hook:RecoveryIcon.Flag,18,13,25,Amber);Text(statusCard,w.HasContract?L("ÎN DESFĂȘURARE: ","IN PROGRESS: ")+w.Contract.TitleFor(P):L("Nicio intervenție activă. Alege unde mergem mai departe.","No active recovery. Choose where we go next."),60,0,1368,50,18,Paper).alignment=TextAlignmentOptions.MidlineLeft;
-            startButton=Button(pageRoot,w.HasContract?L("ABANDONEAZĂ INTERVENȚIA","ABANDON RECOVERY"):L("ACCEPTĂ INTERVENȚIA","ACCEPT RECOVERY"),1004,805,520,BoardPrimaryAction,true,62);
-            startButton.interactable=CanUseBoardPrimary();AddBoardHint(startButton,2,false);
-            var backToDriving=Button(pageRoot,L("ÎNAPOI ÎN JOC","BACK TO DRIVING"),76,805,340,CloseBoard,false,62);
-            AddBoardHint(backToDriving,3,false);
+            BuildBoardActions(visible.Count+L(boardCompleted?" recuperări finalizate":" recuperări disponibile",boardCompleted?" completed recoveries":" available recoveries"),
+                w.HasContract?L("ÎN DESFĂȘURARE: ","IN PROGRESS: ")+w.Contract.TitleFor(P):L("Nicio intervenție activă. Alege unde mergem mai departe.","No active recovery. Choose where we go next."),
+                w.HasContract,w.HasContract?L("ABANDONEAZĂ INTERVENȚIA","ABANDON RECOVERY"):L("ACCEPTĂ INTERVENȚIA","ACCEPT RECOVERY"));
             if(!session.IsHost)Text(pageRoot,L("Gazda acceptă intervenția pentru echipă.","The host accepts the recovery for the crew."),690,874,834,24,16,Muted);FitNewPanelText();
             if (boardDescription != null) boardDescription.fontSizeMin = 14f;
             RefreshBoardHints();
         }
-        private void ContractPhoto(Transform parent,int index,float x,float y,float width,float height)
+        private void BuildBoardTabs()
         {
-            if(contractImages==null||index>=contractImages.Length||contractImages[index]==null)return;
-            var image=Node("Recovery photo",parent,x,y,width,height).gameObject.AddComponent<UnityEngine.UI.RawImage>();image.texture=contractImages[index];image.raycastTarget=false;
+            var availableTab=Button(pageRoot,L("DISPONIBILE","AVAILABLE"),76,194,284,()=>SelectBoardTab(false),!boardCompleted,30);
+            availableTab.gameObject.name="Board available tab";AddBoardHint(availableTab,0,true);
+            var completedTab=Button(pageRoot,L("FINALIZATE","COMPLETED"),372,194,284,()=>SelectBoardTab(true),boardCompleted,30);
+            completedTab.gameObject.name="Board completed tab";AddBoardHint(completedTab,1,true);
+        }
+        private void BuildBoardReward(Transform detail,string label,int amount)
+        {
+            var reward=Panel(detail,542,277,262,111);
+            reward.GetComponentInChildren<RecoveryPlateGraphic>().Style=RecoveryPlateStyle.Paper;
+            Icon(reward,RecoveryIcon.Coins,15,17,26,Ink);Text(reward,label,50,12,196,27,16,Ink,true);
+            Text(reward,amount.ToString("N0")+" CR",17,45,228,50,35,Ink,true).alignment=TextAlignmentOptions.Center;
+        }
+        private void BuildBoardActions(string count,string message,bool active,string primaryLabel)
+        {
+            Text(pageRoot,count,76,708,256,36,16,Paper);
+            boardSelectionHint=ControlText(Text(pageRoot,"",340,708,316,36,16,Muted));
+            bool hasMap=session.World.Map!=null;
+            var statusCard=Panel(pageRoot,76,hasMap?750:720,1448,hasMap?40:50);
+            Icon(statusCard,active?RecoveryIcon.Hook:RecoveryIcon.Flag,18,13,25,Amber);
+            Text(statusCard,message,60,0,1368,50,18,Paper).alignment=TextAlignmentOptions.MidlineLeft;
+            startButton=Button(pageRoot,primaryLabel,1004,805,520,BoardPrimaryAction,true,62);
+            startButton.interactable=CanUseBoardPrimary();AddBoardHint(startButton,2,false);
+            var backToDriving=Button(pageRoot,L("ÎNAPOI ÎN JOC","BACK TO DRIVING"),76,805,340,CloseBoard,false,62);
+            AddBoardHint(backToDriving,3,false);
+        }
+        private Texture2D BoardPhoto(int index) =>
+            contractImages!=null&&index>=0&&index<contractImages.Length?contractImages[index]:null;
+        private void ContractPhoto(Transform parent,int index,float x,float y,float width,float height)
+            => ContractPhoto(parent,BoardPhoto(index),x,y,width,height);
+        private void ContractPhoto(Transform parent,Texture2D photo,float x,float y,float width,float height)
+        {
+            if(photo==null)return;
+            var image=Node("Recovery photo",parent,x,y,width,height).gameObject.AddComponent<UnityEngine.UI.RawImage>();image.texture=photo;image.raycastTarget=false;
             float source=image.texture.width/(float)image.texture.height,target=width/height;
             if(target>source){float visible=source/target;image.uvRect=new Rect(0,(1-visible)*.5f,1,visible);}else{float visible=target/source;image.uvRect=new Rect((1-visible)*.5f,0,visible,1);}
         }

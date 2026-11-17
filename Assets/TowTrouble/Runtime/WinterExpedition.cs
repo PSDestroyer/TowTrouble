@@ -27,11 +27,12 @@ namespace TowTrouble
         private bool rearCable;
         private WinterRoadContracts jobs;
         private float holdSeconds, cableLength, reelSpeed, stress, nextAnchorCheck, startedAt;
+        private int resetsAtStart, cableBreaks;
         private bool reel, payOut;
         public int Selected { get; private set; } = -1;
         public bool Returning { get; private set; }
         public string Report { get; private set; }
-        internal (string Name, int Reward, float Elapsed, string Detail)? Result { get; private set; }
+        internal (string Name, WinterJob? Job, int Reward, int Bonus, float Elapsed, int Resets, int CableBreaks, bool CargoIntact)? Result { get; private set; }
         internal WinchFrame CableFrame { get; private set; }
         public bool Attached => attachedAnchor != null;
         public Transform NearbyAnchor { get; private set; }
@@ -74,6 +75,7 @@ namespace TowTrouble
         public string DestinationName => ActiveJob.HasValue ? jobs.DestinationName :
             Returning ? "Expedition base" : surveys[Selected].Name;
         internal float DriftAt(Vector3 point) => jobs?.SnowAt(point) ?? 0;
+        internal Vector3 JobStart(WinterJob job) => jobs.JobStart(job);
 
         public void Configure(Survey[] sites, Transform[] winchAnchors, LineRenderer line)
         {
@@ -107,7 +109,7 @@ namespace TowTrouble
             Returning = false;
             holdSeconds = 0;
             Report = null;
-            startedAt = Time.time;
+            StartResultTracking();
             session.CloseOverlay();
         }
 
@@ -118,7 +120,7 @@ namespace TowTrouble
             Returning = false;
             holdSeconds = 0;
             Report = null;
-            startedAt = Time.time;
+            StartResultTracking();
             jobs.Begin(job);
             session.CloseOverlay();
         }
@@ -186,7 +188,7 @@ namespace TowTrouble
                 profile.Save();
             }
             Report = first ? $"Survey logged · +{survey.Reward:N0} CR" : "Survey logged";
-            Result = (survey.Name, first ? survey.Reward : 0, Time.time - startedAt, null);
+            Result = (survey.Name, null, first ? survey.Reward : 0, 0, Time.time - startedAt, RunResets, cableBreaks, false);
             Returning = false;
             Selected = -1;
         }
@@ -207,14 +209,21 @@ namespace TowTrouble
                 profile.Save();
             }
             Report = first ? $"{offer.Name} complete · +{reward:N0} CR" : $"{offer.Name} complete";
-            string detail = job != WinterJob.Supply ? null : bonus == 0 ? "Crate damaged" :
-                first ? $"Crate intact · +{bonus} CR bonus included" : "Crate delivered intact";
-            Result = (offer.Name, reward, Time.time - startedAt, detail);
+            Result = (offer.Name, job, reward, first ? bonus : 0, Time.time - startedAt, RunResets, cableBreaks, bonus > 0);
             jobs.Finish(job);
             NearTowTarget = false;
         }
 
         internal void DismissResult() => Result = null;
+
+        private int RunResets => Mathf.Max(0, session.World.Resets(session.LocalSlot) - resetsAtStart);
+
+        private void StartResultTracking()
+        {
+            startedAt = Time.time;
+            resetsAtStart = session.World.Resets(session.LocalSlot);
+            cableBreaks = 0;
+        }
 
         internal void SetWinchInput(bool wind, bool release)
         {
@@ -287,7 +296,8 @@ namespace TowTrouble
             Vector3 hitch = Hitch;
             Vector3 delta = attachedAnchor.position - hitch;
             float distance = delta.magnitude;
-            if (distance > 22f || distance < .1f) { Detach(); return; }
+            if (distance > 22f) { cableBreaks++; Detach(); return; }
+            if (distance < .1f) { Detach(); return; }
             Vector3 direction = delta / distance;
             Vector3 targetVelocity = attachedBody != null ? attachedBody.GetPointVelocity(attachedAnchor.position) : Vector3.zero;
             float separating = Vector3.Dot(targetVelocity - driver.Body.GetPointVelocity(hitch), direction);
@@ -297,7 +307,7 @@ namespace TowTrouble
             reelSpeed = CableFrame.Speed;
             float demand = RecoveryRules.CableDemand(distance, cableLength, separating);
             stress = RecoveryRules.CableStressAfter(stress, demand, driver.CableStrength, Time.fixedDeltaTime);
-            if (stress >= 1) { Detach(); return; }
+            if (stress >= 1) { cableBreaks++; Detach(); return; }
             CableLoad = Mathf.Clamp01(demand / driver.CableStrength);
             float force = Mathf.Min(demand, driver.CableStrength);
             CableReaction = direction * force;
