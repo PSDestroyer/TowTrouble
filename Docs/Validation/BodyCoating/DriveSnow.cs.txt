@@ -1,0 +1,44 @@
+if(TowTrouble.RecoveryProfile.ValidationStorageKey!="TowTrouble.Validation.BodyCoating")throw new System.Exception("Isolated Play required");
+const System.Reflection.BindingFlags hidden=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+const string zone="Snow";var location=new Vector3(6,350,336);float heading=90;float duration=40;
+var s=UnityEngine.Object.FindFirstObjectByType<TowTrouble.DemoSession>();var car=s.World.Drivers[s.LocalSlot];var st=s.GetType();
+var input=st.GetField("ValidationInput",hidden);var brake=st.GetField("ValidationBrake",hidden);var active=st.GetField("ValidationInputActive",hidden);
+var coating=car.GetComponents<MonoBehaviour>().First(c=>c.GetType().Name=="RecoveryBodyCoating");var ct=coating.GetType();
+if(!Physics.Raycast(location,Vector3.down,out var ground,500,1<<8,QueryTriggerInteraction.Ignore))throw new System.Exception("No ground");
+car.SetSpawn(ground.point+Vector3.up*.18f,Quaternion.Euler(0,heading,0));
+s.CloseOverlay();UnityEngine.Object.FindFirstObjectByType<TowTrouble.RecoveryHud>().Show("Gameplay");
+var wt=s.World.GetType();wt.GetField("ValidationEnvironment",hidden).SetValue(s.World,true);wt.GetField("ValidationEnvironmentSeconds",hidden).SetValue(s.World,0f);
+active.SetValue(s,true);input.SetValue(s,Vector2.zero);brake.SetValue(s,true);Time.timeScale=2;
+float start=Time.time;float next=0;int lastFrame=-1;float distance=0;Vector3 previous=car.transform.position;var rows=new System.Collections.Generic.List<object>();var wall=System.DateTime.UtcNow;
+float[] V(Vector4 v)=>new[]{v.x,v.y,v.z,v.w};
+UnityEditor.EditorApplication.CallbackFunction loop=null;
+void Stop(string error)
+{
+    UnityEditor.EditorApplication.update-=loop;input.SetValue(s,Vector2.zero);brake.SetValue(s,true);Time.timeScale=1;
+    var report=new{zone,complete=error==null,error,seconds=Time.time-start,distance,rows};System.IO.File.WriteAllText("/private/tmp/tow-body-coating/"+zone+"Drive.json",Newtonsoft.Json.JsonConvert.SerializeObject(report));
+    ScreenCapture.CaptureScreenshot("/private/tmp/tow-body-coating/"+zone+".png");
+}
+loop=()=>
+{
+    try
+    {
+        if(!Application.isPlaying||Time.frameCount==lastFrame)return;lastFrame=Time.frameCount;
+        if((System.DateTime.UtcNow-wall).TotalSeconds>100){Stop("Wall timeout");return;}
+        float t=Time.time-start;distance+=Vector3.Distance(car.transform.position,previous);previous=car.transform.position;
+        if(t>=next)
+        {
+            next+=2;
+            var hits=Enumerable.Range(0,4).Select(i=>{bool yes=car.TryGetWheelContact(i,out var h);return new{i,yes,collider=h.collider?.name,surface=TowTrouble.RecoveryBodyCoatingRules.Classify(h,false).ToString(),slip=car.SlipAtWheel(i)};}).ToArray();
+            rows.Add(new{t,pos=car.transform.position.ToString(),speed=car.Speed,snow=V((Vector4)ct.GetField("snow",hidden).GetValue(coating)),mud=V((Vector4)ct.GetField("mud",hidden).GetValue(coating)),sand=V((Vector4)ct.GetField("sand",hidden).GetValue(coating)),hits});
+            System.IO.File.WriteAllText("/private/tmp/tow-body-coating/Progress.json",Newtonsoft.Json.JsonConvert.SerializeObject(new{zone,t,distance,pos=car.transform.position.ToString(),rows=rows.Last()}));
+        }
+        if(t<1){input.SetValue(s,Vector2.zero);brake.SetValue(s,true);return;}
+        if(t>=duration){input.SetValue(s,Vector2.zero);brake.SetValue(s,true);if(t>duration+2)Stop(null);return;}
+        float signed=Vector3.Dot(car.transform.position-ground.point,Quaternion.Euler(0,heading,0)*Vector3.forward);
+        // Alternate real throttle/reverse inside the existing terrain patch, without editing terrain or coating values.
+        float direction=Mathf.FloorToInt((t-1)/7)%2==0?1:-1;
+        if(signed>7)direction=-1;if(signed< -7)direction=1;
+        input.SetValue(s,new Vector2(0,direction*.8f));brake.SetValue(s,false);
+    }
+    catch(System.Exception ex){Stop(ex.ToString());}
+};UnityEditor.EditorApplication.update+=loop;return "Driving "+zone+" with native wheel contacts";

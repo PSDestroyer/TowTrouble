@@ -1,0 +1,49 @@
+{
+  "baselineCursor": 12126,
+  "afterCursor": 12518,
+  "returned": 144,
+  "dropped": false,
+  "messageGroups": [
+    {
+      "message": "UnityEngine.AddressableAssets.InvalidKeyException: Exception of type 'UnityEngine.AddressableAssets.InvalidKeyException' was thrown. No Location found for Key=System.Collections.Generic.List`1[System.String]",
+      "count": 1
+    },
+    {
+      "message": "OperationException : ChainOperation failed because dependent operation failed",
+      "count": 1
+    },
+    {
+      "message": "No Locale could be selected:",
+      "count": 2
+    },
+    {
+      "message": "OperationException : SelectedLocale is null. Could not load table.",
+      "count": 1
+    },
+    {
+      "message": "OperationException : SelectedLocale is null. Could not get table entry.",
+      "count": 46
+    },
+    {
+      "message": "OperationException : Dependency `UnityEngine.Localization.Operations.LoadAssetOperation`1[TMPro.TMP_FontAsset], result='', status='None'` failed to complete.",
+      "count": 1
+    },
+    {
+      "message": "System.Exception: SelectedLocale is null. Database could not get table.",
+      "count": 45
+    },
+    {
+      "message": "OperationException : Load Table Entry Operation Failed",
+      "count": 45
+    },
+    {
+      "message": "Command 'capture game_view' failed: Path '/private/tmp/tow-body-coating/MudView.png' is outside the project root '/Users/gheorghe/GitHub/TowTrouble'.",
+      "count": 1
+    },
+    {
+      "message": "ExecuteCommandByName: No command named 'editor playmode' is available. Commands starting with 'editor playmode': editor.playmode list_instances, editor.playmode pause, editor.playmode set_run_in_background, editor.playmode start, editor.playmode stop.",
+      "count": 1
+    }
+  ],
+  "classification": "Existing Localization/Addressables failures plus two validation CLI command errors (capture path and command spelling), both corrected. No body coating or shader runtime exceptions observed. Console was not cleared."
+}

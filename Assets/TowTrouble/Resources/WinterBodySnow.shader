@@ -1,4 +1,4 @@
-Shader "TowTrouble/Winter Body Snow"
+Shader "TowTrouble/Vehicle Body Coating"
 {
     Properties
     {
@@ -69,6 +69,8 @@ Shader "TowTrouble/Winter Body Snow"
         [HideInInspector][NoScaleOffset]unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
         [HideInInspector] _SnowAmounts("Snow Amounts", Vector) = (0, 0, 0, 0)
+        [HideInInspector] _BodyMudAmounts("Mud Amounts", Vector) = (0, 0, 0, 0)
+        [HideInInspector] _BodySandAmounts("Sand Amounts", Vector) = (0, 0, 0, 0)
         [HideInInspector] _SnowWheelLayout("Snow Wheel Layout", Vector) = (0, 0, 0, 0)
     }
     SubShader
@@ -139,6 +141,8 @@ Shader "TowTrouble/Winter Body Snow"
 
             float4x4 _SnowWorldToVehicle;
             float4 _SnowAmounts;
+            float4 _BodyMudAmounts;
+            float4 _BodySandAmounts;
             float4 _SnowWheelLayout;
 
             float SnowHash(float3 position)
@@ -162,39 +166,57 @@ Shader "TowTrouble/Winter Body Snow"
                 return lerp(lerp(samples.x, samples.y, weight.x), lerp(samples.z, samples.w, weight.x), weight.y);
             }
 
-            void ApplyBodySnow(float3 positionWS, inout SurfaceData surface)
+            float2 BodyAmounts(float4 wheels, float right, float axleBlend, float2 arches)
             {
-                if (dot(_SnowAmounts, _SnowAmounts) < .0001) return;
+                float front = lerp(wheels.x, wheels.y, right);
+                float rear = lerp(wheels.z, wheels.w, right);
+                return float2(lerp(rear, front, axleBlend), max(front * arches.x, rear * arches.y));
+            }
+
+            void ApplyBodyCoating(float3 positionWS, inout SurfaceData surface)
+            {
+                if (dot(_SnowAmounts, _SnowAmounts) + dot(_BodyMudAmounts, _BodyMudAmounts) +
+                    dot(_BodySandAmounts, _BodySandAmounts) < .0001) return;
 
                 float3 position = mul(_SnowWorldToVehicle, float4(positionWS, 1)).xyz;
                 float height = position.y - _SnowWheelLayout.w;
-                if (height > .76) return;
-
-                // Project the deposits into the chassis frame so they follow the vehicle on slopes.
+                if (height > .82) return;
                 float right = smoothstep(-.22, .22, position.x);
-                float front = lerp(_SnowAmounts.x, _SnowAmounts.y, right);
-                float rear = lerp(_SnowAmounts.z, _SnowAmounts.w, right);
-                float2 axleDistance = abs(position.z - _SnowWheelLayout.xy);
-                float2 arches = 1 - smoothstep(.25, 1.05, axleDistance);
-                float axleBlend = smoothstep(_SnowWheelLayout.y, _SnowWheelLayout.x, position.z);
-                float accumulation = lerp(rear, front, axleBlend);
-                float splash = max(front * arches.x, rear * arches.y);
+                float2 arches = 1 - smoothstep(.25, 1.05, abs(position.z - _SnowWheelLayout.xy));
+                float span = _SnowWheelLayout.x - _SnowWheelLayout.y;
+                float axleBlend = saturate((position.z - _SnowWheelLayout.y) / (abs(span) > .01 ? span : 1));
+                axleBlend = axleBlend * axleBlend * (3 - 2 * axleBlend);
                 float sides = smoothstep(_SnowWheelLayout.z * .32, _SnowWheelLayout.z * .92, abs(position.x));
-
+                float2 snow = BodyAmounts(_SnowAmounts, right, axleBlend, arches);
+                float2 mud = BodyAmounts(_BodyMudAmounts, right, axleBlend, arches);
+                float2 sand = BodyAmounts(_BodySandAmounts, right, axleBlend, arches);
+                // One stable chassis-space pattern for all layers: deposits do not slide when the car turns.
                 float clumps = SnowNoise(position * float3(10, 14, 9));
                 float grain = SnowNoise(position * 53);
-                float snowLine = lerp(-.27, .34, accumulation) + .25 * splash;
-                float edge = snowLine - height + (clumps - .5) * .37 + (grain - .5) * .10;
-                float amount = smoothstep(.025, .45, accumulation) * lerp(.68, 1, sides);
-                float snow = smoothstep(-.055, .07, edge) * amount;
-                float melt = smoothstep(-.18, .015, edge) * (1 - snow) * amount;
-
+                float snowEdge = lerp(-.27, .34, snow.x) + .25 * snow.y - height + (clumps - .5) * .37 + (grain - .5) * .10;
+                float mudEdge = lerp(-.26, .32, mud.x) + .24 * mud.y - height + (clumps - .5) * .38 + (grain - .5) * .07;
+                float sandEdge = lerp(-.28, .40, sand.x) + .10 * sand.y - height + (clumps - .5) * .17;
+                float3 mask = float3(
+                    smoothstep(-.055, .07, snowEdge) * smoothstep(.025, .45, snow.x) * lerp(.68, 1, sides),
+                    smoothstep(-.06, .09, mudEdge) * smoothstep(.02, .55, mud.x) * lerp(.55, .94, sides),
+                    smoothstep(-.16, .12, sandEdge) * smoothstep(.02, .60, sand.x) * lerp(.53, .74, sides));
+                // Keep illuminated lamps and brake-light atlas pixels readable through the surface treatment.
+                float lamp = saturate(max(surface.emission.r, max(surface.emission.g, surface.emission.b)) * 2);
+                mask *= 1 - lamp;
+                float total = mask.x + mask.y + mask.z;
+                if (total < .0001) return;
+                float3 blend = mask / total;
+                float cover = saturate(total);
                 half3 powder = lerp(half3(.57, .68, .79), half3(.91, .95, .98), clumps * .7 + grain * .3);
-                surface.albedo = lerp(surface.albedo * (1 - .23 * melt), powder, snow);
-                surface.metallic = lerp(surface.metallic, 0, snow);
-                surface.specular = lerp(surface.specular, half3(.035, .035, .035), snow);
-                surface.smoothness = lerp(surface.smoothness, .16 + .09 * grain, snow);
-                surface.occlusion = lerp(surface.occlusion, .95, snow);
+                half3 earth = lerp(half3(.13, .082, .043), half3(.37, .25, .14), clumps * .78 + grain * .22);
+                half3 dust = lerp(half3(.64, .51, .33), half3(.88, .77, .55), grain * .55 + clumps * .45);
+                half3 coating = powder * blend.x + earth * blend.y + dust * blend.z;
+                surface.albedo = lerp(surface.albedo, coating, cover);
+                surface.metallic = lerp(surface.metallic, 0, cover);
+                surface.specular = lerp(surface.specular, half3(.035, .035, .035), cover);
+                surface.smoothness = lerp(surface.smoothness,
+                    dot(blend, float3(.16 + .09 * grain, .24 + .12 * clumps, .055)), cover);
+                surface.occlusion = lerp(surface.occlusion, .95, cover);
             }
 
             void SnowLitFragment(
@@ -220,7 +242,7 @@ Shader "TowTrouble/Winter Body Snow"
 
                 SurfaceData surfaceData;
                 InitializeStandardLitSurfaceData(input.uv, surfaceData);
-                ApplyBodySnow(input.positionWS, surfaceData);
+                ApplyBodyCoating(input.positionWS, surfaceData);
 
             #ifdef LOD_FADE_CROSSFADE
                 LODFadeCrossFade(input.positionCS);

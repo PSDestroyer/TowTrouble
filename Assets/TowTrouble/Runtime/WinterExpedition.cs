@@ -103,7 +103,6 @@ namespace TowTrouble
                 car.WinterDriving = true;
                 car.SnowRuts = ruts;
                 car.WinterExpedition = this;
-                car.gameObject.AddComponent<WinterBodySnow>();
             }
             cable.enabled = false;
         }

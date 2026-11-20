@@ -1,0 +1,25 @@
+if(TowTrouble.RecoveryProfile.ValidationStorageKey!="TowTrouble.Validation.BodyCoating")throw new System.Exception("Isolated profile required");
+const System.Reflection.BindingFlags hidden=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+var s=UnityEngine.Object.FindFirstObjectByType<TowTrouble.DemoSession>();var car=s.World.Drivers[0];var custom=car.GetComponent<TowTrouble.RecoveryCustomization>();
+s.GetType().GetField("ValidationInput",hidden).SetValue(s,Vector2.zero);s.GetType().GetField("ValidationBrake",hidden).SetValue(s,true);Time.timeScale=0;
+var c=car.GetComponents<MonoBehaviour>().First(v=>v.GetType().Name=="RecoveryBodyCoating");var type=c.GetType();var field=type.GetField("amounts",hidden);var before=((Vector3[])field.GetValue(c)).ToArray();
+var rows=new System.Collections.Generic.List<object>();
+int Count()=>car.GetComponentsInChildren<Renderer>().Count(r=>r.enabled&&r.sharedMaterials.Any(m=>m!=null&&m.shader.name=="TowTrouble/Vehicle Body Coating"));
+for(int model=0;model<4;model++)
+{
+    car.SetModel(model);
+    for(int paint=0;paint<4;paint++)
+    {
+        car.SetPaint(paint);int count=Count();if(count==0)throw new System.Exception("Stock body unbound "+model+" paint "+paint);
+        rows.Add(new{model,paint,stock=true,coatedRenderers=count});
+    }
+    custom.Apply(s.Profile.Build(model).Copy(),model,true);
+    int fitted=Count();if(fitted==0)throw new System.Exception("Fitted body unbound "+model);
+    rows.Add(new{model,paint=model,stock=false,coatedRenderers=fitted});
+}
+car.SetModel(0);custom.Apply(s.Profile.Build(0).Copy(),s.Profile.paint,true);
+var after=(Vector3[])field.GetValue(c);bool preserved=before.Zip(after,(a,b)=>a==b).All(v=>v);if(!preserved)throw new System.Exception("Refit washed vehicle");
+var renderer=car.GetComponentsInChildren<Renderer>().First(r=>r.sharedMaterial?.shader.name=="TowTrouble/Vehicle Body Coating");var pb=new MaterialPropertyBlock();renderer.GetPropertyBlock(pb,0);pb.SetFloat("_CoatingValidationSentinel",.375f);renderer.SetPropertyBlock(pb,0);
+UnityEditor.EditorApplication.CallbackFunction once=null;int frame=Time.frameCount;
+once=()=>{if(Time.frameCount==frame)return;UnityEditor.EditorApplication.update-=once;renderer.GetPropertyBlock(pb,0);bool block=pb.GetFloat("_CoatingValidationSentinel")==.375f;bool applied=pb.GetVector("_SnowAmounts").sqrMagnitude>0;Time.timeScale=1;System.IO.File.WriteAllText("/private/tmp/tow-body-coating/Lifecycle.json",Newtonsoft.Json.JsonConvert.SerializeObject(new{preserved,unrelatedPropertyBlockPreserved=block,coatingReapplied=applied,rows}));};
+UnityEditor.EditorApplication.update+=once;return new{preserved,cases=rows.Count};

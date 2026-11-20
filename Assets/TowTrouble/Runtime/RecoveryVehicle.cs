@@ -27,7 +27,20 @@ namespace TowTrouble
         [SerializeField] private RecoveryPaintSlot[] paintSlots;
         private int paintIndex;
         public void ConfigurePaints(RecoveryPaintSlot[] value){paintSlots=value;}
-        public void SetPaint(int index){paintIndex=Mathf.Clamp(index,0,3);if(paintSlots==null)return;foreach(var slot in paintSlots){var values=slot.Renderer.sharedMaterials;values[slot.Slot]=slot.Colors[paintIndex];slot.Renderer.sharedMaterials=values;}}
+        public void SetPaint(int index)
+        {
+            bool stock = GetComponent<RecoveryCustomization>()?.HasAssembly != true;
+            if (stock) GetComponent<RecoveryBodyCoating>()?.Unbind();
+            paintIndex=Mathf.Clamp(index,0,3);
+            if(paintSlots!=null)foreach(var slot in paintSlots){var values=slot.Renderer.sharedMaterials;values[slot.Slot]=slot.Colors[paintIndex];slot.Renderer.sharedMaterials=values;}
+            if (stock) BindStockCoating();
+        }
+        private void BindStockCoating()
+        {
+            if (!Application.isPlaying || models == null || models.Length == 0) return;
+            var coating = GetComponent<RecoveryBodyCoating>() ?? gameObject.AddComponent<RecoveryBodyCoating>();
+            coating.BindStock(this, models[modelIndex].Root);
+        }
         private float mudDrag, mudLimit=27f, recoveryMass, recoveryLockedWheels;
         private bool recoveryJammed;
         public void SetRecoveryJammed(bool value){recoveryJammed=value;}
@@ -148,6 +161,7 @@ namespace TowTrouble
         public void SetModel(int index)
         {
             if(models==null||models.Length==0)return;
+            GetComponent<RecoveryBodyCoating>()?.Unbind();
             // A fitted assembly replaces the stock roots; never display both.
             GetComponent<RecoveryCustomization>()?.ClearPreview();
             modelIndex=Mathf.Clamp(index,0,models.Length-1);var m=models[modelIndex];
@@ -156,6 +170,7 @@ namespace TowTrouble
             for(int i=0;i<wheels.Length;i++){wheels[i].transform.localPosition=m.Anchors[i];wheels[i].radius=radius;}
             if(body==null)body=GetComponent<Rigidbody>();body.mass=casualty?(recoveryMass>0?recoveryMass:950f):RecoveryBodyBalance.StockMass(modelIndex);
             ResetWheelPresentation();
+            BindStockCoating();
         }
         public void SetSpawn(Vector3 position,Quaternion rotation,float drag=0f,float mudEnd=27f,bool mudOnly=false)
         {EnsureInitialized();startPosition=position;startRotation=rotation;safePosition=position;safeRotation=rotation;mudDrag=drag;mudLimit=mudEnd;resistanceNeedsMud=mudOnly;ResetVehicle(true);}
