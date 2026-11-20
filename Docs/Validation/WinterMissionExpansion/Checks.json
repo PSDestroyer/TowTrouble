@@ -1,0 +1,870 @@
+{
+  "date": "2026-11-19",
+  "scope": "Winter Expeditions DLC",
+  "verificationSetup": "Isolated temporary profile. Vehicles positioned at each worksite before the physical driving and winching probes. Cargo loading and unloading used depot positioning fixtures.",
+  "remainingValidation": "Complete driving routes for cargo deliveries and towing deliveries.",
+  "catalog": {
+    "cards": 30,
+    "counts": {
+      "Supply": 7,
+      "Recovery": 6,
+      "Tree": 4,
+      "Plow": 10
+    },
+    "rows": [
+      {
+        "id": 0,
+        "name": "Supplies for Pinewood",
+        "kind": "Supply",
+        "garageDistance": 293.710754,
+        "start": {
+          "x": -80.0,
+          "y": 18.3037472,
+          "z": -276.0
+        },
+        "destination": {
+          "x": -79.99999,
+          "y": 18.23561,
+          "z": -275.999969
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 1,
+        "name": "Workshop Meadow rescue",
+        "kind": "Recovery",
+        "garageDistance": 131.3448,
+        "start": {
+          "x": -117.779076,
+          "y": 21.8001366,
+          "z": 82.61091
+        },
+        "destination": {
+          "x": -117.779083,
+          "y": 22.2497,
+          "z": 82.6109
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 2,
+        "name": "Timber on Lakeside Road",
+        "kind": "Tree",
+        "garageDistance": 178.77948,
+        "start": {
+          "x": -165.9,
+          "y": 22.0,
+          "z": -76.7
+        },
+        "destination": {
+          "x": -165.9,
+          "y": 22.3653622,
+          "z": -76.70001
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 3,
+        "name": "Plow Pinewood Road",
+        "kind": "Plow",
+        "garageDistance": 176.380783,
+        "start": {
+          "x": -184.931,
+          "y": 21.873,
+          "z": -3.588
+        },
+        "destination": {
+          "x": -184.930969,
+          "y": 21.7738342,
+          "z": -3.58798218
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 4,
+        "name": "Plow the Logging Link",
+        "kind": "Plow",
+        "garageDistance": 240.634232,
+        "start": {
+          "x": -247.723,
+          "y": 20.838,
+          "z": -21.268
+        },
+        "destination": {
+          "x": -247.723,
+          "y": 20.8379631,
+          "z": -21.268
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 5,
+        "name": "Hidden Bay Access",
+        "kind": "Plow",
+        "garageDistance": 379.039551,
+        "start": {
+          "x": -361.731,
+          "y": 15.284,
+          "z": -129.751
+        },
+        "destination": {
+          "x": -361.730957,
+          "y": 15.1817322,
+          "z": -129.751
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 6,
+        "name": "Lakeshore Service Road",
+        "kind": "Plow",
+        "garageDistance": 254.541061,
+        "start": {
+          "x": -136.899,
+          "y": 22.1,
+          "z": -211.075
+        },
+        "destination": {
+          "x": -136.898956,
+          "y": 21.9953613,
+          "z": -211.075012
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 7,
+        "name": "Beach Road Snowfall",
+        "kind": "Plow",
+        "garageDistance": 308.3063,
+        "start": {
+          "x": 21.56,
+          "y": 18.1,
+          "z": -297.788
+        },
+        "destination": {
+          "x": 21.5599976,
+          "y": 18.0003662,
+          "z": -297.787964
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 8,
+        "name": "Eastern Depot Drifts",
+        "kind": "Plow",
+        "garageDistance": 276.0815,
+        "start": {
+          "x": 252.0,
+          "y": 22.1,
+          "z": -81.0
+        },
+        "destination": {
+          "x": 252.000061,
+          "y": 21.9976654,
+          "z": -80.99997
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 9,
+        "name": "Canyon Freight Lane",
+        "kind": "Plow",
+        "garageDistance": 417.897034,
+        "start": {
+          "x": 344.727,
+          "y": 29.985,
+          "z": -213.52
+        },
+        "destination": {
+          "x": 344.727051,
+          "y": 29.8847046,
+          "z": -213.52002
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 10,
+        "name": "Mountain Refuge Link",
+        "kind": "Plow",
+        "garageDistance": 187.776138,
+        "start": {
+          "x": 101.233,
+          "y": 66.1,
+          "z": 161.015
+        },
+        "destination": {
+          "x": 101.233093,
+          "y": 66.0043945,
+          "z": 161.015015
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 11,
+        "name": "North Ridge Climb",
+        "kind": "Plow",
+        "garageDistance": 182.724045,
+        "start": {
+          "x": -71.116,
+          "y": 51.554,
+          "z": 180.842
+        },
+        "destination": {
+          "x": -71.11597,
+          "y": 51.45224,
+          "z": 180.842041
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 12,
+        "name": "High Cabin Snowbound",
+        "kind": "Plow",
+        "garageDistance": 299.629944,
+        "start": {
+          "x": -6.819,
+          "y": 140.964,
+          "z": 308.622
+        },
+        "destination": {
+          "x": -6.81896973,
+          "y": 142.833908,
+          "z": 308.62207
+        },
+        "route": true,
+        "snowVertices": 14673
+      },
+      {
+        "id": 13,
+        "name": "Fuel for the Refuge",
+        "kind": "Supply",
+        "garageDistance": 183.619858,
+        "start": {
+          "x": -184.5,
+          "y": 21.957777,
+          "z": -45.0
+        },
+        "destination": {
+          "x": -184.499969,
+          "y": 21.8777771,
+          "z": -45.0
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 14,
+        "name": "High Cabin Provisions",
+        "kind": "Supply",
+        "garageDistance": 148.976517,
+        "start": {
+          "x": 54.0,
+          "y": 66.0844,
+          "z": 144.0
+        },
+        "destination": {
+          "x": 54.0,
+          "y": 66.0043945,
+          "z": 144.000061
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 15,
+        "name": "Lakeside Repair Stock",
+        "kind": "Supply",
+        "garageDistance": 183.619858,
+        "start": {
+          "x": -184.5,
+          "y": 21.957777,
+          "z": -45.0
+        },
+        "destination": {
+          "x": -184.499969,
+          "y": 21.8777771,
+          "z": -45.0
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 16,
+        "name": "Beach Shelter Supplies",
+        "kind": "Supply",
+        "garageDistance": 293.710754,
+        "start": {
+          "x": -80.0,
+          "y": 18.3037472,
+          "z": -276.0
+        },
+        "destination": {
+          "x": -79.99999,
+          "y": 18.23561,
+          "z": -275.999969
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 17,
+        "name": "Eastern Generator Parts",
+        "kind": "Supply",
+        "garageDistance": 148.976517,
+        "start": {
+          "x": 54.0,
+          "y": 66.0844,
+          "z": 144.0
+        },
+        "destination": {
+          "x": 54.0,
+          "y": 66.0043945,
+          "z": 144.000061
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 18,
+        "name": "Canyon Relief Convoy",
+        "kind": "Supply",
+        "garageDistance": 280.850464,
+        "start": {
+          "x": 242.0,
+          "y": 22.3206158,
+          "z": -117.0
+        },
+        "destination": {
+          "x": 242.0,
+          "y": 22.2490559,
+          "z": -117.0
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 19,
+        "name": "Logging Truck Snow Trap",
+        "kind": "Recovery",
+        "garageDistance": 293.4939,
+        "start": {
+          "x": -299.8692,
+          "y": 19.5307732,
+          "z": 48.1634827
+        },
+        "destination": {
+          "x": -299.8692,
+          "y": 20.1757717,
+          "z": 48.1634827
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 20,
+        "name": "Lakeshore Stranded Scout",
+        "kind": "Recovery",
+        "garageDistance": 448.282867,
+        "start": {
+          "x": -317.19104,
+          "y": 11.7948828,
+          "z": -316.539276
+        },
+        "destination": {
+          "x": -317.19104,
+          "y": 12.4398832,
+          "z": -316.539276
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 21,
+        "name": "Refuge Road Breakdown",
+        "kind": "Recovery",
+        "garageDistance": 223.0964,
+        "start": {
+          "x": -97.4607,
+          "y": 50.8760033,
+          "z": 213.808945
+        },
+        "destination": {
+          "x": -97.46069,
+          "y": 51.3960037,
+          "z": 213.809021
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 22,
+        "name": "Mountain Link Snow Rescue",
+        "kind": "Recovery",
+        "garageDistance": 192.663681,
+        "start": {
+          "x": 109.0,
+          "y": 66.1,
+          "z": 161.3
+        },
+        "destination": {
+          "x": 109.0,
+          "y": 66.7243958,
+          "z": 161.299988
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 23,
+        "name": "Canyon Freight Rescue",
+        "kind": "Recovery",
+        "garageDistance": 424.3489,
+        "start": {
+          "x": 345.0,
+          "y": 30.4,
+          "z": -225.0
+        },
+        "destination": {
+          "x": 345.0,
+          "y": 31.1069851,
+          "z": -225.0
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 24,
+        "name": "Logging Road Windfall",
+        "kind": "Tree",
+        "garageDistance": 276.3592,
+        "start": {
+          "x": -280.701,
+          "y": 20.228,
+          "z": -41.527
+        },
+        "destination": {
+          "x": -280.701,
+          "y": 20.4964581,
+          "z": -41.5269775
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 25,
+        "name": "Beach Road Fallen Pine",
+        "kind": "Tree",
+        "garageDistance": 307.278,
+        "start": {
+          "x": 2.861,
+          "y": 18.1,
+          "z": -298.049
+        },
+        "destination": {
+          "x": 2.861023,
+          "y": 18.3703671,
+          "z": -298.049
+        },
+        "route": true,
+        "snowVertices": 0
+      },
+      {
+        "id": 26,
+        "name": "Mountain Link Windfall",
+        "kind": "Tree",
+        "garageDistance": 221.759262,
+        "start": {
+          "x": 154.189,
+          "y": 65.941,
+          "z": 159.155
+        },
+        "destination": {
+          "x": 154.188965,
+          "y": 66.21519,
+          "z": 159.15509
+        },
+        "route": true,
+        "snowVertices": 0
+      }
+    ]
+  },
+  "board": {
+    "cancelKeepsCargo": true,
+    "cancelKeepsCable": true,
+    "confirmReleasesMass": true,
+    "abandonDoesNotPay": true,
+    "differentJob": true,
+    "surveySwitch": true
+  },
+  "keyboard": {
+    "passed": true,
+    "error": null
+  },
+  "progressSerialization": {
+    "allDistinct": true,
+    "serializationRoundtrip": true,
+    "legacy": true,
+    "replayPaid": false,
+    "rows": [
+      {
+        "id": 0,
+        "reward": 1050,
+        "completionBit": 1
+      },
+      {
+        "id": 1,
+        "reward": 1450,
+        "completionBit": 2
+      },
+      {
+        "id": 2,
+        "reward": 1200,
+        "completionBit": 4
+      },
+      {
+        "id": 3,
+        "reward": 1050,
+        "completionBit": 8
+      },
+      {
+        "id": 4,
+        "reward": 1150,
+        "completionBit": 16
+      },
+      {
+        "id": 5,
+        "reward": 1300,
+        "completionBit": 32
+      },
+      {
+        "id": 6,
+        "reward": 1000,
+        "completionBit": 64
+      },
+      {
+        "id": 7,
+        "reward": 1100,
+        "completionBit": 128
+      },
+      {
+        "id": 8,
+        "reward": 1450,
+        "completionBit": 256
+      },
+      {
+        "id": 9,
+        "reward": 1550,
+        "completionBit": 512
+      },
+      {
+        "id": 10,
+        "reward": 1500,
+        "completionBit": 1024
+      },
+      {
+        "id": 11,
+        "reward": 1650,
+        "completionBit": 2048
+      },
+      {
+        "id": 12,
+        "reward": 1850,
+        "completionBit": 4096
+      },
+      {
+        "id": 13,
+        "reward": 1650,
+        "completionBit": 8192
+      },
+      {
+        "id": 14,
+        "reward": 1900,
+        "completionBit": 16384
+      },
+      {
+        "id": 15,
+        "reward": 1750,
+        "completionBit": 32768
+      },
+      {
+        "id": 16,
+        "reward": 1400,
+        "completionBit": 65536
+      },
+      {
+        "id": 17,
+        "reward": 2100,
+        "completionBit": 131072
+      },
+      {
+        "id": 18,
+        "reward": 2200,
+        "completionBit": 262144
+      },
+      {
+        "id": 19,
+        "reward": 1750,
+        "completionBit": 524288
+      },
+      {
+        "id": 20,
+        "reward": 1500,
+        "completionBit": 1048576
+      },
+      {
+        "id": 21,
+        "reward": 1700,
+        "completionBit": 2097152
+      },
+      {
+        "id": 22,
+        "reward": 2200,
+        "completionBit": 4194304
+      },
+      {
+        "id": 23,
+        "reward": 2100,
+        "completionBit": 8388608
+      },
+      {
+        "id": 24,
+        "reward": 1450,
+        "completionBit": 16777216
+      },
+      {
+        "id": 25,
+        "reward": 1050,
+        "completionBit": 33554432
+      },
+      {
+        "id": 26,
+        "reward": 1650,
+        "completionBit": 67108864
+      }
+    ]
+  },
+  "plowDriving": {
+    "complete": true,
+    "error": null,
+    "rows": [
+      {
+        "id": 3,
+        "passed": true,
+        "along": 28.4417686,
+        "peakLoad": 0.847045,
+        "cleared": 8,
+        "seconds": 13.2687569
+      },
+      {
+        "id": 4,
+        "passed": true,
+        "along": 28.6762733,
+        "peakLoad": 0.948698759,
+        "cleared": 8,
+        "seconds": 13.6032219
+      },
+      {
+        "id": 5,
+        "passed": true,
+        "along": 28.6507339,
+        "peakLoad": 0.6952754,
+        "cleared": 8,
+        "seconds": 13.0110931
+      },
+      {
+        "id": 6,
+        "passed": true,
+        "along": 28.3825665,
+        "peakLoad": 0.6098142,
+        "cleared": 8,
+        "seconds": 13.3883057
+      },
+      {
+        "id": 7,
+        "passed": true,
+        "along": 28.46447,
+        "peakLoad": 0.762273431,
+        "cleared": 8,
+        "seconds": 12.9706192
+      },
+      {
+        "id": 8,
+        "passed": true,
+        "along": 28.7840271,
+        "peakLoad": 1.05890679,
+        "cleared": 8,
+        "seconds": 12.6247711
+      },
+      {
+        "id": 9,
+        "passed": true,
+        "along": 28.6378651,
+        "peakLoad": 0.975644,
+        "cleared": 8,
+        "seconds": 12.5949554
+      },
+      {
+        "id": 10,
+        "passed": true,
+        "along": 28.6771088,
+        "peakLoad": 0.99942106,
+        "cleared": 8,
+        "seconds": 12.5364227
+      },
+      {
+        "id": 11,
+        "passed": true,
+        "along": 28.9298363,
+        "peakLoad": 0.726736844,
+        "cleared": 8,
+        "seconds": 13.0874481
+      },
+      {
+        "id": 12,
+        "passed": true,
+        "along": 28.4960976,
+        "peakLoad": 0.925924063,
+        "cleared": 8,
+        "seconds": 16.8276672
+      }
+    ]
+  },
+  "winchExtractions": {
+    "complete": true,
+    "error": null,
+    "rows": [
+      {
+        "id": 1,
+        "extracted": true,
+        "moved": 3.433465,
+        "seconds": 4.67062759
+      },
+      {
+        "id": 19,
+        "extracted": true,
+        "moved": 3.4247086,
+        "seconds": 5.38087463
+      },
+      {
+        "id": 20,
+        "extracted": true,
+        "moved": 3.4132998,
+        "seconds": 5.09973145
+      },
+      {
+        "id": 21,
+        "extracted": true,
+        "moved": 3.45619535,
+        "seconds": 5.01582336
+      },
+      {
+        "id": 22,
+        "extracted": true,
+        "moved": 3.45662832,
+        "seconds": 4.63859558
+      },
+      {
+        "id": 23,
+        "extracted": true,
+        "moved": 3.40073729,
+        "seconds": 5.766197
+      }
+    ]
+  },
+  "timberClearance": {
+    "complete": true,
+    "error": null,
+    "rows": [
+      {
+        "id": 2,
+        "cleared": true,
+        "seconds": 11.3286133
+      },
+      {
+        "id": 24,
+        "cleared": true,
+        "seconds": 18.201683
+      },
+      {
+        "id": 25,
+        "cleared": true,
+        "seconds": 11.4335632
+      },
+      {
+        "id": 26,
+        "cleared": true,
+        "seconds": 15.9026947
+      }
+    ]
+  },
+  "cargoFixtures": {
+    "fixture": true,
+    "rows": [
+      {
+        "id": 0,
+        "units": 1,
+        "loading": true,
+        "unloading": true,
+        "massReleased": true
+      },
+      {
+        "id": 13,
+        "units": 2,
+        "loading": true,
+        "unloading": true,
+        "massReleased": true
+      },
+      {
+        "id": 14,
+        "units": 1,
+        "loading": true,
+        "unloading": true,
+        "massReleased": true
+      },
+      {
+        "id": 15,
+        "units": 3,
+        "loading": true,
+        "unloading": true,
+        "massReleased": true
+      },
+      {
+        "id": 16,
+        "units": 2,
+        "loading": true,
+        "unloading": true,
+        "massReleased": true
+      },
+      {
+        "id": 17,
+        "units": 1,
+        "loading": true,
+        "unloading": true,
+        "massReleased": true
+      },
+      {
+        "id": 18,
+        "units": 3,
+        "loading": true,
+        "unloading": true,
+        "massReleased": true
+      }
+    ]
+  },
+  "restoration": {
+    "realSaveUnchanged": true,
+    "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity"
+  }
+}

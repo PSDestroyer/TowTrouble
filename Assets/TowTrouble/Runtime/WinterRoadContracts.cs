@@ -7,34 +7,17 @@ namespace TowTrouble
 
     internal sealed partial class WinterRoadContracts : IDisposable
     {
-        internal readonly struct Offer
-        {
-            internal readonly string Name, Brief;
-            internal readonly int Reward;
-
-            internal Offer(string name, string brief, int reward)
-            {
-                Name = name;
-                Brief = brief;
-                Reward = reward;
-            }
-        }
-
-        internal static readonly Offer[] Offers =
-        {
-            new Offer("Supplies for Pinewood", "Deliver one crate intact. Take the packed road or the forest shortcut.", 850),
-            new Offer("Workshop Meadow rescue", "Pull the pickup onto firm ground, then tow it back to the workshop.", 1450),
-            new Offer("Timber on Lakeside Road", "Choose an end of the fallen pine and swing the whole trunk out of the road.", 1200),
-            new Offer("Plow Pinewood Road", "Fit the service blade and open a continuous lane through the three drifts.", 1050)
-        };
-
         private readonly RecoveryWorld world;
         private readonly Transform owner;
-        private readonly Vector3 workshop, forest, rescue, treeRoad, layBy;
-        private readonly Vector3 rescueEntry, treeEntry, rescuePullPoint, treePullPoint;
+        private Vector3 workshop, forest, rescue, treeRoad, layBy;
+        private Vector3 rescueEntry, treeEntry, rescuePullPoint, treePullPoint;
         private GameObject pickupExitMarker;
         private bool passedPickupExit;
-        private readonly Quaternion rescueHeading, treeHeading;
+        private Quaternion rescueHeading, treeHeading;
+        private int completedJobs;
+        internal int ActiveIndex { get; private set; } = -1;
+        private Offer CurrentOffer => Offers[ActiveIndex];
+        private string sourceName, destinationName;
         private GameObject parkedTree;
         private bool lakesideCleared;
         private GameObject props, crate, blade;
@@ -56,13 +39,18 @@ namespace TowTrouble
         internal bool ExtractingPickup => Active == WinterJob.Recovery && reachedTow && !pickupFreed;
         internal bool GuidingPickupExit => Active == WinterJob.Recovery && pickupFreed && !passedPickupExit;
         internal Vector3 PickupExit => rescueEntry;
-        internal Vector3 JobStart(WinterJob job) => job switch
+        internal Vector3 JobStart(int index)
         {
-            WinterJob.Recovery => rescue,
-            WinterJob.Tree => treeRoad,
-            WinterJob.Plow => plowStart,
-            _ => workshop
-        };
+            var offer = Offers[index];
+            if (offer.Kind == WinterJob.Supply) return Bay(offer.SourceBay).Position;
+            if (offer.Kind == WinterJob.Recovery)
+                return offer.RoadStart != Vector3.zero ? offer.RoadStart : Site(offer.SiteId).Position;
+            return offer.RoadStart;
+        }
+        private RecoveryDropoff Bay(string id) => Array.Find(world.Map.Deliveries, bay => bay.Id == id);
+        private RecoverySite Site(string id) => Array.Find(world.Map.Sites, site => site.Id == id);
+        internal int CargoUnits => Active == WinterJob.Supply ? CurrentOffer.CargoUnits : 0;
+        internal string CompletionLocation => destinationName;
         internal int Cleared => cleared;
         internal bool AtPlowStart(Vector3 point) => Active == WinterJob.Plow && !PlowFitted && Near(point, plowStart, 5f);
         internal bool Reconnecting(bool attached) => TowBody != null && reachedTow && !attached && !TowInBay();
@@ -77,24 +65,53 @@ namespace TowTrouble
         {
             this.world = world;
             this.owner = owner;
-            workshop = Array.Find(world.Map.Deliveries, bay => bay.Id == "A").Position;
-            forest = Array.Find(world.Map.Deliveries, bay => bay.Id == "B").Position;
-            var meadow = Array.Find(world.Map.Sites, site => site.Id == "R01");
-            rescue = Ground(meadow.Position, out _) + Vector3.up * .72f;
-            rescueHeading = Quaternion.Euler(0, meadow.Heading, 0);
-            rescueEntry = Ground(new Vector3(-97f, 22f, 82.5f), out _);
-            rescuePullPoint = Ground(new Vector3(-106f, 22f, 86.4f), out _);
+            this.completedJobs = completedJobs;
+        }
 
-            // Road centreline and lay-by on the forest-to-lakeshore link.
-            treeRoad = Ground(new Vector3(-165.9f, 22f, -76.7f), out _);
-            Vector3 roadDirection = new Vector3(.25f, 0, -.97f).normalized;
-            layBy = Ground(treeRoad + Vector3.Cross(Vector3.up, roadDirection) * 8.7f, out _);
-            treePullPoint = Ground(layBy + Vector3.Cross(Vector3.up, roadDirection) * 10.6f, out _);
-            treeEntry = Ground(new Vector3(-172f, 22f, -68f), out _);
-            treeHeading = Quaternion.LookRotation(roadDirection);
-            BuildPinewoodRoad((completedJobs & (1 << (int)WinterJob.Plow)) != 0);
-            lakesideCleared = (completedJobs & (1 << (int)WinterJob.Tree)) != 0;
-            RestoreParkedTree();
+        private void ConfigureJob(int index)
+        {
+            var offer = Offers[index];
+            if (offer.Kind == WinterJob.Supply)
+            {
+                var from = Bay(offer.SourceBay);
+                var to = Bay(offer.TargetBay);
+                workshop = Ground(from.Position, out _);
+                forest = Ground(to.Position, out _);
+                sourceName = from.English;
+                destinationName = to.English;
+            }
+            else if (offer.Kind == WinterJob.Recovery)
+            {
+                var site = Site(offer.SiteId);
+                var bay = Bay(offer.TargetBay);
+                workshop = Ground(bay.Position, out _);
+                destinationName = bay.English;
+                bool roadRecovery = offer.RoadStart != Vector3.zero;
+                rescue = Ground(roadRecovery ? offer.RoadStart : site.Position, out _) + Vector3.up * .72f;
+                var exit = Vector3.ProjectOnPlane(roadRecovery ? offer.RoadEnd - offer.RoadStart : site.ExitDirection, Vector3.up).normalized;
+                rescueHeading = Quaternion.LookRotation(exit);
+                rescuePullPoint = Ground(rescue + exit * 14f, out _);
+                rescueEntry = Ground(rescuePullPoint + exit * 7f, out _);
+            }
+            else if (offer.Kind == WinterJob.Tree)
+            {
+                treeMass = offer.Load;
+                treeLengthScale = Mathf.Lerp(.82f, 1.12f, Mathf.InverseLerp(350f, 720f, offer.Load));
+                treeRoad = Ground(offer.RoadStart, out _);
+                var along = Vector3.ProjectOnPlane(offer.RoadEnd - offer.RoadStart, Vector3.up).normalized;
+                treeHeading = Quaternion.LookRotation(along);
+                layBy = Ground(treeRoad + Vector3.Cross(Vector3.up, along) * 8.7f, out _);
+                treePullPoint = Ground(layBy + Vector3.Cross(Vector3.up, along) * 10.6f, out _);
+                treeEntry = Ground(treeRoad - along * 12f, out _);
+                lakesideCleared = (completedJobs & (1 << index)) != 0;
+                destinationName = "Marked lay-by";
+            }
+            else
+            {
+                DisposeRoadSnow();
+                BuildPinewoodRoad(offer);
+                destinationName = offer.Name;
+            }
         }
 
         internal Vector3 Destination
@@ -119,8 +136,8 @@ namespace TowTrouble
             {
                 switch (Active)
                 {
-                    case WinterJob.Supply: return loaded ? "Pinewood drop-off" : "Workshop loading bay";
-                    case WinterJob.Recovery: return pickupFreed ? "Workshop receiving bay" : "Stranded pickup";
+                    case WinterJob.Supply: return loaded ? destinationName + " drop-off" : sourceName + " loading bay";
+                    case WinterJob.Recovery: return pickupFreed ? destinationName + " receiving bay" : "Stranded vehicle";
                     case WinterJob.Tree: return reachedTow ? "Marked lay-by" : "Fallen tree";
                     case WinterJob.Plow: return PlowFitted ? PlowStageName : "Plow fitting point";
                     default: return "";
@@ -136,7 +153,7 @@ namespace TowTrouble
             if (!reachedTow)
             {
                 if (ApproachingEntry)
-                    return "Follow the marked entrance into the meadow";
+                    return "Follow the marked recovery approach";
                 if (!MarkingPullPoint(driver.transform.position)) return DestinationName;
                 return canHook && rearCable ? "Attach the rear cable and reel in" : "Back into the marked pull point";
             }
@@ -145,26 +162,29 @@ namespace TowTrouble
                 "Ease the cable and move toward the two orange posts" : "Hold the brake and reel toward the firm bank";
             if (TowInBay()) return "Hold still while the load settles";
             if (GuidingPickupExit) return "Take the marked bend wide · leave room for the pickup";
-            return rearCable ? "Tow the pickup into the marked bay" : "Reel in, then reconnect from the rear to tow";
+            return rearCable ? "Tow the vehicle into the marked receiving bay" : "Reel in, then reconnect from the rear to tow";
         }
 
-        internal void Begin(WinterJob job)
+        internal void Begin(int index)
         {
+            if (index < 0 || index >= Offers.Length) throw new ArgumentOutOfRangeException(nameof(index));
             Clear();
-            if (job == WinterJob.Tree)
+            var job = Offers[index].Kind;
+            if (parkedTree != null)
             {
                 Remove(parkedTree);
                 parkedTree = null;
             }
+            ActiveIndex = index;
+            ConfigureJob(index);
             Active = job;
-            props = new GameObject(Offers[(int)job].Name);
+            props = new GameObject(Offers[index].Name);
             props.transform.SetParent(owner, true);
             EnsureMaterials();
             switch (job)
             {
                 case WinterJob.Supply:
                     BuildCargo();
-                    BuildSupplyRoute();
                     currentMarker = Zone("Loading bay", workshop, 5.5f);
                     deliveryMarker = Zone("Unloading bay", forest, 5.5f);
                     break;
@@ -243,10 +263,17 @@ namespace TowTrouble
             crate = root;
             root.transform.SetParent(props.transform, false);
             root.transform.position = Ground(workshop, out _) + new Vector3(-2, .31f, 1);
-            Piece(root.transform, "Case", PrimitiveType.Cube, Vector3.zero, new Vector3(.94f, .58f, .67f), paint);
-            for (int i = -1; i <= 1; i += 2)
-                Piece(root.transform, "Tie-down", PrimitiveType.Cube, new Vector3(i * .31f, 0, 0), new Vector3(.055f, .61f, .70f), orange);
-            Piece(root.transform, "Shipping label", PrimitiveType.Cube, new Vector3(0, .04f, -.34f), new Vector3(.27f, .16f, .02f), snow);
+            for (int unit = 0; unit < CurrentOffer.CargoUnits; unit++)
+            {
+                Vector3 offset = Vector3.up * (unit * .42f);
+                Piece(root.transform, "Case " + (unit + 1), PrimitiveType.Cube, offset,
+                    new Vector3(.94f, .4f, .67f), paint);
+                for (int side = -1; side <= 1; side += 2)
+                    Piece(root.transform, "Tie-down", PrimitiveType.Cube, offset + Vector3.right * (side * .31f),
+                        new Vector3(.055f, .43f, .70f), orange);
+                Piece(root.transform, "Shipping label", PrimitiveType.Cube, offset + new Vector3(0, .04f, -.34f),
+                    new Vector3(.27f, .16f, .02f), snow);
+            }
         }
 
         private static Mesh BuildDriftMesh()
@@ -388,7 +415,7 @@ namespace TowTrouble
         internal void Clear(bool restoreRoad = true)
         {
             var previousJob = Active;
-            if (restoreRoad && previousJob == WinterJob.Plow) SetPinewoodRoad(pinewoodCleared);
+            if (restoreRoad && previousJob == WinterJob.Plow) DisposeRoadSnow();
             ReleaseCargo();
             Remove(currentMarker);
             Remove(deliveryMarker);
@@ -405,6 +432,7 @@ namespace TowTrouble
             towEye = treeBaseEye = null;
             pickup = null;
             Active = null;
+            ActiveIndex = -1;
             if (restoreRoad && previousJob == WinterJob.Tree) RestoreParkedTree();
             loaded = reachedTow = pickupFreed = passedEntry = passedPickupExit = false;
             dwell = 0;
@@ -412,6 +440,7 @@ namespace TowTrouble
 
         internal void Finish(WinterJob job)
         {
+            completedJobs |= 1 << ActiveIndex;
             if (job == WinterJob.Plow) pinewoodCleared = true;
             if (job == WinterJob.Tree)
             {
@@ -434,10 +463,7 @@ namespace TowTrouble
         {
             Clear(restoreRoad: false);
             Remove(parkedTree);
-            Remove(pinewoodRoad);
-            if (roadSnowMesh != null) UnityEngine.Object.Destroy(roadSnowMesh);
-            foreach (var mesh in shoulderMeshes)
-                if (mesh != null) UnityEngine.Object.Destroy(mesh);
+            DisposeRoadSnow();
             foreach (var material in new[] { wood, steel, orange, snow, paint, particles, marking })
                 if (material != null) UnityEngine.Object.Destroy(material);
             if (snowyBark != null) UnityEngine.Object.Destroy(snowyBark);

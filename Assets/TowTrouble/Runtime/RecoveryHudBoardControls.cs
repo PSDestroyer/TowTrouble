@@ -78,8 +78,8 @@ namespace TowTrouble
         {
             var world = session.World;
             if (page == "Expeditions")
-                return boardIndex >= 0 && !world.HasContract && world.Phase == RecoveryPhase.Explore &&
-                    !session.Expedition.Attached && !IsActiveSurvey(boardIndex);
+                return !world.HasContract && world.Phase == RecoveryPhase.Explore &&
+                    (session.Expedition.Active || boardIndex >= 0 && !session.Expedition.Attached);
             if (!session.IsHost) return false;
             if (world.HasContract) return true;
             return boardIndex >= 0 && boardIndex < world.AvailableContracts.Length &&
@@ -91,9 +91,17 @@ namespace TowTrouble
             session.ConsumeMenuInput();
             if (page == "Expeditions")
             {
-                if (boardIndex < WinterRoadContracts.Offers.Length) session.Expedition.Accept((WinterJob)boardIndex);
-                else session.Expedition.Depart(boardIndex - WinterRoadContracts.Offers.Length);
-                if (!session.BoardOpen) Show("Gameplay");
+                if (session.Expedition.Active)
+                {
+                    Confirm("Abandon \"" + session.Expedition.ActiveName + "\" without payment?",
+                        () => { session.ConsumeMenuInput(); session.Expedition.Abandon(); session.CloseOverlay(); Show("Gameplay"); }, "Expeditions");
+                }
+                else
+                {
+                    if (boardIndex < WinterRoadContracts.Offers.Length) session.Expedition.Accept(boardIndex);
+                    else session.Expedition.Depart(boardIndex - WinterRoadContracts.Offers.Length);
+                    if (!session.BoardOpen) Show("Gameplay");
+                }
             }
             else if (session.World.HasContract)
                 Confirm("Abandon \"" + session.World.Contract.TitleFor(P) + "\" without payment?",
@@ -123,7 +131,7 @@ namespace TowTrouble
         // Board input owns navigation/submit; pointer clicks and scroll events still use uGUI.
         private bool HandleBoardControls(bool online)
         {
-            bool dialog = page == "Confirm" && confirmationReturn == "Board";
+            bool dialog = page == "Confirm" && IsBoardPage(confirmationReturn);
             if (!online || !IsBoardPage(page) && !dialog) { SetBoardNavigation(false); return false; }
             SetBoardNavigation(true);
             RefreshBoardHints();
@@ -133,7 +141,7 @@ namespace TowTrouble
             if (cancel)
             {
                 session.ConsumeMenuInput();
-                if (dialog) Show("Board");
+                if (dialog) Show(confirmationReturn);
                 else CloseBoard();
                 return true;
             }

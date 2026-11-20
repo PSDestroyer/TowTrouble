@@ -12,6 +12,7 @@ namespace TowTrouble
         private int blockedAxle;
         private float pickupStall, pickupFreeTime;
         private GameObject pickupSnow;
+        private float treeMass = 480f, treeLengthScale = 1f;
         private Vector3 TreeSide => treeHeading * Vector3.right;
 
         internal Transform FindTowEye(RecoveryVehicle driver, out bool rear)
@@ -43,10 +44,10 @@ namespace TowTrouble
         private void BuildRescue()
         {
             pickup = UnityEngine.Object.Instantiate(world.Casualty, props.transform);
-            pickup.name = "Stranded Meadow pickup";
-            pickup.SetModel(3);
+            pickup.name = CurrentOffer.Name + " vehicle";
+            pickup.SetModel(CurrentOffer.Model);
             pickup.SetPaint(2);
-            pickup.SetRecoveryMass(1350, .5f);
+            pickup.SetRecoveryMass(CurrentOffer.Load, .5f);
             pickup.SetRecoveryJammed(true);
             pickup.WinterDriving = true;
             pickup.SetSpawn(rescue, rescueHeading);
@@ -105,7 +106,7 @@ namespace TowTrouble
 
         private bool WheelOnFirmBank(int wheel)
         {
-            if (!pickup.TryGetWheelContact(wheel, out var hit) || hit.normal.y < .84f) return false;
+            if (!pickup.TryGetWheelContact(wheel, out var hit) || hit.normal.y < .72f) return false;
             Vector3 delta = hit.point - rescueBank;
             return Vector3.Dot(delta, rescueExit) >= 0 &&
                 Mathf.Abs(Vector3.Dot(delta, Vector3.Cross(Vector3.up, rescueExit))) < 5f &&
@@ -124,7 +125,8 @@ namespace TowTrouble
                 Vector3 direction = Vector3.ProjectOnPlane(pull, Vector3.up).normalized;
                 float alignment = Vector3.Dot(direction, rescueExit);
                 float advance = Vector3.Dot(TowBody.linearVelocity, rescueExit);
-                float resistance = Mathf.Lerp(2550, 650, Mathf.InverseLerp(.10f, .85f, alignment));
+                float loadScale = Mathf.Clamp(CurrentOffer.Load / 1350f, .8f, 1.3f);
+                float resistance = Mathf.Lerp(2550, 650, Mathf.InverseLerp(.10f, .85f, alignment)) * loadScale;
                 float available = Mathf.Max(0, Vector3.Dot(pull, direction) * .82f);
                 TowBody.AddForceAtPosition(-direction * Mathf.Min(available, resistance + Mathf.Max(0, advance) * 170f), eye.position);
                 pickupStall = tension > .42f && advance < .22f ? pickupStall + Time.fixedDeltaTime :
@@ -162,6 +164,7 @@ namespace TowTrouble
             var root = new GameObject("Fallen pine");
             root.transform.SetParent(parent, false);
             root.transform.SetPositionAndRotation(position, rotation);
+            root.transform.localScale = new Vector3(1f, 1f, treeLengthScale);
             var trunk = Piece(root.transform, "Trunk", PrimitiveType.Cylinder, Vector3.zero, new Vector3(.55f, 4.55f, .55f), wood,
                 Quaternion.Euler(90, 0, 0), true);
             var collider = trunk.GetComponent<CapsuleCollider>();
@@ -176,7 +179,7 @@ namespace TowTrouble
                     new Vector3(.13f, .77f, .13f), wood, Quaternion.Euler(28, 0, sign * 58));
             }
             var body = root.AddComponent<Rigidbody>();
-            body.mass = 480f;
+            body.mass = treeMass;
             body.linearDamping = .8f;
             body.angularDamping = 2.25f;
             body.interpolation = RigidbodyInterpolation.Interpolate;
@@ -186,7 +189,7 @@ namespace TowTrouble
 
         private bool TreeEndInLane(int end)
         {
-            var point = TowBody.position + TowBody.transform.forward * (end * 4.6f);
+            var point = TowBody.position + TowBody.transform.forward * (end * 4.6f * treeLengthScale);
             return Vector3.Dot(point - treeRoad, TreeSide) <= LaneEdge + .42f;
         }
 

@@ -14,6 +14,7 @@ namespace TowTrouble
             public string Brief;
             public Vector3 Point;
             public int Reward;
+            internal int Tier, ExpectedSeconds;
         }
 
         [SerializeField] private Survey[] surveys;
@@ -32,7 +33,7 @@ namespace TowTrouble
         public int Selected { get; private set; } = -1;
         public bool Returning { get; private set; }
         public string Report { get; private set; }
-        internal (string Name, WinterJob? Job, int Reward, int Bonus, float Elapsed, int Resets, int CableBreaks, bool CargoIntact)? Result { get; private set; }
+        internal (string Name, WinterJob? Job, string Location, int Reward, int Bonus, float Elapsed, int Resets, int CableBreaks, bool CargoIntact)? Result { get; private set; }
         internal WinchFrame CableFrame { get; private set; }
         public bool Attached => attachedAnchor != null;
         public Transform NearbyAnchor { get; private set; }
@@ -41,6 +42,10 @@ namespace TowTrouble
         public IReadOnlyList<Survey> Surveys => surveys;
         public bool Active => Selected >= 0 || ActiveJob.HasValue;
         internal WinterJob? ActiveJob => jobs?.Active;
+        internal int ActiveJobIndex => jobs?.ActiveIndex ?? -1;
+        internal string ActiveName => ActiveJobIndex >= 0 ? WinterRoadContracts.Offers[ActiveJobIndex].Name :
+            Selected >= 0 ? surveys[Selected].Name : null;
+        internal int CargoUnits => jobs?.CargoUnits ?? 0;
         internal bool DeliveryLeg => Returning || jobs?.DeliveryLeg == true;
         internal bool HasCargo => jobs?.CargoLoaded == true;
         internal bool NearTowTarget { get; private set; }
@@ -55,14 +60,11 @@ namespace TowTrouble
             ActiveJob == WinterJob.Recovery && !TowHintUsesRear);
         internal bool MissedPlowSection => driver != null && jobs?.MissedPlowSection(driver.FrontHitch) == true;
         internal bool ExtractingPickup => TowingLoad && jobs?.ExtractingPickup == true;
-        internal bool OnShortcut => jobs?.OnShortcut == true;
         internal bool ShowingPickupExit => TowingLoad && jobs?.GuidingPickupExit == true;
-        internal Vector3 GuidancePoint => jobs?.LoadedRoute == true ? jobs.SupplyRoutePoint :
-            ShowingPickupExit ? jobs.PickupExit : ShowingEntry ? jobs.EntryPoint : ShowingPullPoint || ExtractingPickup ? jobs.PullPoint :
+        internal Vector3 GuidancePoint => ShowingPickupExit ? jobs.PickupExit : ShowingEntry ? jobs.EntryPoint : ShowingPullPoint || ExtractingPickup ? jobs.PullPoint :
             (Reconnecting || NearTowTarget) && (nearbyTowEye != null ? nearbyTowEye : jobs?.TowEye) is { } eye ? eye.position : Destination;
-        internal string GuidanceName => jobs?.LoadedRoute == true ? jobs.SupplyRouteName :
-            ShowingPickupExit ? "Meadow exit · take the bend wide" :
-            ShowingEntry ? (ActiveJob == WinterJob.Tree ? "Lay-by approach" : "Meadow entrance") :
+        internal string GuidanceName => ShowingPickupExit ? "Recovery exit · take the bend wide" :
+            ShowingEntry ? (ActiveJob == WinterJob.Tree ? "Lay-by approach" : "Recovery approach") :
             ShowingPullPoint || ExtractingPickup ? "Marked pull point" :
             Reconnecting ? "Reconnect the cable" : NearTowTarget ? NearbyTowName : DestinationName;
         internal string NearbyTowName => jobs.TowEyeName(nearbyTowEye);
@@ -71,11 +73,12 @@ namespace TowTrouble
         internal bool BladeLowered => jobs?.BladeLowered == true;
         internal float BladeLoad => jobs?.BladeLoad ?? 0;
         public Vector3 Destination => ActiveJob.HasValue ? jobs.Destination :
-            Returning ? session.World.GaragePosition : surveys[Selected].Point;
+            Returning ? SurveyBase.Position : surveys[Selected].Point;
         public string DestinationName => ActiveJob.HasValue ? jobs.DestinationName :
-            Returning ? "Expedition base" : surveys[Selected].Name;
+            Returning ? SurveyBase.English : surveys[Selected].Name;
+        private RecoveryDropoff SurveyBase => Array.Find(session.World.Map.Deliveries, bay => bay.Id == (Selected == 0 ? "E" : "B"));
         internal float DriftAt(Vector3 point) => jobs?.SnowAt(point) ?? 0;
-        internal Vector3 JobStart(WinterJob job) => jobs.JobStart(job);
+        internal Vector3 JobStart(int index) => jobs.JobStart(index);
 
         public void Configure(Survey[] sites, Transform[] winchAnchors, LineRenderer line)
         {
@@ -87,7 +90,11 @@ namespace TowTrouble
         internal void Bind(DemoSession owner)
         {
             session = owner;
+            // Winter jobs own their obstacles. Classic recovery props can block the new winch approaches.
+            foreach (var obstacle in FindObjectsByType<RecoveryTowObstacle>(FindObjectsSortMode.None))
+                if (obstacle.gameObject.scene == gameObject.scene) obstacle.gameObject.SetActive(false);
             jobs = new WinterRoadContracts(owner.World, transform, owner.Profile.winterJobs);
+            BalanceSurveys();
             var ruts = gameObject.AddComponent<WinterSnowRuts>();
             ruts.Bind(owner.World.Drivers[0].transform);
             foreach (var car in owner.World.Drivers)
@@ -100,10 +107,43 @@ namespace TowTrouble
             cable.enabled = false;
         }
 
+        private void BalanceSurveys()
+        {
+            var route = new List<Vector3>();
+            for (int i = 0; i < surveys.Length; i++)
+            {
+                var survey = surveys[i];
+                var outbound = Measure(session.World.GaragePosition, survey.Point);
+                var depot = Array.Find(session.World.Map.Deliveries, bay => bay.Id == (i == 0 ? "E" : "B"));
+                var returning = Measure(survey.Point, depot.Position);
+                float distance = outbound.Length + returning.Length;
+                float climb = outbound.Climb + returning.Climb;
+                survey.Tier = climb >= 55f ? 2 : distance >= 650f ? 1 : 0;
+                survey.ExpectedSeconds = Mathf.RoundToInt((20f + distance / 6f + climb * .5f) / 15f) * 15;
+                float reward = 100 + survey.Tier * 75 + survey.ExpectedSeconds / 60f * (220 + survey.Tier * 40);
+                survey.Reward = Mathf.Max(400, Mathf.RoundToInt(reward / 50f) * 50);
+                surveys[i] = survey;
+            }
+
+            (float Length, float Climb) Measure(Vector3 from, Vector3 to)
+            {
+                if (!session.World.Map.TryGetRoadRoute(from, to, route))
+                    return (Vector3.Distance(from, to), Mathf.Max(0, to.y - from.y));
+                float length = Vector3.Distance(from, route[0]) + Vector3.Distance(to, route[route.Count - 1]);
+                float climb = 0;
+                for (int point = 1; point < route.Count; point++)
+                {
+                    length += Vector3.Distance(route[point - 1], route[point]);
+                    climb += Mathf.Max(0, route[point].y - route[point - 1].y);
+                }
+                return (length, climb);
+            }
+        }
+
         public void Depart(int index)
         {
             if (!session.ReadyForPresentation || !session.BoardOpen || session.World.Phase != RecoveryPhase.Explore ||
-                index < 0 || index >= surveys.Length || Attached) return;
+                index < 0 || index >= surveys.Length || Attached || Active) return;
             jobs.Clear();
             Selected = index;
             Returning = false;
@@ -113,16 +153,31 @@ namespace TowTrouble
             session.CloseOverlay();
         }
 
-        internal void Accept(WinterJob job)
+        internal void Accept(int index)
         {
-            if (!session.ReadyForPresentation || !session.BoardOpen || session.World.Phase != RecoveryPhase.Explore || Attached) return;
+            if (!session.ReadyForPresentation || !session.BoardOpen || session.World.Phase != RecoveryPhase.Explore ||
+                Attached || Active || index < 0 || index >= WinterRoadContracts.Offers.Length) return;
             Selected = -1;
             Returning = false;
             holdSeconds = 0;
             Report = null;
             StartResultTracking();
-            jobs.Begin(job);
+            jobs.Begin(index);
             session.CloseOverlay();
+        }
+
+        internal void Abandon()
+        {
+            Detach();
+            jobs.Clear();
+            Selected = -1;
+            Returning = false;
+            holdSeconds = 0;
+            Result = null;
+            Report = null;
+            nearbyTowEye = null;
+            NearTowTarget = false;
+            nextAnchorCheck = 0;
         }
 
         internal string Instruction(bool near)
@@ -188,7 +243,7 @@ namespace TowTrouble
                 profile.Save();
             }
             Report = first ? $"Survey logged · +{survey.Reward:N0} CR" : "Survey logged";
-            Result = (survey.Name, null, first ? survey.Reward : 0, 0, Time.time - startedAt, RunResets, cableBreaks, false);
+            Result = (survey.Name, null, SurveyBase.English, first ? survey.Reward : 0, 0, Time.time - startedAt, RunResets, cableBreaks, false);
             Returning = false;
             Selected = -1;
         }
@@ -196,9 +251,10 @@ namespace TowTrouble
         private void CompleteJob(WinterJob job)
         {
             Detach();
-            var offer = WinterRoadContracts.Offers[(int)job];
+            int index = jobs.ActiveIndex;
+            var offer = WinterRoadContracts.Offers[index];
             var profile = session.Profile;
-            int mask = 1 << (int)job;
+            int mask = 1 << index;
             bool first = (profile.winterJobs & mask) == 0;
             int bonus = job == WinterJob.Supply ? jobs.CargoBonus : 0;
             int reward = first ? offer.Reward + bonus : 0;
@@ -209,7 +265,7 @@ namespace TowTrouble
                 profile.Save();
             }
             Report = first ? $"{offer.Name} complete · +{reward:N0} CR" : $"{offer.Name} complete";
-            Result = (offer.Name, job, reward, first ? bonus : 0, Time.time - startedAt, RunResets, cableBreaks, bonus > 0);
+            Result = (offer.Name, job, jobs.CompletionLocation, reward, first ? bonus : 0, Time.time - startedAt, RunResets, cableBreaks, bonus > 0);
             jobs.Finish(job);
             NearTowTarget = false;
         }
@@ -271,7 +327,6 @@ namespace TowTrouble
             Transform closest = null;
             float limit = 18f * 18f;
             Vector3 hitch = driver.FrontHitch;
-            Consider(jobs.SupplyAnchor);
             foreach (var anchor in anchors) Consider(anchor);
             return closest;
 

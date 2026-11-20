@@ -7,8 +7,6 @@ namespace TowTrouble
     {
         private readonly int[] expeditionSelection = { -1, -1 };
         private readonly float[] expeditionScrollY = new float[2];
-        private static readonly string[] winterJobLabels = { "Cargo delivery", "Vehicle recovery", "Road clearance", "Snow plowing" };
-        private static readonly string[] winterJobTerrain = { "Packed road / deep forest snow", "Snowy ditch and meadow", "Icy lakeside road", "Deep drifts and packed snow" };
         private static readonly string[] winterPhotoNames =
         {
             "Pinewood supplies", "Workshop Meadow rescue", "Lakeside timber", "Pinewood plowing",
@@ -26,17 +24,32 @@ namespace TowTrouble
             var entries = new System.Collections.Generic.List<int>();
             for (int id = 0; id < WinterRoadContracts.Offers.Length + expedition.Surveys.Count; id++)
                 if (WinterEntryCompleted(id) == boardCompleted) entries.Add(id);
+            if (!boardCompleted)
+                entries.Sort((a, b) =>
+                {
+                    var left = WinterEntry(a);
+                    var right = WinterEntry(b);
+                    int tier = left.Tier.CompareTo(right.Tier);
+                    if (tier != 0) return tier;
+                    int time = left.ExpectedSeconds.CompareTo(right.ExpectedSeconds);
+                    return time != 0 ? time : a.CompareTo(b);
+                });
             boardEntries = entries;
             int tab = boardCompleted ? 1 : 0;
-            if (!entries.Contains(boardIndex)) boardIndex = entries.Contains(expeditionSelection[tab])
+            if (!entries.Contains(boardIndex) || expeditionSelection[tab] < 0) boardIndex = entries.Contains(expeditionSelection[tab])
                 ? expeditionSelection[tab] : entries.Count > 0 ? entries[0] : -1;
             expeditionSelection[tab] = boardIndex;
 
             if (winterBoardPhotos == null)
             {
-                winterBoardPhotos = new Texture2D[winterPhotoNames.Length];
+                winterBoardPhotos = new Texture2D[WinterRoadContracts.Offers.Length + expedition.Surveys.Count];
                 for (int id = 0; id < winterBoardPhotos.Length; id++)
-                    winterBoardPhotos[id] = Resources.Load<Texture2D>("WinterBoard/" + winterPhotoNames[id]);
+                {
+                    int fallback = id < WinterRoadContracts.Offers.Length
+                        ? (int)WinterRoadContracts.Offers[id].Kind : 4 + id - WinterRoadContracts.Offers.Length;
+                    winterBoardPhotos[id] = Resources.Load<Texture2D>("WinterBoard/Mission-" + id.ToString("D2")) ??
+                        Resources.Load<Texture2D>("WinterBoard/" + winterPhotoNames[fallback]);
+                }
             }
 
             var position = session.World.Drivers[Mathf.Max(0, session.LocalSlot)].transform.position;
@@ -59,18 +72,22 @@ namespace TowTrouble
                 description = Text(detail, entry.Brief + (entry.Terrain == null ? "" : "\n" + L("Teren: ", "Terrain: ") + entry.Terrain),
                     30, 274, 482, 93, 18, Paper);
                 BuildBoardReward(detail, boardCompleted ? "REPLAY REWARD" : "REWARD", entry.Reward);
-                if (!boardCompleted && boardIndex == (int)WinterJob.Supply)
-                    Text(detail, "Bonus for delivering the crate intact", 30, 411, 774, 36, 16, Muted);
+                Text(detail, entry.Preparation, 30, 369, 482, 40, 16, Amber).name = "Equipment recommendation";
+                string estimate = "~" + Mathf.CeilToInt(entry.ExpectedSeconds / 60f) + " min from base · " +
+                    WinterRoadContracts.DifficultyName(entry.Tier);
+                if (!boardCompleted && boardIndex < WinterRoadContracts.Offers.Length && WinterRoadContracts.Offers[boardIndex].Kind == WinterJob.Supply)
+                    estimate += " · Intact cargo +" + WinterRoadContracts.Offers[boardIndex].IntactBonus.ToString("N0") + " CR";
+                Text(detail, estimate, 30, 411, 774, 36, 16, Muted);
             }
             else Text(detail, boardCompleted ? "Finished expeditions will appear here for replay." : "Choose an expedition from Completed to replay.",
                 30, 30, 774, 100, 25, Paper, true);
 
-            int active = expedition.ActiveJob is WinterJob job ? (int)job :
+            int active = expedition.ActiveJobIndex >= 0 ? expedition.ActiveJobIndex :
                 expedition.Selected >= 0 ? WinterRoadContracts.Offers.Length + expedition.Selected : -1;
             string status = session.World.HasContract ? "Finish or abandon the active recovery to start an expedition." :
-                expedition.Attached ? "Detach the winch before changing expeditions." :
-                active >= 0 ? "IN PROGRESS: " + WinterEntry(active).Name : "No active expedition. Choose where we go next.";
-            string action = IsActiveSurvey(boardIndex) ? "IN PROGRESS" : active >= 0 && boardIndex == active ? "RESTART JOB" :
+                active >= 0 ? "IN PROGRESS: " + expedition.ActiveName :
+                expedition.Attached ? "Detach the winch before starting an expedition." : "No active expedition. Choose where we go next.";
+            string action = expedition.Active ? L("ABANDONEAZĂ EXPEDIȚIA", "ABANDON EXPEDITION") :
                 boardCompleted ? "REPLAY EXPEDITION" : boardIndex >= WinterRoadContracts.Offers.Length ? "START SURVEY" : "ACCEPT JOB";
             BuildBoardActions(entries.Count + (boardCompleted ? " completed expeditions" : " available expeditions"), status, active >= 0, action);
             FitNewPanelText();
@@ -90,20 +107,23 @@ namespace TowTrouble
         private bool WinterEntryCompleted(int id) => id < WinterRoadContracts.Offers.Length
             ? (P.winterJobs & (1 << id)) != 0 : (P.winterSurveys & (1 << (id - WinterRoadContracts.Offers.Length))) != 0;
 
-        private bool IsActiveSurvey(int id) => id >= WinterRoadContracts.Offers.Length &&
-            session.Expedition.Selected == id - WinterRoadContracts.Offers.Length;
-
-        private (string Name, string Brief, string Label, string Terrain, Vector3 Point, int Reward) WinterEntry(int id)
+        private (string Name, string Brief, string Label, string Terrain, Vector3 Point, int Reward,
+            int Tier, int ExpectedSeconds, string Preparation) WinterEntry(int id)
         {
             bool completed = WinterEntryCompleted(id);
             if (id < WinterRoadContracts.Offers.Length)
             {
                 var offer = WinterRoadContracts.Offers[id];
-                return (offer.Name, offer.Brief, winterJobLabels[id], winterJobTerrain[id],
-                    session.Expedition.JobStart((WinterJob)id), completed ? 0 : offer.Reward);
+                string terrain = offer.Kind == WinterJob.Supply
+                    ? offer.Terrain + " · " + Mathf.RoundToInt(offer.CargoUnitMass * offer.CargoUnits) + " kg cargo" : offer.Terrain;
+                return (offer.Name, offer.Brief, offer.Difficulty + " · " + offer.Label, terrain,
+                    session.Expedition.JobStart(id), completed ? 0 : offer.Reward,
+                    offer.Tier, offer.ExpectedSeconds, offer.Preparation);
             }
             var survey = session.Expedition.Surveys[id - WinterRoadContracts.Offers.Length];
-            return (survey.Name, survey.Brief, "Field survey", null, survey.Point, completed ? 0 : survey.Reward);
+            return (survey.Name, survey.Brief, WinterRoadContracts.DifficultyName(survey.Tier) + " · Survey", null,
+                survey.Point, completed ? 0 : survey.Reward, survey.Tier, survey.ExpectedSeconds,
+                survey.Tier == 0 ? "Stock vehicle · winter tires recommended" : "Winter tires · low range recommended");
         }
 
         private void BuildExpeditionHelp()
@@ -134,10 +154,10 @@ namespace TowTrouble
                 var separation = destination - driver.transform.position;
                 bool near = expedition.NearDestination(driver.transform.position);
                 var job = expedition.ActiveJob;
-                SetMissionStatus(job.HasValue ? WinterRoadContracts.Offers[(int)job.Value].Name.ToUpperInvariant() :
+                SetMissionStatus(job.HasValue ? expedition.ActiveName.ToUpperInvariant() :
                     expedition.Returning ? "RETURN TO BASE" : "FIELD SURVEY", expedition.Instruction(near));
                 bool plowing = expedition.PlowFitted;
-                bool localWork = plowing || expedition.OnShortcut || expedition.ShowingPickupExit ||
+                bool localWork = plowing || expedition.ShowingPickupExit ||
                     expedition.ShowingPullPoint || expedition.Reconnecting || expedition.ExtractingPickup ||
                     job == WinterJob.Tree && expedition.DeliveryLeg ||
                     near && (job == WinterJob.Supply || job == WinterJob.Recovery);
@@ -178,7 +198,7 @@ namespace TowTrouble
             else if (expedition.ActiveJob == WinterJob.Supply && expedition.NearDestination(driver.transform.position))
                 ShowExploreHint(brake, expedition.HasCargo ? "Hold brake to unload" : "Hold brake to load");
             else if (expedition.HasCargo)
-                ShowExploreHint("", "Cargo secured · 1 crate");
+                ShowExploreHint("", "Cargo secured · " + expedition.CargoUnits + " crate(s)");
             else if (expedition.NearbyAnchor != null)
                 ShowExploreHint(hook, "Attach to anchor");
             else if (driver.SnowSink >= .11f && driver.Speed > .15f)
@@ -206,11 +226,11 @@ namespace TowTrouble
                 breakdown += result.CargoIntact ? L("  ·  Ladă intactă", "  ·  Crate intact") : L("  ·  Ladă deteriorată", "  ·  Crate damaged");
             string nextStep = result.Job switch
             {
-                WinterJob.Supply => L("Livrată la Pinewood", "Delivered to Pinewood"),
-                WinterJob.Recovery => L("Livrată la atelier", "Delivered to the workshop"),
-                WinterJob.Tree => L("Traseu redeschis la Lakeside", "Lakeside Road reopened"),
-                WinterJob.Plow => L("Traseu redeschis la Pinewood", "Pinewood Road reopened"),
-                _ => L("Raport predat la bază", "Report filed at expedition base")
+                WinterJob.Supply => L("Livrată la ", "Delivered to ") + result.Location,
+                WinterJob.Recovery => L("Livrată la ", "Delivered to ") + result.Location,
+                WinterJob.Tree => result.Name + L(" · traseu redeschis", " · route reopened"),
+                WinterJob.Plow => result.Name + L(" · traseu redeschis", " · route reopened"),
+                _ => L("Raport predat la ", "Report filed at ") + result.Location
             };
             BuildResultsSummary(new ResultSummary
             {

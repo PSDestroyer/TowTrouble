@@ -263,3 +263,22 @@ Compilare curată, șase verificări de reguli și 12 verificări native de emit
 Norii pornesc compact, se ridică și cresc înainte să se risipească; silueta este neregulată. Praful la patinare pe loc a fost întărit. În Play Mode pe nisip s-au verificat mersul normal fără slip, patinarea fizică și dispariția la oprire. Pe Switch se păstrează doar două surse de praf fin simultan, cu limite și durată reduse; bulgării rămân la toate roțile aflate în contact.
 
 Nouă verificări de reguli trecute și compilare curată. În editorul Mac, cu pipeline-ul Switch, testul pornit/oprit a rămas la aproximativ 30 FPS; acesta nu confirmă FPS-ul pe consola reală. Dovezi și capturi: `Docs/Validation/WheelDustPlay`. Play a fost oprit, profilul de test eliminat și salvările reale verificate identice. Fără build.
+
+
+Winter Expeditions — 2026-11-19
+
+DLC-ul are 30 de intrări în selector, cu fotografii din amplasările lor. Sunt 10 lucrări de deszăpezire, 7 livrări cu una până la trei lăzi, 6 recuperări de vehicule, 4 eliberări de traseu cu trunchiuri și 3 expediții de teren. Lucrările și depozitele folosite sunt în afara garajului. Selectarea unei alte misiuni în timpul unei misiuni active oferă abandonarea cu confirmare, ca în selectorul clasic. Anularea păstrează încărcătura și cablul. Confirmarea eliberează marfa și cablul și revine la condus, apoi se poate accepta următoarea misiune.
+
+Verificarea în Unity a inclus 30 de carduri, 31 de fotografii încărcate în ierarhia meniului, Enter/Esc prin inputul normal, anularea și confirmarea abandonării, identitatea separată a celor 27 de lucrări și serializarea în memorie a progresului vechi și nou. În Play Mode au fost finalizate toate cele 10 deszăpeziri și toate cele 4 eliberări cu trunchiuri. S-au verificat extragerile fizice pentru cele 6 vehicule și încărcarea, descărcarea și eliberarea masei pentru cele 7 livrări.
+
+Probele fizice au început prin poziționare la fiecare zonă de lucru. Livrările au folosit poziționare de test la depozite. Rămâne verificarea prin condus a traseelor complete de livrare și remorcare. Salvarea reală a fost verificată identică prin hash după închiderea profilului izolat, iar editorul a revenit la scena inițială. Dovezi în `Docs/Validation/WinterMissionExpansion`.
+
+Winter Expeditions — balans 2026-11-20
+
+Cele 30 de misiuni sunt ordonate Easy / Standard / Demanding, apoi după durata estimată. Selectorul arată echipamentul recomandat, durata din baza principală, greutatea mărfii și bonusul pentru livrare intactă. Duratele includ apropierea pe rețeaua de drumuri, urcarea, lucrul și livrarea; nu sunt limite de timp și așteptarea nu crește plata. Recompensele de bază sunt 500–2.350 CR, în total35.000CR pentru toate30 la prima finalizare, plus maximum1.400CR pentru marfă intactă. Rejucările rămân fără plată suplimentară. Identitatea și progresul misiunilor existente se păstrează. Economia și fizica TowTrouble clasic rămân neschimbate.
+
+Zăpada mai adâncă păstrează material pentru următoarea trecere: lama taie o adâncime fixă, în funcție de acoperire și viteză. Cele10 deszăpeziri au fost finalizate cu mașina de bază în1–2 treceri în proba de lucru. Marfa cântărește80–360kg după ofertă; șocurile moderate sunt mai tolerante, iar încărcăturile fragile pierd bonusul mai ușor la impacturi puternice. Rezistența extragerii vehiculelor ține cont de masa lor.
+
+Verificare Unity Play Mode în profil izolat:10 deszăpeziri complete,6 extrageri,7 fluxuri de încărcare/descărcare cu masa eliberată corect, toate27 plăți/identități de lucrări și cele3 plăți de survey, rejucări fără plată dublă și compatibilitate JSON cu progresul vechi. Au fost conduse integral între depozite Supplies for Pinewood cu mașina de bază și High Cabin Provisions cu anvelope de iarnă, reductor și engine_2; livrarea High Cabin a păstrat bonusul300CR. Extragerile au folosit aceeași echipare de iarnă și troliul stock. Lucrările încep prin poziționare de test; între trecerile de deszăpezire s-a revenit prin condus. Nu toate traseele de livrare și remorcare au fost parcurse integral.
+
+Selectorul a trecut18 verificări de layout la100% și130% text, cu30 carduri și31 fotografii, fără text depășit. Compilarea a trecut. Console păstrează eroarea existentă Unity Localization / RecoveryLocalization „SelectedLocale is null” în sesiunea izolată; nu este o verificare Console fără erori. Scena inițială a fost restaurată și hash-urile salvărilor reale au rămas identice. Nu s-a creat build. Dovezi și tabelul recompenselor: `Docs/Validation/WinterMissionBalance`.

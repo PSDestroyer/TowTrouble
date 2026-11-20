@@ -94,7 +94,7 @@ namespace TowTrouble
                     for (int drift = 0; drift < DriftCount; drift++)
                     for (int cell = 0; cell < CellsPerDrift; cell++)
                         DepositShoulder(strip, FirstDrift + drift * DriftSpacing + (cell - 1.5f) * CellLength + .28f,
-                            ShoulderOffset, SnowHeights[drift] / DeepestDrift);
+                            ShoulderOffset, SnowHeights[drift] * snowDepthScale / DeepestDrift);
                 ShowShoulderRidge(strip);
             }
         }

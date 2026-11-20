@@ -44,7 +44,7 @@ namespace TowTrouble
             Button(pageRoot,"SETTINGS",80,row+65,396,()=>{returnPage="Main";firstSetup=false;Show("Settings");});
             if (winter) Button(pageRoot,"BACK TO TOWTROUBLE",80,row+130,396,session.OpenClassicMenu);
             Button(pageRoot,"CREDITS",80,634,190,()=>Show("Credits"),false,42);
-            Button(pageRoot,"QUIT",286,634,190,()=>Application.Quit(),false,42);
+            Button(pageRoot,"QUIT GAME",286,634,190,()=>ConfirmAction("Quit the game?",QuitGame,"Main","QUIT GAME"),false,42);
             Text(pageRoot,winter?"TOW COUNTY · WINTER FIELD STATION":"TOW COUNTY · RECOVERY SERVICE",82,728,394,28,15,Muted);
             var catalog=session.GarageCatalog;var build=P.Build(P.vehicle);var body=catalog?.Find(build.Item(GarageSlot.Assembly,catalog));
             bool modified=build.Items!=null&&build.Items.Any(id=>!string.IsNullOrEmpty(id)&&!id.StartsWith("stock_",StringComparison.Ordinal)&&!id.StartsWith("paint_",StringComparison.Ordinal));
@@ -146,8 +146,9 @@ namespace TowTrouble
         private string busyStatus;
         private void BuildPause()
         {
-            bool cable=session.World!=null&&session.World.HasContract&&session.LocalSlot>=0&&session.World.Attached(session.LocalSlot);
-            float height=cable?650:552;
+            bool cable=session.Expedition?.Attached==true||
+                session.World!=null&&session.World.HasContract&&session.LocalSlot>=0&&session.World.Attached(session.LocalSlot);
+            float height=cable?718:620;
             var card=Panel(pageRoot,500,(900-height)*.5f,600,height);Text(card,"PAUSED",30,24,540,56,38,Paper,true);
             Text(card,session.Training?"Practice mode · your career equipment and money are safe.":session.Solo?(RecoveryPlatform.MultiplayerAvailable?"Take your time. Solo play is paused.":"Take your time. The game is paused."):"Your car stays braked. Your crew keeps playing.",30,96,540,76,20,Muted);
             Button(card,"RESUME",30,194,540,()=>{session.ConsumeMenuInput();session.ToggleMenu();Show("Gameplay");},true);
@@ -155,7 +156,16 @@ namespace TowTrouble
             Button(card,"SETTINGS",30,330,540,()=>{returnPage="Pause";firstSetup=false;Show("Settings");});
             Button(card,"RESET VEHICLE",30,398,540,()=>{session.ConsumeMenuInput();session.ResetAtCheckpoint();Show("Gameplay");});
             Button(card,session.Training?"END TRAINING":"MAIN MENU",30,466,540,()=>ConfirmAction(session.Training?"End training? Your career progress is unchanged.":session.World.HasContract?"Return to the main menu? This recovery will be abandoned without payment. Purchased equipment and earned credits stay saved.":"Leave this session and return to the main menu?",()=>{session.LeaveToMain();Show("Busy");},"Pause",session.Training?"END TRAINING":"MAIN MENU"));
+            Button(card,"QUIT GAME",30,534,540,()=>ConfirmAction("Quit the game?",QuitGame,"Pause","QUIT GAME"));
             BuildCableDetails(card);BuildMenuFooter();
+        }
+        private static void QuitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
         private void OpenTextEntry(TMP_InputField field)
         {

@@ -24,7 +24,7 @@ namespace TowTrouble
         private Action pendingConfirmation;
         private string confirmationQuestion, confirmationAction = "CONFIRM", preferredMenuFocus;
         private UnityEngine.UI.Selectable[] menuControls = Array.Empty<UnityEngine.UI.Selectable>();
-        private bool IsGeneralMenu => page!="Gameplay" && page!="Garage" && !IsBoardPage(page) && !(page=="Confirm"&&confirmationReturn=="Board");
+        private bool IsGeneralMenu => page!="Gameplay" && page!="Garage" && !IsBoardPage(page) && !(page=="Confirm"&&IsBoardPage(confirmationReturn));
         private void SetMenuNavigation(bool active)
         {
             if(active&&!menuOwnsNavigation&&EventSystem.current!=null)
@@ -216,7 +216,7 @@ namespace TowTrouble
             var confirm=Button(card,confirmationAction,padding,buttonY,buttonWidth,()=>{var action=pendingConfirmation;pendingConfirmation=null;action?.Invoke();},true,64);
             var cancel=Button(card,"CANCEL",padding+buttonWidth+gap,buttonY,buttonWidth,()=>MenuBack(),false,64);
             preferredMenuFocus="CANCEL";
-            if(confirmationReturn=="Board")ConfigureBoardDialog();
+            if(IsBoardPage(confirmationReturn))ConfigureBoardDialog();
             else {ConfirmationHint(confirm,"confirm");ConfirmationHint(cancel,"back");}
         }
         private void ConfirmationHint(UnityEngine.UI.Button button,string kind)

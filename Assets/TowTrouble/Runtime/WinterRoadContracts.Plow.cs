@@ -37,6 +37,7 @@ namespace TowTrouble
         private Vector3 plowStart, plowDirection, plowSide, previousBladePoint;
         private GameObject pinewoodRoad;
         private bool pinewoodCleared;
+        private float snowDepthScale = 1f;
         private int cleared, nextDrift, nextCell, nextStrip;
 
         private float NextSnowAlong => FirstDrift + (nextDrift - .5f) * DriftSpacing + (nextCell + .5f) * CellLength;
@@ -76,11 +77,12 @@ namespace TowTrouble
             return "Drive forward between the poles";
         }
 
-        private void BuildPinewoodRoad(bool savedClearance)
+        private void BuildPinewoodRoad(Offer offer)
         {
-            pinewoodCleared = savedClearance;
-            plowStart = Ground(new Vector3(-30.5f, 22f, 10.45f), out _);
-            plowDirection = new Vector3(-.987f, 0, .16f).normalized;
+            pinewoodCleared = (completedJobs & (1 << ActiveIndex)) != 0;
+            plowStart = Ground(offer.RoadStart, out _);
+            plowDirection = Vector3.ProjectOnPlane(offer.RoadEnd - offer.RoadStart, Vector3.up).normalized;
+            snowDepthScale = offer.SnowScale;
             plowSide = Vector3.Cross(Vector3.up, plowDirection);
             pinewoodRoad = new GameObject("Pinewood road snow");
             pinewoodRoad.transform.SetParent(owner, false);
@@ -101,7 +103,19 @@ namespace TowTrouble
             }
             BuildRoadSnow(parent);
             BuildShoulderMeshes(parent);
-            SetPinewoodRoad(savedClearance);
+            SetPinewoodRoad(pinewoodCleared);
+        }
+
+        private void DisposeRoadSnow()
+        {
+            Remove(pinewoodRoad);
+            pinewoodRoad = null;
+            if (roadSnowMesh != null) UnityEngine.Object.Destroy(roadSnowMesh);
+            roadSnowMesh = null;
+            foreach (var mesh in shoulderMeshes)
+                if (mesh != null) UnityEngine.Object.Destroy(mesh);
+            System.Array.Clear(shoulderMeshes, 0, shoulderMeshes.Length);
+            snowFlights.Clear();
         }
 
         private static float StripCentre(int strip) => strip == 0 ? -StripOffset : StripOffset;
@@ -145,7 +159,7 @@ namespace TowTrouble
                 int vertex = row * SnowSurfaceColumns + column;
                 roadSnowGround[vertex] =
                     roadSnowSurface.transform.InverseTransformPoint(Ground(point, out _));
-                roadSnowHeight[vertex] = UndisturbedSnowHeight(along, across);
+                roadSnowHeight[vertex] = UndisturbedSnowHeight(along, across) * snowDepthScale;
             }
         }
 
@@ -205,8 +219,9 @@ namespace TowTrouble
             float across = Vector3.Dot(delta, plowSide);
             if (Mathf.Abs(across) < LaneHalfWidth - .24f || Mathf.Abs(across) >= SnowCoverHalfWidth) return 0;
             float along = Vector3.Dot(delta, plowDirection);
-            if (along <= SnowStart || along >= SnowEnd || Mathf.Abs(delta.y) > 2f) return 0;
-            return UndisturbedSnowHeight(along, across) * SnowbankEdge(across) / DeepestDrift;
+            int drift = Mathf.Clamp(Mathf.RoundToInt((along - FirstDrift) / DriftSpacing), 0, DriftCount - 1);
+            if (along <= SnowStart || along >= SnowEnd || Mathf.Abs(point.y - driftPoints[drift].y) > 2f) return 0;
+            return UndisturbedSnowHeight(along, across) * snowDepthScale * SnowbankEdge(across) / DeepestDrift;
         }
 
         private void UpdatePlowProgress()
@@ -246,12 +261,12 @@ namespace TowTrouble
             int cell = Mathf.Clamp(Mathf.FloorToInt((metres - index * DriftSpacing) / CellLength), 0, CellsPerDrift - 1);
             int strip = across < 0 ? 0 : 1;
             float remaining = snowRemaining[index, strip, cell];
-            return remaining * SnowHeights[index] / DeepestDrift *
+            return remaining * SnowHeights[index] * snowDepthScale / DeepestDrift *
                 (1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(1.18f, LaneHalfWidth, Mathf.Abs(across))));
         }
 
-        internal float SnowAt(Vector3 point) => Mathf.Max(DriftAt(point),
-            Mathf.Max(RoadsideSnowAt(point), Mathf.Max(ShoulderSnowAt(point), SupplyDriftAt(point))));
+        internal float SnowAt(Vector3 point) => pinewoodRoad == null ? 0 : Mathf.Max(DriftAt(point),
+            Mathf.Max(RoadsideSnowAt(point), ShoulderSnowAt(point)));
 
         internal void FixedTick(RecoveryVehicle driver)
         {
@@ -298,10 +313,12 @@ namespace TowTrouble
                         if (bite <= 0) continue;
 
                         float before = snowRemaining[index, strip, cell];
-                        float remaining = Mathf.Max(0, before - bite * cutAtSpeed);
+                        // A pass removes a fixed depth. Taller drifts retain snow for the next pass.
+                        float cutDepth = .85f / Mathf.Max(.1f, SnowHeights[index] * snowDepthScale);
+                        float remaining = Mathf.Max(0, before - bite * cutAtSpeed * cutDepth);
                         remaining = remaining > .12f ? remaining : 0;
                         snowRemaining[index, strip, cell] = remaining;
-                        snowInWave[strip] += (before - remaining) * SnowHeights[index] / DeepestDrift;
+                        snowInWave[strip] += (before - remaining) * SnowHeights[index] * snowDepthScale / DeepestDrift;
                         changed = true;
                         if (remaining > 0) continue;
                         plowedCells[index, strip] |= bit;
