@@ -6,6 +6,7 @@ namespace TowTrouble
     public sealed partial class RecoveryHud
     {
         private bool waypointGarage;
+        private Vector3 waypointGaragePosition;
 
         private void RefreshGarageGuidance(RecoveryWorld world, int slot, Camera camera)
         {
@@ -15,7 +16,11 @@ namespace TowTrouble
                 return;
             }
 
-            Vector3 delta = world.GaragePosition - world.Drivers[slot].transform.position;
+            var position = world.Drivers[slot].transform.position;
+            bool service = session.Expedition?.ServiceReady == true &&
+                Vector3.Distance(position, session.Expedition.ServicePosition) < Vector3.Distance(position, world.GaragePosition);
+            waypointGaragePosition = service ? session.Expedition.ServicePosition : world.GaragePosition;
+            Vector3 delta = waypointGaragePosition - position;
             float distance = new Vector2(delta.x, delta.z).magnitude;
             // Only visibility has a dead band. The key always follows the same
             // exact eligibility check as opening the workshop.
@@ -38,7 +43,7 @@ namespace TowTrouble
             waypointCamera = camera;
             waypointSlot = slot;
             waypointDelivery = waypointAtHitch = false;
-            SetWaypointContent("GARAGE", caption, false, false, false, RecoveryIcon.Garage, sample);
+            SetWaypointContent(service ? "PINEWOOD SERVICE" : "GARAGE", caption, false, false, false, RecoveryIcon.Garage, sample);
         }
     }
 }

@@ -1,5 +1,15 @@
 # Tow Trouble — Unity project context
 
+## Winter regional progression — 2026-11-20
+
+WinterExpedition now owns a WinterRegion collaborator. Existing winterJobs/winterSurveys receipts rebuild completed plow/tree sites and delivery displays independently of active mission props. No save-schema change. Pinewood jobs3→1→0→survey0 unlock the forest-depot service; legacy completed steps retain replay access. Service access uses the shared garage through guarded WinterExpedition checks in RecoveryWorld; classic garage rules remain unchanged when no expedition is present.
+
+Pinewood supplies0 and reverse delivery15 offer a packed route (749m northern detour,287m after timber2) or254m powder cut, selected by V/right-stick click/pointer. Guidance follows the chosen list. WinterRegion relocates nine standing scene trees and their colliders at runtime for access; it restores transforms on disposal. Canonical completed sites persist through receipts; unfinished snow cuts, exact arbitrary tree poses and rut data are not saved across sessions.
+
+Recovery variants:20 turns a crosswise scout,22 secures a sliding car with a loaded cable while stopped,19 first frees the blocked axle sideways then requires disconnect and opposite-eye reconnect at a second pull point. Resistance follows the first stage's pull direction. Weather uses the existing world clock in240s periods/35s transitions: flurries, snowfall, blowing snow, freeze. COZY and atmosphere changes are conditional on Expedition; four icy patches affect Winter vehicle grip. Cleared lanes stay clear. Forecast appears in journal and driving HUD.
+
+Validation: three weather tests; physical Pinewood stages and driving legs; three special extractions including driving between pull positions;126 layout variants; V/G/Esc through normal input; temporary native-file roundtrip and scene reload with an all-completed fixture; return to classic with original garage/three available cards/24 contracts and no Winter components. A disabled OpenWorldRecovery scene was re-enabled to fix DLC return. Original scene assets and classic balance untouched. Real save hashes unchanged; no build. Known initialization errors remain in Localization/Addressables. Evidence and explicit coverage limits: Docs/Validation/WinterRegion. Feature contract: Docs/Design/WinterRegion.md.
+
 Analyzed 2026-10-30. Initially there was no Git repository. The user moved the project to `/Users/gheorghe/GitHub/TowTrouble`; current branch is main and baseline commit before Living Mud integration is 7063f1a.
 
 ## Confirmed baseline

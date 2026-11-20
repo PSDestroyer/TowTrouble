@@ -5,7 +5,7 @@ using UnityEngine;
 namespace TowTrouble
 {
     [DisallowMultipleComponent]
-    public sealed class WinterExpedition : MonoBehaviour
+    public sealed partial class WinterExpedition : MonoBehaviour
     {
         [Serializable]
         public struct Survey
@@ -61,9 +61,9 @@ namespace TowTrouble
         internal bool MissedPlowSection => driver != null && jobs?.MissedPlowSection(driver.FrontHitch) == true;
         internal bool ExtractingPickup => TowingLoad && jobs?.ExtractingPickup == true;
         internal bool ShowingPickupExit => TowingLoad && jobs?.GuidingPickupExit == true;
-        internal Vector3 GuidancePoint => ShowingPickupExit ? jobs.PickupExit : ShowingEntry ? jobs.EntryPoint : ShowingPullPoint || ExtractingPickup ? jobs.PullPoint :
+        internal Vector3 GuidancePoint => FollowingRegionalRoute ? region.RouteTarget(driver.transform.position, ActiveJobIndex == 15, ForestRoute) : ShowingPickupExit ? jobs.PickupExit : ShowingEntry ? jobs.EntryPoint : ShowingPullPoint || ExtractingPickup ? jobs.PullPoint :
             (Reconnecting || NearTowTarget) && (nearbyTowEye != null ? nearbyTowEye : jobs?.TowEye) is { } eye ? eye.position : Destination;
-        internal string GuidanceName => ShowingPickupExit ? "Recovery exit · take the bend wide" :
+        internal string GuidanceName => FollowingRegionalRoute ? ForestRoute ? "Forest cut · follow the blue stakes" : "Packed road · follow the route" : ShowingPickupExit ? "Recovery exit · take the bend wide" :
             ShowingEntry ? (ActiveJob == WinterJob.Tree ? "Lay-by approach" : "Recovery approach") :
             ShowingPullPoint || ExtractingPickup ? "Marked pull point" :
             Reconnecting ? "Reconnect the cable" : NearTowTarget ? NearbyTowName : DestinationName;
@@ -77,7 +77,7 @@ namespace TowTrouble
         public string DestinationName => ActiveJob.HasValue ? jobs.DestinationName :
             Returning ? SurveyBase.English : surveys[Selected].Name;
         private RecoveryDropoff SurveyBase => Array.Find(session.World.Map.Deliveries, bay => bay.Id == (Selected == 0 ? "E" : "B"));
-        internal float DriftAt(Vector3 point) => jobs?.SnowAt(point) ?? 0;
+        internal float DriftAt(Vector3 point) => Mathf.Max(jobs?.SnowAt(point) ?? 0, region?.SnowAt(point, Weather) ?? 0);
         internal Vector3 JobStart(int index) => jobs.JobStart(index);
 
         public void Configure(Survey[] sites, Transform[] winchAnchors, LineRenderer line)
@@ -95,6 +95,7 @@ namespace TowTrouble
                 if (obstacle.gameObject.scene == gameObject.scene) obstacle.gameObject.SetActive(false);
             jobs = new WinterRoadContracts(owner.World, transform, owner.Profile.winterJobs);
             BalanceSurveys();
+            region = new WinterRegion(owner.World, transform, owner.Profile);
             var ruts = gameObject.AddComponent<WinterSnowRuts>();
             ruts.Bind(owner.World.Drivers[0].transform);
             foreach (var car in owner.World.Drivers)
@@ -143,8 +144,9 @@ namespace TowTrouble
         public void Depart(int index)
         {
             if (!session.ReadyForPresentation || !session.BoardOpen || session.World.Phase != RecoveryPhase.Explore ||
-                index < 0 || index >= surveys.Length || Attached || Active) return;
+                index < 0 || index >= surveys.Length || Attached || Active || !CanStart(WinterRoadContracts.Offers.Length + index)) return;
             jobs.Clear();
+            region.SetActiveJob(-1);
             Selected = index;
             Returning = false;
             holdSeconds = 0;
@@ -156,12 +158,13 @@ namespace TowTrouble
         internal void Accept(int index)
         {
             if (!session.ReadyForPresentation || !session.BoardOpen || session.World.Phase != RecoveryPhase.Explore ||
-                Attached || Active || index < 0 || index >= WinterRoadContracts.Offers.Length) return;
+                Attached || Active || index < 0 || index >= WinterRoadContracts.Offers.Length || !CanStart(index)) return;
             Selected = -1;
             Returning = false;
             holdSeconds = 0;
             Report = null;
             StartResultTracking();
+            region.SetActiveJob(index);
             jobs.Begin(index);
             session.CloseOverlay();
         }
@@ -170,6 +173,7 @@ namespace TowTrouble
         {
             Detach();
             jobs.Clear();
+            region?.SetActiveJob(-1);
             Selected = -1;
             Returning = false;
             holdSeconds = 0;
@@ -183,7 +187,12 @@ namespace TowTrouble
         internal string Instruction(bool near)
         {
             if (ActiveJob.HasValue && driver != null)
+            {
+                if (FollowingRegionalRoute && !near && !jobs.CargoWarning) return ForestRoute
+                    ? "Forest cut · stay between blue stakes · winter tires and gentle throttle"
+                    : "Packed road · follow the cleared access and brake before turns";
                 return jobs.Instruction(driver, near, Attached, Attached ? rearCable : TowHintUsesRear, NearTowTarget);
+            }
             return near ? (Attached ? "Detach the winch" : "Stop to log your readings") : DestinationName;
         }
 
@@ -205,6 +214,7 @@ namespace TowTrouble
             }
 
             driver = session.World.Drivers[session.LocalSlot];
+            region.Tick(driver.transform.position, Weather);
             if (session.MenuOpen) return;
             if (Time.time >= nextAnchorCheck)
             {
@@ -217,6 +227,7 @@ namespace TowTrouble
             }
             if (ActiveJob is WinterJob job)
             {
+                jobs.UpdateRecoveryStage(driver, Attached, CableLoad);
                 if (jobs.Tick(driver, Attached)) CompleteJob(job);
                 return;
             }
@@ -242,6 +253,7 @@ namespace TowTrouble
                 profile.credits = Mathf.Min(1000000000, profile.credits + survey.Reward);
                 profile.Save();
             }
+            region.RefreshProgress();
             Report = first ? $"Survey logged · +{survey.Reward:N0} CR" : "Survey logged";
             Result = (survey.Name, null, SurveyBase.English, first ? survey.Reward : 0, 0, Time.time - startedAt, RunResets, cableBreaks, false);
             Returning = false;
@@ -267,6 +279,8 @@ namespace TowTrouble
             Report = first ? $"{offer.Name} complete · +{reward:N0} CR" : $"{offer.Name} complete";
             Result = (offer.Name, job, jobs.CompletionLocation, reward, first ? bonus : 0, Time.time - startedAt, RunResets, cableBreaks, bonus > 0);
             jobs.Finish(job);
+            region.SetActiveJob(-1);
+            region.RefreshProgress();
             NearTowTarget = false;
         }
 
@@ -307,6 +321,7 @@ namespace TowTrouble
             {
                 attachedAnchor = eye;
                 attachedBody = jobs.TowBody;
+                jobs.RecordRecoveryEye(eye);
                 jobs.AttachedTarget();
             }
             else
@@ -328,6 +343,7 @@ namespace TowTrouble
             float limit = 18f * 18f;
             Vector3 hitch = driver.FrontHitch;
             foreach (var anchor in anchors) Consider(anchor);
+            if (region != null) foreach (var anchor in region.RouteAnchors) Consider(anchor);
             return closest;
 
             void Consider(Transform anchor)
@@ -344,6 +360,7 @@ namespace TowTrouble
         private void FixedUpdate()
         {
             if (driver == null || driver.Body.isKinematic || session.MenuOpen) return;
+            jobs.FixedRecoveryStage(Attached);
             jobs.FixedTick(driver);
             jobs.TickCargo(driver);
             if (jobs.CargoImpact) session.Audio?.Play(RecoverySound.Impact, driver.RearHitch, session.LocalSlot, .65f);
@@ -396,6 +413,6 @@ namespace TowTrouble
             if (cable != null) cable.enabled = false;
         }
 
-        private void OnDestroy() => jobs?.Dispose();
+        private void OnDestroy() { jobs?.Dispose(); region?.Dispose(); }
     }
 }

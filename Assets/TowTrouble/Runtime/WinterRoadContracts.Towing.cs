@@ -22,6 +22,7 @@ namespace TowTrouble
             Transform selected = null;
             Consider(towEye);
             Consider(treeBaseEye);
+            Consider(recoveryRearEye);
             if (selected != null)
                 rear = (selected.position - driver.RearHitch).sqrMagnitude < (selected.position - driver.FrontHitch).sqrMagnitude;
             return selected;
@@ -38,7 +39,9 @@ namespace TowTrouble
             }
         }
 
-        internal string TowEyeName(Transform eye) => Active != WinterJob.Tree || eye == null ? "Tow eye" :
+        internal string TowEyeName(Transform eye) => Active == WinterJob.Recovery && recoveryRearEye != null
+            ? eye == recoveryRearEye ? "Rear tow eye" : "Front tow eye" :
+            Active != WinterJob.Tree || eye == null ? "Tow eye" :
             eye == treeBaseEye ? "Thick end · tow eye" : "Tip · tow eye";
 
         private void BuildRescue()
@@ -50,7 +53,9 @@ namespace TowTrouble
             pickup.SetRecoveryMass(CurrentOffer.Load, .5f);
             pickup.SetRecoveryJammed(true);
             pickup.WinterDriving = true;
-            pickup.SetSpawn(rescue, rescueHeading);
+            pickup.WinterExpedition = world.Drivers[0].WinterExpedition;
+            pickup.SnowRuts = world.Drivers[0].SnowRuts;
+            pickup.SetSpawn(rescue, CurrentOffer.RecoveryTask == WinterRecoveryTask.Turn ? rescueHeading * Quaternion.Euler(0, 75, 0) : rescueHeading);
             pickup.SetSimulation(true);
             pickup.gameObject.SetActive(true);
             TowBody = pickup.Body;
@@ -74,11 +79,12 @@ namespace TowTrouble
             Vector3 side = Vector3.Cross(Vector3.up, rescueExit);
             Stake(rescueBank + side * 2.15f, "Firm bank", pickupSnow.transform);
             Stake(rescueBank - side * 2.15f, "Firm bank", pickupSnow.transform);
+            InitializeRecoveryStage();
         }
 
         private bool TickPickup(RecoveryVehicle driver)
         {
-            if (!reachedTow) return false;
+            if (!reachedTow || !recoveryReady) return false;
             if (!pickupFreed)
             {
                 bool onBank = WheelOnFirmBank(blockedAxle) && WheelOnFirmBank(blockedAxle + 1);
@@ -123,8 +129,10 @@ namespace TowTrouble
                     return;
                 }
                 Vector3 direction = Vector3.ProjectOnPlane(pull, Vector3.up).normalized;
-                float alignment = Vector3.Dot(direction, rescueExit);
-                float advance = Vector3.Dot(TowBody.linearVelocity, rescueExit);
+                Vector3 wanted = CurrentOffer.RecoveryTask == WinterRecoveryTask.Reposition && recoveryStage == 0
+                    ? Vector3.ProjectOnPlane(rescuePullPoint - rescue, Vector3.up).normalized : rescueExit;
+                float alignment = Vector3.Dot(direction, wanted);
+                float advance = Vector3.Dot(TowBody.linearVelocity, wanted);
                 float loadScale = Mathf.Clamp(CurrentOffer.Load / 1350f, .8f, 1.3f);
                 float resistance = Mathf.Lerp(2550, 650, Mathf.InverseLerp(.10f, .85f, alignment)) * loadScale;
                 float available = Mathf.Max(0, Vector3.Dot(pull, direction) * .82f);
@@ -208,12 +216,5 @@ namespace TowTrouble
             return "The lane is clear · settle the trunk inside the turnout";
         }
 
-        private void RestoreParkedTree()
-        {
-            if (!lakesideCleared || parkedTree != null) return;
-            var tree = CreateTree(owner, layBy + Vector3.up * .33f, treeHeading);
-            tree.isKinematic = true;
-            parkedTree = tree.gameObject;
-        }
     }
 }

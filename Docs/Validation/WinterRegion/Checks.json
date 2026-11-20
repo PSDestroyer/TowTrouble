@@ -1,0 +1,722 @@
+{
+  "gates": {
+    "initialLocks": true,
+    "sequence": true,
+    "legacyReplay": true
+  },
+  "plow": {
+    "complete": true,
+    "error": null,
+    "rows": [
+      {
+        "id": 3,
+        "passed": true,
+        "along": 28.5087128,
+        "peakLoad": 0.719986737,
+        "cleared": 8,
+        "passes": 1,
+        "seconds": 13.2402954
+      }
+    ]
+  },
+  "recoveryDelivery": {
+    "complete": true,
+    "error": null,
+    "seconds": 96.32309,
+    "stage": 2,
+    "mask": 10,
+    "unstick": 0
+  },
+  "timber": {
+    "complete": true,
+    "error": null,
+    "rows": [
+      {
+        "id": 2,
+        "cleared": true,
+        "seconds": 11.276535
+      }
+    ]
+  },
+  "forestDelivery": {
+    "complete": true,
+    "error": null,
+    "rows": [
+      {
+        "id": 0,
+        "delivered": true,
+        "seconds": 70.706955,
+        "peakSpeed": 5.03307533,
+        "equipment": "Winter tires, low range, stock engine",
+        "forestRoute": true
+      }
+    ]
+  },
+  "recoveryVariants": {
+    "complete": true,
+    "error": null,
+    "rows": [
+      {
+        "id": 20,
+        "prepared": true,
+        "extracted": true,
+        "seconds": 7.944504,
+        "moved": 4.831632,
+        "droveBetweenPullPoints": false
+      },
+      {
+        "id": 22,
+        "prepared": true,
+        "extracted": true,
+        "seconds": 4.594795,
+        "moved": 3.52603126,
+        "droveBetweenPullPoints": false
+      },
+      {
+        "id": 19,
+        "prepared": true,
+        "extracted": true,
+        "seconds": 30.7025337,
+        "moved": 3.55637622,
+        "droveBetweenPullPoints": true
+      }
+    ]
+  },
+  "reportDelivery": {
+    "complete": true,
+    "error": null,
+    "seconds": 99.87802,
+    "service": true,
+    "surveys": 1,
+    "unstick": 0
+  },
+  "persistence": {
+    "nativeFileRoundtrip": true,
+    "allCompletedFixture": true,
+    "earnedMask": 15,
+    "earnedSurveys": 1,
+    "credits": 8450
+  },
+  "restoredWorld": {
+    "rows": [
+      {
+        "id": 2,
+        "kind": "Tree",
+        "offset": 8.699988
+      },
+      {
+        "id": 3,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.507011831
+      },
+      {
+        "id": 4,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.6263491
+      },
+      {
+        "id": 5,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.489113569
+      },
+      {
+        "id": 6,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.429470122
+      },
+      {
+        "id": 7,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.536886
+      },
+      {
+        "id": 8,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.715853631
+      },
+      {
+        "id": 9,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.656212
+      },
+      {
+        "id": 10,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.6442167
+      },
+      {
+        "id": 11,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.566722453
+      },
+      {
+        "id": 12,
+        "kind": "Plow",
+        "lane": 0.0,
+        "bank": 0.6680091
+      },
+      {
+        "id": 24,
+        "kind": "Tree",
+        "offset": 8.700021
+      },
+      {
+        "id": 25,
+        "kind": "Tree",
+        "offset": 8.700043
+      },
+      {
+        "id": 26,
+        "kind": "Tree",
+        "offset": 8.700078
+      }
+    ],
+    "deliveredDisplays": 13,
+    "serviceRestored": true,
+    "replayAndAbandonPreserveClearance": true,
+    "relocatedTrees": 9
+  },
+  "keyboard": {
+    "passed": true,
+    "error": null,
+    "routeV": true,
+    "garageG": true,
+    "serverGarageState": true
+  },
+  "weather": {
+    "complete": true,
+    "error": null,
+    "rows": [
+      {
+        "phase": 0,
+        "snow": 0.22,
+        "rain": 0.0,
+        "grip": 0.9744,
+        "lane": 0.0,
+        "activeIce": 0,
+        "fog": 0.00117,
+        "frame": 3057
+      },
+      {
+        "phase": 1,
+        "snow": 0.62,
+        "rain": 0.0,
+        "grip": 0.9744,
+        "lane": 0.0,
+        "activeIce": 0,
+        "fog": 0.00117,
+        "frame": 3187
+      },
+      {
+        "phase": 2,
+        "snow": 0.96,
+        "rain": 0.0,
+        "grip": 0.9744,
+        "lane": 0.0,
+        "activeIce": 0,
+        "fog": 0.00337,
+        "frame": 3318
+      },
+      {
+        "phase": 3,
+        "snow": 0.14,
+        "rain": 0.0,
+        "grip": 0.68,
+        "lane": 0.0,
+        "activeIce": 4,
+        "fog": 0.00114400021,
+        "frame": 3448
+      },
+      {
+        "phase": 0,
+        "snow": 0.22,
+        "rain": 0.0,
+        "grip": 0.9744,
+        "lane": 0.0,
+        "activeIce": 0,
+        "fog": 0.000919999962,
+        "frame": 3578
+      }
+    ],
+    "progressUnchanged": true
+  },
+  "availableUi": {
+    "rows": [
+      {
+        "id": 0,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 4,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 5,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 6,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 7,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 8,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 9,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 10,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 11,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 12,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 13,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 14,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 15,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 16,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 17,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 18,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 19,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 20,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 21,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 22,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 23,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 24,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 25,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 26,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 27,
+        "scale": 1.0,
+        "cards": 27,
+        "can": false
+      },
+      {
+        "id": 28,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 29,
+        "scale": 1.0,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 0,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 4,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 5,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 6,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 7,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 8,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 9,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 10,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 11,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 12,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 13,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 14,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 15,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 16,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 17,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 18,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 19,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 20,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 21,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 22,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 23,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 24,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 25,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 26,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 27,
+        "scale": 1.3,
+        "cards": 27,
+        "can": false
+      },
+      {
+        "id": 28,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      },
+      {
+        "id": 29,
+        "scale": 1.3,
+        "cards": 27,
+        "can": true
+      }
+    ],
+    "overflow": []
+  },
+  "finalUi": {
+    "variants": 72,
+    "overflow": []
+  },
+  "weatherTests": {
+    "status": "completed",
+    "duration": 0.56,
+    "summary": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0
+    },
+    "results": [
+      {
+        "FullName": "TowTrouble.Tests.WinterWeatherTests.ForecastAndPhysicalConditionsStayContinuousAcrossEveryChange",
+        "Status": "Passed",
+        "Duration": 0.0209524,
+        "Message": null,
+        "StackTrace": null
+      },
+      {
+        "FullName": "TowTrouble.Tests.WinterWeatherTests.FreezeOnlyReducesGripOnTheVisibleRoadPatchesAndKeepsUsableTraction",
+        "Status": "Passed",
+        "Duration": 0.0096563,
+        "Message": null,
+        "StackTrace": null
+      },
+      {
+        "FullName": "TowTrouble.Tests.WinterWeatherTests.WeatherForecastNeverConsumesGameplayRandomOrMutatesCareerReceipts",
+        "Status": "Passed",
+        "Duration": 0.020475,
+        "Message": null,
+        "StackTrace": null
+      }
+    ]
+  },
+  "finalRuleChecks": {
+    "passed": 3,
+    "failed": 0,
+    "method": "NUnit assertions re-executed against final compiled rules"
+  },
+  "classic": {
+    "scene": "OpenWorldRecovery",
+    "winterPhysics": false,
+    "winterProps": false,
+    "regionalService": false,
+    "originalGarage": true,
+    "cards": 3,
+    "contracts": 24,
+    "credits": 8450
+  },
+  "sceneListCorrection": {
+    "before": [
+      {
+        "path": "Assets/TowTrouble/Scenes/CanyonRecovery.unity",
+        "enabled": true
+      },
+      {
+        "path": "Assets/TowTrouble/Scenes/WinterExpeditions.unity",
+        "enabled": true
+      }
+    ],
+    "after": [
+      {
+        "path": "Assets/TowTrouble/Scenes/CanyonRecovery.unity",
+        "enabled": true
+      },
+      {
+        "path": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity",
+        "enabled": true
+      },
+      {
+        "path": "Assets/TowTrouble/Scenes/WinterExpeditions.unity",
+        "enabled": true
+      }
+    ]
+  },
+  "restoration": {
+    "realSaveUnchanged": true,
+    "scene": "Assets/TowTrouble/Scenes/OpenWorldRecovery.unity"
+  },
+  "console": {
+    "clean": false,
+    "messages": {
+      "UnityEngine.AddressableAssets.InvalidKeyException: Exception of type 'UnityEngine.AddressableAssets.InvalidKeyException' was thrown. No Location found for Key=System.Collections.Generic.List`1[System.String]": 6,
+      "OperationException : ChainOperation failed because dependent operation failed": 6,
+      "No Locale could be selected:": 10,
+      "OperationException : SelectedLocale is null. Could not load table.": 6,
+      "OperationException : SelectedLocale is null. Could not get table entry.": 268,
+      "OperationException : Dependency `UnityEngine.Localization.Operations.LoadAssetOperation`1[TMPro.TMP_FontAsset], result='', status='None'` failed to complete.": 6,
+      "System.Exception: SelectedLocale is null. Database could not get table.": 262,
+      "OperationException : Load Table Entry Operation Failed": 262,
+      "Scene 'OpenWorldRecovery' couldn't be loaded because it has not been added to the active build profile or shared scene list or the AssetBundle has not been loaded.": 1,
+      "You may not pass in objects that are already persistent": 2
+    },
+    "notes": [
+      "Unity Localization/Addressables errors occur during scene startup; SelectedLocale is null was already known before this task.",
+      "The missing-classic-scene error was fixed by enabling OpenWorldRecovery in the scene list and retrying the real return flow.",
+      "Persistent-object serialization errors came from validation attempts to save the settings singleton; the final setting is a single verified enabled flag."
+    ]
+  },
+  "scope": {
+    "date": "2026-11-20",
+    "profile": "TowTrouble.Validation.WinterRegion",
+    "buildCreated": false,
+    "runtimeTestsStartedAtFixtures": true,
+    "nativeFile": "temporary SaveStore/FileSaveStorage roundtrip, followed by scene reload; not a full application restart",
+    "limits": [
+      "Full mission routes were driven for Workshop Meadow towing, the Pinewood forest delivery and the weather report; each starts from a worksite/depot fixture.",
+      "Three special recoveries were tested through extraction; their entire towing delivery routes were not all driven.",
+      "The 749m northern detour was checked as a road-network route, not driven end to end in this turn.",
+      "World restoration for every completed job uses an all-completed fixture; these are not 30 complete playthroughs.",
+      "Controller hardware and Switch console performance were not tested.",
+      "Partial unfinished snow work and exact arbitrary tree poses are not saved; completed sites reconstruct their canonical cleared state."
+    ]
+  },
+  "finalConsole": {
+    "entries": [],
+    "cursor": 10980,
+    "session": "dd4ebc1e21cb4491a949fb030579f79b",
+    "returned": 0,
+    "dropped": false,
+    "reset": false,
+    "counts": {
+      "error": 1240,
+      "warn": 19,
+      "log": 741
+    },
+    "groundTruth": {
+      "sampledUtc": "2026-11-20T20:14:37.943081Z",
+      "ageMs": 271,
+      "compilationFailed": false,
+      "compiling": false,
+      "consoleErrors": 81,
+      "consoleWarnings": 1,
+      "consoleLogs": 19,
+      "seeded": true
+    }
+  }
+}

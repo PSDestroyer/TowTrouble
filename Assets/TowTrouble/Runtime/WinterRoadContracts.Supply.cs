@@ -12,6 +12,7 @@ namespace TowTrouble
         private float carriedMass;
         internal int CargoBonus => cargoDamage < .3f ? CurrentOffer.IntactBonus : 0;
         internal bool CargoImpact { get; private set; }
+        internal bool CargoWarning => cargoRattle > 0;
 
         private bool TickSupply(RecoveryVehicle driver, bool attached)
         {

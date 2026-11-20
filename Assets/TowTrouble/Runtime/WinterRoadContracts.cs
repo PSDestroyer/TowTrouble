@@ -18,8 +18,6 @@ namespace TowTrouble
         internal int ActiveIndex { get; private set; } = -1;
         private Offer CurrentOffer => Offers[ActiveIndex];
         private string sourceName, destinationName;
-        private GameObject parkedTree;
-        private bool lakesideCleared;
         private GameObject props, crate, blade;
         private GameObject currentMarker, deliveryMarker;
         private ParticleSystem plowSnow;
@@ -56,7 +54,7 @@ namespace TowTrouble
         internal bool Reconnecting(bool attached) => TowBody != null && reachedTow && !attached && !TowInBay();
         internal bool ApproachingEntry => TowBody != null && !reachedTow && !passedEntry;
         internal Vector3 EntryPoint => Active == WinterJob.Tree ? treeEntry : rescueEntry;
-        internal bool MarkingPullPoint(Vector3 position) => Active == WinterJob.Recovery && TowBody != null && !reachedTow && Near(position, TowBody.position, 34f);
+        internal bool MarkingPullPoint(Vector3 position) => Active == WinterJob.Recovery && TowBody != null && (!reachedTow || !recoveryReady) && Near(position, TowBody.position, 34f);
         internal Vector3 PullPoint => Active == WinterJob.Tree ? treePullPoint : rescuePullPoint;
         internal bool AtPullPoint(Vector3 position) => Near(position, PullPoint, 3.5f);
         internal float HoldProgress => Mathf.Clamp01(dwell / 1.2f);
@@ -103,7 +101,6 @@ namespace TowTrouble
                 layBy = Ground(treeRoad + Vector3.Cross(Vector3.up, along) * 8.7f, out _);
                 treePullPoint = Ground(layBy + Vector3.Cross(Vector3.up, along) * 10.6f, out _);
                 treeEntry = Ground(treeRoad - along * 12f, out _);
-                lakesideCleared = (completedJobs & (1 << index)) != 0;
                 destinationName = "Marked lay-by";
             }
             else
@@ -150,6 +147,7 @@ namespace TowTrouble
             if (Active == WinterJob.Plow) return PlowInstruction(driver, near);
             if (Active == WinterJob.Supply) return SupplyInstruction(near);
             if (Active == WinterJob.Tree) return TreeInstruction(attached, canHook);
+            if (RecoveryStageHint != null && (reachedTow || Near(driver.transform.position, rescue, 34f))) return RecoveryStageHint;
             if (!reachedTow)
             {
                 if (ApproachingEntry)
@@ -170,11 +168,6 @@ namespace TowTrouble
             if (index < 0 || index >= Offers.Length) throw new ArgumentOutOfRangeException(nameof(index));
             Clear();
             var job = Offers[index].Kind;
-            if (parkedTree != null)
-            {
-                Remove(parkedTree);
-                parkedTree = null;
-            }
             ActiveIndex = index;
             ConfigureJob(index);
             Active = job;
@@ -191,7 +184,8 @@ namespace TowTrouble
                 case WinterJob.Recovery:
                     BuildRescue();
                     currentMarker = Zone("Recovery pull point", rescuePullPoint, 3f);
-                    Arrow(currentMarker.transform, rescuePullPoint + rescueExit * 2.9f, rescueExit);
+                    var pullDirection = Vector3.ProjectOnPlane(rescuePullPoint - rescue, Vector3.up).normalized;
+                    Arrow(currentMarker.transform, rescuePullPoint + pullDirection * 2.9f, pullDirection);
                     Gate(rescueEntry, Vector3.right, "Meadow entrance");
                     deliveryMarker = Zone("Receiving bay", workshop, 6f);
                     pickupExitMarker = Zone("Meadow exit", rescueEntry, 2.5f);
@@ -431,25 +425,19 @@ namespace TowTrouble
             TowBody = null;
             towEye = treeBaseEye = null;
             pickup = null;
+            recoveryRearEye = firstRecoveryEye = lastRecoveryEye = null;
             Active = null;
             ActiveIndex = -1;
-            if (restoreRoad && previousJob == WinterJob.Tree) RestoreParkedTree();
             loaded = reachedTow = pickupFreed = passedEntry = passedPickupExit = false;
+            recoveryReady = false;
+            recoveryStage = 0;
             dwell = 0;
         }
 
         internal void Finish(WinterJob job)
         {
             completedJobs |= 1 << ActiveIndex;
-            if (job == WinterJob.Plow) pinewoodCleared = true;
-            if (job == WinterJob.Tree)
-            {
-                if (TowBody != null) TowBody.isKinematic = true;
-                lakesideCleared = true;
-                parkedTree = props;
-                props = null;
-            }
-            Clear(restoreRoad: job != WinterJob.Plow);
+            Clear();
         }
 
         private static void Remove(GameObject instance)
@@ -462,7 +450,6 @@ namespace TowTrouble
         public void Dispose()
         {
             Clear(restoreRoad: false);
-            Remove(parkedTree);
             DisposeRoadSnow();
             foreach (var material in new[] { wood, steel, orange, snow, paint, particles, marking })
                 if (material != null) UnityEngine.Object.Destroy(material);

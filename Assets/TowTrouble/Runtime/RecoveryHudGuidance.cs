@@ -61,11 +61,19 @@ namespace TowTrouble
         {
             PositionCrewTags(waypointWorld, waypointCamera);
             if (waypointWorld == null || gameplay == null || !gameplay.activeInHierarchy) return;
+            if (session.Expedition is { Active: true } expedition && waypointWorld.Phase == RecoveryPhase.Explore)
+            {
+                if (waypointCamera == null || session.MenuOpen) { HideWaypoint(); return; }
+                var expeditionPoint = expedition.GuidancePoint + Vector3.up *
+                    (expedition.NearTowTarget || expedition.Reconnecting ? .65f : 2.2f);
+                ProjectWaypoint(waypointCamera, expeditionPoint, expedition.DeliveryLeg && !expedition.Reconnecting);
+                return;
+            }
             if (waypointGarage)
             {
                 if (waypointCamera == null || waypointWorld.Phase != RecoveryPhase.Explore || session.MenuOpen)
                     ClearRecoveryGuidance();
-                else ProjectWaypoint(waypointCamera, waypointWorld.GaragePosition + Vector3.up * 3f, false);
+                else ProjectWaypoint(waypointCamera, waypointGaragePosition + Vector3.up * 3f, false);
                 return;
             }
             if (waypointCamera == null || !waypointWorld.HasContract)

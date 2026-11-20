@@ -79,7 +79,7 @@ namespace TowTrouble
             var world = session.World;
             if (page == "Expeditions")
                 return !world.HasContract && world.Phase == RecoveryPhase.Explore &&
-                    (session.Expedition.Active || boardIndex >= 0 && !session.Expedition.Attached);
+                    (session.Expedition.Active || boardIndex >= 0 && !session.Expedition.Attached && session.Expedition.CanStart(boardIndex));
             if (!session.IsHost) return false;
             if (world.HasContract) return true;
             return boardIndex >= 0 && boardIndex < world.AvailableContracts.Length &&
@@ -147,6 +147,11 @@ namespace TowTrouble
             }
             if (IsBoardPage(page))
             {
+                if (page == "Expeditions" && session.Expedition.HasRouteChoice(boardIndex) &&
+                    (keyboard?.vKey.wasPressedThisFrame == true || pad?.rightStickButton.wasPressedThisFrame == true))
+                {
+                    session.ConsumeMenuInput(); session.Expedition.ToggleRoute(); Show("Expeditions"); return true;
+                }
                 if (page == "Board" && boardRenderedCompletedMask != P.completedMask) Show("Board");
                 if (startButton != null) startButton.interactable = CanUseBoardPrimary();
                 FocusBoardRecovery();

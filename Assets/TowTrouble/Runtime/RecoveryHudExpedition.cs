@@ -13,10 +13,11 @@ namespace TowTrouble
             "Pinewood weather station", "Frozen lakeshore", "High cabin"
         };
         private Texture2D[] winterBoardPhotos;
+        private TMPro.TMP_Text winterWeatherLabel;
 
         private void BuildExpeditions()
         {
-            Header(L("MISIUNI DE IARNĂ", "WINTER EXPEDITIONS"), L("Alege o misiune. Pregătește mașina. Pornește la drum.", "Pick a job. Prepare your ride. Head out."));
+            Header(L("MISIUNI DE IARNĂ", "WINTER EXPEDITIONS"), "Forecast: " + session.Expedition.Weather.Forecast + " · Check the route and equipment before departure.");
             Wallet(pageRoot, P.credits);
             BuildBoardTabs();
 
@@ -68,11 +69,14 @@ namespace TowTrouble
             {
                 var entry = WinterEntry(boardIndex);
                 Text(detail, entry.Name, 30, 17, 774, 50, 33, Paper, true);
-                ContractPhoto(detail, WinterPhoto(boardIndex), 30, 80, 774, 178);
+                ContractPhoto(detail, WinterPhoto(boardIndex), 30, 80, 774, 148);
+                Text(detail, expedition.Story(boardIndex), 30, 232, 774, 36, 16, Amber).name = "Regional story";
                 description = Text(detail, entry.Brief + (entry.Terrain == null ? "" : "\n" + L("Teren: ", "Terrain: ") + entry.Terrain),
                     30, 274, 482, 93, 18, Paper);
                 BuildBoardReward(detail, boardCompleted ? "REPLAY REWARD" : "REWARD", entry.Reward);
-                Text(detail, entry.Preparation, 30, 369, 482, 40, 16, Amber).name = "Equipment recommendation";
+                string preparation = expedition.HasRouteChoice(boardIndex) && expedition.ForestRoute
+                    ? "Winter tires · low range recommended for the forest cut" : entry.Preparation;
+                Text(detail, preparation, 30, 369, 482, 40, 16, Amber).name = "Equipment recommendation";
                 string estimate = "~" + Mathf.CeilToInt(entry.ExpectedSeconds / 60f) + " min from base · " +
                     WinterRoadContracts.DifficultyName(entry.Tier);
                 if (!boardCompleted && boardIndex < WinterRoadContracts.Offers.Length && WinterRoadContracts.Offers[boardIndex].Kind == WinterJob.Supply)
@@ -86,10 +90,20 @@ namespace TowTrouble
                 expedition.Selected >= 0 ? WinterRoadContracts.Offers.Length + expedition.Selected : -1;
             string status = session.World.HasContract ? "Finish or abandon the active recovery to start an expedition." :
                 active >= 0 ? "IN PROGRESS: " + expedition.ActiveName :
-                expedition.Attached ? "Detach the winch before starting an expedition." : "No active expedition. Choose where we go next.";
+                expedition.Attached ? "Detach the winch before starting an expedition." :
+                expedition.Requirement(boardIndex) ?? "No active expedition. Choose where we go next.";
             string action = expedition.Active ? L("ABANDONEAZĂ EXPEDIȚIA", "ABANDON EXPEDITION") :
                 boardCompleted ? "REPLAY EXPEDITION" : boardIndex >= WinterRoadContracts.Offers.Length ? "START SURVEY" : "ACCEPT JOB";
             BuildBoardActions(entries.Count + (boardCompleted ? " completed expeditions" : " available expeditions"), status, active >= 0, action);
+            if (expedition.HasRouteChoice(boardIndex))
+            {
+                string key = session.UsingGamepad ? "Right stick" : "V";
+                var route = Button(pageRoot, key + " · " + expedition.RoutePlan, 690, 705, 834,
+                    () => { expedition.ToggleRoute(); Show("Expeditions"); }, false, 36);
+                route.name = "Winter route choice";
+                var navigation = route.navigation; navigation.mode = UnityEngine.UI.Navigation.Mode.None; route.navigation = navigation;
+            }
+            else Text(pageRoot, expedition.PinewoodProgress, 690, 705, 834, 36, 16, Amber).name = "Pinewood progress";
             FitNewPanelText();
             if (description != null) description.fontSizeMin = 14f;
             RefreshBoardHints();
@@ -116,12 +130,12 @@ namespace TowTrouble
                 var offer = WinterRoadContracts.Offers[id];
                 string terrain = offer.Kind == WinterJob.Supply
                     ? offer.Terrain + " · " + Mathf.RoundToInt(offer.CargoUnitMass * offer.CargoUnits) + " kg cargo" : offer.Terrain;
-                return (offer.Name, offer.Brief, offer.Difficulty + " · " + offer.Label, terrain,
+                return (offer.Name, offer.Brief, (session.Expedition.CanStart(id) ? "" : "Locked · ") + offer.Difficulty + " · " + offer.Label, terrain,
                     session.Expedition.JobStart(id), completed ? 0 : offer.Reward,
                     offer.Tier, offer.ExpectedSeconds, offer.Preparation);
             }
             var survey = session.Expedition.Surveys[id - WinterRoadContracts.Offers.Length];
-            return (survey.Name, survey.Brief, WinterRoadContracts.DifficultyName(survey.Tier) + " · Survey", null,
+            return (survey.Name, survey.Brief, (session.Expedition.CanStart(id) ? "" : "Locked · ") + WinterRoadContracts.DifficultyName(survey.Tier) + " · Survey", null,
                 survey.Point, completed ? 0 : survey.Reward, survey.Tier, survey.ExpectedSeconds,
                 survey.Tier == 0 ? "Stock vehicle · winter tires recommended" : "Winter tires · low range recommended");
         }
@@ -145,6 +159,16 @@ namespace TowTrouble
             var expedition = session.Expedition;
             var driver = world.Drivers[slot];
             var camera = Camera.main;
+            if (winterWeatherLabel == null)
+            {
+                var weather = Panel(gameplay.transform, 0, 0, 520, 48);
+                weather.name = "Winter forecast";
+                weather.anchorMin = weather.anchorMax = weather.pivot = new Vector2(1, 1);
+                weather.anchoredPosition = new Vector2(-28, -22);
+                winterWeatherLabel = Text(weather, "", 14, 3, 492, 42, 14, Paper);
+            }
+            var conditions = expedition.Weather;
+            winterWeatherLabel.text = (conditions.Ice > .35f ? "Icy patches · " : conditions.Gusts > .5f ? "Visibility reduced · " : "") + conditions.Forecast;
             marker.gameObject.SetActive(false);
             foreach (var tag in hudPlates) tag.gameObject.SetActive(false);
             exploreHintWanted = false;
@@ -162,7 +186,14 @@ namespace TowTrouble
                     job == WinterJob.Tree && expedition.DeliveryLeg ||
                     near && (job == WinterJob.Supply || job == WinterJob.Recovery);
                 bool delivery = expedition.DeliveryLeg && !expedition.Reconnecting;
-                string guidance = localWork ? null : FollowRoad(world, camera, driver.transform, destination, delivery);
+                string guidance;
+                if (expedition.FollowingRegionalRoute)
+                {
+                    ShowRoadTrail(camera, driver.transform.position, expedition.RegionalGuidanceRoute);
+                    sampledRoadLength = separation.magnitude;
+                    guidance = expedition.ForestRoute ? "Forest cut · blue stakes · deep snow" : "Packed road · cleared access";
+                }
+                else guidance = localWork ? null : FollowRoad(world, camera, driver.transform, destination, delivery);
                 if (localWork) HideRoadTrail();
                 SetGuidanceNote(guidance);
                 string action = near && job == WinterJob.Supply ? "Park inside the ring" :
@@ -170,6 +201,10 @@ namespace TowTrouble
                     expedition.MissedPlowSection ? "Snow remaining" :
                     near && !job.HasValue ? "Stop here" : null;
                 string caption = action ?? (Mathf.RoundToInt(localWork ? separation.magnitude : Mathf.Max(separation.magnitude, sampledRoadLength)) + " m");
+                waypointGarage = false;
+                waypointWorld = world;
+                waypointCamera = camera;
+                waypointSlot = slot;
                 SetWaypointContent(expedition.GuidanceName, caption, delivery, false, action != null,
                     expedition.Returning ? RecoveryIcon.Garage : job == WinterJob.Tree ? RecoveryIcon.Tree :
                     job == WinterJob.Recovery ? RecoveryIcon.WaypointCar : job == WinterJob.Plow ? RecoveryIcon.Bumper : RecoveryIcon.Flag,
@@ -180,6 +215,7 @@ namespace TowTrouble
             {
                 ClearRecoveryGuidance();
                 SetMissionStatus("WINTER EXPEDITIONS", ContractControl() + " · Expedition journal");
+                RefreshGarageGuidance(world, slot, camera);
                 SetGuidanceNote(expedition.Report);
             }
 
@@ -199,6 +235,9 @@ namespace TowTrouble
                 ShowExploreHint(brake, expedition.HasCargo ? "Hold brake to unload" : "Hold brake to load");
             else if (expedition.HasCargo)
                 ShowExploreHint("", "Cargo secured · " + expedition.CargoUnits + " crate(s)");
+            else if (session.CanOpenGarage)
+                ShowExploreHint(session.UsingGamepad ? RecoveryInputPrompts.WestLabel(family) : P.ReadKey(P.garageKey, Key.G).ToString(),
+                    expedition.CanUseService(driver.transform.position) ? "Pinewood service · customize vehicle" : "Customize vehicle");
             else if (expedition.NearbyAnchor != null)
                 ShowExploreHint(hook, "Attach to anchor");
             else if (driver.SnowSink >= .11f && driver.Speed > .15f)

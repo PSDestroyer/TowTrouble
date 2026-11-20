@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace TowTrouble
 {
+    internal enum WinterRecoveryTask { Bank, Stabilize, Turn, Reposition }
+
     internal sealed partial class WinterRoadContracts
     {
         internal readonly struct Offer
@@ -11,12 +13,13 @@ namespace TowTrouble
             internal readonly int Reward, CargoUnits, Model, Tier, ExpectedSeconds;
             internal readonly float Load, SnowScale, CargoUnitMass, CargoFragility;
             internal readonly Vector3 RoadStart, RoadEnd;
+            internal readonly WinterRecoveryTask RecoveryTask;
 
             internal Offer(WinterJob kind, string name, string brief, int reward,
                 string sourceBay = null, string targetBay = null, string siteId = null,
                 Vector3 roadStart = default, Vector3 roadEnd = default, float load = 1350f,
                 float snowScale = 1f, int cargoUnits = 1, int model = 3,
-                int tier = 0, int expectedSeconds = 120, float cargoUnitMass = 110f, float cargoFragility = 1f)
+                int tier = 0, int expectedSeconds = 120, float cargoUnitMass = 110f, float cargoFragility = 1f, WinterRecoveryTask recoveryTask = WinterRecoveryTask.Bank)
             {
                 Kind = kind;
                 Name = name;
@@ -35,6 +38,7 @@ namespace TowTrouble
                 ExpectedSeconds = expectedSeconds;
                 CargoUnitMass = cargoUnitMass;
                 CargoFragility = cargoFragility;
+                RecoveryTask = recoveryTask;
             }
 
             internal string Difficulty => DifficultyName(Tier);
@@ -127,18 +131,18 @@ namespace TowTrouble
                 "Carry three relief cases from the eastern outpost to the canyon depot. Protect the load on the final climb.", 1200,
                 sourceBay: "G", targetBay: "H", cargoUnits: 3, tier: 1, expectedSeconds: 180, cargoUnitMass: 100f, cargoFragility: 1f),
             new(WinterJob.Recovery, "Logging Truck Snow Trap",
-                "Winch the heavy hauler along the marked escape line, then tow it to Pinewood.", 1200,
-                targetBay: "B", siteId: "R02", load: 1750f, model: 1, tier: 1, expectedSeconds: 180),
+                "Pull the hauler sideways clear of the rut, detach and reconnect at the other end, then extract it toward the firm bank.", 1200,
+                targetBay: "B", siteId: "R02", load: 1750f, model: 1, tier: 1, expectedSeconds: 180, recoveryTask: WinterRecoveryTask.Reposition),
             new(WinterJob.Recovery, "Lakeshore Stranded Scout",
-                "Recover the scout from the snowy shore approach and tow it to Lakeside landing.", 2150,
-                targetBay: "E", siteId: "R07", load: 1100f, model: 0, tier: 1, expectedSeconds: 345),
+                "Turn the crosswise scout toward the marked exit before towing it to Lakeside landing. Both ends have a tow eye.", 2150,
+                targetBay: "E", siteId: "R07", load: 1100f, model: 0, tier: 1, expectedSeconds: 345, recoveryTask: WinterRecoveryTask.Turn),
             new(WinterJob.Recovery, "Refuge Road Breakdown",
                 "Pull the disabled car out of the roadside snow and deliver it to the mountain refuge.", 1450,
                 targetBay: "C", siteId: "R09", load: 1250f, model: 2, tier: 1, expectedSeconds: 225),
             new(WinterJob.Recovery, "Mountain Link Snow Rescue",
-                "Extract the off-roader from the mountain link drift, then tow it up to the high cabin.", 2350,
+                "Secure the sliding off-roader with a loaded cable while stopped. Then extract it and tow it up to the high cabin.", 2350,
                 targetBay: "D", siteId: "R13", load: 1500f,
-                roadStart: new(109f, 66.1f, 161.3f), roadEnd: new(137.915f, 66.1f, 162.348f), tier: 2, expectedSeconds: 315),
+                roadStart: new(109f, 66.1f, 161.3f), roadEnd: new(137.915f, 66.1f, 162.348f), tier: 2, expectedSeconds: 315, recoveryTask: WinterRecoveryTask.Stabilize),
             new(WinterJob.Recovery, "Canyon Freight Rescue",
                 "Free the heavy hauler from the freight lane drift and tow it into the canyon depot bay.", 1300,
                 targetBay: "H", siteId: "R23", load: 1750f, model: 1,

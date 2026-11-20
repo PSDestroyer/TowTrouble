@@ -305,6 +305,7 @@ namespace TowTrouble
                 if (snow)
                 {
                     surfaceGrip = WinterDrivingSurface.Grip(packed, hit.normal, snowGripScale) * (1 - drift * .28f);
+                    if (WinterExpedition != null) surfaceGrip *= WinterExpedition.WeatherGrip(hit.point, packed && drift < .08f);
                     surfaceSideGrip = surfaceGrip * Mathf.Lerp(.83f, 1.12f, climb);
                     looseDrag = RecoveryTraction.SoftGroundDrag(RecoveryGroundKind.Snow, (snowDepth[i] - rut) / .24f, snowGripScale);
                     looseDrag += 1250f * rut;

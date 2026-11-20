@@ -80,12 +80,20 @@ namespace TowTrouble
             fog._HeightDensity.value=.05f+wet*.02f+morning*.035f;
             fog._UseNoise.value=!performance&&!switchRendering;
             fog._NoiseIntensity.value=.12f+wet*.10f;
+            if (session.Expedition != null)
+            {
+                float gusts = session.Expedition.Weather.Gusts;
+                fog._FogDensity.value += gusts * .0018f;
+                fog._DistanceFogOffset.value = -Mathf.Lerp(clearDistance, 38, gusts);
+                fog._NoiseIntensity.value += gusts * .14f;
+            }
             fog._SunIntensity.value=.10f*daylight*(1-wet);
             if(switchRendering)
             {
                 // Native vertex/fragment fog uses the scene's existing Exp2 variants; no fullscreen noise/composite passes.
                 switchFogApplied=true;RenderSettings.fogMode=FogMode.ExponentialSquared;
                 RenderSettings.fogDensity=Mathf.Lerp(.004f,.0055f,Mathf.Max(wet,snow));
+                if (session.Expedition != null) RenderSettings.fogDensity += session.Expedition.Weather.Gusts * .0015f;
                 RenderSettings.fogColor=fog._FogColor.value;fog._FogIntensity.value=0;
             }
             switchColorGrade.Dispose();

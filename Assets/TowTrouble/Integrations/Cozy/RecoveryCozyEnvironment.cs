@@ -86,8 +86,10 @@ namespace TowTrouble
             bool expedition = session.Expedition != null;
             if (expedition)
             {
-                from = Mathf.Max(2, from);
-                to = Mathf.Max(2, to);
+                var winter = session.Expedition.Weather;
+                from = winter.Current == 0 ? 1 : winter.Current == 2 ? 3 : 2;
+                to = winter.Next == 0 ? 1 : winter.Next == 2 ? 3 : 2;
+                blend = winter.Blend;
             }
             // COZY3.6 expects a strongest profile strictly above 0.5. Keep the midpoint safe.
             if(Mathf.Abs(blend-.5f)<.0001f)blend=.5001f;
@@ -108,7 +110,7 @@ namespace TowTrouble
                 roofVisibility=Physics.Raycast(position+Vector3.up*3.5f,Vector3.up,12,~0,QueryTriggerInteraction.Ignore)?0:1;
             }
             RainAmount=live&&!expedition?rain*roofVisibility:0;
-            SnowAmount=expedition?(live?Mathf.Lerp(.55f,.96f,WetAmount):.45f)*roofVisibility:live?snow*roofVisibility:0;
+            SnowAmount=expedition?(live?session.Expedition.Weather.Snow:.22f)*roofVisibility:live?snow*roofVisibility:0;
             foreach(var effects in vehicles)if(effects!=null)effects.SetNightLighting(NightAmount);
             if(session.Audio!=null)session.Audio.SetEnvironment(NightAmount,RainAmount);
         }
